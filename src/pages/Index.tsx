@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Book, Star, Heart } from "lucide-react";
+import { Book, Star, Heart, Download, MessageCircle, Globe } from "lucide-react";
 import { Link } from "react-router-dom";
 import StoryBackground from "@/components/StoryBackground";
 import HowItWorks from "@/components/HowItWorks";
@@ -25,11 +25,11 @@ const Index = () => {
           </h1>
           
           <h2 className="text-3xl md:text-4xl font-semibold mb-8 text-story-blue">
-            Magical Bedtime Stories for Kids
+            Magical Bedtime Stories for Children
           </h2>
           
           <p className="text-xl md:text-2xl mb-12 max-w-3xl mx-auto">
-            Create personalized bedtime adventures that will spark your child's imagination and lead to sweet dreams!
+            Create personalised bedtime adventures that will spark your child's imagination and lead to sweet dreams!
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
@@ -49,11 +49,11 @@ const Index = () => {
             <div className="card-kiddy">
               <div className="mb-4 flex justify-center">
                 <div className="bg-story-lightPurple p-3 rounded-full">
-                  <Star className="h-8 w-8 text-story-purple" />
+                  <MessageCircle className="h-8 w-8 text-story-purple" />
                 </div>
               </div>
-              <h3 className="text-xl font-bold mb-2">Personalized Stories</h3>
-              <p>Stories featuring your child's name, interests, and favorite things!</p>
+              <h3 className="text-xl font-bold mb-2">Engaging Experience</h3>
+              <p>Create meaningful connections as you and your child craft stories together!</p>
             </div>
             
             <div className="card-kiddy">
@@ -63,17 +63,17 @@ const Index = () => {
                 </div>
               </div>
               <h3 className="text-xl font-bold mb-2">Endless Imagination</h3>
-              <p>New stories every night with magical worlds and lovable characters!</p>
+              <p>Take control of story content with characters and themes your child loves!</p>
             </div>
             
             <div className="card-kiddy">
               <div className="mb-4 flex justify-center">
                 <div className="bg-story-pink p-3 rounded-full">
-                  <Heart className="h-8 w-8 text-story-purple" />
+                  <Globe className="h-8 w-8 text-story-purple" />
                 </div>
               </div>
-              <h3 className="text-xl font-bold mb-2">Kid-Friendly</h3>
-              <p>Age-appropriate content designed to make bedtime fun and peaceful!</p>
+              <h3 className="text-xl font-bold mb-2">Multiple Languages</h3>
+              <p>Stories in different languages make bedtime both fun and educational!</p>
             </div>
           </div>
         </div>

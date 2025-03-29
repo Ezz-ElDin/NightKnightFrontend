@@ -7,29 +7,33 @@ import {
   CarouselPrevious
 } from "@/components/ui/carousel";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BookOpen, Star } from "lucide-react";
+import { BookOpen, Star, Globe } from "lucide-react";
 
 const StorySamples = () => {
   const stories = [
     {
       title: "The Dragon's Treasure",
-      excerpt: "Once upon a time, there was a friendly dragon named Spark who lived in a colorful cave. Spark had a collection of magical treasures that made children's dreams come true...",
-      theme: "Adventure"
+      excerpt: "Once upon a time, there was a friendly dragon named Spark who lived in a colourful cave. Spark had a collection of magical treasures that made children's dreams come true...",
+      theme: "Adventure",
+      language: "English"
     },
     {
       title: "Luna and the Moon Kittens",
       excerpt: "Luna was getting ready for bed when she noticed something strange outside her window. Five fluffy kittens were dancing on a moonbeam! They waved to Luna and invited her to play...",
-      theme: "Fantasy"
+      theme: "Fantasy",
+      language: "English"
     },
     {
       title: "Captain Leo's Space Journey",
       excerpt: "Captain Leo and his trusty robot friend Beep were preparing for their biggest adventure yet. They were going to visit the Cookie Planet, where mountains were made of chocolate chips...",
-      theme: "Space"
+      theme: "Space",
+      language: "French"
     },
     {
       title: "The Magical Garden",
       excerpt: "In Sophie's backyard was a tiny door that nobody else could see. When she opened it, she discovered a garden where flowers sang lullabies and friendly butterflies granted wishes...",
-      theme: "Magic"
+      theme: "Magic",
+      language: "Spanish"
     }
   ];
 
@@ -64,9 +68,14 @@ const StorySamples = () => {
                           <Star className="h-5 w-5 inline-block" fill="currentColor" />
                           <Star className="h-5 w-5 inline-block" fill="currentColor" />
                         </div>
-                        <span className="ml-auto px-3 py-1 bg-story-green text-green-700 rounded-full text-xs font-semibold">
-                          {story.theme}
-                        </span>
+                        <div className="ml-auto flex gap-2">
+                          <span className="px-3 py-1 bg-story-green text-green-700 rounded-full text-xs font-semibold">
+                            {story.theme}
+                          </span>
+                          <span className="px-3 py-1 bg-story-pink text-story-purple rounded-full text-xs font-semibold flex items-center">
+                            <Globe className="h-3 w-3 mr-1" /> {story.language}
+                          </span>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>

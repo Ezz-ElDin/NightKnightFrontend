@@ -7,11 +7,11 @@ const Pricing = () => {
   const plans = [
     {
       name: "Free",
-      price: "$0",
+      price: "£0",
       description: "Perfect for trying out Storyland",
       features: [
-        "3 personalized stories per month",
-        "Basic customization",
+        "3 personalised stories per month",
+        "Basic customisation",
         "Web reading experience",
         "Single child profile"
       ],
@@ -22,16 +22,17 @@ const Pricing = () => {
     },
     {
       name: "Family",
-      price: "$4.99",
+      price: "£4.99",
       period: "per month",
       description: "Best value for families",
       features: [
         "Unlimited stories",
-        "Advanced customization",
+        "Advanced customisation",
         "PDF downloads",
         "Multiple child profiles",
         "Ad-free experience",
-        "Premium story themes"
+        "Premium story themes",
+        "Multiple languages"
       ],
       buttonText: "Start 7-Day Free Trial",
       buttonVariant: "default",
@@ -41,7 +42,7 @@ const Pricing = () => {
     },
     {
       name: "School",
-      price: "$19.99",
+      price: "£19.99",
       period: "per month",
       description: "Ideal for classrooms",
       features: [
@@ -50,7 +51,8 @@ const Pricing = () => {
         "Educational themes",
         "Bulk PDF downloads",
         "Shared story library",
-        "Priority support"
+        "Priority support",
+        "All available languages"
       ],
       buttonText: "Contact Sales",
       buttonVariant: "outline",
@@ -120,7 +122,7 @@ const Pricing = () => {
               <div>
                 <Link to="/register">
                   <Button 
-                    variant={plan.buttonVariant} 
+                    variant={plan.buttonVariant === "default" ? "default" : "outline"} 
                     className={`w-full h-12 rounded-xl button-bounce ${
                       plan.buttonVariant === 'outline'
                         ? 'border-2 border-story-purple text-story-purple hover:bg-story-purple/10'
