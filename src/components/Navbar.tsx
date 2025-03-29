@@ -1,14 +1,14 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Book, Menu, X, Star, Info, Sparkles } from "lucide-react";
+import { Book, Menu, X, Star, Info, Sparkles, BookOpen, UserPlus, LogIn } from "lucide-react";
 import { 
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger
+  NavigationMenuTrigger,
+  NavigationMenuLink
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -18,23 +18,24 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   return (
-    <nav className="sticky top-0 z-50 w-full py-3 bg-white/80 backdrop-blur-md border-b border-story-lightPurple/30 shadow-sm">
+    <nav className="sticky top-0 z-50 w-full py-3 bg-white/90 backdrop-blur-md border-b border-story-lightPurple/30 shadow-sm">
       <div className="container mx-auto px-4 flex justify-between items-center">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
           <div className="relative">
             <Book className="h-8 w-8 text-story-purple" />
-            <Star className="absolute -top-1 -right-1 h-4 w-4 text-story-yellow animate-bounce-slow" fill="currentColor" />
+            <Star className="absolute -top-1 -right-1 h-4 w-4 text-amber-400" fill="currentColor" />
           </div>
           <span className="font-bold text-2xl text-story-purple">Storyland</span>
         </Link>
         
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-6">
+        <div className="hidden md:flex items-center space-x-4">
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
                 <NavigationMenuTrigger className="bg-transparent hover:bg-story-lightPurple/50 text-story-purple">
+                  <BookOpen className="mr-1 h-4 w-4" />
                   Explore
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
@@ -72,13 +73,11 @@ const Navbar = () => {
                     </Link>
                   </HoverCardTrigger>
                   <HoverCardContent className="w-80 p-3 bg-white border-story-lightPurple">
-                    <div className="flex justify-between space-x-4">
-                      <div className="space-y-1">
-                        <h4 className="text-sm font-semibold text-story-purple">Storyland Team</h4>
-                        <p className="text-sm text-muted-foreground">
-                          A group of passionate storytellers dedicated to bringing imagination to children worldwide.
-                        </p>
-                      </div>
+                    <div className="space-y-1">
+                      <h4 className="text-sm font-semibold text-story-purple">Storyland Team</h4>
+                      <p className="text-sm text-muted-foreground">
+                        A group of passionate storytellers dedicated to bringing imagination to children worldwide.
+                      </p>
                     </div>
                   </HoverCardContent>
                 </HoverCard>
@@ -86,7 +85,7 @@ const Navbar = () => {
             </NavigationMenuList>
           </NavigationMenu>
           
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 ml-2">
             <Link to="/register">
               <Button className="bg-story-purple hover:bg-story-purple/90 text-white gap-1.5">
                 <Sparkles className="h-4 w-4" />
@@ -95,12 +94,14 @@ const Navbar = () => {
             </Link>
             <div className="h-6 w-px bg-story-lightPurple/50"></div>
             <Link to="/login">
-              <Button variant="ghost" className="text-story-blue hover:bg-story-blue/10">
+              <Button variant="ghost" className="text-story-blue hover:bg-story-blue/10 gap-1">
+                <LogIn className="h-4 w-4" />
                 Log In
               </Button>
             </Link>
             <Link to="/register">
-              <Button variant="outline" className="border-story-blue text-story-blue hover:bg-story-blue/10">
+              <Button variant="outline" className="border-story-blue text-story-blue hover:bg-story-blue/10 gap-1">
+                <UserPlus className="h-4 w-4" />
                 Sign Up
               </Button>
             </Link>
@@ -120,16 +121,19 @@ const Navbar = () => {
       {mobileMenuOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-sm border-b border-story-lightPurple/30 p-4 shadow-lg animate-in slide-in-from-top duration-300">
           <div className="flex flex-col space-y-4">
-            <Link to="#how-it-works" className="px-3 py-2 rounded-xl hover:bg-story-lightPurple/50 text-story-purple font-medium" onClick={() => setMobileMenuOpen(false)}>
+            <Link to="#how-it-works" className="px-3 py-2 rounded-xl hover:bg-story-lightPurple/50 text-story-purple font-medium flex items-center gap-2" onClick={() => setMobileMenuOpen(false)}>
+              <Book className="h-4 w-4" />
               How It Works
             </Link>
-            <Link to="#story-samples" className="px-3 py-2 rounded-xl hover:bg-story-lightPurple/50 text-story-purple font-medium" onClick={() => setMobileMenuOpen(false)}>
+            <Link to="#story-samples" className="px-3 py-2 rounded-xl hover:bg-story-lightPurple/50 text-story-purple font-medium flex items-center gap-2" onClick={() => setMobileMenuOpen(false)}>
+              <BookOpen className="h-4 w-4" />
               Story Samples
             </Link>
-            <Link to="#pricing" className="px-3 py-2 rounded-xl hover:bg-story-lightPurple/50 text-story-purple font-medium" onClick={() => setMobileMenuOpen(false)}>
+            <Link to="#pricing" className="px-3 py-2 rounded-xl hover:bg-story-lightPurple/50 text-story-purple font-medium flex items-center gap-2" onClick={() => setMobileMenuOpen(false)}>
+              <Star className="h-4 w-4" fill="currentColor" />
               Pricing
             </Link>
-            <Link to="#" className="px-3 py-2 rounded-xl hover:bg-story-lightPurple/50 text-story-purple font-medium flex items-center gap-1.5" onClick={() => setMobileMenuOpen(false)}>
+            <Link to="#" className="px-3 py-2 rounded-xl hover:bg-story-lightPurple/50 text-story-purple font-medium flex items-center gap-2" onClick={() => setMobileMenuOpen(false)}>
               <Info className="h-4 w-4" />
               About Us
             </Link>
@@ -141,12 +145,14 @@ const Navbar = () => {
                 </Button>
               </Link>
               <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
-                <Button variant="ghost" className="w-full text-story-blue hover:bg-story-blue/10">
+                <Button variant="ghost" className="w-full text-story-blue hover:bg-story-blue/10 gap-1.5">
+                  <LogIn className="h-4 w-4" />
                   Log In
                 </Button>
               </Link>
               <Link to="/register" onClick={() => setMobileMenuOpen(false)}>
-                <Button variant="outline" className="w-full border-story-blue text-story-blue hover:bg-story-blue/10">
+                <Button variant="outline" className="w-full border-story-blue text-story-blue hover:bg-story-blue/10 gap-1.5">
+                  <UserPlus className="h-4 w-4" />
                   Sign Up
                 </Button>
               </Link>
@@ -184,7 +190,7 @@ const ListItem = ({
           {icon === "Book" ? (
             <Book className="h-5 w-5 text-story-purple mb-2" />
           ) : (
-            <Star className="h-5 w-5 text-story-yellow mb-2" fill="currentColor" />
+            <Star className="h-5 w-5 text-amber-400 mb-2" fill="currentColor" />
           )}
           <div className="text-sm font-medium leading-none text-story-purple">{title}</div>
           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
