@@ -7,10 +7,12 @@ import HowItWorks from "@/components/HowItWorks";
 import StorySamples from "@/components/StorySamples";
 import Pricing from "@/components/Pricing";
 import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
 
 const Index = () => {
   return (
     <div className="overflow-auto">
+      <Navbar />
       <StoryBackground>
         <div className="container max-w-6xl mx-auto text-center z-10">
           <div className="mb-8 flex justify-center">
