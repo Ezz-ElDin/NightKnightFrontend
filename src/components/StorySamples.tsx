@@ -7,7 +7,7 @@ import {
   CarouselPrevious
 } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
-import { BookOpen, Star, Globe } from "lucide-react";
+import { BookOpen, Star, Globe, Butterfly, Magic, Flower } from "lucide-react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 const StorySamples = () => {
@@ -17,28 +17,32 @@ const StorySamples = () => {
       excerpt: "Once upon a time, there was a friendly green dragon named Spark who lived in a colorful mountain cave. Spark collected magical treasures that brought joy to the children in the nearby village...",
       theme: "Adventure",
       language: "English",
-      imageUrl: "https://img.freepik.com/free-vector/hand-drawn-dragon-illustration_23-2149607158.jpg"
+      imageUrl: "https://img.freepik.com/free-vector/hand-drawn-dragon-illustration_23-2149607158.jpg",
+      icon: <BookOpen className="h-5 w-5 text-story-orange" />
     },
     {
       title: "Luna and the Moon Kittens",
       excerpt: "Luna was getting ready for bed when she noticed something magical - five fluffy kittens playing with a ball of yarn on her windowsill! They sparkled with moonlight and invited Luna to join their nighttime adventures...",
       theme: "Fantasy",
       language: "English",
-      imageUrl: "https://img.freepik.com/free-vector/cute-cat-playing-yarn-ball-cartoon-vector-icon-illustration_138676-2588.jpg"
+      imageUrl: "https://img.freepik.com/free-vector/cute-cat-playing-yarn-ball-cartoon-vector-icon-illustration_138676-2588.jpg",
+      icon: <Magic className="h-5 w-5 text-story-orange" />
     },
     {
       title: "Captain Leo's Space Journey",
       excerpt: "Captain Leo and his trusty robot friend Beep were preparing for their biggest adventure yet. They boarded their rocket ship to explore the stars and discover new planets beyond our galaxy...",
       theme: "Space",
       language: "French",
-      imageUrl: "https://img.freepik.com/free-vector/cute-astronaut-riding-rocket-cartoon-vector-icon-illustration-science-technology-icon-concept-isolated-premium-vector-flat-cartoon-style_138676-3669.jpg"
+      imageUrl: "https://img.freepik.com/free-vector/cute-astronaut-riding-rocket-cartoon-vector-icon-illustration-science-technology-icon-concept-isolated-premium-vector-flat-cartoon-style_138676-3669.jpg",
+      icon: <Star className="h-5 w-5 text-story-orange" />
     },
     {
       title: "The Magical Garden",
       excerpt: "In Sophie's backyard was a tiny door that led to an enchanted garden. Beautiful flowers bloomed in every color, butterflies with sparkling wings fluttered about, and tiny fairies tended to the magical plants...",
       theme: "Magic",
       language: "Spanish",
-      imageUrl: "https://img.freepik.com/free-vector/hand-drawn-fairy-tale-background_52683-79363.jpg"
+      imageUrl: "https://img.freepik.com/free-vector/hand-drawn-fairy-tale-background_52683-79363.jpg",
+      icon: <Flower className="h-5 w-5 text-story-orange" />
     }
   ];
 
@@ -62,7 +66,7 @@ const StorySamples = () => {
                         <div className="mb-6 flex items-center justify-between">
                           <h3 className="text-2xl font-bold text-story-purple">{story.title}</h3>
                           <div className="bg-white p-2 rounded-full shadow-md">
-                            <BookOpen className="h-5 w-5 text-story-orange" />
+                            {story.icon}
                           </div>
                         </div>
                         
