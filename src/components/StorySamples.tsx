@@ -21,26 +21,26 @@ const StorySamples = () => {
       icon: <BookOpen className="h-5 w-5 text-story-orange" />
     },
     {
-      title: "Luna and the Moon Kittens",
-      excerpt: "Luna was getting ready for bed when she noticed something magical - five fluffy kittens playing with a ball of yarn on her windowsill! They sparkled with moonlight and invited Luna to join their nighttime adventures...",
-      theme: "Fantasy",
-      language: "English",
+      title: "Les Chatons de la Lune",
+      excerpt: "Luna se préparait à se coucher quand elle remarqua quelque chose de magique - cinq chatons moelleux jouant avec une pelote de laine sur son rebord de fenêtre! Ils brillaient au clair de lune et invitèrent Luna à rejoindre leurs aventures nocturnes...",
+      theme: "Fantaisie",
+      language: "Français",
       imageUrl: "https://img.freepik.com/free-vector/cute-cat-playing-yarn-ball-cartoon-vector-icon-illustration_138676-2588.jpg",
       icon: <Sparkles className="h-5 w-5 text-story-orange" />
     },
     {
-      title: "Captain Leo's Space Journey",
-      excerpt: "Captain Leo and his trusty robot friend Beep were preparing for their biggest adventure yet. They boarded their rocket ship to explore the stars and discover new planets beyond our galaxy...",
-      theme: "Space",
-      language: "French",
+      title: "Kapitän Leos Weltraumreise",
+      excerpt: "Kapitän Leo und sein treuer Roboterfreund Beep bereiteten sich auf ihr bisher größtes Abenteuer vor. Sie bestiegen ihr Raumschiff, um die Sterne zu erforschen und neue Planeten jenseits unserer Galaxie zu entdecken...",
+      theme: "Weltraum",
+      language: "Deutsch",
       imageUrl: "https://img.freepik.com/free-vector/cute-astronaut-riding-rocket-cartoon-vector-icon-illustration-science-technology-icon-concept-isolated-premium-vector-flat-cartoon-style_138676-3669.jpg",
       icon: <Rocket className="h-5 w-5 text-story-orange" />
     },
     {
-      title: "The Magical Garden",
-      excerpt: "In Sophie's backyard was a tiny door that led to an enchanted garden. Beautiful flowers bloomed in every color, butterflies with sparkling wings fluttered about, and tiny fairies tended to the magical plants...",
-      theme: "Magic",
-      language: "Spanish",
+      title: "El Jardín Mágico",
+      excerpt: "En el patio trasero de Sophie había una pequeña puerta que conducía a un jardín encantado. Flores hermosas florecían en todos los colores, mariposas con alas brillantes revoloteaban, y pequeñas hadas cuidaban de las plantas mágicas...",
+      theme: "Magia",
+      language: "Español",
       imageUrl: "https://img.freepik.com/free-vector/hand-drawn-fairy-tale-background_52683-79363.jpg",
       icon: <FlowerIcon className="h-5 w-5 text-story-orange" />
     }
