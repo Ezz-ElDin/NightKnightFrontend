@@ -7,7 +7,7 @@ import {
   CarouselPrevious
 } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
-import { BookOpen, Star, Globe, Butterfly, Magic, Flower } from "lucide-react";
+import { BookOpen, Star, Globe, Sparkles, Rocket, FlowerIcon } from "lucide-react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 const StorySamples = () => {
@@ -26,7 +26,7 @@ const StorySamples = () => {
       theme: "Fantasy",
       language: "English",
       imageUrl: "https://img.freepik.com/free-vector/cute-cat-playing-yarn-ball-cartoon-vector-icon-illustration_138676-2588.jpg",
-      icon: <Magic className="h-5 w-5 text-story-orange" />
+      icon: <Sparkles className="h-5 w-5 text-story-orange" />
     },
     {
       title: "Captain Leo's Space Journey",
@@ -34,7 +34,7 @@ const StorySamples = () => {
       theme: "Space",
       language: "French",
       imageUrl: "https://img.freepik.com/free-vector/cute-astronaut-riding-rocket-cartoon-vector-icon-illustration-science-technology-icon-concept-isolated-premium-vector-flat-cartoon-style_138676-3669.jpg",
-      icon: <Star className="h-5 w-5 text-story-orange" />
+      icon: <Rocket className="h-5 w-5 text-story-orange" />
     },
     {
       title: "The Magical Garden",
@@ -42,7 +42,7 @@ const StorySamples = () => {
       theme: "Magic",
       language: "Spanish",
       imageUrl: "https://img.freepik.com/free-vector/hand-drawn-fairy-tale-background_52683-79363.jpg",
-      icon: <Flower className="h-5 w-5 text-story-orange" />
+      icon: <FlowerIcon className="h-5 w-5 text-story-orange" />
     }
   ];
 
