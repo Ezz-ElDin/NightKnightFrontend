@@ -17,28 +17,28 @@ const StorySamples = () => {
       excerpt: "Once upon a time, there was a friendly dragon named Spark who lived in a colourful cave. Spark had a collection of magical treasures that made children's dreams come true...",
       theme: "Adventure",
       language: "English",
-      imageUrl: "https://images.unsplash.com/photo-1500673922987-e212871fec22?w=800&auto=format&fit=crop"
+      imageUrl: "https://img.freepik.com/free-vector/hand-drawn-dragon-illustration_23-2149607158.jpg"
     },
     {
       title: "Luna and the Moon Kittens",
       excerpt: "Luna was getting ready for bed when she noticed something strange outside her window. Five fluffy kittens were dancing on a moonbeam! They waved to Luna and invited her to play...",
       theme: "Fantasy",
       language: "English",
-      imageUrl: "https://images.unsplash.com/photo-1470813740244-df37b8c1edcb?w=800&auto=format&fit=crop"
+      imageUrl: "https://img.freepik.com/free-vector/cute-cat-playing-yarn-ball-cartoon-vector-icon-illustration_138676-2588.jpg"
     },
     {
       title: "Captain Leo's Space Journey",
       excerpt: "Captain Leo and his trusty robot friend Beep were preparing for their biggest adventure yet. They were going to visit the Cookie Planet, where mountains were made of chocolate chips...",
       theme: "Space",
       language: "French",
-      imageUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop"
+      imageUrl: "https://img.freepik.com/free-vector/cute-astronaut-riding-rocket-cartoon-vector-icon-illustration-science-technology-icon-concept-isolated-premium-vector-flat-cartoon-style_138676-3669.jpg"
     },
     {
       title: "The Magical Garden",
       excerpt: "In Sophie's backyard was a tiny door that nobody else could see. When she opened it, she discovered a garden where flowers sang lullabies and friendly butterflies granted wishes...",
       theme: "Magic",
       language: "Spanish",
-      imageUrl: "https://images.unsplash.com/photo-1472396961693-142e6e269027?w=800&auto=format&fit=crop"
+      imageUrl: "https://img.freepik.com/free-vector/hand-drawn-fairy-tale-background_52683-79363.jpg"
     }
   ];
 
@@ -95,7 +95,7 @@ const StorySamples = () => {
                             alt={story.title} 
                             className="object-cover h-full w-full rounded-b-3xl md:rounded-l-none md:rounded-r-3xl"
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-b-3xl md:rounded-l-none md:rounded-r-3xl"></div>
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent rounded-b-3xl md:rounded-l-none md:rounded-r-3xl"></div>
                         </AspectRatio>
                       </div>
                     </div>
