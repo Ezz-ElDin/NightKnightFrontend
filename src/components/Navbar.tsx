@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Book, Menu, X, Star } from "lucide-react";
+import { Book, Menu, X, Star, Info, Sparkles } from "lucide-react";
 import { 
   NavigationMenu,
   NavigationMenuContent,
@@ -30,7 +30,7 @@ const Navbar = () => {
         </Link>
         
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-8">
+        <div className="hidden md:flex items-center space-x-6">
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
@@ -67,6 +67,7 @@ const Navbar = () => {
                 <HoverCard>
                   <HoverCardTrigger asChild>
                     <Link to="#" className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-story-lightPurple/50 hover:text-story-purple focus:bg-story-lightPurple/50 focus:text-story-purple focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-story-lightPurple/50 data-[state=open]:bg-story-lightPurple/50 text-story-purple">
+                      <Info className="mr-1.5 h-4 w-4" />
                       About Us
                     </Link>
                   </HoverCardTrigger>
@@ -86,13 +87,20 @@ const Navbar = () => {
           </NavigationMenu>
           
           <div className="flex items-center gap-3">
+            <Link to="/register">
+              <Button className="bg-story-purple hover:bg-story-purple/90 text-white gap-1.5">
+                <Sparkles className="h-4 w-4" />
+                Start Creating
+              </Button>
+            </Link>
+            <div className="h-6 w-px bg-story-lightPurple/50"></div>
             <Link to="/login">
-              <Button variant="outline" className="border-story-blue text-story-blue hover:bg-story-blue/10">
+              <Button variant="ghost" className="text-story-blue hover:bg-story-blue/10">
                 Log In
               </Button>
             </Link>
             <Link to="/register">
-              <Button className="bg-story-purple hover:bg-story-purple/90 text-white">
+              <Button variant="outline" className="border-story-blue text-story-blue hover:bg-story-blue/10">
                 Sign Up
               </Button>
             </Link>
@@ -121,17 +129,24 @@ const Navbar = () => {
             <Link to="#pricing" className="px-3 py-2 rounded-xl hover:bg-story-lightPurple/50 text-story-purple font-medium" onClick={() => setMobileMenuOpen(false)}>
               Pricing
             </Link>
-            <Link to="#" className="px-3 py-2 rounded-xl hover:bg-story-lightPurple/50 text-story-purple font-medium" onClick={() => setMobileMenuOpen(false)}>
+            <Link to="#" className="px-3 py-2 rounded-xl hover:bg-story-lightPurple/50 text-story-purple font-medium flex items-center gap-1.5" onClick={() => setMobileMenuOpen(false)}>
+              <Info className="h-4 w-4" />
               About Us
             </Link>
             <div className="pt-2 flex flex-col space-y-3">
+              <Link to="/register" onClick={() => setMobileMenuOpen(false)}>
+                <Button className="w-full bg-story-purple hover:bg-story-purple/90 text-white gap-1.5">
+                  <Sparkles className="h-4 w-4" />
+                  Start Creating
+                </Button>
+              </Link>
               <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
-                <Button variant="outline" className="w-full border-story-blue text-story-blue hover:bg-story-blue/10">
+                <Button variant="ghost" className="w-full text-story-blue hover:bg-story-blue/10">
                   Log In
                 </Button>
               </Link>
               <Link to="/register" onClick={() => setMobileMenuOpen(false)}>
-                <Button className="w-full bg-story-purple hover:bg-story-purple/90 text-white">
+                <Button variant="outline" className="w-full border-story-blue text-story-blue hover:bg-story-blue/10">
                   Sign Up
                 </Button>
               </Link>
