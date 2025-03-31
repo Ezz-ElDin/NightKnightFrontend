@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Book, Moon, Star } from "lucide-react";
 import StoryBackground from "@/components/StoryBackground";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   return (
@@ -20,10 +21,12 @@ const Dashboard = () => {
             The story generator is coming soon! Check back later to create magical bedtime adventures.
           </p>
           <div className="flex justify-center">
-            <Button className="px-8 py-6 text-xl rounded-2xl bg-story-purple hover:bg-story-purple/90 text-white button-bounce">
-              <Star className="mr-2 h-5 w-5" />
-              <span>Create a Story</span>
-            </Button>
+            <Link to="/create-story">
+              <Button className="px-8 py-6 text-xl rounded-2xl bg-story-purple hover:bg-story-purple/90 text-white button-bounce">
+                <Star className="mr-2 h-5 w-5" />
+                <span>Create a Story</span>
+              </Button>
+            </Link>
           </div>
         </div>
         
