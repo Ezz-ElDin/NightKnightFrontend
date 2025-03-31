@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Book, Moon, Star } from "lucide-react";
+import { Book, Moon, Star, Settings } from "lucide-react";
 import StoryBackground from "@/components/StoryBackground";
 import { Link } from "react-router-dom";
 
@@ -47,14 +47,16 @@ const Dashboard = () => {
           <div className="card-kiddy">
             <div className="flex justify-center mb-4">
               <div className="bg-story-pink p-3 rounded-full">
-                <Star className="h-8 w-8 text-story-purple" />
+                <Settings className="h-8 w-8 text-story-purple" />
               </div>
             </div>
-            <h3 className="text-xl font-bold mb-3">Story Settings</h3>
-            <p className="mb-4">Customize your story preferences.</p>
-            <Button variant="outline" className="w-full bg-white border-2 border-story-blue text-story-blue hover:bg-story-blue/10 button-bounce">
-              Settings
-            </Button>
+            <h3 className="text-xl font-bold mb-3">Account Settings</h3>
+            <p className="mb-4">Manage your profile and parental controls.</p>
+            <Link to="/account-settings">
+              <Button variant="outline" className="w-full bg-white border-2 border-story-blue text-story-blue hover:bg-story-blue/10 button-bounce">
+                Settings
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

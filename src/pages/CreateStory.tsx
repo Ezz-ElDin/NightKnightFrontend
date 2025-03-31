@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import StorySettings from "@/components/story-generator/StorySettings";
 import VisualStyle from "@/components/story-generator/VisualStyle";
-import ParentalSettings from "@/components/story-generator/ParentalSettings";
 import StepIndicator from "@/components/story-generator/StepIndicator";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
@@ -21,22 +20,14 @@ const CreateStory = () => {
     pages: 10,
     language: "English",
     illustrationStyle: "",
-    parentalSettings: {
-      contentFilter: true,
-      wordsToAvoid: [],
-      avoidScaryScenes: true,
-      keepCheerful: true,
-      ensureInclusive: true,
-      overridePriority: false,
-    },
+    // Parent settings moved to account settings
   });
   const { toast } = useToast();
 
   const steps = [
     { id: 1, name: "Story Settings" },
     { id: 2, name: "Visual Style" },
-    { id: 3, name: "Parental Settings" },
-    { id: 4, name: "Generate" },
+    { id: 3, name: "Generate" },
   ];
 
   const updateStoryData = (data) => {
@@ -103,10 +94,6 @@ const CreateStory = () => {
           )}
           
           {currentStep === 3 && (
-            <ParentalSettings storyData={storyData} updateStoryData={updateStoryData} />
-          )}
-          
-          {currentStep === 4 && (
             <div className="text-center py-10">
               <h2 className="text-2xl font-bold mb-6">Ready to Generate Your Story!</h2>
               <p className="mb-8 text-lg">
@@ -134,7 +121,7 @@ const CreateStory = () => {
                 Back
               </Button>
             )}
-            {currentStep < 4 && (
+            {currentStep < 3 && (
               <Button 
                 onClick={handleNext} 
                 className="ml-auto button-bounce"
