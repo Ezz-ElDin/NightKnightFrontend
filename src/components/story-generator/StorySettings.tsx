@@ -17,8 +17,9 @@ import {
   Dialog, 
   DialogContent, 
   DialogHeader, 
-  DialogTitle, Tooltip, TooltipContent, TooltipTrigger 
-} from "@radix-ui/react-dialog";
+  DialogTitle 
+} from "@/components/ui/dialog";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { BookOpen, Sparkles, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Checkbox } from "@/components/ui/checkbox";
