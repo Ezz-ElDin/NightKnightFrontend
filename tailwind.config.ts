@@ -54,14 +54,19 @@ export default {
 					foreground: 'hsl(var(--card-foreground))'
 				},
                 story: {
-                    purple: '#9b87f5',
-                    lightPurple: '#E5DEFF',
-                    blue: '#0EA5E9',
-                    yellow: '#FEF7CD',
-                    pink: '#FFDEE2',
-                    green: '#F2FCE2',
-                    orange: '#FEC6A1',
-                    peach: '#FDE1D3',
+                    // Updated Ghibli-inspired color palette
+                    purple: '#6A75B3',     // Softer blue-purple (sky color)
+                    lightPurple: '#D4DCFF', // Light sky blue
+                    blue: '#74B5BE',       // Ghibli water blue
+                    yellow: '#FEF2C8',     // Soft yellow (like Totoro's cream)
+                    pink: '#F5CDC9',       // Soft pink (like cherry blossoms)
+                    green: '#A3D3AA',      // Soft grass green (Ghibli meadows)
+                    orange: '#F5A666',     // Warm sunset orange
+                    peach: '#F8DBC9',      // Soft peach (natural tone)
+                    brown: '#8A6642',      // Earth brown (forest tones)
+                    teal: '#60A9B0',       // Teal (water elements)
+                    seafoam: '#B2E0DC',    // Light teal (ocean foam)
+                    forest: '#446644',     // Deep forest green
                 },
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
@@ -107,6 +112,15 @@ export default {
                 'bounce-slow': {
                     '0%, 100%': { transform: 'translateY(0)' },
                     '50%': { transform: 'translateY(-15px)' }
+                },
+                'leaf-sway': {
+                    '0%, 100%': { transform: 'rotate(-5deg) translateY(0)' },
+                    '50%': { transform: 'rotate(5deg) translateY(-5px)' }
+                },
+                'dust-float': {
+                    '0%': { transform: 'translateY(0) translateX(0)', opacity: '0.4' },
+                    '50%': { transform: 'translateY(-15px) translateX(5px)', opacity: '0.7' },
+                    '100%': { transform: 'translateY(-5px) translateX(10px)', opacity: '0.4' }
                 }
 			},
 			animation: {
@@ -114,7 +128,9 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out',
                 'float': 'float 6s ease-in-out infinite',
                 'wiggle': 'wiggle 2s ease-in-out infinite',
-                'bounce-slow': 'bounce-slow 4s ease-in-out infinite'
+                'bounce-slow': 'bounce-slow 4s ease-in-out infinite',
+                'leaf-sway': 'leaf-sway 8s ease-in-out infinite',
+                'dust-float': 'dust-float 10s ease-in-out infinite'
 			}
 		}
 	},
