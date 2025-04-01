@@ -17,7 +17,7 @@ const StorySamples = () => {
       excerpt: "Once upon a time, there was a friendly green dragon named Spark who lived in a colorful mountain cave. Spark collected magical treasures that brought joy to the children in the nearby village...",
       theme: "Adventure",
       language: "English",
-      imageUrl: "/images/dragon-treasure.jpg", // Updated to use local path
+      imageUrl: "/images/dragon-treasure.png", // Updated to use PNG extension
       icon: <BookOpen className="h-5 w-5 text-story-orange" />
     },
     {
@@ -25,7 +25,7 @@ const StorySamples = () => {
       excerpt: "Luna se préparait à se coucher quand elle remarqua quelque chose de magique - cinq chatons moelleux jouant avec une pelote de laine sur son rebord de fenêtre! Ils brillaient au clair de lune et invitèrent Luna à rejoindre leurs aventures nocturnes...",
       theme: "Fantaisie",
       language: "Français",
-      imageUrl: "/images/moon-kittens.jpg", // Updated to use local path
+      imageUrl: "/images/moon-kittens.png", // Updated to use PNG extension
       icon: <Sparkles className="h-5 w-5 text-story-orange" />
     },
     {
@@ -33,7 +33,7 @@ const StorySamples = () => {
       excerpt: "Kapitän Leo und sein treuer Roboterfreund Beep bereiteten sich auf ihr bisher größtes Abenteuer vor. Sie bestiegen ihr Raumschiff, um die Sterne zu erforschen und neue Planeten jenseits unserer Galaxie zu entdecken...",
       theme: "Weltraum",
       language: "Deutsch",
-      imageUrl: "/images/space-journey.jpg", // Updated to use local path
+      imageUrl: "/images/space-journey.png", // Updated to use PNG extension
       icon: <Rocket className="h-5 w-5 text-story-orange" />
     },
     {
@@ -41,7 +41,7 @@ const StorySamples = () => {
       excerpt: "En el patio trasero de Sophie había una pequeña puerta que conducía a un jardín encantado. Flores hermosas florecían en todos los colores, mariposas con alas brillantes revoloteaban, y pequeñas hadas cuidaban de las plantas mágicas...",
       theme: "Magia",
       language: "Español",
-      imageUrl: "/images/magic-garden.jpg", // Updated to use local path
+      imageUrl: "/images/magic-garden.png", // Updated to use PNG extension
       icon: <FlowerIcon className="h-5 w-5 text-story-orange" />
     }
   ];
