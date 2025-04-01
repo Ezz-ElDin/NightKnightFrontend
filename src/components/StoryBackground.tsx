@@ -1,5 +1,5 @@
 
-import { Book, Moon, Star, CloudMoon, Leaf, Bird, Cloud, Tree, Sun, Mountain } from 'lucide-react';
+import { Book, Moon, Star, CloudMoon, Leaf, Bird, Cloud, PalmTree, Sun, Mountain } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 interface StoryBackgroundProps {
@@ -55,7 +55,7 @@ const StoryBackground: React.FC<StoryBackgroundProps> = ({ children }) => {
         <Leaf size={40} />
       </div>
       <div className="absolute bottom-1/4 left-[5%] text-story-forest opacity-60 animate-leaf-sway">
-        <Tree size={45} />
+        <PalmTree size={45} />
       </div>
       <div className="absolute top-1/5 left-[25%] text-story-blue opacity-40 animate-float">
         <CloudMoon size={38} />
