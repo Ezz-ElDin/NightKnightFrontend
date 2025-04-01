@@ -21,7 +21,7 @@ const StorySamples = () => {
       excerpt: "Once upon a time, there was a friendly green dragon named Spark who lived in a colorful mountain cave. Spark collected magical treasures that brought joy to the children in the nearby village...",
       theme: "Adventure",
       language: "English",
-      imageUrl: "/images/dragon-treasure.png",
+      imageUrl: "https://images.unsplash.com/photo-1590005354167-6da97870c757?q=80&w=500&auto=format&fit=crop",
       icon: <BookOpen className="h-5 w-5 text-story-orange" />
     },
     {
@@ -29,7 +29,7 @@ const StorySamples = () => {
       excerpt: "Luna se préparait à se coucher quand elle remarqua quelque chose de magique - cinq chatons moelleux jouant avec une pelote de laine sur son rebord de fenêtre! Ils brillaient au clair de lune et invitèrent Luna à rejoindre leurs aventures nocturnes...",
       theme: "Fantaisie",
       language: "Français",
-      imageUrl: "/images/moon-kittens.png",
+      imageUrl: "https://images.unsplash.com/photo-1548802673-380ab8ebc7b7?q=80&w=500&auto=format&fit=crop",
       icon: <Sparkles className="h-5 w-5 text-story-orange" />
     },
     {
@@ -37,7 +37,7 @@ const StorySamples = () => {
       excerpt: "Kapitän Leo und sein treuer Roboterfreund Beep bereiteten sich auf ihr bisher größtes Abenteuer vor. Sie bestiegen ihr Raumschiff, um die Sterne zu erforschen und neue Planeten jenseits unserer Galaxie zu entdecken...",
       theme: "Weltraum",
       language: "Deutsch",
-      imageUrl: "/images/space-journey.png",
+      imageUrl: "https://images.unsplash.com/photo-1614732414444-096e5f1122d5?q=80&w=500&auto=format&fit=crop",
       icon: <Rocket className="h-5 w-5 text-story-orange" />
     },
     {
@@ -45,7 +45,7 @@ const StorySamples = () => {
       excerpt: "En el patio trasero de Sophie había una pequeña puerta que conducía a un jardín encantado. Flores hermosas florecían en todos los colores, mariposas con alas brillantes revoloteaban, y pequeñas hadas cuidaban de las plantas mágicas...",
       theme: "Magia",
       language: "Español",
-      imageUrl: "/images/magic-garden.png",
+      imageUrl: "https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?q=80&w=500&auto=format&fit=crop",
       icon: <FlowerIcon className="h-5 w-5 text-story-orange" />
     }
   ];
@@ -110,7 +110,7 @@ const StorySamples = () => {
                             <div className="flex flex-col items-center justify-center h-full bg-story-lightPurple/10 rounded-b-3xl md:rounded-l-none md:rounded-r-3xl">
                               <ImageIcon className="h-16 w-16 text-story-purple/50 mb-2" />
                               <p className="text-sm text-story-purple/70">Image not available</p>
-                              <p className="text-xs text-story-purple/60 mt-1">Upload to: {story.imageUrl}</p>
+                              <p className="text-xs text-story-purple/60 mt-1">Placeholder image failed to load</p>
                             </div>
                           ) : (
                             <img 
