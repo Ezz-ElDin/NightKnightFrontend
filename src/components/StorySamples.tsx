@@ -7,14 +7,10 @@ import {
   CarouselPrevious
 } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
-import { BookOpen, Star, Globe, Sparkles, Rocket, FlowerIcon, ImageIcon } from "lucide-react";
+import { BookOpen, Star, Globe, Sparkles, Rocket, FlowerIcon } from "lucide-react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { useState } from "react";
 
 const StorySamples = () => {
-  // State to track which images have failed to load
-  const [failedImages, setFailedImages] = useState<{[key: string]: boolean}>({});
-
   const stories = [
     {
       title: "The Dragon's Treasure",
@@ -52,11 +48,6 @@ const StorySamples = () => {
 
   // Add console logs to debug image loading
   console.log("Image paths:", stories.map(story => story.imageUrl));
-
-  const handleImageError = (imageUrl: string) => {
-    console.error(`Error loading image: ${imageUrl}`);
-    setFailedImages(prev => ({...prev, [imageUrl]: true}));
-  };
 
   return (
     <section className="py-16 px-4 bg-story-lightPurple/30" id="samples">
@@ -106,20 +97,15 @@ const StorySamples = () => {
                       {/* Right side - Image */}
                       <div className="w-full md:w-1/2 bg-white relative">
                         <AspectRatio ratio={3/4} className="h-full">
-                          {failedImages[story.imageUrl] ? (
-                            <div className="flex flex-col items-center justify-center h-full bg-story-lightPurple/10 rounded-b-3xl md:rounded-l-none md:rounded-r-3xl">
-                              <ImageIcon className="h-16 w-16 text-story-purple/50 mb-2" />
-                              <p className="text-sm text-story-purple/70">Image not available</p>
-                              <p className="text-xs text-story-purple/60 mt-1">Upload to: {story.imageUrl}</p>
-                            </div>
-                          ) : (
-                            <img 
-                              src={story.imageUrl} 
-                              alt={story.title} 
-                              className="object-cover h-full w-full rounded-b-3xl md:rounded-l-none md:rounded-r-3xl"
-                              onError={() => handleImageError(story.imageUrl)}
-                            />
-                          )}
+                          <img 
+                            src={story.imageUrl} 
+                            alt={story.title} 
+                            className="object-cover h-full w-full rounded-b-3xl md:rounded-l-none md:rounded-r-3xl"
+                            onError={(e) => {
+                              console.error(`Error loading image: ${story.imageUrl}`);
+                              e.currentTarget.src = "/placeholder.svg";
+                            }}
+                          />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent rounded-b-3xl md:rounded-l-none md:rounded-r-3xl"></div>
                         </AspectRatio>
                       </div>
