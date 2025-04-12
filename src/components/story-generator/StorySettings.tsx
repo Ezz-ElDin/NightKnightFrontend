@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -47,12 +46,12 @@ const GENRES = [
 ];
 
 const TONES = [
-  { id: "friendly", name: "Friendly", icon: "😊", color: "#a2f7b5", textColor: "#3a8c5b", image: null },
-  { id: "playful", name: "Playful", icon: "😄", color: "#ffda99", textColor: "#8c6f3a", image: null },
-  { id: "educational", name: "Educational", icon: "📚", color: "#cafffa", textColor: "#3a8c84", image: null },
-  { id: "inspirational", name: "Inspirational", icon: "🌟", color: "#fff099", textColor: "#8c7e3a", image: null },
-  { id: "soothing", name: "Soothing", icon: "😴", color: "#b3d9ff", textColor: "#3a5e8c", image: null },
-  { id: "silly", name: "Silly", icon: "🤪", color: "#ffb3fc", textColor: "#8c3a8a", image: null },
+  { id: "friendly", name: "Friendly", icon: "😊", color: "#a2f7b5", textColor: "#3a8c5b", image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png" },
+  { id: "playful", name: "Playful", icon: "😄", color: "#ffda99", textColor: "#8c6f3a", image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png" },
+  { id: "educational", name: "Educational", icon: "🧠", color: "#cafffa", textColor: "#3a8c84", image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png" },
+  { id: "inspirational", name: "Inspirational", icon: "⭐", color: "#fff099", textColor: "#8c7e3a", image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png" },
+  { id: "soothing", name: "Soothing", icon: "😴", color: "#b3d9ff", textColor: "#3a5e8c", image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png" },
+  { id: "silly", name: "Silly", icon: "🤪", color: "#ffb3fc", textColor: "#8c3a8a", image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png" },
 ];
 
 const PERSONALITY_TRAITS = [
@@ -133,29 +132,27 @@ const StorySettings: React.FC<StorySettingsProps> = ({ storyData, updateStoryDat
     });
   };
 
-  // Get the appropriate icon for a genre
   const getGenreIcon = (genreId: string) => {
     switch(genreId) {
-      case "adventure": return <Map className="h-10 w-10" />;
-      case "fantasy": return <Sparkles className="h-10 w-10" />;
-      case "mystery": return <BookText className="h-10 w-10" />;
-      case "friendship": return <SmilePlus className="h-10 w-10" />;
-      case "animals": return <span className="text-4xl">🐾</span>;
-      case "magic": return <Sparkles className="h-10 w-10" />;
-      default: return <BookOpen className="h-10 w-10" />;
+      case "adventure": return <Map className="h-14 w-14" />;
+      case "fantasy": return <Sparkles className="h-14 w-14" />;
+      case "mystery": return <BookText className="h-14 w-14" />;
+      case "friendship": return <SmilePlus className="h-14 w-14" />;
+      case "animals": return <span className="text-6xl">🐾</span>;
+      case "magic": return <Sparkles className="h-14 w-14" />;
+      default: return <BookOpen className="h-14 w-14" />;
     }
   };
 
-  // Get the appropriate icon for a tone
   const getToneIcon = (toneId: string) => {
     switch(toneId) {
-      case "friendly": return <SmilePlus className="h-10 w-10" />;
-      case "playful": return <span className="text-4xl">😄</span>;
-      case "educational": return <Brain className="h-10 w-10" />;
-      case "inspirational": return <Star className="h-10 w-10" />;
-      case "soothing": return <span className="text-4xl">😴</span>;
-      case "silly": return <span className="text-4xl">🤪</span>;
-      default: return <span className="text-4xl">😊</span>;
+      case "friendly": return <span className="text-6xl">😊</span>;
+      case "playful": return <span className="text-6xl">😄</span>;
+      case "educational": return <Brain className="h-14 w-14" />;
+      case "inspirational": return <Star className="h-14 w-14" />;
+      case "soothing": return <span className="text-6xl">😴</span>;
+      case "silly": return <span className="text-6xl">🤪</span>;
+      default: return <span className="text-6xl">😊</span>;
     }
   };
 
@@ -166,7 +163,6 @@ const StorySettings: React.FC<StorySettingsProps> = ({ storyData, updateStoryDat
         Story Settings
       </h2>
 
-      {/* Title Input */}
       <div className="space-y-3">
         <Label htmlFor="title">Story Title (Optional)</Label>
         <Input
@@ -181,7 +177,6 @@ const StorySettings: React.FC<StorySettingsProps> = ({ storyData, updateStoryDat
         </p>
       </div>
       
-      {/* Genre Selector */}
       <div className="space-y-3">
         <Label>Genre</Label>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -212,7 +207,6 @@ const StorySettings: React.FC<StorySettingsProps> = ({ storyData, updateStoryDat
         </div>
       </div>
       
-      {/* Tone Selector */}
       <div className="space-y-3">
         <Label>Tone</Label>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -220,7 +214,7 @@ const StorySettings: React.FC<StorySettingsProps> = ({ storyData, updateStoryDat
             <div
               key={tone.id}
               className={cn(
-                "p-4 rounded-xl cursor-pointer transition-all hover:scale-105 transform duration-200 flex flex-col items-center text-center aspect-[4/3] shadow-md border-2",
+                "p-6 rounded-xl cursor-pointer transition-all hover:scale-105 transform duration-200 flex flex-col items-center justify-center text-center aspect-[4/3] shadow-lg border-2",
                 storyData.tone === tone.id
                   ? "border-primary bg-primary/10 ring-4 ring-primary/30"
                   : `border-${tone.color}/50 hover:border-${tone.color}`
@@ -232,10 +226,10 @@ const StorySettings: React.FC<StorySettingsProps> = ({ storyData, updateStoryDat
                 borderColor: storyData.tone === tone.id ? "#7E69AB" : tone.color,
               }}
             >
-              <div className="mb-3">
+              <div className="mb-6 transform hover:scale-110 transition-transform duration-300">
                 {getToneIcon(tone.id)}
               </div>
-              <div className="font-bold text-lg mt-auto">
+              <div className="font-bold text-xl mt-auto">
                 {tone.name}
               </div>
             </div>
@@ -243,7 +237,6 @@ const StorySettings: React.FC<StorySettingsProps> = ({ storyData, updateStoryDat
         </div>
       </div>
       
-      {/* Age Range Selector */}
       <div className="space-y-3">
         <Label htmlFor="ageRange">Age Range</Label>
         <Select
@@ -266,7 +259,6 @@ const StorySettings: React.FC<StorySettingsProps> = ({ storyData, updateStoryDat
         </Select>
       </div>
       
-      {/* Moral/Theme Input */}
       <div className="space-y-3">
         <Label htmlFor="moral">Moral or Theme (Optional)</Label>
         <Input
@@ -281,7 +273,6 @@ const StorySettings: React.FC<StorySettingsProps> = ({ storyData, updateStoryDat
         </p>
       </div>
       
-      {/* Character Input */}
       <div className="space-y-3">
         <div className="flex justify-between items-center">
           <Label>Characters</Label>
@@ -397,7 +388,6 @@ const StorySettings: React.FC<StorySettingsProps> = ({ storyData, updateStoryDat
         </Dialog>
       </div>
       
-      {/* Number of Pages */}
       <div className="space-y-3">
         <div className="flex justify-between">
           <Label htmlFor="pages">Number of Pages</Label>
@@ -417,7 +407,6 @@ const StorySettings: React.FC<StorySettingsProps> = ({ storyData, updateStoryDat
         </div>
       </div>
       
-      {/* Language Selector */}
       <div className="space-y-3">
         <Label htmlFor="language">Language</Label>
         <Select
