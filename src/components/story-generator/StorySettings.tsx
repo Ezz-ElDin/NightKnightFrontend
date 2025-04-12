@@ -20,7 +20,7 @@ import {
   DialogTitle 
 } from "@/components/ui/dialog";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { BookOpen, Sparkles, Star } from "lucide-react";
+import { BookOpen, Sparkles, Star, BookText, Map, History, Palette, Music, Languages, SmilePlus, Dumbbell, Brain, Utensils } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Checkbox } from "@/components/ui/checkbox";
 
@@ -38,21 +38,21 @@ interface StorySettingsProps {
 }
 
 const GENRES = [
-  { id: "adventure", name: "Adventure", icon: "🏞️" },
-  { id: "fantasy", name: "Fantasy", icon: "🧙‍♂️" },
-  { id: "mystery", name: "Mystery", icon: "🔍" },
-  { id: "friendship", name: "Friendship", icon: "👭" },
-  { id: "animals", name: "Animals", icon: "🐾" },
-  { id: "magic", name: "Magic", icon: "✨" },
+  { id: "adventure", name: "Adventure", icon: "🏞️", color: "#a2f7b5", textColor: "#3a8c5b", image: "/lovable-uploads/51f1dc72-25cc-48e4-988f-64eed7e2d51e.png" },
+  { id: "fantasy", name: "Fantasy", icon: "🧙‍♂️", color: "#b3e0ff", textColor: "#3a5e8c", image: null },
+  { id: "mystery", name: "Mystery", icon: "🔍", color: "#d9b3ff", textColor: "#673a8c", image: null },
+  { id: "friendship", name: "Friendship", icon: "👭", color: "#ffb3d9", textColor: "#8c3a67", image: null },
+  { id: "animals", name: "Animals", icon: "🐾", color: "#f7e8a2", textColor: "#8c6f3a", image: null },
+  { id: "magic", name: "Magic", icon: "✨", color: "#ffccff", textColor: "#8c3a8c", image: null },
 ];
 
 const TONES = [
-  { id: "friendly", name: "Friendly", icon: "😊" },
-  { id: "playful", name: "Playful", icon: "😄" },
-  { id: "educational", name: "Educational", icon: "📚" },
-  { id: "inspirational", name: "Inspirational", icon: "🌟" },
-  { id: "soothing", name: "Soothing", icon: "😴" },
-  { id: "silly", name: "Silly", icon: "🤪" },
+  { id: "friendly", name: "Friendly", icon: "😊", color: "#a2f7b5", textColor: "#3a8c5b", image: null },
+  { id: "playful", name: "Playful", icon: "😄", color: "#ffda99", textColor: "#8c6f3a", image: null },
+  { id: "educational", name: "Educational", icon: "📚", color: "#cafffa", textColor: "#3a8c84", image: null },
+  { id: "inspirational", name: "Inspirational", icon: "🌟", color: "#fff099", textColor: "#8c7e3a", image: null },
+  { id: "soothing", name: "Soothing", icon: "😴", color: "#b3d9ff", textColor: "#3a5e8c", image: null },
+  { id: "silly", name: "Silly", icon: "🤪", color: "#ffb3fc", textColor: "#8c3a8a", image: null },
 ];
 
 const PERSONALITY_TRAITS = [
@@ -133,6 +133,32 @@ const StorySettings: React.FC<StorySettingsProps> = ({ storyData, updateStoryDat
     });
   };
 
+  // Get the appropriate icon for a genre
+  const getGenreIcon = (genreId: string) => {
+    switch(genreId) {
+      case "adventure": return <Map className="h-10 w-10" />;
+      case "fantasy": return <Sparkles className="h-10 w-10" />;
+      case "mystery": return <BookText className="h-10 w-10" />;
+      case "friendship": return <SmilePlus className="h-10 w-10" />;
+      case "animals": return <span className="text-4xl">🐾</span>;
+      case "magic": return <Sparkles className="h-10 w-10" />;
+      default: return <BookOpen className="h-10 w-10" />;
+    }
+  };
+
+  // Get the appropriate icon for a tone
+  const getToneIcon = (toneId: string) => {
+    switch(toneId) {
+      case "friendly": return <SmilePlus className="h-10 w-10" />;
+      case "playful": return <span className="text-4xl">😄</span>;
+      case "educational": return <Brain className="h-10 w-10" />;
+      case "inspirational": return <Star className="h-10 w-10" />;
+      case "soothing": return <span className="text-4xl">😴</span>;
+      case "silly": return <span className="text-4xl">🤪</span>;
+      default: return <span className="text-4xl">😊</span>;
+    }
+  };
+
   return (
     <div className="space-y-8">
       <h2 className="text-2xl font-bold text-primary mb-6 flex items-center gap-2">
@@ -158,20 +184,29 @@ const StorySettings: React.FC<StorySettingsProps> = ({ storyData, updateStoryDat
       {/* Genre Selector */}
       <div className="space-y-3">
         <Label>Genre</Label>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {GENRES.map((genre) => (
             <div
               key={genre.id}
               className={cn(
-                "p-4 border-2 rounded-xl cursor-pointer transition-all hover-scale",
+                "p-4 rounded-xl cursor-pointer transition-all hover:scale-105 transform duration-200 flex flex-col items-center text-center aspect-[4/3] shadow-md border-2",
                 storyData.genre === genre.id
-                  ? "border-primary bg-primary/10"
-                  : "border-border hover:border-primary/50"
+                  ? "border-primary bg-primary/10 ring-4 ring-primary/30"
+                  : `border-${genre.color}/50 hover:border-${genre.color}`
               )}
               onClick={() => handleGenreSelect(genre.id)}
+              style={{
+                backgroundColor: genre.color,
+                color: genre.textColor,
+                borderColor: storyData.genre === genre.id ? "#7E69AB" : genre.color,
+              }}
             >
-              <div className="text-3xl mb-2">{genre.icon}</div>
-              <div className="font-medium">{genre.name}</div>
+              <div className="mb-3">
+                {getGenreIcon(genre.id)}
+              </div>
+              <div className="font-bold text-lg mt-auto">
+                {genre.name}
+              </div>
             </div>
           ))}
         </div>
@@ -180,20 +215,29 @@ const StorySettings: React.FC<StorySettingsProps> = ({ storyData, updateStoryDat
       {/* Tone Selector */}
       <div className="space-y-3">
         <Label>Tone</Label>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {TONES.map((tone) => (
             <div
               key={tone.id}
               className={cn(
-                "p-4 border-2 rounded-xl cursor-pointer transition-all hover-scale flex flex-col items-center",
+                "p-4 rounded-xl cursor-pointer transition-all hover:scale-105 transform duration-200 flex flex-col items-center text-center aspect-[4/3] shadow-md border-2",
                 storyData.tone === tone.id
-                  ? "border-primary bg-primary/10"
-                  : "border-border hover:border-primary/50"
+                  ? "border-primary bg-primary/10 ring-4 ring-primary/30"
+                  : `border-${tone.color}/50 hover:border-${tone.color}`
               )}
               onClick={() => handleToneSelect(tone.id)}
+              style={{
+                backgroundColor: tone.color,
+                color: tone.textColor,
+                borderColor: storyData.tone === tone.id ? "#7E69AB" : tone.color,
+              }}
             >
-              <div className="text-3xl mb-2">{tone.icon}</div>
-              <div className="font-medium">{tone.name}</div>
+              <div className="mb-3">
+                {getToneIcon(tone.id)}
+              </div>
+              <div className="font-bold text-lg mt-auto">
+                {tone.name}
+              </div>
             </div>
           ))}
         </div>
