@@ -19,7 +19,7 @@ import {
   DialogTitle 
 } from "@/components/ui/dialog";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { BookOpen, Sparkles, Star, BookText, Map, History, Palette, Music, Languages, SmilePlus, Dumbbell, Brain, Utensils } from "lucide-react";
+import { BookOpen, Sparkles, Star, BookText, Map, History, Palette, Music, Languages, SmilePlus, Dumbbell, Brain, Utensils, Heart, Laugh, PartyPopper } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Checkbox } from "@/components/ui/checkbox";
 
@@ -46,7 +46,7 @@ const GENRES = [
 ];
 
 const TONES = [
-  { id: "friendly", name: "Friendly", icon: "😊", color: "#a2f7b5", textColor: "#3a8c5b", image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png" },
+  { id: "friendly", name: "Friendly", icon: "🙂", color: "#a2f7b5", textColor: "#3a8c5b", image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png" },
   { id: "playful", name: "Playful", icon: "😄", color: "#ffda99", textColor: "#8c6f3a", image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png" },
   { id: "educational", name: "Educational", icon: "🧠", color: "#cafffa", textColor: "#3a8c84", image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png" },
   { id: "inspirational", name: "Inspirational", icon: "⭐", color: "#fff099", textColor: "#8c7e3a", image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png" },
@@ -146,13 +146,13 @@ const StorySettings: React.FC<StorySettingsProps> = ({ storyData, updateStoryDat
 
   const getToneIcon = (toneId: string) => {
     switch(toneId) {
-      case "friendly": return <span className="text-6xl">😊</span>;
-      case "playful": return <span className="text-6xl">😄</span>;
+      case "friendly": return <Heart className="h-14 w-14" />;
+      case "playful": return <PartyPopper className="h-14 w-14" />;
       case "educational": return <Brain className="h-14 w-14" />;
       case "inspirational": return <Star className="h-14 w-14" />;
-      case "soothing": return <span className="text-6xl">😴</span>;
-      case "silly": return <span className="text-6xl">🤪</span>;
-      default: return <span className="text-6xl">😊</span>;
+      case "soothing": return <History className="h-14 w-14" />;
+      case "silly": return <Laugh className="h-14 w-14" />;
+      default: return <SmilePlus className="h-14 w-14" />;
     }
   };
 
