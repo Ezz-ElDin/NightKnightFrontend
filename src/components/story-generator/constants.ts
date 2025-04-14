@@ -1,12 +1,11 @@
-
-// Genre options
-export const GENRES = [
-  { id: "adventure", name: "Adventure", icon: "🏞️", color: "#a2f7b5", textColor: "#3a8c5b", image: "/lovable-uploads/51f1dc72-25cc-48e4-988f-64eed7e2d51e.png" },
-  { id: "fantasy", name: "Fantasy", icon: "🧙‍♂️", color: "#b3e0ff", textColor: "#3a5e8c", image: null },
-  { id: "mystery", name: "Mystery", icon: "🔍", color: "#d9b3ff", textColor: "#673a8c", image: null },
-  { id: "friendship", name: "Friendship", icon: "👭", color: "#ffb3d9", textColor: "#8c3a67", image: null },
-  { id: "animals", name: "Animals", icon: "🐾", color: "#f7e8a2", textColor: "#8c6f3a", image: null },
-  { id: "magic", name: "Magic", icon: "✨", color: "#ffccff", textColor: "#8c3a8c", image: null },
+// Theme options
+export const THEMES = [
+  { id: "fantasy", name: "Fantasy Worlds", description: "Enchanted forests, magical kingdoms, castles, fairies, dragons, etc.", subdescription: "Kids love escaping into places where the impossible becomes possible.", color: "#b3e0ff", textColor: "#3a5e8c", image: null },
+  { id: "animals", name: "Animal Adventures", description: "Talking animals, jungle journeys, farmyard fun, or wild creatures on a quest.", subdescription: "Familiar and endearing, animals let kids project emotions and behavior in a fun way.", color: "#f7e8a2", textColor: "#8c6f3a", image: null },
+  { id: "space", name: "Space & Science Fiction", description: "Rocket ships, aliens, distant planets, or robot friends.", subdescription: "These stories tap into curiosity and wonder about the universe.", color: "#d9b3ff", textColor: "#673a8c", image: null },
+  { id: "daily", name: "Daily Life & Routine", description: "Bath time, brushing teeth, first day of school, bedtime rituals, family moments.", subdescription: "Comforting and relatable, especially for younger kids.", color: "#ffb3d9", textColor: "#8c3a67", image: null },
+  { id: "exploration", name: "Exploration & Travel", description: "Exploring forests, oceans, cities, or even imaginary lands.", subdescription: "Often includes maps, riddles, or clues—great for curiosity and problem-solving.", color: "#a2f7b5", textColor: "#3a8c5b", image: null },
+  { id: "whimsical", name: "Whimsical Imagination", description: "Objects that come to life, dreamscapes, imaginary friends, or nonsensical worlds.", subdescription: "Embraces creativity and surreal, playful storytelling.", color: "#ffccff", textColor: "#8c3a8c", image: null },
 ];
 
 // Tone options

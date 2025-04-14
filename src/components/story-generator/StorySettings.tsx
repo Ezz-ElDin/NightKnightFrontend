@@ -12,13 +12,13 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { BookOpen } from "lucide-react";
 import { StorySettingsProps, AGE_RANGES, LANGUAGES } from "./constants";
-import GenreSelector from "./GenreSelector";
+import ThemeSelector from "./ThemeSelector";
 import ToneSelector from "./ToneSelector";
 import CharacterManager from "./CharacterManager";
 
 const StorySettings: React.FC<StorySettingsProps> = ({ storyData, updateStoryData }) => {
-  const handleGenreSelect = (genreId: string) => {
-    updateStoryData({ genre: genreId });
+  const handleThemeSelect = (themeId: string) => {
+    updateStoryData({ genre: themeId });
   };
 
   const handleToneSelect = (toneId: string) => {
@@ -50,9 +50,9 @@ const StorySettings: React.FC<StorySettingsProps> = ({ storyData, updateStoryDat
         </p>
       </div>
       
-      <GenreSelector 
-        selectedGenre={storyData.genre} 
-        onSelectGenre={handleGenreSelect} 
+      <ThemeSelector 
+        selectedTheme={storyData.genre} 
+        onSelectTheme={handleThemeSelect} 
       />
       
       <ToneSelector 

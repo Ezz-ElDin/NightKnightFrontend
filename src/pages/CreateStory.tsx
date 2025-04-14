@@ -12,7 +12,7 @@ const CreateStory = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [storyData, setStoryData] = useState({
     title: "",
-    genre: "",
+    genre: "", // We keep using 'genre' in data structure for backwards compatibility
     tone: "",
     ageRange: "6-8",
     moral: "",
@@ -20,7 +20,6 @@ const CreateStory = () => {
     pages: 10,
     language: "English",
     illustrationStyle: "",
-    // Parent settings moved to account settings
   });
   const { toast } = useToast();
 
@@ -39,8 +38,8 @@ const CreateStory = () => {
       // Validate story settings
       if (!storyData.genre) {
         toast({
-          title: "Please select a genre",
-          description: "A genre is needed to create your story",
+          title: "Please select a theme",
+          description: "A theme is needed to create your story",
           variant: "destructive",
         });
         return;
