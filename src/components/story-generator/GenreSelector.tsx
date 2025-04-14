@@ -13,7 +13,7 @@ interface GenreSelectorProps {
 const GenreSelector: React.FC<GenreSelectorProps> = ({ selectedGenre, onSelectGenre }) => {
   return (
     <div className="space-y-3">
-      <Label>Genre</Label>
+      <Label>Theme</Label>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         {GENRES.map((genre) => (
           <div

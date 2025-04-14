@@ -1,3 +1,4 @@
+
 // Theme options
 export const THEMES = [
   { id: "fantasy", name: "Fantasy Worlds", description: "Enchanted forests, magical kingdoms, castles, fairies, dragons, etc.", subdescription: "Kids love escaping into places where the impossible becomes possible.", color: "#b3e0ff", textColor: "#3a5e8c", image: null },
@@ -7,6 +8,9 @@ export const THEMES = [
   { id: "exploration", name: "Exploration & Travel", description: "Exploring forests, oceans, cities, or even imaginary lands.", subdescription: "Often includes maps, riddles, or clues—great for curiosity and problem-solving.", color: "#a2f7b5", textColor: "#3a8c5b", image: null },
   { id: "whimsical", name: "Whimsical Imagination", description: "Objects that come to life, dreamscapes, imaginary friends, or nonsensical worlds.", subdescription: "Embraces creativity and surreal, playful storytelling.", color: "#ffccff", textColor: "#8c3a8c", image: null },
 ];
+
+// For backward compatibility, export THEMES as GENRES as well
+export const GENRES = THEMES;
 
 // Tone options
 export const TONES = [

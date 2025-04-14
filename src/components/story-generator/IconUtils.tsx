@@ -33,6 +33,12 @@ export const getThemeIcon = (themeId: string) => {
   }
 };
 
+// Adding the getGenreIcon function to match the one being imported in GenreSelector
+export const getGenreIcon = (genreId: string) => {
+  // This just redirects to the renamed function for backward compatibility
+  return getThemeIcon(genreId);
+};
+
 export const getToneIcon = (toneId: string) => {
   switch(toneId) {
     case "friendly": return <Heart className="h-14 w-14" />;
