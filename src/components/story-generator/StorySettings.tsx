@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -108,8 +107,8 @@ const StorySettings: React.FC<StorySettingsProps> = ({ storyData, updateStoryDat
         </div>
         <Slider
           id="pages"
-          min={5}
-          max={20}
+          min={10}
+          max={30}
           step={1}
           value={[storyData.pages]}
           onValueChange={(value) => updateStoryData({ pages: value[0] })}

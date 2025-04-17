@@ -1,4 +1,3 @@
-
 // Theme options
 export const THEMES = [
   { id: "fantasy", name: "Fantasy Worlds", description: "Enchanted forests, magical kingdoms, castles, fairies, dragons, etc.", subdescription: "Kids love escaping into places where the impossible becomes possible.", color: "#b3e0ff", textColor: "#3a5e8c", image: null },
@@ -45,6 +44,7 @@ export const LANGUAGES = [
   { id: "French", flag: "🇫🇷" },
   { id: "German", flag: "🇩🇪" },
   { id: "Chinese", flag: "🇨🇳" },
+  { id: "Arabic", flag: "🇸🇦" },
 ];
 
 // Character interface
