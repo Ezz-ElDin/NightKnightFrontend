@@ -44,7 +44,7 @@ export const LANGUAGES = [
   { id: "French", flag: "🇫🇷" },
   { id: "German", flag: "🇩🇪" },
   { id: "Chinese", flag: "🇨🇳" },
-  { id: "Arabic", flag: "🇸🇦" },
+  { id: "Arabic", flag: "🇪🇬" },
 ];
 
 // Character interface
