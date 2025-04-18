@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -7,6 +6,7 @@ import VisualStyle from "@/components/story-generator/VisualStyle";
 import StepIndicator from "@/components/story-generator/StepIndicator";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 const CreateStory = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -22,6 +22,7 @@ const CreateStory = () => {
     illustrationStyle: "",
   });
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const steps = [
     { id: 1, name: "Story Settings" },
@@ -72,8 +73,12 @@ const CreateStory = () => {
       title: "Story generation started!",
       description: "Your bedtime story is being created with magic ✨",
     });
-    // In a real app, we would send storyData to the backend
-    console.log("Generating story with data:", storyData);
+    
+    // In a real app, we would send storyData to the backend and wait for a response
+    // For now, we'll just simulate a generation delay and redirect to the viewer
+    setTimeout(() => {
+      navigate("/story-viewer", { state: { storyData } });
+    }, 2000);
   };
 
   return (
