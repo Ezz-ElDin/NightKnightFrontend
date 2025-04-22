@@ -11,6 +11,7 @@ interface StoryPageProps {
   pageId: string;
   rating: 'up' | 'down' | null;
   onRate: (pageId: string, rating: 'up' | 'down') => void;
+  isRtl?: boolean;
 }
 
 const StoryPage: React.FC<StoryPageProps> = ({
@@ -20,51 +21,67 @@ const StoryPage: React.FC<StoryPageProps> = ({
   totalPages,
   pageId,
   rating,
-  onRate
+  onRate,
+  isRtl = false
 }) => {
   return (
-    <div className="story-page ghibli-card p-8 min-h-[70vh] flex flex-col justify-between">
-      <div className="page-number text-center text-sm text-muted-foreground mb-2">
+    <div className="story-page ghibli-card p-8 min-h-[70vh] flex flex-col">
+      <div className="page-number text-center text-sm text-muted-foreground mb-4">
         Page {pageNumber} of {totalPages}
       </div>
       
-      <div className="flex-1 flex flex-col items-center justify-center gap-6">
+      <div className={cn(
+        "flex-1 flex items-stretch gap-8",
+        isRtl ? "flex-row-reverse" : "flex-row"
+      )}>
+        {/* Text Section */}
+        <div className={cn(
+          "flex-1 flex flex-col justify-center",
+          isRtl ? "text-right" : "text-left"
+        )}>
+          <p className="text-xl leading-relaxed font-ghibli">
+            {content}
+          </p>
+          
+          <div className={cn(
+            "flex mt-6 gap-6",
+            isRtl ? "justify-start" : "justify-end"
+          )}>
+            <button 
+              onClick={() => onRate(pageId, 'up')}
+              className={cn(
+                "rating-btn text-muted-foreground hover:text-primary transition-colors", 
+                rating === 'up' && "text-green-500 hover:text-green-600"
+              )}
+              aria-label="Like this page"
+            >
+              <ThumbsUp className="h-5 w-5" />
+            </button>
+            <button 
+              onClick={() => onRate(pageId, 'down')}
+              className={cn(
+                "rating-btn text-muted-foreground hover:text-primary transition-colors", 
+                rating === 'down' && "text-red-500 hover:text-red-600"
+              )}
+              aria-label="Dislike this page"
+            >
+              <ThumbsDown className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Image Section */}
         {image && (
-          <div className="w-full max-w-md mx-auto">
-            <img 
-              src={image} 
-              alt={`Illustration for page ${pageNumber}`}
-              className="rounded-xl shadow-md w-full object-cover aspect-[4/3]"
-            />
+          <div className="flex-1 flex items-center justify-center">
+            <div className="w-full max-w-md">
+              <img 
+                src={image} 
+                alt={`Illustration for page ${pageNumber}`}
+                className="rounded-xl shadow-md w-full object-cover aspect-[3/4]"
+              />
+            </div>
           </div>
         )}
-        
-        <p className="text-xl mt-4 text-center leading-relaxed font-ghibli">
-          {content}
-        </p>
-      </div>
-      
-      <div className="flex justify-center mt-6 gap-8">
-        <button 
-          onClick={() => onRate(pageId, 'up')}
-          className={cn(
-            "rating-btn text-muted-foreground hover:text-primary transition-colors", 
-            rating === 'up' && "text-green-500 hover:text-green-600"
-          )}
-          aria-label="Like this page"
-        >
-          <ThumbsUp className="h-5 w-5" />
-        </button>
-        <button 
-          onClick={() => onRate(pageId, 'down')}
-          className={cn(
-            "rating-btn text-muted-foreground hover:text-primary transition-colors", 
-            rating === 'down' && "text-red-500 hover:text-red-600"
-          )}
-          aria-label="Dislike this page"
-        >
-          <ThumbsDown className="h-5 w-5" />
-        </button>
       </div>
     </div>
   );
