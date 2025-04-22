@@ -126,6 +126,7 @@ const StoryViewer = () => {
                   pageId={page.id}
                   rating={pageRatings.find(pr => pr.pageId === page.id)?.rating || null}
                   onRate={handleRating}
+                  isRtl={isRtl}
                 />
               </CarouselItem>
             ))}
