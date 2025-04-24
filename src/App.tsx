@@ -13,6 +13,7 @@ import CreateStory from "./pages/CreateStory";
 import AccountSettings from "./pages/AccountSettings";
 import StoryViewer from "./pages/StoryViewer";
 import NotFound from "./pages/NotFound";
+import AuthCallback from "./pages/AuthCallback";
 
 const queryClient = new QueryClient();
 
@@ -31,7 +32,7 @@ const App = () => (
           <Route path="/create-story" element={<CreateStory />} />
           <Route path="/account-settings" element={<AccountSettings />} />
           <Route path="/story-viewer" element={<StoryViewer />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

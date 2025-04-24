@@ -1,11 +1,13 @@
 
 import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { CloudMoon, CloudSun, Stars } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { authApi, LoginData, RegisterData } from '@/lib/api';
 
 type AuthMode = 'login' | 'register';
 
@@ -13,65 +15,82 @@ const AuthForm = () => {
   const [mode, setMode] = useState<AuthMode>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState('');
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const toggleMode = () => {
-    setMode(mode === 'login' ? 'register' : 'login');
+  const handleSuccess = (token: string) => {
+    localStorage.setItem('authToken', token);
+    toast({
+      title: mode === 'login' ? 'Welcome back!' : 'Account created!',
+      description: mode === 'login' 
+        ? 'You have successfully logged in.' 
+        : 'Your account has been created successfully.',
+    });
+    navigate('/dashboard');
   };
+
+  const { mutate: login, isLoading: isLoginLoading } = useMutation({
+    mutationFn: (data: LoginData) => authApi.login(data),
+    onSuccess: (response) => handleSuccess(response.data.key),
+    onError: (error: any) => {
+      toast({
+        title: 'Error',
+        description: error.response?.data?.detail || 'Something went wrong. Please try again.',
+        variant: 'destructive',
+      });
+    },
+  });
+
+  const { mutate: register, isLoading: isRegisterLoading } = useMutation({
+    mutationFn: (data: RegisterData) => authApi.register(data),
+    onSuccess: (response) => handleSuccess(response.data.key),
+    onError: (error: any) => {
+      toast({
+        title: 'Error',
+        description: error.response?.data?.detail || 'Something went wrong. Please try again.',
+        variant: 'destructive',
+      });
+    },
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
 
-    try {
-      // Here we would normally connect to our Django backend
-      // For now, we'll simulate a successful login/registration
-      
-      setTimeout(() => {
-        toast({
-          title: mode === 'login' ? 'Welcome back!' : 'Account created!',
-          description: mode === 'login' 
-            ? 'You have successfully logged in.' 
-            : 'Your account has been created successfully.',
-          variant: 'default',
-        });
-        
-        // Navigate to the dashboard after successful auth
-        navigate('/dashboard');
-        setLoading(false);
-      }, 1500);
-      
-    } catch (error) {
+    if (mode === 'register' && password !== confirmPassword) {
       toast({
         title: 'Error',
-        description: 'Something went wrong. Please try again.',
+        description: 'Passwords do not match.',
         variant: 'destructive',
       });
-      setLoading(false);
+      return;
+    }
+
+    if (mode === 'login') {
+      login({ email, password });
+    } else {
+      register({ 
+        email, 
+        password1: password,
+        password2: confirmPassword 
+      });
     }
   };
   
   const handleGoogleSignup = () => {
-    setLoading(true);
-    
-    // Simulate Google auth
-    setTimeout(() => {
-      toast({
-        title: mode === 'login' ? 'Welcome back!' : 'Account created with Google!',
-        description: mode === 'login' 
-          ? 'You have successfully logged in with Google.' 
-          : 'Your account has been created successfully with Google.',
-        variant: 'default',
-      });
-      
-      // Navigate to the dashboard after successful auth
-      navigate('/dashboard');
-      setLoading(false);
-    }, 1500);
+    const width = 500;
+    const height = 600;
+    const left = window.innerWidth / 2 - width / 2;
+    const top = window.innerHeight / 2 - height / 2;
+
+    window.open(
+      'http://localhost:8000/accounts/google/login/?process=login',
+      'Google Sign In',
+      `width=${width},height=${height},left=${left},top=${top}`
+    );
   };
+
+  const loading = isLoginLoading || isRegisterLoading;
 
   return (
     <div className="w-full max-w-md">
@@ -89,21 +108,6 @@ const AuthForm = () => {
         </h2>
         
         <form onSubmit={handleSubmit} className="space-y-4">
-          {mode === 'register' && (
-            <div className="space-y-2">
-              <Label htmlFor="name" className="text-lg">Your Name</Label>
-              <Input
-                id="name"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="input-kiddy"
-                placeholder="Enter your name"
-                required
-              />
-            </div>
-          )}
-          
           <div className="space-y-2">
             <Label htmlFor="email" className="text-lg">Email</Label>
             <Input
@@ -129,6 +133,21 @@ const AuthForm = () => {
               required
             />
           </div>
+
+          {mode === 'register' && (
+            <div className="space-y-2">
+              <Label htmlFor="confirmPassword" className="text-lg">Confirm Password</Label>
+              <Input
+                id="confirmPassword"
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="input-kiddy"
+                placeholder="Confirm your password"
+                required
+              />
+            </div>
+          )}
           
           <Button 
             type="submit" 
@@ -173,7 +192,7 @@ const AuthForm = () => {
             {mode === 'login' ? "Don't have an account?" : "Already have an account?"}
             <button
               type="button"
-              onClick={toggleMode}
+              onClick={() => setMode(mode === 'login' ? 'register' : 'login')}
               className="ml-2 text-story-blue hover:underline font-semibold"
             >
               {mode === 'login' ? 'Sign up' : 'Log in'}
