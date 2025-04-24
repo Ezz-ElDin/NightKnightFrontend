@@ -30,7 +30,7 @@ const AuthForm = () => {
     navigate('/dashboard');
   };
 
-  const { mutate: login, isLoading: isLoginLoading } = useMutation({
+  const { mutate: login, isPending: isLoginPending } = useMutation({
     mutationFn: (data: LoginData) => authApi.login(data),
     onSuccess: (response) => handleSuccess(response.data.key),
     onError: (error: any) => {
@@ -42,7 +42,7 @@ const AuthForm = () => {
     },
   });
 
-  const { mutate: register, isLoading: isRegisterLoading } = useMutation({
+  const { mutate: register, isPending: isRegisterPending } = useMutation({
     mutationFn: (data: RegisterData) => authApi.register(data),
     onSuccess: (response) => handleSuccess(response.data.key),
     onError: (error: any) => {
@@ -90,7 +90,7 @@ const AuthForm = () => {
     );
   };
 
-  const loading = isLoginLoading || isRegisterLoading;
+  const loading = isLoginPending || isRegisterPending;
 
   return (
     <div className="w-full max-w-md">
