@@ -81,16 +81,7 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
   };
   
   const handleGoogleSignup = () => {
-    const width = 500;
-    const height = 600;
-    const left = window.innerWidth / 2 - width / 2;
-    const top = window.innerHeight / 2 - height / 2;
-
-    window.open(
-      'http://localhost:8000/accounts/google/login/?process=login',
-      'Google Sign In',
-      `width=${width},height=${height},left=${left},top=${top}`
-    );
+    window.location.href = 'http://localhost:8000/accounts/google/login/?process=login';
   };
 
   const loading = isLoginPending || isRegisterPending;
