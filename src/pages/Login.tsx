@@ -5,7 +5,7 @@ import StoryBackground from "@/components/StoryBackground";
 const Login = () => {
   return (
     <StoryBackground>
-      <AuthForm />
+      <AuthForm initialMode="login" />
     </StoryBackground>
   );
 };

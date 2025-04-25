@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
@@ -11,8 +10,12 @@ import { authApi, LoginData, RegisterData } from '@/lib/api';
 
 type AuthMode = 'login' | 'register';
 
-const AuthForm = () => {
-  const [mode, setMode] = useState<AuthMode>('login');
+interface AuthFormProps {
+  initialMode?: AuthMode;
+}
+
+const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
+  const [mode, setMode] = useState<AuthMode>(initialMode);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');

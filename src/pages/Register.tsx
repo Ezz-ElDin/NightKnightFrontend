@@ -5,7 +5,7 @@ import StoryBackground from "@/components/StoryBackground";
 const Register = () => {
   return (
     <StoryBackground>
-      <AuthForm />
+      <AuthForm initialMode="register" />
     </StoryBackground>
   );
 };
