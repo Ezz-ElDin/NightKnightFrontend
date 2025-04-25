@@ -81,7 +81,7 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
   };
   
   const handleGoogleSignup = () => {
-    window.location.href = 'http://localhost:8000/api/auth/social/google/';
+    window.location.href = 'http://localhost:8000/accounts/google/login/?process=login';
   };
 
   const loading = isLoginPending || isRegisterPending;
