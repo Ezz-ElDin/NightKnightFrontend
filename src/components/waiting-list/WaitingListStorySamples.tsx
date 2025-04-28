@@ -1,35 +1,76 @@
 
-import { Card } from "@/components/ui/card";
-import { Star, Sparkles, Rocket } from "lucide-react";
+import WaitingListStorySample from "./WaitingListStorySample";
 
 const WaitingListStorySamples = () => {
   const stories = [
     {
       title: "The Dragon's Treasure",
-      excerpt: "Once upon a time, there was a friendly green dragon named Spark who lived in a colorful mountain cave. Spark collected magical treasures that brought joy to the children in the nearby village...",
       theme: "Adventure",
       language: "English",
-      imageUrl: "/images/dragon-treasure.png",
-      bgColor: "from-story-yellow/40 to-story-orange/20",
-      icon: <Star className="h-8 w-8 text-story-orange fill-story-yellow" />
+      pages: [
+        {
+          id: "dragon-1",
+          content: "Once upon a time, there was a friendly green dragon named Spark who lived in a colorful mountain cave. Spark collected magical treasures that brought joy to the children in the nearby village...",
+          image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png"
+        },
+        {
+          id: "dragon-2",
+          content: "One day, Spark found a glowing crystal that made children's dreams come true. He decided to share this special treasure with the village...",
+          image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png"
+        },
+        {
+          id: "dragon-3",
+          content: "The children were overjoyed! From that day on, Spark became known as the Dream Keeper, bringing happiness to all...",
+          image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png"
+        }
+      ],
+      bgColor: "bg-gradient-to-br from-story-yellow/40 to-story-orange/20"
     },
     {
       title: "Les Chatons de la Lune",
-      excerpt: "Luna se préparait à se coucher quand elle remarqua quelque chose de magique - cinq chatons moelleux jouant avec une pelote de laine sur son rebord de fenêtre! Ils brillaient au clair de lune et invitèrent Luna à rejoindre leurs aventures nocturnes...",
       theme: "Fantaisie",
       language: "Français",
-      imageUrl: "/images/moon-kittens.png",
-      bgColor: "from-story-lightPurple/40 to-story-purple/20",
-      icon: <Sparkles className="h-8 w-8 text-story-purple" />
+      pages: [
+        {
+          id: "moon-1",
+          content: "Luna se préparait à se coucher quand elle remarqua quelque chose de magique - cinq chatons moelleux jouant avec une pelote de laine sur son rebord de fenêtre!",
+          image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png"
+        },
+        {
+          id: "moon-2",
+          content: "Les chatons brillaient au clair de lune et invitèrent Luna à rejoindre leurs aventures nocturnes dans le ciel étoilé...",
+          image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png"
+        },
+        {
+          id: "moon-3",
+          content: "Ensemble, ils dansèrent parmi les étoiles et créèrent des constellations magiques qui illuminent encore le ciel aujourd'hui...",
+          image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png"
+        }
+      ],
+      bgColor: "bg-gradient-to-br from-story-lightPurple/40 to-story-purple/20"
     },
     {
       title: "Kapitän Leos Weltraumreise",
-      excerpt: "Kapitän Leo und sein treuer Roboterfreund Beep bereiteten sich auf ihr bisher größtes Abenteuer vor. Sie bestiegen ihr Raumschiff, um die Sterne zu erforschen und neue Planeten jenseits unserer Galaxie zu entdecken...",
       theme: "Weltraum",
       language: "Deutsch",
-      imageUrl: "/images/space-journey.png",
-      bgColor: "from-story-blue/40 to-story-seafoam/20",
-      icon: <Rocket className="h-8 w-8 text-story-blue" />
+      pages: [
+        {
+          id: "space-1",
+          content: "Kapitän Leo und sein treuer Roboterfreund Beep bereiteten sich auf ihr bisher größtes Abenteuer vor. Sie bestiegen ihr Raumschiff, um die Sterne zu erforschen...",
+          image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png"
+        },
+        {
+          id: "space-2",
+          content: "Auf einem funkelnden Planeten trafen sie freundliche Aliens, die ihnen eine magische Sternenkarte schenkten...",
+          image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png"
+        },
+        {
+          id: "space-3",
+          content: "Mit der Karte entdeckten sie einen Weg nach Hause und lernten, dass wahre Freundschaft keine Grenzen kennt...",
+          image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png"
+        }
+      ],
+      bgColor: "bg-gradient-to-br from-story-blue/40 to-story-seafoam/20"
     }
   ];
 
@@ -43,29 +84,9 @@ const WaitingListStorySamples = () => {
           Here's a preview of the magical stories you'll be able to create with Storyland
         </p>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 gap-8 max-w-4xl mx-auto">
           {stories.map((story, index) => (
-            <Card key={index} className="overflow-hidden border-none shadow-xl rounded-3xl transform transition-all duration-300 hover:scale-105">
-              <div className={`h-48 bg-gradient-to-br ${story.bgColor} p-6 flex items-center justify-center`}>
-                <div className="bg-white/90 p-4 rounded-full shadow-lg">
-                  {story.icon}
-                </div>
-              </div>
-              
-              <div className="p-6 bg-white">
-                <h3 className="text-2xl font-bold mb-3 text-story-purple">{story.title}</h3>
-                <p className="text-sm mb-4 line-clamp-3">{story.excerpt}</p>
-                
-                <div className="flex justify-between items-center mt-4">
-                  <span className="px-3 py-1 bg-story-green/30 text-story-forest rounded-full text-xs font-semibold">
-                    {story.theme}
-                  </span>
-                  <span className="px-3 py-1 bg-story-pink/30 text-story-purple rounded-full text-xs font-semibold">
-                    {story.language}
-                  </span>
-                </div>
-              </div>
-            </Card>
+            <WaitingListStorySample key={index} story={story} />
           ))}
         </div>
         
