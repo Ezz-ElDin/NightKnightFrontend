@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
@@ -14,8 +14,13 @@ import AccountSettings from "./pages/AccountSettings";
 import StoryViewer from "./pages/StoryViewer";
 import NotFound from "./pages/NotFound";
 import AuthCallback from "./pages/AuthCallback";
+import WaitingList from "./pages/WaitingList";
 
+// Create a new QueryClient instance
 const queryClient = new QueryClient();
+
+// Flag to enable/disable the waiting list mode
+const WAITING_LIST_MODE = true;
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -23,17 +28,27 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Navbar />
+        {!WAITING_LIST_MODE && <Navbar />}
         <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/create-story" element={<CreateStory />} />
-          <Route path="/account-settings" element={<AccountSettings />} />
-          <Route path="/story-viewer" element={<StoryViewer />} />
-          <Route path="/auth/callback" element={<AuthCallback />} />
-          <Route path="*" element={<NotFound />} />
+          {WAITING_LIST_MODE ? (
+            <>
+              <Route path="/waiting-list" element={<WaitingList />} />
+              {/* Redirect all other routes to the waiting list */}
+              <Route path="*" element={<Navigate replace to="/waiting-list" />} />
+            </>
+          ) : (
+            <>
+              <Route path="/" element={<Index />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/create-story" element={<CreateStory />} />
+              <Route path="/account-settings" element={<AccountSettings />} />
+              <Route path="/story-viewer" element={<StoryViewer />} />
+              <Route path="/auth/callback" element={<AuthCallback />} />
+              <Route path="*" element={<NotFound />} />
+            </>
+          )}
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
