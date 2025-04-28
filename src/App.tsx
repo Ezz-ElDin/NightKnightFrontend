@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -45,6 +46,8 @@ const App = () => (
               <Route path="/account-settings" element={<AccountSettings />} />
               <Route path="/story-viewer" element={<StoryViewer />} />
               <Route path="/auth/callback" element={<AuthCallback />} />
+              {/* Add the waiting list route even when not in waiting list mode */}
+              <Route path="/waiting-list" element={<WaitingList />} />
               <Route path="*" element={<NotFound />} />
             </>
           )}
