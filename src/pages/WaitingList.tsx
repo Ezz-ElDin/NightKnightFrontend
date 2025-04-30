@@ -7,7 +7,6 @@ import { Book, Globe, MessageCircle } from "lucide-react";
 import StoryBackground from "@/components/StoryBackground";
 import WaitingListStorySamples from "@/components/waiting-list/WaitingListStorySamples";
 import ValueProposition from "@/components/waiting-list/ValueProposition";
-import CountdownTimer from "@/components/waiting-list/CountdownTimer";
 import WaitingListNavbar from "@/components/waiting-list/WaitingListNavbar";
 import HowItWorks from "@/components/HowItWorks";
 
@@ -84,8 +83,6 @@ const WaitingList = () => {
           <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
             Our storytelling platform is launching soon! Join our waiting list to be the first to know.
           </p>
-
-          <CountdownTimer targetDate={new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)} />
           
           <div ref={emailSectionRef} className="max-w-md mx-auto my-12 scroll-mt-32">
             <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4">
