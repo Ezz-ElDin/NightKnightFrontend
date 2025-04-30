@@ -11,9 +11,10 @@ const StoryViewer = () => {
     navigate('/dashboard');
   };
 
-  // Convert the edit URL to a presentation URL for proper embedding
-  // Format: https://www.canva.com/design/[DESIGN_ID]/view
-  const designId = "DAGmGqTiMVo";
+  // Extract the design ID from the full Canva URL
+  // Format of the URL: https://www.canva.com/design/DAGmGqTiMVo/Scn9DVu-U0ltZ769wyaHIg/edit?...
+  const canvaUrl = "https://www.canva.com/design/DAGmGqTiMVo/Scn9DVu-U0ltZ769wyaHIg/edit?utm_content=DAGmGqTiMVo&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton";
+  const designId = canvaUrl.split('/')[4]; // Extract DAGmGqTiMVo from the URL
   const canvaEmbedUrl = `https://www.canva.com/design/${designId}/view?embed`;
 
   return (
