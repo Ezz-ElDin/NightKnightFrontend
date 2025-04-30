@@ -1,5 +1,15 @@
 
-import WaitingListStorySample from "./WaitingListStorySample";
+import React from 'react';
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Book, BookOpen, Globe } from 'lucide-react';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 const WaitingListStorySamples = () => {
   const stories = [
@@ -7,91 +17,83 @@ const WaitingListStorySamples = () => {
       title: "The Dragon's Treasure",
       theme: "Adventure",
       language: "English",
-      pages: [
-        {
-          id: "dragon-1",
-          content: "Once upon a time, there was a friendly green dragon named Spark who lived in a colorful mountain cave. Spark collected magical treasures that brought joy to the children in the nearby village...",
-          image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png"
-        },
-        {
-          id: "dragon-2",
-          content: "One day, Spark found a glowing crystal that made children's dreams come true. He decided to share this special treasure with the village...",
-          image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png"
-        },
-        {
-          id: "dragon-3",
-          content: "The children were overjoyed! From that day on, Spark became known as the Dream Keeper, bringing happiness to all...",
-          image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png"
-        }
-      ],
-      bgColor: "bg-gradient-to-br from-story-yellow/40 to-story-orange/20"
+      excerpt: "Once upon a time, there was a friendly green dragon named Spark who lived in a colorful mountain cave. Spark collected magical treasures that brought joy to the children in the nearby village...",
+      color: "bg-story-yellow/20",
+      borderColor: "border-story-orange",
+      icon: <Book className="h-5 w-5 text-story-orange" />
     },
     {
       title: "Les Chatons de la Lune",
       theme: "Fantaisie",
       language: "Français",
-      pages: [
-        {
-          id: "moon-1",
-          content: "Luna se préparait à se coucher quand elle remarqua quelque chose de magique - cinq chatons moelleux jouant avec une pelote de laine sur son rebord de fenêtre!",
-          image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png"
-        },
-        {
-          id: "moon-2",
-          content: "Les chatons brillaient au clair de lune et invitèrent Luna à rejoindre leurs aventures nocturnes dans le ciel étoilé...",
-          image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png"
-        },
-        {
-          id: "moon-3",
-          content: "Ensemble, ils dansèrent parmi les étoiles et créèrent des constellations magiques qui illuminent encore le ciel aujourd'hui...",
-          image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png"
-        }
-      ],
-      bgColor: "bg-gradient-to-br from-story-lightPurple/40 to-story-purple/20"
+      excerpt: "Luna se préparait à se coucher quand elle remarqua quelque chose de magique - cinq chatons moelleux jouant avec une pelote de laine sur son rebord de fenêtre...",
+      color: "bg-story-lightPurple/20",
+      borderColor: "border-story-purple",
+      icon: <BookOpen className="h-5 w-5 text-story-purple" />
     },
     {
       title: "Kapitän Leos Weltraumreise",
       theme: "Weltraum",
       language: "Deutsch",
-      pages: [
-        {
-          id: "space-1",
-          content: "Kapitän Leo und sein treuer Roboterfreund Beep bereiteten sich auf ihr bisher größtes Abenteuer vor. Sie bestiegen ihr Raumschiff, um die Sterne zu erforschen...",
-          image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png"
-        },
-        {
-          id: "space-2",
-          content: "Auf einem funkelnden Planeten trafen sie freundliche Aliens, die ihnen eine magische Sternenkarte schenkten...",
-          image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png"
-        },
-        {
-          id: "space-3",
-          content: "Mit der Karte entdeckten sie einen Weg nach Hause und lernten, dass wahre Freundschaft keine Grenzen kennt...",
-          image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png"
-        }
-      ],
-      bgColor: "bg-gradient-to-br from-story-blue/40 to-story-seafoam/20"
+      excerpt: "Kapitän Leo und sein treuer Roboterfreund Beep bereiteten sich auf ihr bisher größtes Abenteuer vor. Sie bestiegen ihr Raumschiff, um die Sterne zu erforschen...",
+      color: "bg-story-blue/20",
+      borderColor: "border-story-blue",
+      icon: <BookOpen className="h-5 w-5 text-story-blue" />
     }
   ];
 
   return (
-    <section className="py-16 px-4">
+    <section className="py-12 px-4 bg-gradient-to-b from-white to-story-peach/20">
       <div className="container mx-auto">
-        <h2 className="text-4xl font-bold mb-6 text-center text-story-purple">
+        <h2 className="text-3xl font-bold mb-6 text-center text-story-purple">
           Story Samples
         </h2>
-        <p className="text-xl text-center mb-12 max-w-3xl mx-auto">
-          Here's a preview of the magical stories you'll be able to create with Storyland
+        <p className="text-lg text-center mb-8 max-w-2xl mx-auto">
+          Preview the magical stories you'll create with Storyland
         </p>
         
-        <div className="grid grid-cols-1 gap-8 max-w-4xl mx-auto">
-          {stories.map((story, index) => (
-            <WaitingListStorySample key={index} story={story} />
-          ))}
-        </div>
+        <Carousel
+          className="max-w-4xl mx-auto"
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+        >
+          <CarouselContent>
+            {stories.map((story, index) => (
+              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 pl-4">
+                <Card className={`h-full border-l-4 ${story.borderColor} ${story.color} rounded-xl shadow-md hover:shadow-lg transition-shadow`}>
+                  <div className="p-5">
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="text-xl font-bold text-story-purple">{story.title}</h3>
+                      <div className="bg-white p-2 rounded-full shadow-sm">
+                        {story.icon}
+                      </div>
+                    </div>
+                    
+                    <p className="text-sm mb-4 line-clamp-4">{story.excerpt}</p>
+                    
+                    <div className="flex items-center justify-between mt-auto pt-2 border-t border-gray-100">
+                      <Badge variant="outline" className="bg-story-green/30 text-story-forest border-none">
+                        {story.theme}
+                      </Badge>
+                      <Badge variant="outline" className="bg-story-pink/30 text-story-purple border-none flex items-center gap-1">
+                        <Globe className="h-3 w-3" /> {story.language}
+                      </Badge>
+                    </div>
+                  </div>
+                </Card>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <div className="flex justify-center mt-6">
+            <CarouselPrevious className="relative mr-2 static translate-y-0 bg-white text-story-purple border-story-purple hover:bg-story-lightPurple/20" />
+            <CarouselNext className="relative ml-2 static translate-y-0 bg-white text-story-purple border-story-purple hover:bg-story-lightPurple/20" />
+          </div>
+        </Carousel>
         
-        <div className="text-center mt-12">
-          <p className="text-lg italic text-story-blue">
+        <div className="text-center mt-8">
+          <p className="text-md italic text-story-blue">
             Join our waiting list to create your own magical stories!
           </p>
         </div>
