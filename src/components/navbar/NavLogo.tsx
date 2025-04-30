@@ -1,16 +1,16 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import { Sword, Shield } from "lucide-react";
+import { Book, Leaf } from "lucide-react";
 
 const NavLogo = () => {
   return (
     <Link to="/" className="flex items-center gap-2">
       <div className="relative">
-        <Shield className="h-8 w-8 text-story-blue" />
-        <Sword className="absolute -top-1 -right-1 h-4 w-4 text-story-orange animate-leaf-sway" />
+        <Book className="h-8 w-8 text-story-teal" />
+        <Leaf className="absolute -top-1 -right-1 h-4 w-4 text-story-green animate-leaf-sway" />
       </div>
-      <span className="font-bold text-2xl text-story-purple">Nighknight</span>
+      <span className="font-bold text-2xl text-story-purple">Storyland</span>
     </Link>
   );
 };

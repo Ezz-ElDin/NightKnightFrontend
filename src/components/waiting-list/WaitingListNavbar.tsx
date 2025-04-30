@@ -16,7 +16,7 @@ const WaitingListNavbar = ({ onJoinClick }: WaitingListNavbarProps) => {
         
         {/* Join Waiting List Button */}
         <Button 
-          className="h-12 px-6 rounded-xl bg-story-blue hover:bg-story-blue/90 text-white button-bounce"
+          className="h-12 px-6 rounded-xl bg-story-purple hover:bg-story-purple/90 text-white button-bounce"
           onClick={onJoinClick}
         >
           Join Waiting List
