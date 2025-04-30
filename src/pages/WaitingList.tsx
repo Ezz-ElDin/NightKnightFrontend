@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
@@ -8,11 +8,17 @@ import StoryBackground from "@/components/StoryBackground";
 import WaitingListStorySamples from "@/components/waiting-list/WaitingListStorySamples";
 import ValueProposition from "@/components/waiting-list/ValueProposition";
 import CountdownTimer from "@/components/waiting-list/CountdownTimer";
+import WaitingListNavbar from "@/components/waiting-list/WaitingListNavbar";
 
 const WaitingList = () => {
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const emailSectionRef = useRef<HTMLDivElement>(null);
+
+  const scrollToEmailSection = () => {
+    emailSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,6 +61,8 @@ const WaitingList = () => {
 
   return (
     <div className="overflow-auto">
+      <WaitingListNavbar onJoinClick={scrollToEmailSection} />
+      
       <StoryBackground>
         <div className="container max-w-6xl mx-auto text-center z-10">
           <div className="mb-8 flex justify-center">
@@ -80,7 +88,7 @@ const WaitingList = () => {
 
           <CountdownTimer targetDate={new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)} />
           
-          <div className="max-w-md mx-auto my-12">
+          <div ref={emailSectionRef} className="max-w-md mx-auto my-12 scroll-mt-32">
             <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4">
               <Input
                 type="email"

@@ -28,7 +28,12 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        {!WAITING_LIST_MODE && <Navbar />}
+        {/* Only show the main Navbar when not in waiting list mode AND not on the waiting list page */}
+        {!WAITING_LIST_MODE && <Routes>
+          <Route path="/waiting-list" element={null} />
+          <Route path="*" element={<Navbar />} />
+        </Routes>}
+        
         <Routes>
           {WAITING_LIST_MODE ? (
             <>
