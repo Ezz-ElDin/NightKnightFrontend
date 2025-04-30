@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="container mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           <div>
-            <h3 className="text-xl font-bold mb-4 text-story-purple">Storyland</h3>
+            <h3 className="text-xl font-bold mb-4 text-story-purple">NightKnight</h3>
             <p className="text-gray-700 mb-4">
               Creating magical bedtime moments for children around the world.
             </p>
@@ -22,7 +22,7 @@ const Footer = () => {
               <a href="#" className="text-story-purple hover:text-story-blue transition-colors">
                 <Instagram size={20} />
               </a>
-              <a href="mailto:hello@storyland.com" className="text-story-purple hover:text-story-blue transition-colors">
+              <a href="mailto:hello@nightknight.com" className="text-story-purple hover:text-story-blue transition-colors">
                 <Mail size={20} />
               </a>
             </div>
@@ -103,7 +103,7 @@ const Footer = () => {
             Made with <Heart className="h-4 w-4 mx-1 text-red-500" fill="currentColor" /> for children everywhere
           </p>
           <p className="mt-2">
-            &copy; {new Date().getFullYear()} Storyland. All rights reserved.
+            &copy; {new Date().getFullYear()} NightKnight. All rights reserved.
           </p>
         </div>
       </div>

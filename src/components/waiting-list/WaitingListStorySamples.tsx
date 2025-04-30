@@ -53,7 +53,7 @@ const WaitingListStorySamples = () => {
           Story Samples
         </h2>
         <p className="text-lg text-center mb-8 max-w-2xl mx-auto">
-          Preview the magical stories you'll create with Storyland
+          Preview the magical stories you'll create with NightKnight
         </p>
         
         <Carousel

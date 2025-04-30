@@ -48,7 +48,7 @@ const WaitingList = () => {
       localStorage.setItem("waitingList", JSON.stringify(waitingList));
       toast({
         title: "Thank you for joining!",
-        description: "We'll notify you when Storyland is ready."
+        description: "We'll notify you when NightKnight is ready."
       });
       setEmail("");
     } catch (error) {
@@ -75,7 +75,7 @@ const WaitingList = () => {
           </div>
           
           <h1 className="text-5xl md:text-7xl font-bold mb-6 text-story-purple">
-            Storyland
+            NightKnight
           </h1>
           
           <h2 className="text-3xl md:text-4xl font-semibold mb-8 text-story-blue">Magical Stories for Children</h2>
@@ -106,7 +106,7 @@ const WaitingList = () => {
           <h2 className="text-3xl font-bold mb-6 text-story-purple">Frequently Asked Questions</h2>
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <div className="card-kiddy">
-              <h3 className="text-xl font-bold mb-2">When will Storyland launch?</h3>
+              <h3 className="text-xl font-bold mb-2">When will NightKnight launch?</h3>
               <p>We're working hard to launch in the next 30 days. Join our waiting list to be notified!</p>
             </div>
             <div className="card-kiddy">
@@ -115,7 +115,7 @@ const WaitingList = () => {
             </div>
             <div className="card-kiddy">
               <h3 className="text-xl font-bold mb-2">What ages is it suitable for?</h3>
-              <p>Storyland is designed for children aged 3-10, but can be enjoyed by the whole family!</p>
+              <p>NightKnight is designed for children aged 3-10, but can be enjoyed by the whole family!</p>
             </div>
             <div className="card-kiddy">
               <h3 className="text-xl font-bold mb-2">What languages are supported?</h3>
