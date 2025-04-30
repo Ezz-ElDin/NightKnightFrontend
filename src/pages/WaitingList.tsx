@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -97,9 +98,10 @@ const WaitingList = () => {
         </div>
       </StoryBackground>
       
+      <ValueProposition />
+      
       <HowItWorks />
       
-      <ValueProposition />
       <WaitingListStorySamples />
       
       <section className="py-16 px-4 bg-story-peach/30">
