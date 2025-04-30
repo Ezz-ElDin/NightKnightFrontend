@@ -8,6 +8,8 @@ import WaitingListStorySamples from "@/components/waiting-list/WaitingListStoryS
 import ValueProposition from "@/components/waiting-list/ValueProposition";
 import CountdownTimer from "@/components/waiting-list/CountdownTimer";
 import WaitingListNavbar from "@/components/waiting-list/WaitingListNavbar";
+import HowItWorks from "@/components/HowItWorks";
+
 const WaitingList = () => {
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -94,6 +96,8 @@ const WaitingList = () => {
           </div>
         </div>
       </StoryBackground>
+      
+      <HowItWorks />
       
       <ValueProposition />
       <WaitingListStorySamples />
