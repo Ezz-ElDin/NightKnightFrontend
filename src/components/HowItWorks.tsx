@@ -1,13 +1,8 @@
-
 import { MessageCircle, Wand2, Book } from 'lucide-react';
-
 const HowItWorks = () => {
-  return (
-    <section className="py-16 px-4" id="how-it-works">
+  return <section className="py-16 px-4" id="how-it-works">
       <div className="container mx-auto">
-        <h2 className="text-4xl font-bold mb-12 text-center text-story-purple">
-          The Magic of Storyland
-        </h2>
+        <h2 className="text-4xl font-bold mb-12 text-center text-story-purple">The Magic of NightKnight</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="flex flex-col items-center text-center">
@@ -35,8 +30,6 @@ const HowItWorks = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default HowItWorks;
