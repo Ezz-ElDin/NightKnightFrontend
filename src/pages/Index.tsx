@@ -6,10 +6,8 @@ import HowItWorks from "@/components/HowItWorks";
 import StorySamples from "@/components/StorySamples";
 import Pricing from "@/components/Pricing";
 import Footer from "@/components/Footer";
-
 const Index = () => {
-  return (
-    <div className="overflow-auto">
+  return <div className="overflow-auto">
       <StoryBackground>
         <div className="container max-w-6xl mx-auto text-center z-10">
           <div className="mb-8 flex justify-center">
@@ -19,9 +17,7 @@ const Index = () => {
             </div>
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 text-story-purple">
-            Storyland
-          </h1>
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 text-story-purple">NightKnight</h1>
           
           <h2 className="text-3xl md:text-4xl font-semibold mb-8 text-story-blue">
             Magical Bedtime Stories for Children
@@ -82,8 +78,6 @@ const Index = () => {
       <StorySamples />
       <Pricing />
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
