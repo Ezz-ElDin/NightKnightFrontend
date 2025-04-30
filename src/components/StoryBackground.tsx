@@ -1,4 +1,5 @@
-import { Book, Moon, Star, CloudMoon, Leaf, Bird, Cloud, Palmtree, Sun, Mountain } from 'lucide-react';
+
+import { Sword, Shield, Crown, Cloud, Star, Bird, Leaf, Sun, Mountain } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 interface StoryBackgroundProps {
@@ -37,27 +38,27 @@ const StoryBackground: React.FC<StoryBackgroundProps> = ({ children }) => {
         />
       ))}
       
-      {/* Floating elements in the background - Ghibli style */}
+      {/* Knight-themed floating elements in the background */}
       <div className="absolute top-10 left-[10%] text-story-blue opacity-60 animate-float">
-        <Cloud size={35} strokeWidth={1} />
+        <Shield size={35} strokeWidth={1} />
       </div>
       <div className="absolute top-20 right-[15%] text-story-yellow opacity-70 animate-float animation-delay-1000">
         <Star size={20} fill="currentColor" />
       </div>
       <div className="absolute bottom-20 left-[20%] text-story-yellow opacity-50 animate-float animation-delay-2000">
-        <Star size={25} fill="currentColor" />
+        <Crown size={28} fill="currentColor" />
       </div>
       <div className="absolute top-1/4 right-[25%] text-story-teal opacity-60 animate-bounce-slow">
         <Bird size={28} />
       </div>
       <div className="absolute bottom-1/3 right-[10%] text-story-seafoam opacity-70 animate-leaf-sway">
-        <Leaf size={40} />
+        <Sword size={40} />
       </div>
       <div className="absolute bottom-1/4 left-[5%] text-story-forest opacity-60 animate-leaf-sway">
-        <Palmtree size={45} />
+        <Shield size={45} />
       </div>
       <div className="absolute top-1/5 left-[25%] text-story-blue opacity-40 animate-float">
-        <CloudMoon size={38} />
+        <Cloud size={38} />
       </div>
       <div className="absolute top-1/2 right-[8%] text-story-orange opacity-60 animate-float">
         <Sun size={32} />
