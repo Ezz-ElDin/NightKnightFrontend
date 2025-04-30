@@ -1,4 +1,5 @@
-import { Book, Moon, Star, CloudMoon, Leaf, Bird, Cloud, Palmtree, Sun, Mountain } from 'lucide-react';
+
+import { Book, Moon, Star, CloudMoon, Sword, Shield, Bird, Cloud, Crown, Sun, Mountain } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 interface StoryBackgroundProps {
@@ -37,7 +38,7 @@ const StoryBackground: React.FC<StoryBackgroundProps> = ({ children }) => {
         />
       ))}
       
-      {/* Floating elements in the background - Ghibli style */}
+      {/* Floating elements in the background - Knight themed */}
       <div className="absolute top-10 left-[10%] text-story-blue opacity-60 animate-float">
         <Cloud size={35} strokeWidth={1} />
       </div>
@@ -50,11 +51,11 @@ const StoryBackground: React.FC<StoryBackgroundProps> = ({ children }) => {
       <div className="absolute top-1/4 right-[25%] text-story-teal opacity-60 animate-bounce-slow">
         <Bird size={28} />
       </div>
-      <div className="absolute bottom-1/3 right-[10%] text-story-seafoam opacity-70 animate-leaf-sway">
-        <Leaf size={40} />
+      <div className="absolute bottom-1/3 right-[10%] text-story-purple opacity-70 animate-leaf-sway">
+        <Sword size={40} />
       </div>
-      <div className="absolute bottom-1/4 left-[5%] text-story-forest opacity-60 animate-leaf-sway">
-        <Palmtree size={45} />
+      <div className="absolute bottom-1/4 left-[5%] text-story-blue opacity-60 animate-leaf-sway">
+        <Shield size={45} />
       </div>
       <div className="absolute top-1/5 left-[25%] text-story-blue opacity-40 animate-float">
         <CloudMoon size={38} />
@@ -62,8 +63,14 @@ const StoryBackground: React.FC<StoryBackgroundProps> = ({ children }) => {
       <div className="absolute top-1/2 right-[8%] text-story-orange opacity-60 animate-float">
         <Sun size={32} />
       </div>
-      <div className="absolute bottom-10 right-[30%] text-story-brown opacity-50 animate-bounce-slow">
-        <Mountain size={40} />
+      <div className="absolute bottom-10 right-[30%] text-story-purple opacity-50 animate-bounce-slow">
+        <Crown size={40} />
+      </div>
+      <div className="absolute top-1/3 left-[15%] text-story-forest opacity-60 animate-leaf-sway">
+        <Sword size={34} />
+      </div>
+      <div className="absolute bottom-1/5 right-[20%] text-story-blue opacity-50 animate-bounce-slow">
+        <Shield size={30} />
       </div>
       
       {/* Content */}
