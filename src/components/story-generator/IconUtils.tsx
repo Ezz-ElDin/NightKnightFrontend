@@ -18,7 +18,12 @@ import {
   Rocket,
   Home,
   Compass,
-  Wand
+  Wand,
+  Music,
+  MessageCircle,
+  AlignJustify,
+  Pencil,
+  Bed
 } from "lucide-react";
 
 export const getThemeIcon = (themeId: string) => {
@@ -41,12 +46,23 @@ export const getGenreIcon = (genreId: string) => {
 
 export const getToneIcon = (toneId: string) => {
   switch(toneId) {
-    case "friendly": return <Heart className="h-14 w-14" />;
-    case "playful": return <PartyPopper className="h-14 w-14" />;
-    case "educational": return <Brain className="h-14 w-14" />;
+    case "playful": return <Laugh className="h-14 w-14" />;
+    case "calm": return <Bed className="h-14 w-14" />;
+    case "exciting": return <PartyPopper className="h-14 w-14" />;
+    case "kind": return <Heart className="h-14 w-14" />;
     case "inspirational": return <Star className="h-14 w-14" />;
-    case "soothing": return <History className="h-14 w-14" />;
-    case "silly": return <Laugh className="h-14 w-14" />;
+    case "educational": return <Brain className="h-14 w-14" />;
     default: return <SmilePlus className="h-14 w-14" />;
+  }
+};
+
+export const getNarrativeStyleIcon = (styleId: string) => {
+  switch(styleId) {
+    case "classic": return <BookOpen className="h-14 w-14" />;
+    case "rhyming": return <Music className="h-14 w-14" />;
+    case "dialogue": return <MessageCircle className="h-14 w-14" />;
+    case "simple": return <AlignJustify className="h-14 w-14" />;
+    case "dreamy": return <Sparkles className="h-14 w-14" />;
+    default: return <Pencil className="h-14 w-14" />;
   }
 };
