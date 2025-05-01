@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,6 +14,7 @@ import { BookOpen } from "lucide-react";
 import { StorySettingsProps, AGE_RANGES, LANGUAGES } from "./constants";
 import ThemeSelector from "./ThemeSelector";
 import ToneSelector from "./ToneSelector";
+import NarrativeStyleSelector from "./NarrativeStyleSelector";
 import CharacterManager from "./CharacterManager";
 
 const StorySettings: React.FC<StorySettingsProps> = ({ storyData, updateStoryData }) => {
@@ -22,6 +24,10 @@ const StorySettings: React.FC<StorySettingsProps> = ({ storyData, updateStoryDat
 
   const handleToneSelect = (toneId: string) => {
     updateStoryData({ tone: toneId });
+  };
+
+  const handleNarrativeStyleSelect = (styleId: string) => {
+    updateStoryData({ narrativeStyle: styleId });
   };
 
   const updateCharacters = (characters: any[]) => {
@@ -57,6 +63,11 @@ const StorySettings: React.FC<StorySettingsProps> = ({ storyData, updateStoryDat
       <ToneSelector 
         selectedTone={storyData.tone} 
         onSelectTone={handleToneSelect} 
+      />
+      
+      <NarrativeStyleSelector 
+        selectedStyle={storyData.narrativeStyle || ""} 
+        onSelectStyle={handleNarrativeStyleSelect} 
       />
       
       <div className="space-y-3">

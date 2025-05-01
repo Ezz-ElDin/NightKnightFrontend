@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -14,6 +15,7 @@ const CreateStory = () => {
     title: "",
     genre: "", // We keep using 'genre' in data structure for backwards compatibility
     tone: "",
+    narrativeStyle: "",
     ageRange: "6-8",
     moral: "",
     characters: [],
@@ -49,6 +51,14 @@ const CreateStory = () => {
         toast({
           title: "Please select a tone",
           description: "A tone helps shape the mood of your story",
+          variant: "destructive",
+        });
+        return;
+      }
+      if (!storyData.narrativeStyle) {
+        toast({
+          title: "Please select a narrative style",
+          description: "A narrative style helps define how your story is told",
           variant: "destructive",
         });
         return;

@@ -1,3 +1,4 @@
+
 // Theme options
 export const THEMES = [
   { id: "fantasy", name: "Fantasy Worlds", description: "Enchanted forests, magical kingdoms, castles, fairies, dragons, etc.", subdescription: "Kids love escaping into places where the impossible becomes possible.", color: "#b3e0ff", textColor: "#3a5e8c", image: null },
@@ -13,12 +14,21 @@ export const GENRES = THEMES;
 
 // Tone options
 export const TONES = [
-  { id: "friendly", name: "Friendly", icon: "🙂", color: "#a2f7b5", textColor: "#3a8c5b", image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png" },
-  { id: "playful", name: "Playful", icon: "😄", color: "#ffda99", textColor: "#8c6f3a", image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png" },
-  { id: "educational", name: "Educational", icon: "🧠", color: "#cafffa", textColor: "#3a8c84", image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png" },
-  { id: "inspirational", name: "Inspirational", icon: "⭐", color: "#fff099", textColor: "#8c7e3a", image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png" },
-  { id: "soothing", name: "Soothing", icon: "😴", color: "#b3d9ff", textColor: "#3a5e8c", image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png" },
-  { id: "silly", name: "Silly", icon: "🤪", color: "#ffb3fc", textColor: "#8c3a8a", image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png" },
+  { id: "playful", name: "Playful and Funny", description: "Make the story silly, full of fun and giggles!", color: "#ffda99", textColor: "#8c6f3a", image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png" },
+  { id: "calm", name: "Calm and Soothing", description: "Make the story soft and gentle — perfect for bedtime.", color: "#b3d9ff", textColor: "#3a5e8c", image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png" },
+  { id: "exciting", name: "Exciting and Adventurous", description: "Make the story thrilling, like going on a big quest!", color: "#ffb3fc", textColor: "#8c3a8a", image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png" },
+  { id: "kind", name: "Kind and Friendly", description: "Make the story warm, loving and full of kindness.", color: "#a2f7b5", textColor: "#3a8c5b", image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png" },
+  { id: "inspirational", name: "Inspirational and Uplifting", description: "Make the story encouraging and full of positive messages.", color: "#fff099", textColor: "#8c7e3a", image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png" },
+  { id: "educational", name: "Educational and Thoughtful", description: "Make the story teach something new in a fun way.", color: "#cafffa", textColor: "#3a8c84", image: "/lovable-uploads/7b6b7f52-efd8-4d6c-b7ac-3b2bdbd1a2d6.png" },
+];
+
+// Narrative Style options
+export const NARRATIVE_STYLES = [
+  { id: "classic", name: "Classic Storybook", description: "Tell the story in a simple and clear way, like a traditional bedtime story.", color: "#d9c7ff", textColor: "#543a8c", image: null },
+  { id: "rhyming", name: "Rhyming and Repetitive", description: "Make the story musical and fun with rhymes and repeated phrases.", color: "#ffc7c7", textColor: "#8c3a3a", image: null },
+  { id: "dialogue", name: "Dialogue-Driven", description: "Make the story full of character conversations and talking.", color: "#c7ffe0", textColor: "#3a8c5e", image: null },
+  { id: "simple", name: "Simple and Easy", description: "Make the story very easy to follow, with short and simple sentences (best for younger children).", color: "#ffe0c7", textColor: "#8c5e3a", image: null },
+  { id: "dreamy", name: "Dreamy and Poetic", description: "Make the story soft and magical, with flowing and beautiful words (great for bedtime).", color: "#c7d6ff", textColor: "#3a4f8c", image: null },
 ];
 
 // Character traits
