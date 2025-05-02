@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -10,6 +9,9 @@ import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { StorySettingStep } from "@/components/story-generator/StorySettingStep";
 import { Sparkles, ChevronLeft, ChevronRight, Wand2 } from "lucide-react";
+import ThemeSelector from "@/components/story-generator/ThemeSelector";
+import ToneSelector from "@/components/story-generator/ToneSelector";
+import NarrativeStyleSelector from "@/components/story-generator/NarrativeStyleSelector";
 
 const CreateStory = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -360,4 +362,3 @@ const CreateStory = () => {
 };
 
 export default CreateStory;
-
