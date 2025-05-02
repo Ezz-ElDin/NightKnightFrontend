@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -225,25 +224,45 @@ const CreateStory = () => {
                       </div>
                       
                       {storyData.characters.length > 0 ? (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                        <div className="space-y-4">
                           {storyData.characters.map((character) => (
                             <div 
                               key={character.id} 
-                              className="border-2 border-primary/20 p-4 rounded-xl bg-white shadow-md"
+                              className="border-2 border-primary/20 p-4 rounded-xl bg-white shadow-md flex flex-col md:flex-row items-center gap-4 relative"
                             >
-                              <div className="font-bold text-xl">{character.name}</div>
-                              <div className="text-sm text-muted-foreground">{character.role}</div>
-                              <div className="mt-2">{character.appearance}</div>
-                              <div className="mt-2 flex flex-wrap gap-1">
-                                {character.personality.map(trait => (
-                                  <span 
-                                    key={trait} 
-                                    className="text-xs bg-primary/20 text-primary px-2 py-1 rounded-full"
-                                  >
-                                    {trait}
-                                  </span>
-                                ))}
+                              {/* Character silhouette icon */}
+                              <div className={`w-24 h-24 rounded-full flex items-center justify-center bg-gradient-to-br ${getCharacterGradient(character.role)}`}>
+                                <span className="text-4xl">{getCharacterEmoji(character.role)}</span>
                               </div>
+                              
+                              <div className="flex-1 text-center md:text-left">
+                                <div className="font-bold text-xl">{character.name}</div>
+                                <div className="text-sm text-primary bg-primary/10 inline-block px-2 py-1 rounded-full">{character.role}</div>
+                                
+                                <div className="mt-2 text-gray-600">{character.appearance}</div>
+                                
+                                <div className="mt-2 flex flex-wrap gap-1 justify-center md:justify-start">
+                                  {character.personality.map(trait => (
+                                    <span 
+                                      key={trait} 
+                                      className="text-xs bg-primary/20 text-primary px-2 py-1 rounded-full"
+                                    >
+                                      {trait}
+                                    </span>
+                                  ))}
+                                </div>
+                              </div>
+                              
+                              <button
+                                onClick={() => {
+                                  const updatedCharacters = storyData.characters.filter(c => c.id !== character.id);
+                                  updateStoryData({ characters: updatedCharacters });
+                                }}
+                                className="absolute top-2 right-2 text-muted-foreground hover:text-destructive h-6 w-6 flex items-center justify-center rounded-full hover:bg-destructive/10"
+                                aria-label="Remove character"
+                              >
+                                ✕
+                              </button>
                             </div>
                           ))}
                         </div>
@@ -419,6 +438,30 @@ const CreateStory = () => {
       </div>
     </TooltipProvider>
   );
+};
+
+// Helper function to get a gradient color based on character role
+const getCharacterGradient = (role) => {
+  switch(role) {
+    case "Hero": return "from-blue-200 to-blue-400 text-blue-800";
+    case "Villain": return "from-red-200 to-red-400 text-red-800";
+    case "Sidekick": return "from-green-200 to-green-400 text-green-800";
+    case "Mentor": return "from-purple-200 to-purple-400 text-purple-800";
+    case "Animal": return "from-yellow-200 to-yellow-400 text-yellow-800";
+    default: return "from-gray-200 to-gray-400 text-gray-800";
+  }
+};
+
+// Helper function to get an emoji based on character role
+const getCharacterEmoji = (role) => {
+  switch(role) {
+    case "Hero": return "🦸";
+    case "Villain": return "😈";
+    case "Sidekick": return "🧙";
+    case "Mentor": return "👴";
+    case "Animal": return "🐾";
+    default: return "👤";
+  }
 };
 
 export default CreateStory;
