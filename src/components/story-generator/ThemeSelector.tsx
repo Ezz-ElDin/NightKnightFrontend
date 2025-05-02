@@ -12,16 +12,15 @@ interface ThemeSelectorProps {
 
 const ThemeSelector: React.FC<ThemeSelectorProps> = ({ selectedTheme, onSelectTheme }) => {
   return (
-    <div className="space-y-3">
-      <Label>Theme</Label>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {THEMES.map((theme) => (
           <div
             key={theme.id}
             className={cn(
-              "p-4 rounded-xl cursor-pointer transition-all hover:scale-105 transform duration-200 border-2 flex flex-col md:flex-row gap-4 shadow-md",
+              "p-4 rounded-xl cursor-pointer transition-all hover:scale-105 transform duration-200 border-2 flex flex-col items-center text-center shadow-md",
               selectedTheme === theme.id
-                ? "border-primary bg-primary/10 ring-4 ring-primary/30"
+                ? "border-primary bg-primary/10 ring-4 ring-primary/30 animate-scale-pulse"
                 : `border-${theme.color}/50 hover:border-${theme.color}`
             )}
             onClick={() => onSelectTheme(theme.id)}
@@ -31,13 +30,14 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({ selectedTheme, onSelectTh
               borderColor: selectedTheme === theme.id ? "#7E69AB" : theme.color,
             }}
           >
-            <div className="flex justify-center md:justify-start">
-              {getThemeIcon(theme.id)}
+            <div className="mb-3 flex justify-center items-center h-24">
+              <div className="h-16 w-16 transform transition-transform duration-300 hover:rotate-6">
+                {getThemeIcon(theme.id)}
+              </div>
             </div>
-            <div className="flex-1">
-              <h3 className="font-bold text-lg mb-1 text-center md:text-left">{theme.name}</h3>
-              <p className="text-sm mb-2">{theme.description}</p>
-              <p className="text-xs italic">{theme.subdescription}</p>
+            <div>
+              <h3 className="font-bold text-xl mb-2">{theme.name}</h3>
+              <p className="text-sm">{theme.description}</p>
             </div>
           </div>
         ))}
@@ -47,3 +47,4 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({ selectedTheme, onSelectTh
 };
 
 export default ThemeSelector;
+
