@@ -22,14 +22,14 @@ export const StorySettingStep: React.FC<StorySettingStepProps> = ({
       <div className="flex items-center gap-3 animate-fade-in">
         {icon}
         <div>
-          <h2 className="text-2xl md:text-3xl font-bold text-primary">{title}</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-primary font-ghibli">{title}</h2>
           {description && (
-            <p className="text-muted-foreground">{description}</p>
+            <p className="text-muted-foreground font-ghibli">{description}</p>
           )}
         </div>
       </div>
       
-      <div className="mt-6 animate-fade-in">
+      <div className="mt-6 animate-fade-in font-ghibli">
         {children}
       </div>
     </div>
