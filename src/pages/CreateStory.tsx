@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -8,10 +9,11 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { StorySettingStep } from "@/components/story-generator/StorySettingStep";
-import { Sparkles, ChevronLeft, ChevronRight, Wand2 } from "lucide-react";
+import { Sparkles, ChevronLeft, ChevronRight, Wand2, Users } from "lucide-react";
 import ThemeSelector from "@/components/story-generator/ThemeSelector";
 import ToneSelector from "@/components/story-generator/ToneSelector";
 import NarrativeStyleSelector from "@/components/story-generator/NarrativeStyleSelector";
+import CharacterManager from "@/components/story-generator/CharacterManager";
 
 const CreateStory = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -34,8 +36,9 @@ const CreateStory = () => {
     { id: 1, name: "Theme" },
     { id: 2, name: "Tone" },
     { id: 3, name: "Style" },
-    { id: 4, name: "Details" },
-    { id: 5, name: "Create!" },
+    { id: 4, name: "Characters" },
+    { id: 5, name: "Details" },
+    { id: 6, name: "Create!" },
   ];
 
   const updateStoryData = (data) => {
@@ -210,6 +213,60 @@ const CreateStory = () => {
             
             {currentStep === 4 && (
               <StorySettingStep 
+                title="Who's in Your Story?"
+                description="Add characters to your adventure!"
+                icon={<Users className="h-8 w-8 text-blue-400" />}
+              >
+                <div className="mt-4">
+                  <div className="characters-container">
+                    <div className="mb-4">
+                      <div className="text-lg mb-4">
+                        Every great story needs characters! Who will be in your story?
+                      </div>
+                      
+                      {storyData.characters.length > 0 ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                          {storyData.characters.map((character) => (
+                            <div 
+                              key={character.id} 
+                              className="border-2 border-primary/20 p-4 rounded-xl bg-white shadow-md"
+                            >
+                              <div className="font-bold text-xl">{character.name}</div>
+                              <div className="text-sm text-muted-foreground">{character.role}</div>
+                              <div className="mt-2">{character.appearance}</div>
+                              <div className="mt-2 flex flex-wrap gap-1">
+                                {character.personality.map(trait => (
+                                  <span 
+                                    key={trait} 
+                                    className="text-xs bg-primary/20 text-primary px-2 py-1 rounded-full"
+                                  >
+                                    {trait}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="text-center p-8 mb-6 border-2 border-dashed border-primary/20 rounded-xl">
+                          <div className="text-4xl mb-2">🧙‍♂️👸🦁</div>
+                          <div className="text-lg text-muted-foreground">No characters yet!</div>
+                          <div>Add some magical friends to your story.</div>
+                        </div>
+                      )}
+                    </div>
+                    
+                    <CharacterManager 
+                      characters={storyData.characters} 
+                      updateCharacters={(characters) => updateStoryData({ characters })} 
+                    />
+                  </div>
+                </div>
+              </StorySettingStep>
+            )}
+            
+            {currentStep === 5 && (
+              <StorySettingStep 
                 title="Final Story Details"
                 description="Add the finishing touches to your story"
                 icon={<Sparkles className="h-8 w-8 text-yellow-400" />}
@@ -294,7 +351,7 @@ const CreateStory = () => {
               </StorySettingStep>
             )}
             
-            {currentStep === 5 && (
+            {currentStep === 6 && (
               <StorySettingStep 
                 title="Ready to Create Your Story!"
                 description="Let's make some storytelling magic happen!"
@@ -308,6 +365,9 @@ const CreateStory = () => {
                         <li><span className="font-bold">Theme:</span> {storyData.genre}</li>
                         <li><span className="font-bold">Mood:</span> {storyData.tone}</li>
                         <li><span className="font-bold">Style:</span> {storyData.narrativeStyle}</li>
+                        <li><span className="font-bold">Characters:</span> {storyData.characters.length > 0 
+                          ? storyData.characters.map(c => c.name).join(", ") 
+                          : "No characters yet"}</li>
                         {storyData.title && <li><span className="font-bold">Title:</span> {storyData.title}</li>}
                         {storyData.moral && <li><span className="font-bold">Lesson:</span> {storyData.moral}</li>}
                         <li><span className="font-bold">Age:</span> {storyData.ageRange} years</li>
