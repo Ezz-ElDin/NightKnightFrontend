@@ -11,6 +11,7 @@ import WaitingListNavbar from "@/components/waiting-list/WaitingListNavbar";
 import HowItWorks from "@/components/HowItWorks";
 
 const WaitingList = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const {
@@ -38,10 +39,11 @@ const WaitingList = () => {
       return;
     }
 
-    // Store email in localStorage (in a production app, this would be sent to a server)
+    // Store name and email in localStorage (in a production app, this would be sent to a server)
     try {
       const waitingList = JSON.parse(localStorage.getItem("waitingList") || "[]");
       waitingList.push({
+        name,
         email,
         timestamp: new Date().toISOString()
       });
@@ -50,6 +52,7 @@ const WaitingList = () => {
         title: "Thank you for joining!",
         description: "We'll notify you when NightKnight is ready."
       });
+      setName("");
       setEmail("");
     } catch (error) {
       toast({
@@ -85,9 +88,28 @@ const WaitingList = () => {
           </p>
           
           <div ref={emailSectionRef} className="max-w-md mx-auto my-12 scroll-mt-32">
-            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4">
-              <Input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Enter your email" className="input-kiddy" required />
-              <Button type="submit" disabled={isSubmitting} className="h-12 px-6 rounded-xl bg-story-purple hover:bg-story-purple/90 text-white button-bounce">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              <Input 
+                type="text" 
+                value={name} 
+                onChange={e => setName(e.target.value)} 
+                placeholder="Enter your name" 
+                className="input-kiddy h-12" 
+                required 
+              />
+              <Input 
+                type="email" 
+                value={email} 
+                onChange={e => setEmail(e.target.value)} 
+                placeholder="Enter your email" 
+                className="input-kiddy h-12" 
+                required 
+              />
+              <Button 
+                type="submit" 
+                disabled={isSubmitting} 
+                className="h-12 px-6 rounded-xl bg-story-purple hover:bg-story-purple/90 text-white button-bounce"
+              >
                 {isSubmitting ? "Joining..." : "Join Waiting List"}
               </Button>
             </form>
