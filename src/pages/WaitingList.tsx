@@ -11,16 +11,9 @@ import WaitingListHero from "@/components/waiting-list/WaitingListHero";
 
 const WaitingList = () => {
   const emailSectionRef = useRef<HTMLDivElement>(null);
-  const messageRef = useRef<HTMLDivElement>(null);
   
   const scrollToEmailSection = () => {
     emailSectionRef.current?.scrollIntoView({
-      behavior: 'smooth'
-    });
-  };
-  
-  const scrollToMessage = () => {
-    messageRef.current?.scrollIntoView({
       behavior: 'smooth'
     });
   };
@@ -31,7 +24,7 @@ const WaitingList = () => {
       
       <StoryBackground>
         <WaitingListHero emailSectionRef={emailSectionRef} />
-        <WaitingListForm onSubmissionMessage={scrollToMessage} />
+        <WaitingListForm />
       </StoryBackground>
       
       <ValueProposition />

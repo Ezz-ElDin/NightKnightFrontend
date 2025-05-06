@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,17 +21,6 @@ const WaitingListForm = ({ onSubmissionMessage }: WaitingListFormProps) => {
   
   const { toast } = useToast();
   const messageRef = useRef<HTMLDivElement>(null);
-  
-  const scrollToMessage = () => {
-    messageRef.current?.scrollIntoView({
-      behavior: 'smooth'
-    });
-    
-    // If parent component wants to know about submission, call the callback
-    if (onSubmissionMessage) {
-      onSubmissionMessage();
-    }
-  };
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,8 +54,13 @@ const WaitingListForm = ({ onSubmissionMessage }: WaitingListFormProps) => {
       setName("");
       setEmail("");
       
-      // Scroll to the message
-      setTimeout(scrollToMessage, 100);
+      // We're removing the auto-scrolling behavior
+      // No more scrollToMessage call here
+      
+      // Still notify parent if needed, but without scrolling
+      if (onSubmissionMessage) {
+        onSubmissionMessage();
+      }
       
     } catch (error: any) {
       // Check if the error is because user is already confirmed
@@ -89,8 +82,9 @@ const WaitingListForm = ({ onSubmissionMessage }: WaitingListFormProps) => {
         });
       }
       
-      // Scroll to the message
-      setTimeout(scrollToMessage, 100);
+      // We're removing the auto-scrolling behavior
+      // No more scrollToMessage call here
+      
     }
     
     setIsSubmitting(false);
@@ -145,7 +139,7 @@ const WaitingListForm = ({ onSubmissionMessage }: WaitingListFormProps) => {
         </form>
       )}
       
-      {/* Status message reference point */}
+      {/* Status message reference point - keeping this for future use */}
       <div ref={messageRef} className="scroll-mt-32"></div>
     </div>
   );
