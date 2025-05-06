@@ -3,7 +3,7 @@ import React, { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { Book, Globe, MessageCircle } from "lucide-react";
+import { Book, Globe, MessageCircle, Sword } from "lucide-react";
 import StoryBackground from "@/components/StoryBackground";
 import WaitingListStorySamples from "@/components/waiting-list/WaitingListStorySamples";
 import ValueProposition from "@/components/waiting-list/ValueProposition";
@@ -108,6 +108,9 @@ const WaitingList = () => {
           <div className="mb-8 flex justify-center">
             <div className="relative">
               <Book className="h-28 w-28 text-story-purple animate-wiggle" />
+              <div className="absolute -top-2 -right-8">
+                <Sword className="h-16 w-16 text-story-orange rotate-45 animate-leaf-sway" />
+              </div>
               <div className="absolute -top-4 -right-4 bg-story-yellow p-2 rounded-full animate-bounce-slow">
                 <p className="text-sm font-bold text-story-orange">Coming Soon</p>
               </div>
