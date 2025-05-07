@@ -11,6 +11,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { useTranslation } from 'react-i18next';
 
 interface ArabicSampleTexts {
   title: string;
@@ -24,6 +25,8 @@ interface WaitingListStorySamplesProps {
 }
 
 const WaitingListStorySamples = ({ arabicSampleTexts }: WaitingListStorySamplesProps) => {
+  const { t, i18n } = useTranslation('common');
+  
   const stories = [
     {
       title: "The Dragon's Treasure",
@@ -53,7 +56,8 @@ const WaitingListStorySamples = ({ arabicSampleTexts }: WaitingListStorySamplesP
       color: "bg-story-blue/20",
       borderColor: "border-story-blue",
       icon: <BookImage className="h-5 w-5 text-story-blue" />,
-      image: "/images/space-journey.png"
+      image: "/images/space-journey.png",
+      rtl: true // Always set RTL for the Arabic story
     }
   ];
 
@@ -61,10 +65,10 @@ const WaitingListStorySamples = ({ arabicSampleTexts }: WaitingListStorySamplesP
     <section className="py-12 px-4 bg-gradient-to-b from-white to-story-peach/20">
       <div className="container mx-auto">
         <h2 className="text-3xl font-bold mb-6 text-center text-story-purple">
-          Story Samples
+          {t('waitingList.storySamples.title')}
         </h2>
         <p className="text-lg text-center mb-8 max-w-2xl mx-auto">
-          Preview the magical stories you'll create with NightKnight
+          {t('waitingList.storySamples.subtitle')}
         </p>
         
         <Carousel
@@ -80,7 +84,7 @@ const WaitingListStorySamples = ({ arabicSampleTexts }: WaitingListStorySamplesP
                 <Card className={`h-full border-l-4 ${story.borderColor} rounded-xl shadow-md hover:shadow-lg transition-shadow overflow-hidden`}>
                   <div className="flex flex-col md:flex-row">
                     {/* Left side - Text content */}
-                    <div className={`p-5 flex-1 ${story.color}`}>
+                    <div className={`p-5 flex-1 ${story.color}`} dir={story.rtl ? "rtl" : i18n.dir()}>
                       <div className="flex items-center justify-between mb-3">
                         <h3 className="text-xl font-bold text-story-purple">{story.title}</h3>
                         <div className="bg-white p-2 rounded-full shadow-sm">
@@ -128,7 +132,7 @@ const WaitingListStorySamples = ({ arabicSampleTexts }: WaitingListStorySamplesP
         
         <div className="text-center mt-8">
           <p className="text-md italic text-story-blue">
-            Join our waiting list to create your own magical stories!
+            {t('waitingList.storySamples.joinPrompt')}
           </p>
         </div>
       </div>

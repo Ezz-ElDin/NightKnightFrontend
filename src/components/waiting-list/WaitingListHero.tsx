@@ -1,12 +1,15 @@
 
 import React, { RefObject } from 'react';
 import { Book, Sword } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface WaitingListHeroProps {
   emailSectionRef: RefObject<HTMLDivElement>;
 }
 
 const WaitingListHero = ({ emailSectionRef }: WaitingListHeroProps) => {
+  const { t } = useTranslation('common');
+  
   return (
     <div className="container max-w-6xl mx-auto text-center z-10">
       <div className="mb-8 flex justify-center">
@@ -22,13 +25,13 @@ const WaitingListHero = ({ emailSectionRef }: WaitingListHeroProps) => {
       </div>
       
       <h1 className="text-5xl md:text-7xl font-bold mb-6 text-story-purple">
-        NightKnight
+        {t('waitingList.title')}
       </h1>
       
-      <h2 className="text-3xl md:text-4xl font-semibold mb-8 text-story-blue">Magical Stories for Children</h2>
+      <h2 className="text-3xl md:text-4xl font-semibold mb-8 text-story-blue">{t('waitingList.subtitle')}</h2>
       
       <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-        Our storytelling platform is launching soon! Join our waiting list to be the first to know.
+        {t('waitingList.description')}
       </p>
       
       <div ref={emailSectionRef} className="scroll-mt-32"></div>

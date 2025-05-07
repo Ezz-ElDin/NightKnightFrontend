@@ -1,181 +1,182 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
-    --foreground: 215 25% 27%;
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
-    --card-foreground: 215 25% 27%;
+    --card-foreground: 222.2 84% 4.9%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 215 25% 27%;
+    --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 220 30% 56%;
+    --primary: 222.2 47.4% 11.2%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 188 36% 60%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
 
-    --muted: 220 20% 94%;
-    --muted-foreground: 215 15% 55%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 50 100% 90%;
-    --accent-foreground: 215 25% 27%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 220 20% 86%;
-    --input: 220 20% 86%;
-    --ring: 220 30% 56%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
 
-    --radius: 1.5rem;
+    --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Story Theme Colors */
+    --story-purple: 269 76% 61%;
+    --story-lightPurple: 274 100% 94%;
+    --story-blue: 211 100% 50%;
+    --story-lightBlue: 211 100% 93%;
+    --story-green: 156 72% 88%; 
+    --story-forest: 149 65% 30%;
+    --story-seafoam: 178 82% 91%;
+    --story-yellow: 41 100% 90%;
+    --story-orange: 34 100% 49%;
+    --story-pink: 327 87% 92%;
+    --story-peach: 26 100% 95%;
   }
-}
 
-/* Improved font-face declaration with explicit settings for better cross-device consistency */
-@font-face {
-  font-family: 'GhibliFont';
-  src: url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-  font-weight: 300 700;
-  font-style: normal;
-  font-display: swap;
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
 }
 
 @layer base {
   * {
     @apply border-border;
   }
-
   body {
-    @apply bg-background text-foreground font-ghibli;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
-    background-image: 
-      radial-gradient(circle at 20% 80%, rgba(163, 211, 170, 0.08) 0%, transparent 60%),
-      radial-gradient(circle at 80% 20%, rgba(116, 181, 190, 0.08) 0%, transparent 60%),
-      url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='rgba(106, 117, 179, 0.05)' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
-    background-size: 100% 100%, 100% 100%, 300px 300px;
-    background-attachment: fixed;
-  }
-
-  /* Added explicit font-family to headings for consistency */
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-ghibli;
-  }
-
-  /* Added font-smoothing to input elements for consistent rendering */
-  input, textarea, select, button {
-    @apply font-ghibli;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
 
-@layer utilities {
-  .font-ghibli {
-    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  }
-
-  .text-shadow-sm {
-    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
-  }
-
-  .text-shadow {
-    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-
-  .bg-ghibli-gradient {
-    background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(212,220,255,0.9) 100%);
-  }
-}
-
+/* Custom Kiddy Card Style */
 @layer components {
+  .card-kiddy {
+    @apply bg-white p-6 rounded-xl border-2 border-story-seafoam shadow-md transition-all;
+  }
+  .input-kiddy {
+    @apply border-2 border-story-seafoam rounded-xl focus:border-story-purple transition-colors;
+  }
   .button-bounce {
     @apply transition-transform active:scale-95;
   }
-  
-  .card-kiddy {
-    @apply bg-white/90 rounded-3xl shadow-md border border-story-lightPurple p-6 backdrop-blur-sm;
-  }
-  
-  .input-kiddy {
-    @apply bg-white/90 border border-story-lightPurple rounded-xl px-4 py-3 focus:border-story-purple focus:ring-2 focus:ring-story-purple/30 transition-all;
-  }
-
-  .ghibli-card {
-    @apply bg-white/80 backdrop-blur-sm rounded-3xl shadow-md border border-story-seafoam/50 p-6;
-  }
-
-  .ghibli-btn {
-    @apply bg-story-teal text-white rounded-full shadow-md hover:bg-story-teal/90 transition-all;
-  }
-
-  .ghibli-btn-outline {
-    @apply bg-white/80 backdrop-blur-sm border border-story-teal text-story-teal rounded-full shadow-sm hover:bg-story-teal/10 transition-all;
-  }
-
-  .dust-sprite {
-    @apply absolute rounded-full bg-black/5 animate-dust-float;
-  }
 }
 
-/* Add new animations for kid-friendly UI */
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
+/* Animations */
 @keyframes wiggle {
   0%, 100% { transform: rotate(-3deg); }
   50% { transform: rotate(3deg); }
 }
 
-@keyframes scale-pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
+@keyframes bounce-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
-@keyframes fade-in {
-  0% { opacity: 0; transform: translateY(10px); }
-  100% { opacity: 1; transform: translateY(0); }
+@keyframes leaf-sway {
+  0%, 100% { transform: rotate(45deg) translateY(0); }
+  50% { transform: rotate(50deg) translateY(-5px); }
 }
 
-@keyframes fade-out {
-  0% { opacity: 1; transform: translateY(0); }
-  100% { opacity: 0; transform: translateY(-10px); }
-}
-
-.animate-bounce-slow {
-  animation: bounce 2s infinite ease-in-out;
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
 }
 
 .animate-wiggle {
-  animation: wiggle 2s infinite ease-in-out;
+  animation: wiggle 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-.animate-scale-pulse {
-  animation: scale-pulse 2s infinite ease-in-out;
+.animate-bounce-slow {
+  animation: bounce-slow 5s infinite;
 }
 
-.animate-fade-in {
-  animation: fade-in 0.5s ease-out forwards;
+.animate-leaf-sway {
+  animation: leaf-sway 7s infinite;
 }
 
-.animate-fade-out {
-  animation: fade-out 0.3s ease-in forwards;
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* RTL Support */
+.rtl .carousel-item {
+  direction: rtl;
+}
+
+/* Apply RTL-specific styles when the html dir is rtl */
+html[dir="rtl"] .ml-auto {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+html[dir="rtl"] .mr-2 {
+  margin-right: 0;
+  margin-left: 0.5rem;
+}
+
+html[dir="rtl"] .ml-2 {
+  margin-left: 0;
+  margin-right: 0.5rem;
+}
+
+html[dir="rtl"] .mr-4 {
+  margin-right: 0;
+  margin-left: 1rem;
+}
+
+html[dir="rtl"] .border-l-4 {
+  border-left: none;
+  border-right: 4px solid;
+}
+
+/* Fix flexbox direction in RTL */
+html[dir="rtl"] .flex-row {
+  flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .space-x-4 > * + * {
+  margin-left: 0;
+  margin-right: 1rem;
 }

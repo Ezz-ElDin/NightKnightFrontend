@@ -1,23 +1,26 @@
 
 import { MessageCircle, Book, Globe } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const ValueProposition = () => {
+  const { t } = useTranslation('common');
+  
   const features = [
     {
-      title: "Engaging Experience",
-      description: "Create meaningful connections as you and your child craft stories together!",
+      title: t('waitingList.valueProposition.features.experience.title'),
+      description: t('waitingList.valueProposition.features.experience.description'),
       icon: <MessageCircle className="h-8 w-8 text-story-purple" />,
       bgColor: "bg-story-lightPurple"
     },
     {
-      title: "Endless Imagination",
-      description: "Take control of story content with characters and themes your child loves!",
+      title: t('waitingList.valueProposition.features.imagination.title'),
+      description: t('waitingList.valueProposition.features.imagination.description'),
       icon: <Book className="h-8 w-8 text-story-orange" />,
       bgColor: "bg-story-yellow"
     },
     {
-      title: "Multiple Languages",
-      description: "Stories in different languages make bedtime both fun and educational!",
+      title: t('waitingList.valueProposition.features.languages.title'),
+      description: t('waitingList.valueProposition.features.languages.description'),
       icon: <Globe className="h-8 w-8 text-story-purple" />,
       bgColor: "bg-story-pink"
     }
@@ -27,10 +30,10 @@ const ValueProposition = () => {
     <section className="py-20 px-4 bg-gradient-to-b from-white to-story-lightPurple/20">
       <div className="container mx-auto">
         <h2 className="text-4xl font-bold mb-4 text-center text-story-purple">
-          Why Storyland?
+          {t('waitingList.valueProposition.title')}
         </h2>
         <p className="text-xl text-center mb-12 max-w-3xl mx-auto text-story-blue">
-          We're building the ultimate bedtime story platform for parents and children
+          {t('waitingList.valueProposition.subtitle')}
         </p>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">

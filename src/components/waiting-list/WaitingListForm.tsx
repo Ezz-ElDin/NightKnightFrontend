@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { api } from "@/lib/api";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { useTranslation } from "react-i18next";
 
 interface WaitingListFormProps {
   onSubmissionMessage?: () => void;
@@ -21,6 +22,7 @@ const WaitingListForm = ({ onSubmissionMessage }: WaitingListFormProps) => {
   
   const { toast } = useToast();
   const messageRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation('common');
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,13 +51,10 @@ const WaitingListForm = ({ onSubmissionMessage }: WaitingListFormProps) => {
       setFormSubmitted(true);
       setSubmissionStatus({
         type: 'success',
-        message: 'Thanks for joining! Please check your email to confirm your subscription.'
+        message: t('waitingList.form.successMessage')
       });
       setName("");
       setEmail("");
-      
-      // We're removing the auto-scrolling behavior
-      // No more scrollToMessage call here
       
       // Still notify parent if needed, but without scrolling
       if (onSubmissionMessage) {
@@ -67,12 +66,12 @@ const WaitingListForm = ({ onSubmissionMessage }: WaitingListFormProps) => {
       if (error.response && error.response.status === 409) {
         setSubmissionStatus({
           type: 'already-confirmed',
-          message: 'You are already confirmed!'
+          message: t('waitingList.form.alreadyConfirmedMessage')
         });
       } else {
         setSubmissionStatus({
           type: 'error',
-          message: 'Something went wrong, please try again.'
+          message: t('waitingList.form.errorMessage')
         });
         
         toast({
@@ -81,10 +80,6 @@ const WaitingListForm = ({ onSubmissionMessage }: WaitingListFormProps) => {
           variant: "destructive"
         });
       }
-      
-      // We're removing the auto-scrolling behavior
-      // No more scrollToMessage call here
-      
     }
     
     setIsSubmitting(false);
@@ -102,9 +97,9 @@ const WaitingListForm = ({ onSubmissionMessage }: WaitingListFormProps) => {
             <AlertTitle className={`text-xl ${submissionStatus.type === 'success' ? 'text-green-600' : 
               submissionStatus.type === 'already-confirmed' ? 'text-blue-600' : 
               'text-red-600'}`}>
-              {submissionStatus.type === 'success' ? 'Success!' : 
-               submissionStatus.type === 'already-confirmed' ? 'Already Confirmed' : 
-               'Error'}
+              {submissionStatus.type === 'success' ? t('waitingList.form.success') : 
+               submissionStatus.type === 'already-confirmed' ? t('waitingList.form.alreadyConfirmed') : 
+               t('waitingList.form.error')}
             </AlertTitle>
             <AlertDescription className="text-base">
               {submissionStatus.message}
@@ -117,7 +112,7 @@ const WaitingListForm = ({ onSubmissionMessage }: WaitingListFormProps) => {
             type="text" 
             value={name} 
             onChange={e => setName(e.target.value)} 
-            placeholder="Enter your name" 
+            placeholder={t('waitingList.form.namePlaceholder')} 
             className="input-kiddy h-12" 
             required 
           />
@@ -125,7 +120,7 @@ const WaitingListForm = ({ onSubmissionMessage }: WaitingListFormProps) => {
             type="email" 
             value={email} 
             onChange={e => setEmail(e.target.value)} 
-            placeholder="Enter your email" 
+            placeholder={t('waitingList.form.emailPlaceholder')} 
             className="input-kiddy h-12" 
             required 
           />
@@ -134,7 +129,7 @@ const WaitingListForm = ({ onSubmissionMessage }: WaitingListFormProps) => {
             disabled={isSubmitting} 
             className="h-12 px-6 rounded-xl bg-story-purple hover:bg-story-purple/90 text-white button-bounce"
           >
-            {isSubmitting ? "Joining..." : "Join Waiting List"}
+            {isSubmitting ? t('waitingList.form.submitting') : t('waitingList.form.submitButton')}
           </Button>
         </form>
       )}
