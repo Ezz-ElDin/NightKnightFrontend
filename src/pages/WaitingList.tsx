@@ -6,7 +6,6 @@ import ValueProposition from "@/components/waiting-list/ValueProposition";
 import WaitingListNavbar from "@/components/waiting-list/WaitingListNavbar";
 import HowItWorks from "@/components/HowItWorks";
 import WaitingListForm from "@/components/waiting-list/WaitingListForm";
-import WaitingListFAQ from "@/components/waiting-list/WaitingListFAQ";
 import WaitingListHero from "@/components/waiting-list/WaitingListHero";
 
 // Arabic story sample text to replace German text
@@ -40,8 +39,6 @@ const WaitingList = () => {
       <HowItWorks />
       
       <WaitingListStorySamples arabicSampleTexts={arabicSampleTexts} />
-      
-      <WaitingListFAQ />
     </div>
   );
 };
