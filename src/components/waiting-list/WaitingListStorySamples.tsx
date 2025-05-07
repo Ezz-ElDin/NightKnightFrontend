@@ -2,7 +2,8 @@
 import React from 'react';
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Book, BookOpen, Globe, BookImage } from 'lucide-react';
+import { Book, BookOpen, Globe, BookImage, ChevronUp } from 'lucide-react';
+import { Button } from "@/components/ui/button";
 import {
   Carousel,
   CarouselContent,
@@ -21,9 +22,10 @@ interface ArabicSampleTexts {
 
 interface WaitingListStorySamplesProps {
   arabicSampleTexts?: ArabicSampleTexts;
+  scrollToEmailSection: () => void;
 }
 
-const WaitingListStorySamples = ({ arabicSampleTexts }: WaitingListStorySamplesProps) => {
+const WaitingListStorySamples = ({ arabicSampleTexts, scrollToEmailSection }: WaitingListStorySamplesProps) => {
   const stories = [
     {
       title: "The Dragon's Treasure",
@@ -126,10 +128,17 @@ const WaitingListStorySamples = ({ arabicSampleTexts }: WaitingListStorySamplesP
           </div>
         </Carousel>
         
-        <div className="text-center mt-8">
-          <p className="text-md italic text-story-blue">
+        <div className="text-center mt-12 mb-4">
+          <p className="text-xl md:text-2xl font-semibold text-story-purple mb-6">
             Join our waiting list to create your own magical stories!
           </p>
+          <Button 
+            onClick={scrollToEmailSection}
+            className="bg-story-purple hover:bg-story-purple/90 text-white font-semibold px-8 py-3 rounded-full text-lg flex items-center gap-2 shadow-lg hover:shadow-xl transition-all"
+          >
+            Join the waiting list
+            <ChevronUp className="h-5 w-5 animate-bounce-slow" />
+          </Button>
         </div>
       </div>
     </section>
