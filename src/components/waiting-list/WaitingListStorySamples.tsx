@@ -26,6 +26,7 @@ interface WaitingListStorySamplesProps {
 
 const WaitingListStorySamples = ({ arabicSampleTexts }: WaitingListStorySamplesProps) => {
   const { t, i18n } = useTranslation('common');
+  const isRTL = i18n.dir() === 'rtl';
   
   const stories = [
     {
@@ -125,8 +126,17 @@ const WaitingListStorySamples = ({ arabicSampleTexts }: WaitingListStorySamplesP
             ))}
           </CarouselContent>
           <div className="flex justify-center mt-6">
-            <CarouselPrevious className="relative mr-2 static translate-y-0 bg-white text-story-purple border-story-purple hover:bg-story-lightPurple/20" />
-            <CarouselNext className="relative ml-2 static translate-y-0 bg-white text-story-purple border-story-purple hover:bg-story-lightPurple/20" />
+            {isRTL ? (
+              <>
+                <CarouselNext className="relative mr-2 static translate-y-0 bg-white text-story-purple border-story-purple hover:bg-story-lightPurple/20" />
+                <CarouselPrevious className="relative ml-2 static translate-y-0 bg-white text-story-purple border-story-purple hover:bg-story-lightPurple/20" />
+              </>
+            ) : (
+              <>
+                <CarouselPrevious className="relative mr-2 static translate-y-0 bg-white text-story-purple border-story-purple hover:bg-story-lightPurple/20" />
+                <CarouselNext className="relative ml-2 static translate-y-0 bg-white text-story-purple border-story-purple hover:bg-story-lightPurple/20" />
+              </>
+            )}
           </div>
         </Carousel>
         
