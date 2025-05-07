@@ -12,7 +12,18 @@ import {
 } from "@/components/ui/carousel";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 
-const WaitingListStorySamples = () => {
+interface ArabicSampleTexts {
+  title: string;
+  description: string;
+  genre: string;
+  language: string;
+}
+
+interface WaitingListStorySamplesProps {
+  arabicSampleTexts?: ArabicSampleTexts;
+}
+
+const WaitingListStorySamples = ({ arabicSampleTexts }: WaitingListStorySamplesProps) => {
   const stories = [
     {
       title: "The Dragon's Treasure",
@@ -35,10 +46,10 @@ const WaitingListStorySamples = () => {
       image: "/images/moon-kittens.png"
     },
     {
-      title: "Kapitän Leos Weltraumreise",
-      theme: "Weltraum",
-      language: "Deutsch",
-      excerpt: "Kapitän Leo und sein treuer Roboterfreund Beep bereiteten sich auf ihr bisher größtes Abenteuer vor. Sie bestiegen ihr Raumschiff, um die Sterne zu erforschen...",
+      title: arabicSampleTexts?.title || "Kapitän Leos Weltraumreise",
+      theme: arabicSampleTexts?.genre || "Weltraum",
+      language: arabicSampleTexts?.language || "Deutsch",
+      excerpt: arabicSampleTexts?.description || "Kapitän Leo und sein treuer Roboterfreund Beep bereiteten sich auf ihr bisher größtes Abenteuer vor. Sie bestiegen ihr Raumschiff, um die Sterne zu erforschen...",
       color: "bg-story-blue/20",
       borderColor: "border-story-blue",
       icon: <BookImage className="h-5 w-5 text-story-blue" />,
