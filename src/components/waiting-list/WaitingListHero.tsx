@@ -25,7 +25,7 @@ const WaitingListHero = ({ emailSectionRef }: WaitingListHeroProps) => {
         NightKnight
       </h1>
       
-      <h2 className="text-3xl md:text-4xl font-semibold mb-8 text-story-blue">Magical Stories for Children</h2>
+      <h2 className="text-3xl md:text-4xl font-semibold mb-8 text-story-blue">GIT PULL</h2>
       
       <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
         Our storytelling platform is launching soon! Join our waiting list to be the first to know.
