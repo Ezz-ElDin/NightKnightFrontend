@@ -134,9 +134,9 @@ const WaitingListStorySamples = ({ arabicSampleTexts, scrollToEmailSection }: Wa
           </p>
           <Button 
             onClick={scrollToEmailSection}
-            className="bg-story-purple hover:bg-story-purple/90 text-white font-semibold px-10 py-6 rounded-xl text-lg inline-flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all mx-auto"
+            className="bg-story-purple hover:bg-story-purple/90 text-white font-semibold px-8 py-3 rounded-full text-lg flex items-center gap-2 shadow-lg hover:shadow-xl transition-all"
           >
-            <span>Join the waiting list</span>
+            Join the waiting list
             <ChevronUp className="h-5 w-5 animate-bounce-slow" />
           </Button>
         </div>
