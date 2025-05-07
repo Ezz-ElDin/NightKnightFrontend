@@ -9,6 +9,14 @@ import WaitingListForm from "@/components/waiting-list/WaitingListForm";
 import WaitingListFAQ from "@/components/waiting-list/WaitingListFAQ";
 import WaitingListHero from "@/components/waiting-list/WaitingListHero";
 
+// Arabic story sample text to replace German text
+const arabicSampleTexts = {
+  title: "مغامرة القائد ليو في الفضاء",
+  description: "القائد ليو وصاحبه الروبوت اللطيف بيب كانوا مستعدين لأعظم مغامرة في حياتهم! ركبوا سفينتهم الفضائية الجديدة، ومستنيين اللحظة اللي هيطيروا فيها وسط النجوم ويكتشفوا عوالم ما حدش شافها قبل كده...",
+  genre: "خيال علمي",
+  language: "عربي"
+};
+
 const WaitingList = () => {
   const emailSectionRef = useRef<HTMLDivElement>(null);
   
@@ -31,7 +39,7 @@ const WaitingList = () => {
       
       <HowItWorks />
       
-      <WaitingListStorySamples />
+      <WaitingListStorySamples arabicSampleTexts={arabicSampleTexts} />
       
       <WaitingListFAQ />
     </div>
