@@ -35,10 +35,27 @@ const App = () => (
         </Routes>}
         
         <Routes>
-          {/* Always redirect to waiting list in waiting list mode */}
-          <Route path="/waiting-list" element={<WaitingList />} />
-          {/* Redirect all other routes to the waiting list */}
-          <Route path="*" element={<Navigate replace to="/waiting-list" />} />
+          {WAITING_LIST_MODE ? (
+            <>
+              <Route path="/waiting-list" element={<WaitingList />} />
+              {/* Redirect all other routes to the waiting list */}
+              <Route path="*" element={<Navigate replace to="/waiting-list" />} />
+            </>
+          ) : (
+            <>
+              <Route path="/" element={<Index />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/create-story" element={<CreateStory />} />
+              <Route path="/account-settings" element={<AccountSettings />} />
+              <Route path="/story-viewer" element={<StoryViewer />} />
+              <Route path="/auth/callback" element={<AuthCallback />} />
+              {/* Add the waiting list route even when not in waiting list mode */}
+              <Route path="/waiting-list" element={<WaitingList />} />
+              <Route path="*" element={<NotFound />} />
+            </>
+          )}
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
