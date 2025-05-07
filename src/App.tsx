@@ -20,7 +20,7 @@ import WaitingList from "./pages/WaitingList";
 const queryClient = new QueryClient();
 
 // Flag to enable/disable the waiting list mode
-const WAITING_LIST_MODE = false;
+const WAITING_LIST_MODE = true;
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
