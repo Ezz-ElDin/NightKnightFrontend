@@ -6,7 +6,6 @@ import LoggedInMenu from "./LoggedInMenu";
 import GuestMenu from "./GuestMenu";
 import MobileMenuButton from "./MobileMenuButton";
 import MobileMenu from "./MobileMenu";
-import LanguageSwitcher from "../LanguageSwitcher";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -31,17 +30,11 @@ const Navbar = () => {
         
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-4">
-          <div className="mr-4">
-            <LanguageSwitcher />
-          </div>
           {isLoggedIn ? <LoggedInMenu /> : <GuestMenu />}
         </div>
         
         {/* Mobile menu button */}
-        <div className="flex items-center md:hidden space-x-2">
-          <LanguageSwitcher />
-          <MobileMenuButton isOpen={mobileMenuOpen} onClick={toggleMobileMenu} />
-        </div>
+        <MobileMenuButton isOpen={mobileMenuOpen} onClick={toggleMobileMenu} />
       </div>
       
       {/* Mobile menu */}
