@@ -38,7 +38,7 @@ const WaitingList = () => {
       
       <HowItWorks />
       
-      <WaitingListStorySamples arabicSampleTexts={arabicSampleTexts} scrollToEmailSection={scrollToEmailSection} />
+      <WaitingListStorySamples arabicSampleTexts={arabicSampleTexts} />
     </div>
   );
 };
