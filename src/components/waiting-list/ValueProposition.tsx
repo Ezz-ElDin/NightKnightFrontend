@@ -27,7 +27,7 @@ const ValueProposition = () => {
     <section className="py-20 px-4 bg-gradient-to-b from-white to-story-lightPurple/20">
       <div className="container mx-auto">
         <h2 className="text-4xl font-bold mb-4 text-center text-story-purple">
-          Why NightKnight?
+          Why Storyland?
         </h2>
         <p className="text-xl text-center mb-12 max-w-3xl mx-auto text-story-blue">
           We're building the ultimate bedtime story platform for parents and children
