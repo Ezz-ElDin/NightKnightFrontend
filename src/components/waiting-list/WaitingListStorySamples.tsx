@@ -50,10 +50,10 @@ const WaitingListStorySamples = ({ arabicSampleTexts }: WaitingListStorySamplesP
       image: "/images/moon-kittens.png"
     },
     {
-      title: arabicSampleTexts?.title || "Kapitän Leos Weltraumreise",
-      theme: arabicSampleTexts?.genre || "Weltraum",
-      language: arabicSampleTexts?.language || "Deutsch",
-      excerpt: arabicSampleTexts?.description || "Kapitän Leo und sein treuer Roboterfreund Beep bereiteten sich auf ihr bisher größtes Abenteuer vor. Sie bestiegen ihr Raumschiff, um die Sterne zu erforschen...",
+      title: arabicSampleTexts?.title || "مغامرة القائد ليو في الفضاء",
+      theme: arabicSampleTexts?.genre || "خيال علمي",
+      language: arabicSampleTexts?.language || "عربي",
+      excerpt: arabicSampleTexts?.description || "القائد ليو وصاحبه الروبوت اللطيف بيب كانوا مستعدين لأعظم مغامرة في حياتهم! ركبوا سفينتهم الفضائية الجديدة، ومستنيين اللحظة اللي هيطيروا فيها وسط النجوم ويكتشفوا عوالم ما حدش شافها قبل كده...",
       color: "bg-story-blue/20",
       borderColor: "border-story-blue",
       icon: <BookImage className="h-5 w-5 text-story-blue" />,
@@ -83,7 +83,7 @@ const WaitingListStorySamples = ({ arabicSampleTexts }: WaitingListStorySamplesP
             {stories.map((story, index) => (
               <CarouselItem key={index} className="md:basis-4/5 lg:basis-3/4 pl-4">
                 <Card className={`h-full border-l-4 ${story.borderColor} rounded-xl shadow-md hover:shadow-lg transition-shadow overflow-hidden`}>
-                  <div className="flex flex-col md:flex-row">
+                  <div className={`flex flex-col md:flex-row ${isRTL && !story.rtl ? 'md:flex-row-reverse' : ''}`}>
                     {/* Left side - Text content */}
                     <div className={`p-5 flex-1 ${story.color}`} dir={story.rtl ? "rtl" : i18n.dir()}>
                       <div className="flex items-center justify-between mb-3">
