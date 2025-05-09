@@ -66,19 +66,20 @@ const WaitingList = () => {
             className={`
               max-w-md mx-auto shadow-lg 
               ${statusMessage.type === 'success' 
-                ? 'bg-story-pink/30 border-story-purple text-story-purple' 
-                : 'bg-story-yellow/30 border-story-orange text-story-orange'
+                ? 'bg-gradient-to-r from-story-seafoam/40 to-story-lightPurple/30 border-story-purple/50' 
+                : 'bg-gradient-to-r from-story-peach/40 to-story-pink/30 border-story-orange/50'
               } 
-              rounded-xl px-6 py-4 backdrop-blur-sm
+              rounded-2xl px-8 py-5 backdrop-blur-md border-2
             `}
           >
             <div className="flex items-center justify-between">
-              <AlertDescription className="text-lg font-medium">
+              <AlertDescription className="text-lg font-medium tracking-wide text-center flex-grow">
                 {statusMessage.text}
               </AlertDescription>
               <button 
                 onClick={dismissMessage}
-                className="ml-4 rounded-full p-1 hover:bg-white/20 transition-colors"
+                className="ml-6 rounded-full p-1.5 hover:bg-white/30 transition-all flex-shrink-0 active:scale-95"
+                aria-label="Dismiss notification"
               >
                 <X className="h-5 w-5" />
               </button>
