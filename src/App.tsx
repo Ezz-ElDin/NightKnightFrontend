@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -20,7 +19,7 @@ import WaitingList from "./pages/WaitingList";
 const queryClient = new QueryClient();
 
 // Flag to enable/disable the waiting list mode
-const WAITING_LIST_MODE = true;
+const WAITING_LIST_MODE = false;
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
