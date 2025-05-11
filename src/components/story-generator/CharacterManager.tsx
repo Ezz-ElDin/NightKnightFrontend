@@ -18,7 +18,7 @@ import {
   SelectValue 
 } from "@/components/ui/select";
 import { Character, PERSONALITY_TRAITS, CHARACTER_ROLES } from "./constants";
-import { Baby, User, Cat, Dog, Alien, Crown, Wand, Bot } from "lucide-react";
+import { Baby, User, Cat, Dog, Ghost, Crown, Wand2, Bot } from "lucide-react";
 
 interface CharacterManagerProps {
   characters: Character[];
@@ -44,9 +44,9 @@ const CHARACTER_TYPE_OPTIONS = [
   { value: "dragon", label: "dragon", icon: <Cat className="h-4 w-4 mr-2" /> },
   { value: "lion", label: "lion", icon: <Cat className="h-4 w-4 mr-2" /> },
   { value: "puppy", label: "puppy", icon: <Dog className="h-4 w-4 mr-2" /> },
-  { value: "alien", label: "alien", icon: <Alien className="h-4 w-4 mr-2" /> },
+  { value: "alien", label: "alien", icon: <Ghost className="h-4 w-4 mr-2" /> },
   { value: "fairy", label: "fairy", icon: <Crown className="h-4 w-4 mr-2" /> },
-  { value: "wizard", label: "wizard", icon: <Wand className="h-4 w-4 mr-2" /> },
+  { value: "wizard", label: "wizard", icon: <Wand2 className="h-4 w-4 mr-2" /> },
   { value: "robot", label: "robot", icon: <Bot className="h-4 w-4 mr-2" /> },
   { value: "other", label: "other", icon: <User className="h-4 w-4 mr-2" /> },
 ];
