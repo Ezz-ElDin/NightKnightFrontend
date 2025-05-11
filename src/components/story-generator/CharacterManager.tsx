@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { 
   Dialog, 
@@ -213,26 +212,28 @@ const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateC
       )}
       
       <Dialog open={characterDialogOpen} onOpenChange={setCharacterDialogOpen}>
-        <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
+        <DialogContent className="sm:max-w-[700px] md:max-w-[800px] max-h-[90vh] overflow-y-auto bg-gradient-to-b from-white to-primary/5 border-2 border-primary/30 rounded-xl shadow-xl">
           <DialogHeader>
-            <DialogTitle>Create a Character</DialogTitle>
+            <DialogTitle className="text-2xl text-center font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600">
+              Create a Magical Character
+            </DialogTitle>
           </DialogHeader>
-          <div className="space-y-4 py-4">
+          <div className="space-y-5 py-4">
             {/* Role selection at the top */}
             <div className="space-y-2">
-              <Label htmlFor="role">Role in Story</Label>
+              <Label htmlFor="role" className="text-lg">Role in Story</Label>
               <Select
                 value={currentCharacter.role}
                 onValueChange={(value) => setCurrentCharacter({...currentCharacter, role: value})}
               >
-                <SelectTrigger id="role" className="bg-white">
+                <SelectTrigger id="role" className="bg-white text-lg p-6">
                   <SelectValue placeholder="Select a role" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="max-h-[300px]">
                   {ROLE_OPTIONS.map(role => (
-                    <SelectItem key={role.value} value={role.value}>
+                    <SelectItem key={role.value} value={role.value} className="text-lg p-3">
                       <div className="flex items-center">
-                        <span className="text-2xl mr-3">{role.emoji}</span>
+                        <span className="text-3xl mr-3">{role.emoji}</span>
                         <span>{role.label}</span>
                       </div>
                     </SelectItem>
@@ -242,35 +243,36 @@ const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateC
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="characterName">Name</Label>
+              <Label htmlFor="characterName" className="text-lg">Name</Label>
               <Input
                 id="characterName"
                 value={currentCharacter.name}
                 onChange={(e) => setCurrentCharacter({...currentCharacter, name: e.target.value})}
                 placeholder="What's this character called?"
+                className="p-6 text-lg"
               />
             </div>
             
             <div className="space-y-4">
-              <Label>What does your character look like?</Label>
+              <Label className="text-lg">What does your character look like?</Label>
               
-              <div className="bg-primary/5 p-4 rounded-xl space-y-4">
-                <div className="grid grid-cols-2 gap-3">
+              <div className="bg-primary/5 p-6 rounded-xl space-y-5 border border-primary/20">
+                <div className="grid grid-cols-2 gap-4">
                   {/* Age Dropdown with emoji */}
                   <div className="space-y-2">
-                    <Label htmlFor="age">Age</Label>
+                    <Label htmlFor="age" className="text-lg">Age</Label>
                     <Select 
                       value={appearanceAge} 
                       onValueChange={setAppearanceAge}
                     >
-                      <SelectTrigger id="age" className="bg-white">
+                      <SelectTrigger id="age" className="bg-white text-lg p-5">
                         <SelectValue placeholder="Select age" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="max-h-[300px]">
                         {AGE_OPTIONS.map(age => (
-                          <SelectItem key={age.value} value={age.value}>
+                          <SelectItem key={age.value} value={age.value} className="text-lg p-3">
                             <div className="flex items-center">
-                              <span className="text-2xl mr-3">{age.emoji}</span>
+                              <span className="text-3xl mr-3">{age.emoji}</span>
                               <span>{age.label}</span>
                             </div>
                           </SelectItem>
@@ -281,17 +283,17 @@ const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateC
                   
                   {/* Color Dropdown */}
                   <div className="space-y-2">
-                    <Label htmlFor="color">Color</Label>
+                    <Label htmlFor="color" className="text-lg">Color</Label>
                     <Select 
                       value={appearanceColor} 
                       onValueChange={setAppearanceColor}
                     >
-                      <SelectTrigger id="color" className="bg-white">
+                      <SelectTrigger id="color" className="bg-white text-lg p-5">
                         <SelectValue placeholder="Select color" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="max-h-[300px]">
                         {COLOR_OPTIONS.map(color => (
-                          <SelectItem key={color} value={color}>
+                          <SelectItem key={color} value={color} className="text-lg p-3">
                             {color}
                           </SelectItem>
                         ))}
@@ -304,7 +306,7 @@ const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateC
                         value={appearanceColorCustom}
                         onChange={(e) => setAppearanceColorCustom(e.target.value)}
                         placeholder="Type a color..."
-                        className="mt-2"
+                        className="mt-2 p-5 text-lg"
                       />
                     )}
                   </div>
@@ -312,19 +314,19 @@ const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateC
                 
                 {/* Character Type Dropdown with emoji */}
                 <div className="space-y-2">
-                  <Label htmlFor="characterType">Character Type</Label>
+                  <Label htmlFor="characterType" className="text-lg">Character Type</Label>
                   <Select 
                     value={appearanceType} 
                     onValueChange={setAppearanceType}
                   >
-                    <SelectTrigger id="characterType" className="bg-white">
+                    <SelectTrigger id="characterType" className="bg-white text-lg p-5">
                       <SelectValue placeholder="Select type" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="max-h-[300px]">
                       {CHARACTER_TYPE_OPTIONS.map(type => (
-                        <SelectItem key={type.value} value={type.value}>
+                        <SelectItem key={type.value} value={type.value} className="text-lg p-3">
                           <div className="flex items-center">
-                            <span className="text-2xl mr-3">{type.emoji}</span>
+                            <span className="text-3xl mr-3">{type.emoji}</span>
                             <span>{type.label}</span>
                           </div>
                         </SelectItem>
@@ -338,56 +340,59 @@ const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateC
                       value={appearanceTypeCustom}
                       onChange={(e) => setAppearanceTypeCustom(e.target.value)}
                       placeholder="Type a character type..."
-                      className="mt-2"
+                      className="mt-2 p-5 text-lg"
                     />
                   )}
                 </div>
                 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-4">
                   {/* Accessory 1 Input */}
                   <div className="space-y-2">
-                    <Label htmlFor="accessory1">Accessory 1</Label>
+                    <Label htmlFor="accessory1" className="text-lg">Accessory 1</Label>
                     <Input
                       id="accessory1"
                       value={appearanceAccessory1}
                       onChange={(e) => setAppearanceAccessory1(e.target.value)}
                       placeholder="e.g., magic wand, robot arm"
+                      className="p-5 text-lg"
                     />
                   </div>
                   
                   {/* Accessory 2 Input */}
                   <div className="space-y-2">
-                    <Label htmlFor="accessory2">Accessory 2</Label>
+                    <Label htmlFor="accessory2" className="text-lg">Accessory 2</Label>
                     <Input
                       id="accessory2"
                       value={appearanceAccessory2}
                       onChange={(e) => setAppearanceAccessory2(e.target.value)}
                       placeholder="e.g., cape, lab coat"
+                      className="p-5 text-lg"
                     />
                   </div>
                 </div>
                 
                 {/* Preview of the generated appearance */}
-                <div className="mt-4 p-3 bg-white rounded-xl border shadow-sm">
-                  <p className="text-sm text-muted-foreground mb-1">Preview:</p>
-                  <p className="font-medium">{generatedAppearance}</p>
+                <div className="mt-4 p-5 bg-white rounded-xl border shadow-sm">
+                  <p className="text-md text-muted-foreground mb-2">Preview:</p>
+                  <p className="font-medium text-lg">{generatedAppearance}</p>
                 </div>
               </div>
             </div>
             
             <div className="space-y-2">
-              <Label>Personality Traits</Label>
-              <div className="grid grid-cols-2 gap-2">
+              <Label className="text-lg">Personality Traits</Label>
+              <div className="grid grid-cols-2 gap-3 bg-primary/5 p-6 rounded-xl border border-primary/20">
                 {PERSONALITY_TRAITS.map(trait => (
-                  <div key={trait} className="flex items-center space-x-2">
+                  <div key={trait} className="flex items-center space-x-3">
                     <Checkbox 
                       id={`trait-${trait}`}
                       checked={currentCharacter.personality.includes(trait)}
-                      onCheckedChange={() => togglePersonalityTrait(trait)} 
+                      onCheckedChange={() => togglePersonalityTrait(trait)}
+                      className="w-6 h-6" 
                     />
                     <label 
                       htmlFor={`trait-${trait}`}
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      className="text-md font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                     >
                       {trait}
                     </label>
@@ -397,7 +402,12 @@ const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateC
             </div>
           </div>
           <div className="flex justify-end">
-            <Button onClick={addCharacter}>Add Character</Button>
+            <Button 
+              onClick={addCharacter}
+              className="text-lg px-8 py-6 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 shadow-lg"
+            >
+              Add Character ✨
+            </Button>
           </div>
         </DialogContent>
       </Dialog>
