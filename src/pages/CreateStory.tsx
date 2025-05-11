@@ -230,14 +230,17 @@ const CreateStory = () => {
                               key={character.id} 
                               className="border-2 border-primary/20 p-4 rounded-xl bg-white shadow-md flex flex-col md:flex-row items-center gap-4 relative"
                             >
-                              {/* Character silhouette icon */}
+                              {/* Character emoji icon */}
                               <div className={`w-24 h-24 rounded-full flex items-center justify-center bg-gradient-to-br ${getCharacterGradient(character.role)}`}>
                                 <span className="text-4xl">{getCharacterEmoji(character.role)}</span>
                               </div>
                               
                               <div className="flex-1 text-center md:text-left">
                                 <div className="font-bold text-xl">{character.name}</div>
-                                <div className="text-sm text-primary bg-primary/10 inline-block px-2 py-1 rounded-full">{character.role}</div>
+                                <div className="text-sm text-primary bg-primary/10 inline-block px-2 py-1 rounded-full">
+                                  <span className="mr-1">{getCharacterEmoji(character.role)}</span>
+                                  {character.role}
+                                </div>
                                 
                                 <div className="mt-2 text-gray-600">{character.appearance}</div>
                                 
@@ -459,7 +462,8 @@ const getCharacterEmoji = (role) => {
     case "Villain": return "😈";
     case "Sidekick": return "🧙";
     case "Mentor": return "👴";
-    case "Animal": return "🐾";
+    case "Friend": return "👫";
+    case "Guide": return "🧭";
     default: return "👤";
   }
 };

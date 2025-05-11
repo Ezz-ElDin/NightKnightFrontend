@@ -18,37 +18,46 @@ import {
   SelectValue 
 } from "@/components/ui/select";
 import { Character, PERSONALITY_TRAITS, CHARACTER_ROLES } from "./constants";
-import { Baby, User, Cat, Dog, Ghost, Crown, Wand2, Bot } from "lucide-react";
 
 interface CharacterManagerProps {
   characters: Character[];
   updateCharacters: (characters: Character[]) => void;
 }
 
-// Age options for the appearance dropdown with icons
+// Age options for the appearance dropdown with emojis
 const AGE_OPTIONS = [
-  { value: "young", label: "young", icon: <User className="h-4 w-4 mr-2" /> },
-  { value: "little", label: "little", icon: <Baby className="h-4 w-4 mr-2" /> },
-  { value: "teen", label: "teen", icon: <User className="h-4 w-4 mr-2" /> },
-  { value: "baby", label: "baby", icon: <Baby className="h-4 w-4 mr-2" /> },
-  { value: "grown-up", label: "grown-up", icon: <User className="h-4 w-4 mr-2" /> },
+  { value: "young", label: "young", emoji: "👧" },
+  { value: "little", label: "little", emoji: "👶" },
+  { value: "teen", label: "teen", emoji: "🧒" },
+  { value: "baby", label: "baby", emoji: "👶" },
+  { value: "grown-up", label: "grown-up", emoji: "👨" },
 ];
 
 // Color options for the appearance dropdown
 const COLOR_OPTIONS = ["golden", "dark", "white", "red", "blue", "green", "brown", "other"];
 
-// Character type options for the appearance dropdown with icons
+// Character type options for the appearance dropdown with emojis
 const CHARACTER_TYPE_OPTIONS = [
-  { value: "boy", label: "boy", icon: <User className="h-4 w-4 mr-2" /> },
-  { value: "girl", label: "girl", icon: <User className="h-4 w-4 mr-2" /> },
-  { value: "dragon", label: "dragon", icon: <Cat className="h-4 w-4 mr-2" /> },
-  { value: "lion", label: "lion", icon: <Cat className="h-4 w-4 mr-2" /> },
-  { value: "puppy", label: "puppy", icon: <Dog className="h-4 w-4 mr-2" /> },
-  { value: "alien", label: "alien", icon: <Ghost className="h-4 w-4 mr-2" /> },
-  { value: "fairy", label: "fairy", icon: <Crown className="h-4 w-4 mr-2" /> },
-  { value: "wizard", label: "wizard", icon: <Wand2 className="h-4 w-4 mr-2" /> },
-  { value: "robot", label: "robot", icon: <Bot className="h-4 w-4 mr-2" /> },
-  { value: "other", label: "other", icon: <User className="h-4 w-4 mr-2" /> },
+  { value: "boy", label: "boy", emoji: "👦" },
+  { value: "girl", label: "girl", emoji: "👧" },
+  { value: "dragon", label: "dragon", emoji: "🐉" },
+  { value: "lion", label: "lion", emoji: "🦁" },
+  { value: "puppy", label: "puppy", emoji: "🐶" },
+  { value: "alien", label: "alien", emoji: "👽" },
+  { value: "fairy", label: "fairy", emoji: "🧚" },
+  { value: "wizard", label: "wizard", emoji: "🧙" },
+  { value: "robot", label: "robot", emoji: "🤖" },
+  { value: "other", label: "other", emoji: "👤" },
+];
+
+// Role options with emojis
+const ROLE_OPTIONS = [
+  { value: "Hero", label: "Hero", emoji: "🦸" },
+  { value: "Villain", label: "Villain", emoji: "😈" },
+  { value: "Sidekick", label: "Sidekick", emoji: "🧙" },
+  { value: "Mentor", label: "Mentor", emoji: "👴" },
+  { value: "Friend", label: "Friend", emoji: "👫" },
+  { value: "Guide", label: "Guide", emoji: "🧭" },
 ];
 
 const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateCharacters }) => {
@@ -180,7 +189,9 @@ const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateC
                 ✕
               </button>
               <h3 className="font-bold">{character.name}</h3>
-              <p className="text-sm text-muted-foreground">{character.role}</p>
+              <p className="text-sm text-muted-foreground mb-1">
+                {ROLE_OPTIONS.find(r => r.value === character.role)?.emoji} {character.role}
+              </p>
               <p className="text-sm mt-1">{character.appearance}</p>
               <div className="flex flex-wrap gap-1 mt-2">
                 {character.personality.map(trait => (
@@ -207,6 +218,29 @@ const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateC
             <DialogTitle>Create a Character</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
+            {/* Role selection moved to the top */}
+            <div className="space-y-2">
+              <Label htmlFor="role">Role in Story</Label>
+              <Select
+                value={currentCharacter.role}
+                onValueChange={(value) => setCurrentCharacter({...currentCharacter, role: value})}
+              >
+                <SelectTrigger id="role" className="bg-white">
+                  <SelectValue placeholder="Select a role" />
+                </SelectTrigger>
+                <SelectContent>
+                  {ROLE_OPTIONS.map(role => (
+                    <SelectItem key={role.value} value={role.value}>
+                      <div className="flex items-center">
+                        <span className="mr-2">{role.emoji}</span>
+                        {role.label}
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            
             <div className="space-y-2">
               <Label htmlFor="characterName">Name</Label>
               <Input
@@ -222,7 +256,7 @@ const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateC
               
               <div className="bg-primary/5 p-4 rounded-xl space-y-4">
                 <div className="grid grid-cols-2 gap-3">
-                  {/* Age Dropdown */}
+                  {/* Age Dropdown with emoji */}
                   <div className="space-y-2">
                     <Label htmlFor="age">Age</Label>
                     <Select 
@@ -236,7 +270,7 @@ const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateC
                         {AGE_OPTIONS.map(age => (
                           <SelectItem key={age.value} value={age.value}>
                             <div className="flex items-center">
-                              {age.icon}
+                              <span className="mr-2">{age.emoji}</span>
                               {age.label}
                             </div>
                           </SelectItem>
@@ -276,7 +310,7 @@ const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateC
                   </div>
                 </div>
                 
-                {/* Character Type Dropdown */}
+                {/* Character Type Dropdown with emoji */}
                 <div className="space-y-2">
                   <Label htmlFor="characterType">Character Type</Label>
                   <Select 
@@ -290,7 +324,7 @@ const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateC
                       {CHARACTER_TYPE_OPTIONS.map(type => (
                         <SelectItem key={type.value} value={type.value}>
                           <div className="flex items-center">
-                            {type.icon}
+                            <span className="mr-2">{type.emoji}</span>
                             {type.label}
                           </div>
                         </SelectItem>
@@ -360,23 +394,6 @@ const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateC
                   </div>
                 ))}
               </div>
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="role">Role in Story</Label>
-              <Select
-                value={currentCharacter.role}
-                onValueChange={(value) => setCurrentCharacter({...currentCharacter, role: value})}
-              >
-                <SelectTrigger className="bg-white">
-                  <SelectValue placeholder="Select a role" />
-                </SelectTrigger>
-                <SelectContent>
-                  {CHARACTER_ROLES.map(role => (
-                    <SelectItem key={role} value={role}>{role}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
             </div>
           </div>
           <div className="flex justify-end">
