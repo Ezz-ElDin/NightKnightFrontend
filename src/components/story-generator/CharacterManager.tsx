@@ -18,20 +18,38 @@ import {
   SelectValue 
 } from "@/components/ui/select";
 import { Character, PERSONALITY_TRAITS, CHARACTER_ROLES } from "./constants";
+import { Baby, User, Cat, Dog, Alien, Crown, Wand, Bot } from "lucide-react";
 
 interface CharacterManagerProps {
   characters: Character[];
   updateCharacters: (characters: Character[]) => void;
 }
 
-// Age options for the appearance dropdown
-const AGE_OPTIONS = ["young", "little", "teen", "baby", "grown-up"];
+// Age options for the appearance dropdown with icons
+const AGE_OPTIONS = [
+  { value: "young", label: "young", icon: <User className="h-4 w-4 mr-2" /> },
+  { value: "little", label: "little", icon: <Baby className="h-4 w-4 mr-2" /> },
+  { value: "teen", label: "teen", icon: <User className="h-4 w-4 mr-2" /> },
+  { value: "baby", label: "baby", icon: <Baby className="h-4 w-4 mr-2" /> },
+  { value: "grown-up", label: "grown-up", icon: <User className="h-4 w-4 mr-2" /> },
+];
 
 // Color options for the appearance dropdown
 const COLOR_OPTIONS = ["golden", "dark", "white", "red", "blue", "green", "brown", "other"];
 
-// Character type options for the appearance dropdown
-const CHARACTER_TYPE_OPTIONS = ["boy", "girl", "dragon", "lion", "puppy", "alien", "fairy", "wizard", "robot", "other"];
+// Character type options for the appearance dropdown with icons
+const CHARACTER_TYPE_OPTIONS = [
+  { value: "boy", label: "boy", icon: <User className="h-4 w-4 mr-2" /> },
+  { value: "girl", label: "girl", icon: <User className="h-4 w-4 mr-2" /> },
+  { value: "dragon", label: "dragon", icon: <Cat className="h-4 w-4 mr-2" /> },
+  { value: "lion", label: "lion", icon: <Cat className="h-4 w-4 mr-2" /> },
+  { value: "puppy", label: "puppy", icon: <Dog className="h-4 w-4 mr-2" /> },
+  { value: "alien", label: "alien", icon: <Alien className="h-4 w-4 mr-2" /> },
+  { value: "fairy", label: "fairy", icon: <Crown className="h-4 w-4 mr-2" /> },
+  { value: "wizard", label: "wizard", icon: <Wand className="h-4 w-4 mr-2" /> },
+  { value: "robot", label: "robot", icon: <Bot className="h-4 w-4 mr-2" /> },
+  { value: "other", label: "other", icon: <User className="h-4 w-4 mr-2" /> },
+];
 
 const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateCharacters }) => {
   const [characterDialogOpen, setCharacterDialogOpen] = useState(false);
@@ -216,8 +234,11 @@ const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateC
                       </SelectTrigger>
                       <SelectContent>
                         {AGE_OPTIONS.map(age => (
-                          <SelectItem key={age} value={age}>
-                            {age}
+                          <SelectItem key={age.value} value={age.value}>
+                            <div className="flex items-center">
+                              {age.icon}
+                              {age.label}
+                            </div>
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -267,8 +288,11 @@ const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateC
                     </SelectTrigger>
                     <SelectContent>
                       {CHARACTER_TYPE_OPTIONS.map(type => (
-                        <SelectItem key={type} value={type}>
-                          {type}
+                        <SelectItem key={type.value} value={type.value}>
+                          <div className="flex items-center">
+                            {type.icon}
+                            {type.label}
+                          </div>
                         </SelectItem>
                       ))}
                     </SelectContent>
