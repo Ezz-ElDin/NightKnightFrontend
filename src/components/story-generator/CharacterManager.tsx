@@ -24,13 +24,13 @@ interface CharacterManagerProps {
   updateCharacters: (characters: Character[]) => void;
 }
 
-// Age options for the appearance dropdown with emojis
+// Age options for the appearance dropdown with emojis - ordered chronologically
 const AGE_OPTIONS = [
-  { value: "young", label: "young", emoji: "👧" },
-  { value: "little", label: "little", emoji: "👶" },
-  { value: "teen", label: "teen", emoji: "🧒" },
   { value: "baby", label: "baby", emoji: "👶" },
-  { value: "grown-up", label: "grown-up", emoji: "👨" },
+  { value: "little", label: "little", emoji: "🧒" },
+  { value: "young", label: "young", emoji: "👧" },
+  { value: "teen", label: "teen", emoji: "👩‍🎤" },
+  { value: "grown-up", label: "grown-up", emoji: "👩‍🚀" },
 ];
 
 // Color options for the appearance dropdown
@@ -38,26 +38,26 @@ const COLOR_OPTIONS = ["golden", "dark", "white", "red", "blue", "green", "brown
 
 // Character type options for the appearance dropdown with emojis
 const CHARACTER_TYPE_OPTIONS = [
+  { value: "girl", label: "girl", emoji: "👸" },
   { value: "boy", label: "boy", emoji: "👦" },
-  { value: "girl", label: "girl", emoji: "👧" },
   { value: "dragon", label: "dragon", emoji: "🐉" },
   { value: "lion", label: "lion", emoji: "🦁" },
   { value: "puppy", label: "puppy", emoji: "🐶" },
-  { value: "alien", label: "alien", emoji: "👽" },
-  { value: "fairy", label: "fairy", emoji: "🧚" },
-  { value: "wizard", label: "wizard", emoji: "🧙" },
+  { value: "fairy", label: "fairy", emoji: "🧚‍♀️" },
   { value: "robot", label: "robot", emoji: "🤖" },
+  { value: "wizard", label: "wizard", emoji: "🧙‍♀️" },
+  { value: "alien", label: "alien", emoji: "👽" },
   { value: "other", label: "other", emoji: "👤" },
 ];
 
-// Role options with emojis
+// Role options with emojis - girl empowerment focused
 const ROLE_OPTIONS = [
-  { value: "Hero", label: "Hero", emoji: "🦸" },
+  { value: "Hero", label: "Hero", emoji: "🦸‍♀️" },
   { value: "Villain", label: "Villain", emoji: "😈" },
-  { value: "Sidekick", label: "Sidekick", emoji: "🧙" },
-  { value: "Mentor", label: "Mentor", emoji: "👴" },
-  { value: "Friend", label: "Friend", emoji: "👫" },
-  { value: "Guide", label: "Guide", emoji: "🧭" },
+  { value: "Mentor", label: "Mentor", emoji: "👩‍🏫" },
+  { value: "Friend", label: "Friend", emoji: "👯‍♀️" },
+  { value: "Sidekick", label: "Sidekick", emoji: "👩‍🔬" },
+  { value: "Guide", label: "Guide", emoji: "👩‍✈️" },
 ];
 
 const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateCharacters }) => {
@@ -74,7 +74,7 @@ const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateC
   const [appearanceAge, setAppearanceAge] = useState("young");
   const [appearanceColor, setAppearanceColor] = useState("dark");
   const [appearanceColorCustom, setAppearanceColorCustom] = useState("");
-  const [appearanceType, setAppearanceType] = useState("boy");
+  const [appearanceType, setAppearanceType] = useState("girl");
   const [appearanceTypeCustom, setAppearanceTypeCustom] = useState("");
   const [appearanceAccessory1, setAppearanceAccessory1] = useState("");
   const [appearanceAccessory2, setAppearanceAccessory2] = useState("");
@@ -120,7 +120,7 @@ const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateC
     setAppearanceAge("young");
     setAppearanceColor("dark");
     setAppearanceColorCustom("");
-    setAppearanceType("boy");
+    setAppearanceType("girl");
     setAppearanceTypeCustom("");
     setAppearanceAccessory1("");
     setAppearanceAccessory2("");
@@ -218,7 +218,7 @@ const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateC
             <DialogTitle>Create a Character</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
-            {/* Role selection moved to the top */}
+            {/* Role selection at the top */}
             <div className="space-y-2">
               <Label htmlFor="role">Role in Story</Label>
               <Select
@@ -232,8 +232,8 @@ const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateC
                   {ROLE_OPTIONS.map(role => (
                     <SelectItem key={role.value} value={role.value}>
                       <div className="flex items-center">
-                        <span className="mr-2">{role.emoji}</span>
-                        {role.label}
+                        <span className="text-2xl mr-3">{role.emoji}</span>
+                        <span>{role.label}</span>
                       </div>
                     </SelectItem>
                   ))}
@@ -270,8 +270,8 @@ const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateC
                         {AGE_OPTIONS.map(age => (
                           <SelectItem key={age.value} value={age.value}>
                             <div className="flex items-center">
-                              <span className="mr-2">{age.emoji}</span>
-                              {age.label}
+                              <span className="text-2xl mr-3">{age.emoji}</span>
+                              <span>{age.label}</span>
                             </div>
                           </SelectItem>
                         ))}
@@ -324,8 +324,8 @@ const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateC
                       {CHARACTER_TYPE_OPTIONS.map(type => (
                         <SelectItem key={type.value} value={type.value}>
                           <div className="flex items-center">
-                            <span className="mr-2">{type.emoji}</span>
-                            {type.label}
+                            <span className="text-2xl mr-3">{type.emoji}</span>
+                            <span>{type.label}</span>
                           </div>
                         </SelectItem>
                       ))}
@@ -351,7 +351,7 @@ const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateC
                       id="accessory1"
                       value={appearanceAccessory1}
                       onChange={(e) => setAppearanceAccessory1(e.target.value)}
-                      placeholder="e.g., round glasses, sparkly wings"
+                      placeholder="e.g., magic wand, robot arm"
                     />
                   </div>
                   
@@ -362,7 +362,7 @@ const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateC
                       id="accessory2"
                       value={appearanceAccessory2}
                       onChange={(e) => setAppearanceAccessory2(e.target.value)}
-                      placeholder="e.g., blue T-shirt, red cape"
+                      placeholder="e.g., cape, lab coat"
                     />
                   </div>
                 </div>

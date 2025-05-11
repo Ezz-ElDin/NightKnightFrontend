@@ -14,6 +14,16 @@ import ToneSelector from "@/components/story-generator/ToneSelector";
 import NarrativeStyleSelector from "@/components/story-generator/NarrativeStyleSelector";
 import CharacterManager from "@/components/story-generator/CharacterManager";
 
+// Role options with emojis - girl empowerment focused
+const ROLE_EMOJIS = {
+  "Hero": "🦸‍♀️",
+  "Villain": "😈",
+  "Mentor": "👩‍🏫", 
+  "Friend": "👯‍♀️",
+  "Sidekick": "👩‍🔬",
+  "Guide": "👩‍✈️"
+};
+
 const CreateStory = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [storyData, setStoryData] = useState({
@@ -232,13 +242,13 @@ const CreateStory = () => {
                             >
                               {/* Character emoji icon */}
                               <div className={`w-24 h-24 rounded-full flex items-center justify-center bg-gradient-to-br ${getCharacterGradient(character.role)}`}>
-                                <span className="text-4xl">{getCharacterEmoji(character.role)}</span>
+                                <span className="text-4xl">{ROLE_EMOJIS[character.role] || "👤"}</span>
                               </div>
                               
                               <div className="flex-1 text-center md:text-left">
                                 <div className="font-bold text-xl">{character.name}</div>
                                 <div className="text-sm text-primary bg-primary/10 inline-block px-2 py-1 rounded-full">
-                                  <span className="mr-1">{getCharacterEmoji(character.role)}</span>
+                                  <span className="mr-1 text-xl">{ROLE_EMOJIS[character.role] || "👤"}</span>
                                   {character.role}
                                 </div>
                                 
@@ -271,7 +281,7 @@ const CreateStory = () => {
                         </div>
                       ) : (
                         <div className="text-center p-8 mb-6 border-2 border-dashed border-primary/20 rounded-xl">
-                          <div className="text-4xl mb-2">🧙‍♂️👸🦁</div>
+                          <div className="text-4xl mb-2">🧙‍♀️👸🦁</div>
                           <div className="text-lg text-muted-foreground">No characters yet!</div>
                           <div>Add some magical friends to your story.</div>
                         </div>
@@ -446,25 +456,13 @@ const CreateStory = () => {
 // Helper function to get a gradient color based on character role
 const getCharacterGradient = (role) => {
   switch(role) {
-    case "Hero": return "from-blue-200 to-blue-400 text-blue-800";
+    case "Hero": return "from-purple-200 to-purple-400 text-purple-800";
     case "Villain": return "from-red-200 to-red-400 text-red-800";
     case "Sidekick": return "from-green-200 to-green-400 text-green-800";
-    case "Mentor": return "from-purple-200 to-purple-400 text-purple-800";
-    case "Animal": return "from-yellow-200 to-yellow-400 text-yellow-800";
+    case "Mentor": return "from-blue-200 to-blue-400 text-blue-800";
+    case "Friend": return "from-pink-200 to-pink-400 text-pink-800";
+    case "Guide": return "from-yellow-200 to-yellow-400 text-yellow-800";
     default: return "from-gray-200 to-gray-400 text-gray-800";
-  }
-};
-
-// Helper function to get an emoji based on character role
-const getCharacterEmoji = (role) => {
-  switch(role) {
-    case "Hero": return "🦸";
-    case "Villain": return "😈";
-    case "Sidekick": return "🧙";
-    case "Mentor": return "👴";
-    case "Friend": return "👫";
-    case "Guide": return "🧭";
-    default: return "👤";
   }
 };
 
