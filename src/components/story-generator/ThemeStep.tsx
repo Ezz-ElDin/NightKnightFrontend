@@ -18,14 +18,6 @@ const ThemeStep: React.FC<ThemeStepProps> = ({ storyData, updateStoryData }) => 
     >
       <div className="mt-4">
         <div className="theme-selector">
-          {storyData.genre && (
-            <div className="mb-4 px-4 py-2 bg-primary/10 rounded-xl inline-block">
-              You picked: <span className="font-bold">{storyData.genre}</span>
-            </div>
-          )}
-        </div>
-        
-        <div className="theme-selector">
           <ThemeSelector 
             selectedTheme={storyData.genre} 
             onSelectTheme={(themeId) => updateStoryData({ genre: themeId })} 
