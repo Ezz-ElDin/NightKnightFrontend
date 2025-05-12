@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -18,8 +19,8 @@ import WaitingList from "./pages/WaitingList";
 // Create a new QueryClient instance
 const queryClient = new QueryClient();
 
-// Flag to enable/disable the waiting list mode
-const WAITING_LIST_MODE = false;
+// Flag to enable/disable the waiting list mode - set to true to enable waiting list by default
+const WAITING_LIST_MODE = true;
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -42,7 +43,8 @@ const App = () => (
             </>
           ) : (
             <>
-              <Route path="/" element={<Index />} />
+              {/* Redirect home page to waiting list even when not in full waiting list mode */}
+              <Route path="/" element={<Navigate replace to="/waiting-list" />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/dashboard" element={<Dashboard />} />
