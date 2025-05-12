@@ -33,11 +33,11 @@ const CreateStory = () => {
   const navigate = useNavigate();
 
   const steps = [
-    { id: 1, name: "Theme" },
-    { id: 2, name: "Tone" },
-    { id: 3, name: "Style" },
-    { id: 4, name: "Characters" },
-    { id: 5, name: "Details" },
+    { id: 1, name: "Details" },
+    { id: 2, name: "Theme" },
+    { id: 3, name: "Tone" },
+    { id: 4, name: "Style" },
+    { id: 5, name: "Characters" },
     { id: 6, name: "Create!" },
   ];
 
@@ -47,7 +47,7 @@ const CreateStory = () => {
 
   const handleNext = () => {
     // Skip validation for kid-friendly experience except for key steps
-    if (currentStep === 1 && !storyData.genre) {
+    if (currentStep === 2 && !storyData.genre) {
       toast({
         title: "Pick a theme first!",
         description: "Choose your favorite story theme to continue",
@@ -56,7 +56,7 @@ const CreateStory = () => {
       return;
     }
 
-    if (currentStep === 2 && !storyData.tone) {
+    if (currentStep === 3 && !storyData.tone) {
       toast({
         title: "Pick a tone first!",
         description: "How should your story feel?",
@@ -65,7 +65,7 @@ const CreateStory = () => {
       return;
     }
     
-    if (currentStep === 3 && !storyData.narrativeStyle) {
+    if (currentStep === 4 && !storyData.narrativeStyle) {
       toast({
         title: "Pick a style first!",
         description: "How should your story be told?",
@@ -136,23 +136,23 @@ const CreateStory = () => {
       >
         <div className="story-step-content min-h-[400px]">
           {currentStep === 1 && (
-            <ThemeStep storyData={storyData} updateStoryData={updateStoryData} />
+            <StoryDetailsStep storyData={storyData} updateStoryData={updateStoryData} />
           )}
           
           {currentStep === 2 && (
-            <ToneStep storyData={storyData} updateStoryData={updateStoryData} />
+            <ThemeStep storyData={storyData} updateStoryData={updateStoryData} />
           )}
           
           {currentStep === 3 && (
-            <StyleStep storyData={storyData} updateStoryData={updateStoryData} />
+            <ToneStep storyData={storyData} updateStoryData={updateStoryData} />
           )}
           
           {currentStep === 4 && (
-            <CharacterStep storyData={storyData} updateStoryData={updateStoryData} />
+            <StyleStep storyData={storyData} updateStoryData={updateStoryData} />
           )}
           
           {currentStep === 5 && (
-            <StoryDetailsStep storyData={storyData} updateStoryData={updateStoryData} />
+            <CharacterStep storyData={storyData} updateStoryData={updateStoryData} />
           )}
           
           {currentStep === 6 && (
