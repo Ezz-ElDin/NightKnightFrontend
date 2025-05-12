@@ -19,8 +19,9 @@ import WaitingList from "./pages/WaitingList";
 // Create a new QueryClient instance
 const queryClient = new QueryClient();
 
-// Flag to enable/disable the waiting list mode - set to true to enable waiting list by default
-const WAITING_LIST_MODE = true;
+// Flag to control waiting list mode and page access
+// Set to true to make the waiting list the primary landing page but allow other URLs to be accessed
+const WAITING_LIST_AS_HOME = true;
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -28,23 +29,24 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        {/* Only show the main Navbar when not in waiting list mode AND not on the waiting list page */}
-        {!WAITING_LIST_MODE && <Routes>
+        {/* Show the main Navbar on all pages except the waiting list pages */}
+        <Routes>
+          <Route path="/" element={null} />
           <Route path="/waiting-list" element={null} />
           <Route path="*" element={<Navbar />} />
-        </Routes>}
+        </Routes>
         
         <Routes>
-          {WAITING_LIST_MODE ? (
+          {WAITING_LIST_AS_HOME ? (
             <>
+              {/* Make waiting list the home page and also accessible via /waiting-list */}
+              <Route path="/" element={<WaitingList />} />
               <Route path="/waiting-list" element={<WaitingList />} />
-              {/* Redirect all other routes to the waiting list */}
-              <Route path="*" element={<Navigate replace to="/waiting-list" />} />
-            </>
-          ) : (
-            <>
-              {/* Redirect home page to waiting list even when not in full waiting list mode */}
-              <Route path="/" element={<Navigate replace to="/waiting-list" />} />
+              
+              {/* Original homepage is now accessible via /homepage */}
+              <Route path="/homepage" element={<Index />} />
+              
+              {/* All other routes are accessible for development */}
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/dashboard" element={<Dashboard />} />
@@ -52,8 +54,21 @@ const App = () => (
               <Route path="/account-settings" element={<AccountSettings />} />
               <Route path="/story-viewer" element={<StoryViewer />} />
               <Route path="/auth/callback" element={<AuthCallback />} />
-              {/* Add the waiting list route even when not in waiting list mode */}
+              <Route path="*" element={<NotFound />} />
+            </>
+          ) : (
+            <>
+              {/* Standard routing configuration if waiting list mode is disabled */}
+              <Route path="/" element={<Index />} />
+              <Route path="/homepage" element={<Index />} />
               <Route path="/waiting-list" element={<WaitingList />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/create-story" element={<CreateStory />} />
+              <Route path="/account-settings" element={<AccountSettings />} />
+              <Route path="/story-viewer" element={<StoryViewer />} />
+              <Route path="/auth/callback" element={<AuthCallback />} />
               <Route path="*" element={<NotFound />} />
             </>
           )}
