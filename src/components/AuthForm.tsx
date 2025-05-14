@@ -130,9 +130,9 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
           </div>
 
           {mode === 'register' && (
-            <div className="space-y-2 flex flex-col gap-2 md:flex-row md:gap-4">
-              <div className="w-full">
-                <Label htmlFor="first_name" className="text-lg">First Name</Label>
+            <div className="flex flex-col gap-2 md:flex-row md:gap-4">
+              <div className="flex flex-col w-full">
+                <Label htmlFor="first_name" className="text-lg mb-1">First Name</Label>
                 <Input
                   id="first_name"
                   type="text"
@@ -144,8 +144,8 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
                   autoComplete="given-name"
                 />
               </div>
-              <div className="w-full">
-                <Label htmlFor="last_name" className="text-lg">Last Name</Label>
+              <div className="flex flex-col w-full">
+                <Label htmlFor="last_name" className="text-lg mb-1">Last Name</Label>
                 <Input
                   id="last_name"
                   type="text"
