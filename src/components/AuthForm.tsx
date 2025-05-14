@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
@@ -19,6 +20,8 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -69,13 +72,24 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
       return;
     }
 
+    if (mode === 'register' && (!firstName.trim() || !lastName.trim())) {
+      toast({
+        title: 'Error',
+        description: 'Please enter your first and last name.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     if (mode === 'login') {
       login({ email, password });
     } else {
       register({ 
         email, 
         password1: password,
-        password2: confirmPassword 
+        password2: confirmPassword,
+        first_name: firstName,
+        last_name: lastName,
       });
     }
   };
@@ -114,6 +128,37 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
               required
             />
           </div>
+
+          {mode === 'register' && (
+            <div className="space-y-2 flex flex-col gap-2 md:flex-row md:gap-4">
+              <div className="w-full">
+                <Label htmlFor="first_name" className="text-lg">First Name</Label>
+                <Input
+                  id="first_name"
+                  type="text"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  className="input-kiddy"
+                  placeholder="Enter your first name"
+                  required
+                  autoComplete="given-name"
+                />
+              </div>
+              <div className="w-full">
+                <Label htmlFor="last_name" className="text-lg">Last Name</Label>
+                <Input
+                  id="last_name"
+                  type="text"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  className="input-kiddy"
+                  placeholder="Enter your last name"
+                  required
+                  autoComplete="family-name"
+                />
+              </div>
+            </div>
+          )}
           
           <div className="space-y-2">
             <Label htmlFor="password" className="text-lg">Password</Label>
