@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
@@ -101,7 +100,7 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
   const loading = isLoginPending || isRegisterPending;
 
   return (
-    <div className="w-full max-w-md">
+    <div className="w-full max-w-2xl mx-auto"> {/* Increased max-w to 2xl */}
       <div className="card-kiddy">
         <div className="flex justify-center mb-6">
           {mode === 'login' ? (
@@ -130,7 +129,7 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
           </div>
 
           {mode === 'register' && (
-            <div className="flex flex-col gap-2 md:flex-row md:gap-4">
+            <div className="flex flex-col gap-2">
               <div className="flex flex-col w-full">
                 <Label htmlFor="first_name" className="text-lg mb-1">First Name</Label>
                 <Input
@@ -138,7 +137,7 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
                   type="text"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
-                  className="input-kiddy"
+                  className="input-kiddy w-full"
                   placeholder="Enter your first name"
                   required
                   autoComplete="given-name"
@@ -151,7 +150,7 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
                   type="text"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
-                  className="input-kiddy"
+                  className="input-kiddy w-full"
                   placeholder="Enter your last name"
                   required
                   autoComplete="family-name"
