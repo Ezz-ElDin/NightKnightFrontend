@@ -1,7 +1,8 @@
+
 import { useEffect, useState } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { Check, Info } from "lucide-react";
+import { Check, Info, Moon, Star, Book, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import StoryBackground from "@/components/StoryBackground";
 
