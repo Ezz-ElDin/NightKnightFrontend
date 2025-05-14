@@ -129,29 +129,28 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
           </div>
 
           {mode === 'register' && (
-            <div className="flex flex-col gap-2 md:flex-row md:gap-6"> 
-              {/* Increased gap and ensured full width for containers */}
-              <div className="flex flex-col w-full">
+            <div className="flex flex-col gap-2 md:flex-row md:gap-6">
+              <div className="flex flex-col flex-1 w-full">
                 <Label htmlFor="first_name" className="text-lg mb-1">First Name</Label>
                 <Input
                   id="first_name"
                   type="text"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
-                  className="input-kiddy w-full min-w-0"
+                  className="input-kiddy w-full"
                   placeholder="Enter your first name"
                   required
                   autoComplete="given-name"
                 />
               </div>
-              <div className="flex flex-col w-full">
+              <div className="flex flex-col flex-1 w-full">
                 <Label htmlFor="last_name" className="text-lg mb-1">Last Name</Label>
                 <Input
                   id="last_name"
                   type="text"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
-                  className="input-kiddy w-full min-w-0"
+                  className="input-kiddy w-full"
                   placeholder="Enter your last name"
                   required
                   autoComplete="family-name"
