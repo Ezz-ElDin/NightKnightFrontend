@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -15,6 +14,7 @@ import StoryViewer from "./pages/StoryViewer";
 import NotFound from "./pages/NotFound";
 import AuthCallback from "./pages/AuthCallback";
 import WaitingList from "./pages/WaitingList";
+import RequireAuth from "./components/RequireAuth";
 
 // Create a new QueryClient instance
 const queryClient = new QueryClient();
@@ -46,13 +46,30 @@ const App = () => (
               {/* Original homepage is now accessible via /homepage */}
               <Route path="/homepage" element={<Index />} />
               
-              {/* All other routes are accessible for development */}
+              {/* Protected routes */}
+              <Route path="/dashboard" element={
+                <RequireAuth>
+                  <Dashboard />
+                </RequireAuth>
+              } />
+              <Route path="/create-story" element={
+                <RequireAuth>
+                  <CreateStory />
+                </RequireAuth>
+              } />
+              <Route path="/account-settings" element={
+                <RequireAuth>
+                  <AccountSettings />
+                </RequireAuth>
+              } />
+              <Route path="/story-viewer" element={
+                <RequireAuth>
+                  <StoryViewer />
+                </RequireAuth>
+              } />
+
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/create-story" element={<CreateStory />} />
-              <Route path="/account-settings" element={<AccountSettings />} />
-              <Route path="/story-viewer" element={<StoryViewer />} />
               <Route path="/auth/callback" element={<AuthCallback />} />
               <Route path="*" element={<NotFound />} />
             </>
@@ -62,12 +79,31 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/homepage" element={<Index />} />
               <Route path="/waiting-list" element={<WaitingList />} />
+              
+              {/* Protected routes */}
+              <Route path="/dashboard" element={
+                <RequireAuth>
+                  <Dashboard />
+                </RequireAuth>
+              } />
+              <Route path="/create-story" element={
+                <RequireAuth>
+                  <CreateStory />
+                </RequireAuth>
+              } />
+              <Route path="/account-settings" element={
+                <RequireAuth>
+                  <AccountSettings />
+                </RequireAuth>
+              } />
+              <Route path="/story-viewer" element={
+                <RequireAuth>
+                  <StoryViewer />
+                </RequireAuth>
+              } />
+
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/create-story" element={<CreateStory />} />
-              <Route path="/account-settings" element={<AccountSettings />} />
-              <Route path="/story-viewer" element={<StoryViewer />} />
               <Route path="/auth/callback" element={<AuthCallback />} />
               <Route path="*" element={<NotFound />} />
             </>
