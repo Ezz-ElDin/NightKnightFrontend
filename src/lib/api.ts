@@ -13,7 +13,12 @@ export const api = axios.create({
 // Add token to requests if it exists
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('authToken');
-  if (token) {
+  // Only add Authorization to requests that are NOT for registration
+  if (
+    token &&
+    config.url &&
+    !config.url.endsWith('/api/auth/registration/')
+  ) {
     config.headers.Authorization = `Token ${token}`;
   }
   return config;
@@ -36,10 +41,15 @@ export interface AuthResponse {
 }
 
 export const authApi = {
-  login: (data: LoginData) => 
+  login: (data: LoginData) =>
     api.post<AuthResponse>('/api/auth/login/', data),
-  
   register: (data: RegisterData) =>
-    api.post<AuthResponse>('/api/auth/registration/', data),
+    api.post<AuthResponse>(
+      '/api/auth/registration/',
+      data,
+      {
+        headers: { Authorization: undefined }, // Explicitly remove Authorization header
+      }
+    ),
 };
 
