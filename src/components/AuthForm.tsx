@@ -83,19 +83,12 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
     if (mode === 'login') {
       login({ email, password });
     } else {
-      // Split name into first_name and last_name (first word / rest)
-      let first_name = '';
-      let last_name = '';
-      const nameParts = name.trim().split(' ');
-      first_name = nameParts[0] || '';
-      last_name = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
-
+      // Send single `name` field instead of splitting
       register({ 
         email, 
         password1: password,
         password2: confirmPassword,
-        first_name,
-        last_name,
+        name,
       });
     }
   };
