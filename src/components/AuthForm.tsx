@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
@@ -19,8 +20,7 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [name, setName] = useState('');
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -71,10 +71,10 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
       return;
     }
 
-    if (mode === 'register' && (!firstName.trim() || !lastName.trim())) {
+    if (mode === 'register' && !name.trim()) {
       toast({
         title: 'Error',
-        description: 'Please enter your first and last name.',
+        description: 'Please enter your name.',
         variant: 'destructive',
       });
       return;
@@ -83,12 +83,19 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
     if (mode === 'login') {
       login({ email, password });
     } else {
+      // Split name into first_name and last_name (first word / rest)
+      let first_name = '';
+      let last_name = '';
+      const nameParts = name.trim().split(' ');
+      first_name = nameParts[0] || '';
+      last_name = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
+
       register({ 
         email, 
         password1: password,
         password2: confirmPassword,
-        first_name: firstName,
-        last_name: lastName,
+        first_name,
+        last_name,
       });
     }
   };
@@ -100,7 +107,7 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
   const loading = isLoginPending || isRegisterPending;
 
   return (
-    <div className="w-full max-w-2xl mx-auto"> {/* Increased max-w to 2xl */}
+    <div className="w-full max-w-2xl mx-auto">
       <div className="card-kiddy">
         <div className="flex justify-center mb-6">
           {mode === 'login' ? (
@@ -129,33 +136,18 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
           </div>
 
           {mode === 'register' && (
-            <div className="flex flex-col gap-2">
-              <div className="flex flex-col w-full">
-                <Label htmlFor="first_name" className="text-lg mb-1">First Name</Label>
-                <Input
-                  id="first_name"
-                  type="text"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  className="input-kiddy w-full"
-                  placeholder="Enter your first name"
-                  required
-                  autoComplete="given-name"
-                />
-              </div>
-              <div className="flex flex-col w-full">
-                <Label htmlFor="last_name" className="text-lg mb-1">Last Name</Label>
-                <Input
-                  id="last_name"
-                  type="text"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  className="input-kiddy w-full"
-                  placeholder="Enter your last name"
-                  required
-                  autoComplete="family-name"
-                />
-              </div>
+            <div className="space-y-2">
+              <Label htmlFor="name" className="text-lg mb-1">Name</Label>
+              <Input
+                id="name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="input-kiddy w-full"
+                placeholder="Enter your full name"
+                required
+                autoComplete="name"
+              />
             </div>
           )}
           
@@ -243,3 +235,4 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
 };
 
 export default AuthForm;
+
