@@ -13,6 +13,7 @@ export const api = axios.create({
 // Add token to requests if it exists
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('authToken');
+  console.log("Auth token in request:", token); // 👈 Add this
   // Only add Authorization to requests that are NOT for registration
   if (
     token &&
@@ -52,4 +53,3 @@ export const authApi = {
       }
     ),
 };
-
