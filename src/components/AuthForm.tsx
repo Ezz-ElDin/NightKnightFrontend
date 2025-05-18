@@ -37,8 +37,10 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
 
   const { mutate: login, isPending: isLoginPending } = useMutation({
     mutationFn: (data: LoginData) => authApi.login(data),
-    onSuccess: (response) => handleSuccess(response.data.key),
-    onError: (error: any) => {
+    onSuccess: (response) => {
+      console.log("🚀 Login API response:", response.data);
+      handleSuccess(response.data.key);
+    },    onError: (error: any) => {
       toast({
         title: 'Error',
         description: error.response?.data?.detail || 'Something went wrong. Please try again.',
