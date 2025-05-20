@@ -22,6 +22,7 @@ export const useAuthForm = ({ initialMode = 'login' }: UseAuthFormProps = {}) =>
 
   const handleSuccess = (token: string) => {
     localStorage.setItem('authToken', token);
+    localStorage.setItem('loginMethod', 'email');
     toast({
       title: mode === 'login' ? 'Welcome back!' : 'Account created!',
       description: mode === 'login' 

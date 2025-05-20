@@ -21,8 +21,14 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const query = useQuery();
 
+  // Determine if user used email/password login
+  const loginMethod = localStorage.getItem('loginMethod');
+  const shouldShowVerificationBanner = loginMethod === 'email';
+
   // Check for ?verified=1 in URL and show success banner just once
   useEffect(() => {
+    if (!shouldShowVerificationBanner) return;
+
     const verifiedInQuery = query.get("verified") === "1";
     const successDismissed = localStorage.getItem(EMAIL_VERIFIED_FLAG) === "1";
     if (verifiedInQuery && !successDismissed) {
@@ -37,12 +43,14 @@ const Dashboard = () => {
 
   // Show info banner if not verified and not dismissed before, and don't show if they already verified
   useEffect(() => {
+    if (!shouldShowVerificationBanner) return;
+
     const infoDismissed = localStorage.getItem(EMAIL_DISMISS_INFO) === "1";
     const successDismissed = localStorage.getItem(EMAIL_VERIFIED_FLAG) === "1";
     if (!infoDismissed && !successDismissed) {
       setShowInfo(true);
     }
-  }, []);
+  }, [shouldShowVerificationBanner]);
 
   const handleDismissSuccess = () => {
     setShowSuccess(false);
@@ -60,7 +68,7 @@ const Dashboard = () => {
       <div className="container max-w-5xl mx-auto text-center z-10">
         {/* Email verification banners */}
         <div className="flex flex-col gap-4 w-full max-w-2xl mx-auto">
-          {showSuccess && (
+          {shouldShowVerificationBanner && showSuccess && (
             <Alert variant="default" className="flex items-center justify-between bg-green-50 border-green-200 text-green-900 animate-in fade-in slide-in-from-top-4">
               <div className="flex items-center gap-4">
                 <Check className="h-6 w-6 text-green-600" />
@@ -76,7 +84,7 @@ const Dashboard = () => {
               </Button>
             </Alert>
           )}
-          {showInfo && (
+          {shouldShowVerificationBanner && showInfo && (
             <Alert variant="default" className="flex items-center justify-between bg-blue-50 border-blue-200 text-blue-900 animate-in fade-in slide-in-from-top-4">
               <div className="flex items-center gap-4">
                 <Info className="h-6 w-6 text-blue-600" />
