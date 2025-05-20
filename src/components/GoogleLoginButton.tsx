@@ -3,7 +3,6 @@ import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
-import { Globe } from 'lucide-react';
 
 interface GoogleLoginButtonProps {
   disabled?: boolean;
@@ -64,14 +63,13 @@ const GoogleLoginButton = ({ disabled }: GoogleLoginButtonProps) => {
     <div className={disabled ? 'pointer-events-none opacity-60' : ''}>
       <button
         onClick={() => login()}
-        className="bg-white border px-4 py-2 rounded shadow flex items-center justify-center w-full"
-      >
-        <Globe className="h-5 w-5 mr-2" />
+        className="bg-white border px-4 py-2 rounded shadow flex items-center justify-center w-full">
+        <img src="/google-icon.svg" alt="Google" className="h-5 w-5 mr-2" />
         Continue with Google
       </button>
+
     </div>
   );
 };
 
 export default GoogleLoginButton;
-
