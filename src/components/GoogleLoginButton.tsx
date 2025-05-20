@@ -54,17 +54,20 @@ const GoogleLoginButton = ({ disabled }: GoogleLoginButtonProps) => {
   };
 
   return (
-    <GoogleLogin
-      onSuccess={handleSuccess}
-      onError={handleError}
-      useOneTap={false}
-      theme="outline"
-      size="large"
-      text="continue_with"
-      width="100%"
-      disabled={disabled}
-    />
+    <div className={disabled ? 'pointer-events-none opacity-60' : ''}>
+      <GoogleLogin
+        onSuccess={handleSuccess}
+        onError={handleError}
+        useOneTap={false}
+        theme="outline"
+        size="large"
+        text="continue_with"
+        width="100%"
+        // disabled prop removed as it's not supported
+      />
+    </div>
   );
 };
 
 export default GoogleLoginButton;
+
