@@ -1,8 +1,9 @@
 
 import axios from 'axios';
 
-const API_URL = 'https://api.nightknight.app';
-// 'http://localhost:8000';
+// Use Vite env variable, fallback to prod URL if not set.
+// Change the value of VITE_API_URL at build or run time for local/dev/prod.
+const API_URL = import.meta.env.VITE_API_URL || 'https://api.nightknight.app';
 
 export const api = axios.create({
   baseURL: API_URL,
