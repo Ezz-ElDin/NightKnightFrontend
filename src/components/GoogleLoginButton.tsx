@@ -1,7 +1,9 @@
+
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
+import { Google } from 'lucide-react';
 
 interface GoogleLoginButtonProps {
   disabled?: boolean;
@@ -64,7 +66,7 @@ const GoogleLoginButton = ({ disabled }: GoogleLoginButtonProps) => {
         onClick={() => login()}
         className="bg-white border px-4 py-2 rounded shadow flex items-center justify-center w-full"
       >
-        <img src="/google-icon.svg" alt="Google" className="h-5 w-5 mr-2" />
+        <Google className="h-5 w-5 mr-2" />
         Continue with Google
       </button>
     </div>
