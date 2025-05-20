@@ -196,12 +196,13 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
             <div className="flex-grow border-t border-gray-200"></div>
           </div>
 
-        {/* Google Login (with Provider only here, so it works on all pages) */}
-        <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
-          <div className="my-2">
-            <GoogleLoginButton disabled={loading} />
-          </div>
-        </GoogleOAuthProvider>
+          {/* Google Login (with Provider only here, so it works on all pages) */}
+          <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
+            <div className="my-2">
+              <GoogleLoginButton disabled={loading} />
+            </div>
+          </GoogleOAuthProvider>
+        </form>
         
         <div className="mt-6 text-center">
           <p className="text-muted-foreground">
