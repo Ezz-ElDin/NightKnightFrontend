@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { authApi, LoginData, RegisterData } from '@/lib/api';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import GoogleLoginButton from './GoogleLoginButton';
+import AuthFormGoogleSection from './AuthFormGoogleSection';
 
 type AuthMode = 'login' | 'register';
 
@@ -196,12 +197,8 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
             <div className="flex-grow border-t border-gray-200"></div>
           </div>
 
-          {/* Google Login (with Provider only here, so it works on all pages) */}
-          <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
-            <div className="my-2">
-              <GoogleLoginButton disabled={loading} />
-            </div>
-          </GoogleOAuthProvider>
+          {/* Google Login section extracted for clarity */}
+          <AuthFormGoogleSection loading={loading} />
         </form>
         
         <div className="mt-6 text-center">
