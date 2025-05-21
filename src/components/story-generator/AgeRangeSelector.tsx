@@ -2,9 +2,9 @@
 import React from "react";
 
 const AGE_OPTIONS = [
-  { label: "3-5", display: "3-5 years" },
-  { label: "6-8", display: "6-8 years" },
-  { label: "9-12", display: "9-12 years" },
+  { label: "0-3", display: "0-3 years" },
+  { label: "4-6", display: "4-6 years" },
+  { label: "7-9", display: "7-9 years" },
 ];
 
 interface AgeRangeSelectorProps {
@@ -39,3 +39,4 @@ const AgeRangeSelector: React.FC<AgeRangeSelectorProps> = ({ ageRange, setAgeRan
 );
 
 export default AgeRangeSelector;
+

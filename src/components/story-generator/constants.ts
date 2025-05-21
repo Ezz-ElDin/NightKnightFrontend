@@ -1,4 +1,3 @@
-
 // Theme options
 export const THEMES = [
   { id: "fantasy", name: "Fantasy Worlds", description: "Enchanted forests, magical kingdoms, castles, fairies, dragons, etc.", subdescription: "Kids love escaping into places where the impossible becomes possible.", color: "#b3e0ff", textColor: "#3a5e8c", image: null },
@@ -44,7 +43,7 @@ export const CHARACTER_ROLES = [
 
 // Age ranges
 export const AGE_RANGES = [
-  "3-5", "6-8", "9-12"
+  "0-3", "4-6", "7-9"
 ];
 
 // Languages
