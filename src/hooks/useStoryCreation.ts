@@ -36,7 +36,7 @@ const NARRATIVE_MAP: Record<string, string> = {
 const ILLUSTRATION_MAP: Record<string, string> = {
   "cinematic": "cinematic",
   "paper_cutout": "paper_cutout",
-  "storyboard": "storybook",
+  "storybook": "storybook",
 };
 
 const CARD_MAPPINGS: Record<string, { theme: string, tone: string, narrative: string }> = {

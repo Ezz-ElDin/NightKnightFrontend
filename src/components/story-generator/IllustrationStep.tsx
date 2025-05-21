@@ -11,21 +11,21 @@ const ILLUSTRATIONS = [
     title: "Cinematic",
     image:
       // Unsplash placeholder: 'Matrix movie still'
-      "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&q=80",
+      "/images/cinematic_illustration.png",
   },
   {
     id: "paper_cutout",
     title: "Paper Cutout",
     image:
       // Unsplash placeholder: 'Cat on textile'
-      "https://images.unsplash.com/photo-1582562124811-c09040d0a901?auto=format&fit=crop&w=600&q=80",
+      "/images/paper_cutout_illustration.png",
   },
   {
-    id: "storyboard",
-    title: "Storyboard",
+    id: "storybook",
+    title: "storybook",
     image:
       // Unsplash placeholder: 'stylus pen graphic tablet'
-      "https://images.unsplash.com/photo-1473091534298-04dcbce3278c?auto=format&fit=crop&w=600&q=80",
+      "/images/storybook_illustration.png",
   },
 ];
 
