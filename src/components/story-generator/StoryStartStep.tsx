@@ -1,4 +1,3 @@
-
 import React from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Card } from "@/components/ui/card";
@@ -41,63 +40,66 @@ const StoryStartStep: React.FC<StoryStartStepProps> = ({
   return (
     <div className="flex flex-col items-center w-full py-6">
       <Card className="w-full max-w-2xl mx-auto p-0 rounded-2xl shadow-lg border-2 border-primary/10 bg-white/90">
-        <div className="px-7 pt-8 pb-2 flex flex-col gap-8">
-          {/* Title */}
-          <div className="flex flex-col items-center justify-center gap-1 pb-2">
-            <h2 className="text-3xl md:text-4xl font-extrabold text-primary mb-1 flex items-center gap-2">
-              <span role="img" aria-label="sparkles">🌟</span>
-              Start Your Story!
-              <span role="img" aria-label="sparkles">🌟</span>
-            </h2>
-            <p className="text-md text-muted-foreground font-medium">Pick your style and give your story a unique start.</p>
+        <div className="relative flex flex-col gap-8 px-4 sm:px-10 pt-10 pb-6">
+          {/* Whimsical Card Top Banner */}
+          <div className="w-full flex items-center justify-center relative">
+            <div className="rounded-full bg-story-yellow/40 border-4 border-story-yellow shadow animate-float px-7 py-3 flex flex-col items-center justify-center mb-2">
+              <span className="text-4xl md:text-5xl flex gap-3">
+                <span role="img" aria-label="sparkles">✨</span>
+                <span role="img" aria-label="book">📖</span>
+                <span role="img" aria-label="sparkles">✨</span>
+              </span>
+              <h2 className="font-extrabold text-3xl md:text-4xl text-story-purple mt-2 whitespace-nowrap drop-shadow">Create Your Story!</h2>
+              <p className="text-base md:text-lg text-story-brown mt-2 font-semibold whitespace-nowrap">Let your imagination fly</p>
+            </div>
           </div>
 
-          {/* Step 1: Mode select */}
-          <div className="flex flex-col gap-2 w-full">
-            <label className="font-semibold text-lg mb-1">Choose your mode</label>
-            <ToggleGroup
-              type="single"
-              value={mode}
-              onValueChange={v => v && setMode(v as "magic" | "creative")}
-              className="flex w-full gap-4"
-            >
-              <ToggleGroupItem
-                value="magic"
-                aria-label="Magic Mode"
-                className={`w-1/2 px-0 py-4 transition-all
-                  border-2 rounded-xl
-                  ${mode === "magic" ? "border-primary bg-primary/10 ring-4 ring-primary/20 scale-105 font-bold text-primary" : "border-primary/30 text-primary/70 bg-white hover:bg-primary/5"}
-                `}
+          {/* Mode Selection */}
+          <div className="flex flex-col items-center gap-3">
+            <label className="text-lg font-bold text-primary flex items-center gap-2">
+              <span role="img" aria-label="magic">🪄</span>
+              Choose Your Adventure Mode:
+            </label>
+            <div className="flex gap-4 w-full md:w-fit">
+              <button
+                type="button"
+                onClick={() => setMode("magic")}
+                className={`flex flex-col items-center justify-center gap-1 px-6 py-3 rounded-xl font-bold text-lg shadow-sm transition hover:scale-105 border-2 ${
+                  mode === "magic"
+                    ? "bg-story-purple/90 text-white border-story-purple animate-wiggle"
+                    : "bg-story-purple/10 text-story-purple border-story-purple/50"
+                }`}
               >
-                <span className="text-2xl" role="img" aria-label="Magic">✨</span>
-                <span className="ml-2 text-lg">Magic</span>
-                <div className="mt-0 text-xs text-muted-foreground">Quick & easy!</div>
-              </ToggleGroupItem>
-              <ToggleGroupItem
-                value="creative"
-                aria-label="Creative Mode"
-                className={`w-1/2 px-0 py-4 transition-all
-                  border-2 rounded-xl
-                  ${mode === "creative" ? "border-orange-400 bg-orange-50 ring-4 ring-orange-200 scale-105 font-bold text-orange-900" : "border-orange-200 text-orange-900/60 bg-white hover:bg-orange-50"}
-                `}
+                <span className="text-2xl" role="img" aria-label="sparkles">✨</span>
+                <span>Magic</span>
+                <span className="text-xs font-normal text-story-purple/70 mt-1">Quick & Easy</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setMode("creative")}
+                className={`flex flex-col items-center justify-center gap-1 px-6 py-3 rounded-xl font-bold text-lg shadow-sm transition hover:scale-105 border-2 ${
+                  mode === "creative"
+                    ? "bg-story-orange text-white border-story-orange animate-wiggle"
+                    : "bg-story-orange/10 text-story-orange border-story-orange/50"
+                }`}
               >
-                <span className="text-2xl" role="img" aria-label="Wrench">🛠</span>
-                <span className="ml-2 text-lg">Creative</span>
-                <div className="mt-0 text-xs text-muted-foreground">Choose every detail!</div>
-              </ToggleGroupItem>
-            </ToggleGroup>
+                <span className="text-2xl" role="img" aria-label="wrench">🛠️</span>
+                <span>Creative</span>
+                <span className="text-xs font-normal text-story-orange/80 mt-1">Choose Details</span>
+              </button>
+            </div>
           </div>
 
-          {/* Step 2: Language select & Age range (side by side on desktop, stacked mobile) */}
-          <div className="flex flex-col gap-4 md:flex-row md:gap-6 w-full">
-            <div className="w-full flex flex-col gap-2">
-              <label htmlFor="language" className="font-semibold text-lg mb-1 flex items-center gap-1">
+          {/* Language & Age, side-by-side on desktop, stacked on mobile */}
+          <div className="flex flex-col md:flex-row gap-6 w-full justify-between">
+            {/* Language */}
+            <div className="flex-1 flex flex-col items-center gap-2">
+              <label htmlFor="language" className="font-semibold flex items-center gap-1 text-lg text-primary">
                 <span role="img" aria-label="flag">🏳️</span> Language
               </label>
               <select
                 id="language"
-                className="rounded-xl border-2 text-lg border-emerald-200 focus:ring-2 focus:ring-emerald-200 px-4 py-3 bg-white appearance-none min-w-0"
-                style={{ minHeight: "48px" }}
+                className="rounded-xl border-2 border-story-seafoam/70 text-lg bg-white focus:ring-2 focus:ring-story-seafoam px-5 py-3 w-full min-w-[160px] transition shadow-md"
                 value={language}
                 onChange={e => setLanguage(e.target.value)}
               >
@@ -108,62 +110,70 @@ const StoryStartStep: React.FC<StoryStartStepProps> = ({
                 ))}
               </select>
             </div>
-            <div className="flex-1 flex flex-col gap-2">
-              <label className="font-semibold text-lg mb-1 flex items-center gap-1">
-                <span role="img" aria-label="child">👧</span> Age Range
+            {/* Age Range */}
+            <div className="flex-1 flex flex-col items-center gap-2">
+              <label className="font-semibold flex items-center gap-1 text-lg text-primary">
+                <span role="img" aria-label="child">👧</span> Age
               </label>
-              <div className="flex w-full gap-3">
+              <div className="flex gap-2 w-full justify-center">
                 {AGE_OPTIONS.map((option) => (
                   <button
                     key={option.label}
                     type="button"
-                    className={`flex-1 py-2 px-2 rounded-lg border-2 transition-all text-base flex items-center justify-center gap-2
-                      ${ageRange === option.label
-                        ? "bg-primary text-white font-bold ring-4 ring-primary/30 border-primary scale-105"
-                        : "border-primary/20 bg-primary/10 hover:bg-primary/20 text-primary"}
-                    `}
+                    className={`flex-1 rounded-xl py-3 px-2 border-2 font-semibold text-lg flex items-center justify-center gap-2 shadow-sm transition hover:scale-105 ${
+                      ageRange === option.label
+                        ? "bg-story-green text-white border-story-green animate-pulse"
+                        : "bg-white border-story-green/30 text-story-green"
+                    }`}
                     onClick={() => setAgeRange(option.label)}
                   >
                     <span>{option.emoji}</span>
-                    {option.label} yrs
+                    <span>{option.label} yrs</span>
                   </button>
                 ))}
               </div>
             </div>
           </div>
-          
-          {/* Step 3: Story details */}
+
+          {/* Story Title & Moral */}
           <div className="flex flex-col md:flex-row gap-4 w-full">
-            <div className="flex-1 flex flex-col gap-2">
-              <label htmlFor="story-title" className="font-semibold text-lg flex items-center gap-1">
+            <div className="flex-1 flex flex-col items-center gap-2">
+              <label htmlFor="story-title" className="font-semibold flex items-center gap-1 text-lg text-primary">
                 <span role="img" aria-label="book">📚</span> Story Title
               </label>
               <input
                 id="story-title"
                 type="text"
-                placeholder="(Optional) Name your story"
-                className="w-full p-3 text-lg rounded-xl border-2 border-primary/30 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 bg-white"
+                placeholder="Name your story"
+                className="w-full p-3 text-lg rounded-xl border-2 border-story-purple/30 focus:border-story-purple/80 focus:ring-2 focus:ring-story-purple/30 bg-white transition shadow"
                 value={storyData.title}
                 onChange={e => updateStoryData({ title: e.target.value })}
                 autoComplete="off"
                 spellCheck={true}
+                maxLength={35}
               />
             </div>
-            <div className="flex-1 flex flex-col gap-2">
-              <label htmlFor="story-moral" className="font-semibold text-lg flex items-center gap-1">
+            <div className="flex-1 flex flex-col items-center gap-2">
+              <label htmlFor="story-moral" className="font-semibold flex items-center gap-1 text-lg text-primary">
                 <span role="img" aria-label="star">⭐</span> Lesson / Moral
               </label>
               <input
                 id="story-moral"
                 type="text"
-                placeholder="(Optional) e.g. Kindness, honesty..."
-                className="w-full p-3 text-lg rounded-xl border-2 border-primary/30 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 bg-white"
+                placeholder="e.g. Kindness, honesty"
+                className="w-full p-3 text-lg rounded-xl border-2 border-story-orange/30 focus:border-story-orange/70 focus:ring-2 focus:ring-story-orange/20 bg-white transition shadow"
                 value={storyData.moral}
                 onChange={e => updateStoryData({ moral: e.target.value })}
                 autoComplete="off"
                 spellCheck={true}
+                maxLength={30}
               />
             </div>
+          </div>
+
+          {/* Fun footer cloud illustration */}
+          <div className="w-full flex justify-center mt-1">
+            <div className="w-[65%] h-8 rounded-full bg-story-blue/40 blur-sm opacity-60 animate-fade-in pointer-events-none" />
           </div>
         </div>
       </Card>
