@@ -18,7 +18,7 @@ const ILLUSTRATIONS = [
   },
   {
     id: "storybook",
-    title: "storybook",
+    title: "Storybook",
     image: "/images/storybook_illustration.png",
   },
 ];
