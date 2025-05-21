@@ -57,6 +57,8 @@ const App = () => (
                   <CreateStory />
                 </RequireAuth>
               } />
+              {/* UNPROTECTED temp route for testing */}
+              <Route path="/temp" element={<CreateStory />} />
               <Route path="/account-settings" element={
                 <RequireAuth>
                   <AccountSettings />
@@ -91,6 +93,8 @@ const App = () => (
                   <CreateStory />
                 </RequireAuth>
               } />
+              {/* UNPROTECTED temp route for testing */}
+              <Route path="/temp" element={<CreateStory />} />
               <Route path="/account-settings" element={
                 <RequireAuth>
                   <AccountSettings />
