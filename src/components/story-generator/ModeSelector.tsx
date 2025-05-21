@@ -41,7 +41,7 @@ const ModeSelector: React.FC<ModeSelectorProps> = ({ mode, setMode }) => (
         >
           Creative
           <span className="block text-xs font-normal mt-1 text-purple-900/90">
-            You’re the storyteller! Choose every piece of the adventure.
+            You’re the one making the magic.
           </span>
         </button>
       </div>
