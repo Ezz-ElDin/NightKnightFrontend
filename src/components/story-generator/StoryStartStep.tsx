@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
@@ -36,9 +35,6 @@ const StoryStartStep: React.FC<StoryStartStepProps> = ({
     if (storyData.pages !== 12) updateStoryData({ pages: 12 });
   }, [storyData.pages, updateStoryData]);
 
-  // Tooltip state for Creative mode
-  const [creativeTooltipOpen, setCreativeTooltipOpen] = React.useState(false);
-
   return (
     <TooltipProvider>
       <div className="flex flex-col items-center w-full py-6 animate-fade-in">
@@ -55,6 +51,7 @@ const StoryStartStep: React.FC<StoryStartStepProps> = ({
 
           {/* All options vertically */}
           <div className="flex flex-col gap-6">
+
             {/* --- Mode Selector as two squares next to each other --- */}
             <div>
               <label className="flex items-center gap-2 text-lg font-semibold text-primary mb-1">
@@ -74,8 +71,11 @@ const StoryStartStep: React.FC<StoryStartStepProps> = ({
                   tabIndex={0}
                 >
                   Magic
+                  <span className="block text-xs font-normal mt-1 text-orange-900/90">
+                    A fun and easy way to start — just pick a card and let the story magic begin!
+                  </span>
                 </button>
-                {/* Creative Mode Square with Tooltip at the top-right corner */}
+                {/* Creative Mode Square with NO Tooltip, description underneath */}
                 <div className="relative flex-1 h-20">
                   <button
                     type="button"
@@ -88,31 +88,9 @@ const StoryStartStep: React.FC<StoryStartStepProps> = ({
                     tabIndex={0}
                   >
                     Creative
-                    <div className="absolute top-2 right-2">
-                      <Tooltip open={creativeTooltipOpen} onOpenChange={setCreativeTooltipOpen}>
-                        <TooltipTrigger asChild>
-                          <button
-                            type="button"
-                            className="w-6 h-6 rounded-full bg-purple-100 hover:bg-purple-200 border border-purple-300 flex items-center justify-center text-purple-700 text-base font-bold cursor-pointer select-none transition shadow"
-                            tabIndex={0}
-                            aria-label="What is Creative Mode?"
-                            onClick={e => {
-                              e.stopPropagation();
-                              setCreativeTooltipOpen((v) => !v);
-                            }}
-                            onMouseEnter={() => setCreativeTooltipOpen(true)}
-                            onMouseLeave={() => setCreativeTooltipOpen(false)}
-                          >?</button>
-                        </TooltipTrigger>
-                        <TooltipContent
-                          side="left"
-                          align="center"
-                          className="max-w-[220px] bg-purple-600 text-white text-sm px-4 py-2 rounded-2xl border-0 shadow-xl font-ghibli font-normal z-50"
-                        >
-                          The existing full experience, for older children and grown-up storytellers who want to choose everything.
-                        </TooltipContent>
-                      </Tooltip>
-                    </div>
+                    <span className="block text-xs font-normal mt-1 text-purple-900/90">
+                      The full experience for kids storytellers who want to choose every part of the story.
+                    </span>
                   </button>
                 </div>
               </div>
