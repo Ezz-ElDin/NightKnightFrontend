@@ -7,10 +7,7 @@ import { api } from "@/lib/api";
 // --- ENUM MAPPINGS for backend fields ---
 const LANGUAGE_MAP: Record<string, string> = {
   "English": "british_english",
-  "Spanish": "turkish",
   "French": "french",
-  "German": "turkish",
-  "Chinese": "turkish",
   "Arabic": "egyptian_arabic",
 };
 const THEME_MAP: Record<string, string> = {

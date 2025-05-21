@@ -1,4 +1,3 @@
-
 import React from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { LANGUAGES } from "./constants";
@@ -12,6 +11,8 @@ interface StoryModeStepProps {
   ageRange: string;
   setAgeRange: (range: string) => void;
 }
+
+const ALLOWED_LANGUAGES = ["English", "French", "Arabic"];
 
 const StoryModeStep: React.FC<StoryModeStepProps> = ({
   mode,
@@ -68,7 +69,7 @@ const StoryModeStep: React.FC<StoryModeStepProps> = ({
             value={language}
             onChange={e => setLanguage(e.target.value)}
           >
-            {LANGUAGES.map(lang => (
+            {LANGUAGES.filter(lang => ALLOWED_LANGUAGES.includes(lang.id)).map(lang => (
               <option key={lang.id} value={lang.id}>
                 <span role="img" aria-label={lang.id}>{lang.flag}</span> {lang.id}
               </option>
