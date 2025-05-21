@@ -1,8 +1,53 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { MAGIC_CARDS } from "@/components/story-generator/MagicModeCards";
+import { api } from "@/lib/api";
+
+// --- ENUM MAPPINGS for backend fields ---
+const LANGUAGE_MAP: Record<string, string> = {
+  "English": "british_english",
+  "Spanish": "turkish",
+  "French": "french",
+  "German": "turkish",
+  "Chinese": "turkish",
+  "Arabic": "egyptian_arabic",
+};
+const THEME_MAP: Record<string, string> = {
+  "fantasy": "fantasy",
+  "animals": "animal",
+  "space": "space",
+  "daily": "routine",
+  "exploration": "exploration",
+  "whimsical": "imagination",
+};
+const TONE_MAP: Record<string, string> = {
+  "playful": "playful",
+  "calm": "soothing",
+  "exciting": "adventurous",
+  "kind": "friendly",
+  "inspirational": "inspirational",
+  "educational": "educational",
+};
+const NARRATIVE_MAP: Record<string, string> = {
+  "classic": "classic",
+  "rhyming": "rhyming",
+  "dialogue": "dialogue",
+  "simple": "simple",
+  "dreamy": "dreamy",
+};
+const ILLUSTRATION_MAP: Record<string, string> = {
+  "cinematic": "cinematic",
+  "paper_cutout": "paper_cutout",
+  "storyboard": "storybook",
+};
+
+const CARD_MAPPINGS: Record<string, { theme: string, tone: string, narrative: string }> = {
+  "magic-worlds":     { theme: "fantasy",  tone: "soothing",    narrative: "dreamy" },
+  "animal-adventures":{ theme: "animal",   tone: "playful",     narrative: "rhyming" },
+  "exploring-beyond": { theme: "exploration", tone: "adventurous", narrative: "dialogue" },
+  "real-life-moments":{ theme: "routine",  tone: "educational", narrative: "simple" },
+};
 
 export const useStoryCreation = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -164,15 +209,73 @@ export const useStoryCreation = () => {
     }
   };
 
-  const handleGenerateStory = () => {
+  // MAIN: POST generate endpoint
+  const handleGenerateStory = async () => {
     toast({
       title: "Your magic story is coming to life! ✨",
       description: "The story fairies are working hard to create your adventure!",
     });
 
-    setTimeout(() => {
-      navigate("/story-viewer", { state: { storyData } });
-    }, 2000);
+    // Helper: Character objects mapping
+    const characterList = Array.isArray(storyData.characters)
+      ? storyData.characters.map((c: any) => ({
+          name: c.name,
+          appearance: c.appearance,
+          role: c.role,
+        }))
+      : [];
+
+    let payload: any;
+    if (mode === "creative") {
+      payload = {
+        mode: "creative",
+        story_title: storyData.title ?? "",
+        language: LANGUAGE_MAP[storyData.language] || "british_english",
+        age: storyData.ageRange,
+        moral_of_the_story: storyData.moral,
+        theme: THEME_MAP[storyData.genre] || "",
+        tone: TONE_MAP[storyData.tone] || "",
+        narrative_style: NARRATIVE_MAP[storyData.narrativeStyle] || "",
+        illustration_style: ILLUSTRATION_MAP[storyData.illustrationStyle] || "",
+        number_of_pages: storyData.pages || 12,
+        characters: characterList,
+      };
+    } else if (mode === "magic") {
+      // Get card-based mapping
+      let cardSettings = CARD_MAPPINGS[magicSelected ?? ""] || {
+        theme: "",
+        tone: "",
+        narrative: "",
+      };
+      payload = {
+        mode: "magic",
+        story_title: storyData.title ?? "",
+        language: LANGUAGE_MAP[storyData.language] || "british_english",
+        age: storyData.ageRange,
+        moral_of_the_story: storyData.moral,
+        theme: cardSettings.theme,
+        tone: cardSettings.tone,
+        narrative_style: cardSettings.narrative,
+        illustration_style: ILLUSTRATION_MAP[storyData.illustrationStyle] || "",
+        number_of_pages: storyData.pages || 12,
+        characters: characterList,
+      };
+    }
+
+    try {
+      const res = await api.post("/api/generate/story", payload);
+      // Pass response to next view as needed
+      navigate("/story-viewer", { state: { storyData, storyResp: res.data } });
+    } catch (err: any) {
+      toast({
+        title: "Failed to generate story 😬",
+        description:
+          err?.response?.data?.detail ||
+          err?.message ||
+          "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   useEffect(() => {
