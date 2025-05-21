@@ -46,7 +46,7 @@ const IllustrationStep: React.FC<IllustrationStepProps> = ({
             aria-pressed={illustrationStyle === card.id}
             style={{ width: "100%" }} // fill grid column width
           >
-            <div className="flex items-center justify-center w-44 h-36 bg-white rounded-xl mb-2 shadow overflow-hidden">
+            <div className="flex items-center justify-center w-44 h-36">
               <img
                 src={card.image}
                 alt={card.title}
