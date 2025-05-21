@@ -90,8 +90,9 @@ const CreateStory = () => {
         return;
       }
     } else {
-      // Validate creative flow as before
-      if (currentStep === 3 && !storyData.genre) {
+      // --- Add validation for creative mode steps ---
+      // Step 2: Theme (genre) required
+      if (currentStep === 2 && !storyData.genre) {
         toast({
           title: "Pick a theme first!",
           description: "Choose your favorite story theme to continue",
@@ -99,7 +100,8 @@ const CreateStory = () => {
         });
         return;
       }
-      if (currentStep === 4 && !storyData.tone) {
+      // Step 3: Tone required
+      if (currentStep === 3 && !storyData.tone) {
         toast({
           title: "Pick a tone first!",
           description: "How should your story feel?",
@@ -107,7 +109,8 @@ const CreateStory = () => {
         });
         return;
       }
-      if (currentStep === 5 && !storyData.narrativeStyle) {
+      // Step 4: Style (narrativeStyle) required
+      if (currentStep === 4 && !storyData.narrativeStyle) {
         toast({
           title: "Pick a style first!",
           description: "How should your story be told?",
