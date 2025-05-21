@@ -2,7 +2,6 @@
 import React from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { LANGUAGES } from "./constants";
-import { Flag } from "lucide-react";
 
 interface StoryStartStepProps {
   mode: "magic" | "creative";
@@ -33,22 +32,26 @@ const StoryStartStep: React.FC<StoryStartStepProps> = ({
   }, [storyData.pages, updateStoryData]);
 
   return (
-    <div className="space-y-8">
-      <h1 className="text-3xl md:text-4xl font-bold text-center text-primary flex items-center gap-3 justify-center mb-2">
-        <span className="text-2xl" role="img" aria-label="Sparkles">✨</span>
-        Start Your Adventure!
-        <span className="text-2xl" role="img" aria-label="Sparkles">✨</span>
-      </h1>
-      <div className="bg-white/90 rounded-2xl p-6 shadow-md max-w-2xl mx-auto flex flex-col space-y-6 border border-primary/10">
+    <div className="flex flex-col items-center w-full">
+      <div className="w-full max-w-2xl space-y-8">
 
-        {/* Mode Selection */}
-        <div className="flex flex-col gap-4">
-          <label className="font-semibold text-lg mb-1">Choose Your Adventure</label>
+        {/* Step Title */}
+        <div className="flex justify-center mb-2">
+          <h1 className="text-3xl md:text-4xl font-bold text-center text-primary flex items-center gap-3">
+            <span className="text-2xl" role="img" aria-label="Sparkles">✨</span>
+            Start Your Adventure!
+            <span className="text-2xl" role="img" aria-label="Sparkles">✨</span>
+          </h1>
+        </div>
+
+        {/* Mode Toggle */}
+        <div className="rounded-2xl px-5 py-6 bg-gradient-to-r from-violet-100/60 to-pink-100/40 shadow-md flex flex-col items-center space-y-3 border-2 border-primary/10">
+          <label className="font-semibold text-lg mb-2 text-center w-full">Choose your mode</label>
           <ToggleGroup
             type="single"
             value={mode}
             onValueChange={(v) => v && setMode(v as "magic" | "creative")}
-            className="flex gap-4"
+            className="w-full flex gap-4"
           >
             <ToggleGroupItem
               value="magic"
@@ -71,15 +74,15 @@ const StoryStartStep: React.FC<StoryStartStepProps> = ({
           </ToggleGroup>
         </div>
 
-        {/* Language and Age Picker */}
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="w-full">
-            <label htmlFor="language" className="block font-semibold mb-1 text-lg flex items-center gap-2">
-              <Flag className="h-5 w-5 text-emerald-600" /> Choose Your Language
+        {/* Language & Age - Same row on desktop, stacked mobile */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="rounded-2xl p-5 bg-gradient-to-br from-emerald-50/70 to-white/80 shadow border border-emerald-100 flex flex-col">
+            <label htmlFor="language" className="font-semibold mb-2 text-lg flex items-center gap-2">
+              <span className="text-xl" role="img" aria-label="Flag">🏳️</span> Choose Your Language
             </label>
             <select
               id="language"
-              className="w-full p-3 rounded-xl border-2 text-lg border-emerald-200 focus:ring-2 focus:ring-emerald-200"
+              className="p-3 rounded-xl border-2 text-lg border-emerald-200 focus:ring-2 focus:ring-emerald-200"
               value={language}
               onChange={e => setLanguage(e.target.value)}
             >
@@ -90,9 +93,11 @@ const StoryStartStep: React.FC<StoryStartStepProps> = ({
               ))}
             </select>
           </div>
-          <div className="w-full">
-            <label className="block font-semibold mb-1 text-lg">Select Age Range</label>
-            <div className="flex gap-2">
+          <div className="rounded-2xl p-5 bg-gradient-to-br from-yellow-50/70 to-white/80 shadow border border-yellow-100 flex flex-col">
+            <label className="font-semibold mb-2 text-lg flex items-center gap-2">
+              <span className="text-xl" role="img" aria-label="Child">👶</span> Select Age Range
+            </label>
+            <div className="flex gap-2 mt-1">
               {["3-5", "6-8", "9-12"].map((range) => (
                 <button
                   key={range}
@@ -109,30 +114,34 @@ const StoryStartStep: React.FC<StoryStartStepProps> = ({
 
         {/* Story Title & Moral */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-3">
+          <div className="rounded-2xl p-5 border border-blue-100 bg-gradient-to-br from-blue-50/60 to-white/90 shadow space-y-2">
             <label className="font-bold flex items-center gap-2 text-lg" htmlFor="story-title">
-              <span role="img" aria-label="book">📚</span> Story Title
+              <span role="img" aria-label="Book">📚</span> Story Title
             </label>
             <input
               id="story-title"
               type="text"
               placeholder="Name your story (or leave blank for a surprise!)"
-              className="w-full p-3 text-lg rounded-xl border-2 border-primary/30 focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
+              className="w-full p-3 text-lg rounded-xl border-2 border-primary/30 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 bg-white"
               value={storyData.title}
               onChange={(e) => updateStoryData({ title: e.target.value })}
+              autoComplete="off"
+              spellCheck={true}
             />
           </div>
-          <div className="space-y-3">
+          <div className="rounded-2xl p-5 border border-amber-100 bg-gradient-to-br from-yellow-50/70 to-white/90 shadow space-y-2">
             <label className="font-bold flex items-center gap-2 text-lg" htmlFor="story-moral">
-              <span role="img" aria-label="star">⭐</span> Story Lesson
+              <span role="img" aria-label="Star">⭐</span> Story Lesson
             </label>
             <input
               id="story-moral"
               type="text"
               placeholder="What should kids learn? (kindness, bravery...)"
-              className="w-full p-3 text-lg rounded-xl border-2 border-primary/30 focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
+              className="w-full p-3 text-lg rounded-xl border-2 border-primary/30 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 bg-white"
               value={storyData.moral}
               onChange={(e) => updateStoryData({ moral: e.target.value })}
+              autoComplete="off"
+              spellCheck={true}
             />
           </div>
         </div>
@@ -143,3 +152,4 @@ const StoryStartStep: React.FC<StoryStartStepProps> = ({
 };
 
 export default StoryStartStep;
+
