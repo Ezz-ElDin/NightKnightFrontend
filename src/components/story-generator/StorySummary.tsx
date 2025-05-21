@@ -149,7 +149,7 @@ const StorySummary: React.FC<StorySummaryProps> = ({
                   {icon}
                   <span className="font-bold text-story-seafoam">{label}:</span>
                   {storyData.ageRange ? (
-                    <span className="ml-auto text-lg text-story-seafoam">{storyData.ageRange}</span>
+                    <span className="ml-auto text-lg text-foreground">{storyData.ageRange}</span>
                   ) : (
                     <span className="ml-auto text-muted-foreground italic">{`No ${label}`}</span>
                   )}
@@ -165,7 +165,7 @@ const StorySummary: React.FC<StorySummaryProps> = ({
                 {icon}
                 <span className="font-bold text-story-seafoam">{label}:</span>
                 {storyData[key] ? (
-                  <span className="ml-auto text-lg">{storyData[key]}</span>
+                  <span className="ml-auto text-lg text-foreground">{storyData[key]}</span>
                 ) : (
                   <span className="ml-auto text-muted-foreground italic">{`No ${label}`}</span>
                 )}
