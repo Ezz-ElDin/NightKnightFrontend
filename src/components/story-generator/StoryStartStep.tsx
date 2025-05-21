@@ -1,7 +1,14 @@
+
 import React from "react";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { LANGUAGES } from "./constants";
+
+const AGE_OPTIONS = [
+  { label: "3-5", display: "3-5 years" },
+  { label: "6-8", display: "6-8 years" },
+  { label: "9-12", display: "9-12 years" },
+];
 
 interface StoryStartStepProps {
   mode: "magic" | "creative";
@@ -14,12 +21,6 @@ interface StoryStartStepProps {
   updateStoryData: (data: any) => void;
 }
 
-const AGE_OPTIONS = [
-  { label: "3-5", emoji: "🧸" },
-  { label: "6-8", emoji: "🎈" },
-  { label: "9-12", emoji: "🚀" },
-];
-
 const StoryStartStep: React.FC<StoryStartStepProps> = ({
   mode,
   setMode,
@@ -30,78 +31,74 @@ const StoryStartStep: React.FC<StoryStartStepProps> = ({
   storyData,
   updateStoryData,
 }) => {
-  // Always force 12 pages behind the scenes
+  // Always force pages=12
   React.useEffect(() => {
-    if (storyData.pages !== 12) {
-      updateStoryData({ pages: 12 });
-    }
+    if (storyData.pages !== 12) updateStoryData({ pages: 12 });
   }, [storyData.pages, updateStoryData]);
 
   return (
     <div className="flex flex-col items-center w-full py-6">
-      <Card className="w-full max-w-2xl mx-auto p-0 rounded-2xl shadow-lg border-2 border-primary/10 bg-white/90">
-        <div className="relative flex flex-col gap-8 px-4 sm:px-10 pt-10 pb-6">
-          {/* Whimsical Card Top Banner */}
-          <div className="w-full flex items-center justify-center relative">
-            <div className="rounded-full bg-story-yellow/40 border-4 border-story-yellow shadow animate-float px-7 py-3 flex flex-col items-center justify-center mb-2">
-              <span className="text-4xl md:text-5xl flex gap-3">
-                <span role="img" aria-label="sparkles">✨</span>
+      <Card className="w-full max-w-3xl mx-auto shadow-lg rounded-3xl border-2 border-primary/10 bg-white/90 px-6 md:px-10 py-10 min-h-[470px]">
+        <div className="mb-8">
+          <div className="flex items-center gap-3">
+            <span className="text-3xl" role="img" aria-label="sparkles">✨</span>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-primary drop-shadow-sm font-ghibli">Start Your Story</h2>
+          </div>
+          <div className="pl-10 mt-1">
+            <p className="text-base md:text-lg text-muted-foreground font-ghibli">Let’s set up your story adventure!</p>
+          </div>
+        </div>
+        {/* Main grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+          {/* Left Column */}
+          <div className="space-y-6">
+            {/* Story Title */}
+            <div>
+              <label className="flex items-center gap-2 font-bold text-lg text-primary mb-1 ml-1">
                 <span role="img" aria-label="book">📖</span>
-                <span role="img" aria-label="sparkles">✨</span>
-              </span>
-              <h2 className="font-extrabold text-3xl md:text-4xl text-story-purple mt-2 whitespace-nowrap drop-shadow">Create Your Story!</h2>
-              <p className="text-base md:text-lg text-story-brown mt-2 font-semibold whitespace-nowrap">Let your imagination fly</p>
+                Story Title
+              </label>
+              <input
+                type="text"
+                value={storyData.title}
+                onChange={e => updateStoryData({ title: e.target.value })}
+                maxLength={35}
+                placeholder="Name your story (or leave blank for a surprise!)"
+                className="w-full rounded-xl border-2 border-primary/10 text-lg bg-white px-5 py-3 mt-1 transition shadow-md focus:border-primary focus:ring-2 focus:ring-primary font-ghibli"
+                autoComplete="off"
+                spellCheck={true}
+                aria-label="Story Title"
+              />
             </div>
-          </div>
-
-          {/* Mode Selection */}
-          <div className="flex flex-col items-center gap-3">
-            <label className="text-lg font-bold text-primary flex items-center gap-2">
-              <span role="img" aria-label="magic">🪄</span>
-              Choose Your Adventure Mode:
-            </label>
-            <div className="flex gap-4 w-full md:w-fit">
-              <button
-                type="button"
-                onClick={() => setMode("magic")}
-                className={`flex flex-col items-center justify-center gap-1 px-6 py-3 rounded-xl font-bold text-lg shadow-sm transition hover:scale-105 border-2 ${
-                  mode === "magic"
-                    ? "bg-story-purple/90 text-white border-story-purple animate-wiggle"
-                    : "bg-story-purple/10 text-story-purple border-story-purple/50"
-                }`}
-              >
-                <span className="text-2xl" role="img" aria-label="sparkles">✨</span>
-                <span>Magic</span>
-                <span className="text-xs font-normal text-story-purple/70 mt-1">Quick & Easy</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setMode("creative")}
-                className={`flex flex-col items-center justify-center gap-1 px-6 py-3 rounded-xl font-bold text-lg shadow-sm transition hover:scale-105 border-2 ${
-                  mode === "creative"
-                    ? "bg-story-orange text-white border-story-orange animate-wiggle"
-                    : "bg-story-orange/10 text-story-orange border-story-orange/50"
-                }`}
-              >
-                <span className="text-2xl" role="img" aria-label="wrench">🛠️</span>
-                <span>Creative</span>
-                <span className="text-xs font-normal text-story-orange/80 mt-1">Choose Details</span>
-              </button>
+            {/* Moral / Lesson */}
+            <div>
+              <label className="flex items-center gap-2 font-bold text-lg text-yellow-900 mb-1 ml-1">
+                <span role="img" aria-label="star">⭐</span>
+                Story Lesson
+              </label>
+              <input
+                type="text"
+                value={storyData.moral}
+                onChange={e => updateStoryData({ moral: e.target.value })}
+                maxLength={30}
+                placeholder="What should kids learn? (kindness, bravery...)"
+                className="w-full rounded-xl border-2 border-yellow-400/30 text-lg bg-white px-5 py-3 mt-1 transition shadow-md focus:border-yellow-500 focus:ring-2 focus:ring-yellow-300/40 font-ghibli"
+                autoComplete="off"
+                spellCheck={true}
+                aria-label="Story Lesson"
+              />
             </div>
-          </div>
-
-          {/* Language & Age, side-by-side on desktop, stacked on mobile */}
-          <div className="flex flex-col md:flex-row gap-6 w-full justify-between">
             {/* Language */}
-            <div className="flex-1 flex flex-col items-center gap-2">
-              <label htmlFor="language" className="font-semibold flex items-center gap-1 text-lg text-primary">
-                <span role="img" aria-label="flag">🏳️</span> Language
+            <div>
+              <label className="flex items-center gap-2 font-bold text-lg text-green-900 mb-1 ml-1">
+                <span role="img" aria-label="flag">🏳️</span>
+                Language
               </label>
               <select
-                id="language"
-                className="rounded-xl border-2 border-story-seafoam/70 text-lg bg-white focus:ring-2 focus:ring-story-seafoam px-5 py-3 w-full min-w-[160px] transition shadow-md"
                 value={language}
                 onChange={e => setLanguage(e.target.value)}
+                className="w-full rounded-xl border-2 border-green-400/30 text-lg bg-white px-5 py-3 mt-1 shadow-md focus:border-green-500 focus:ring-2 focus:ring-green-200 font-ghibli"
+                aria-label="Language"
               >
                 {LANGUAGES.map(lang => (
                   <option key={lang.id} value={lang.id}>
@@ -110,70 +107,79 @@ const StoryStartStep: React.FC<StoryStartStepProps> = ({
                 ))}
               </select>
             </div>
+          </div>
+          {/* Right Column */}
+          <div className="space-y-8">
             {/* Age Range */}
-            <div className="flex-1 flex flex-col items-center gap-2">
-              <label className="font-semibold flex items-center gap-1 text-lg text-primary">
-                <span role="img" aria-label="child">👧</span> Age
+            <div>
+              <label className="flex items-center gap-2 font-bold text-lg text-primary mb-2 ml-1">
+                <span role="img" aria-label="child">👧</span>
+                Age Range
               </label>
-              <div className="flex gap-2 w-full justify-center">
-                {AGE_OPTIONS.map((option) => (
+              <div className="flex gap-4">
+                {AGE_OPTIONS.map(option => (
                   <button
                     key={option.label}
                     type="button"
-                    className={`flex-1 rounded-xl py-3 px-2 border-2 font-semibold text-lg flex items-center justify-center gap-2 shadow-sm transition hover:scale-105 ${
+                    className={`flex-1 py-4 rounded-xl text-lg font-bold transition-all border-2 ${
                       ageRange === option.label
-                        ? "bg-story-green text-white border-story-green animate-pulse"
-                        : "bg-white border-story-green/30 text-story-green"
+                        ? "bg-primary text-white border-primary shadow-lg"
+                        : "bg-primary/10 text-primary border-primary/30 hover:bg-primary/20"
                     }`}
+                    style={{
+                      minWidth: 0,
+                    }}
                     onClick={() => setAgeRange(option.label)}
                   >
-                    <span>{option.emoji}</span>
-                    <span>{option.label} yrs</span>
+                    {option.display}
                   </button>
                 ))}
               </div>
             </div>
-          </div>
-
-          {/* Story Title & Moral */}
-          <div className="flex flex-col md:flex-row gap-4 w-full">
-            <div className="flex-1 flex flex-col items-center gap-2">
-              <label htmlFor="story-title" className="font-semibold flex items-center gap-1 text-lg text-primary">
-                <span role="img" aria-label="book">📚</span> Story Title
+            {/* Story Length - fixed to 12 pages and disabled */}
+            <div>
+              <label className="flex items-center gap-2 font-bold text-lg text-blue-900 mb-2 ml-1">
+                <span role="img" aria-label="book">📚</span>
+                How Long?
               </label>
-              <input
-                id="story-title"
-                type="text"
-                placeholder="Name your story"
-                className="w-full p-3 text-lg rounded-xl border-2 border-story-purple/30 focus:border-story-purple/80 focus:ring-2 focus:ring-story-purple/30 bg-white transition shadow"
-                value={storyData.title}
-                onChange={e => updateStoryData({ title: e.target.value })}
-                autoComplete="off"
-                spellCheck={true}
-                maxLength={35}
-              />
+              <div className="flex gap-2 items-center mt-2">
+                <span className="text-base px-3 py-2 rounded-xl bg-blue-100 text-blue-900 font-semibold opacity-60 select-none">
+                  12 pages
+                </span>
+                <span className="text-muted-foreground text-base italic">(fixed)</span>
+              </div>
             </div>
-            <div className="flex-1 flex flex-col items-center gap-2">
-              <label htmlFor="story-moral" className="font-semibold flex items-center gap-1 text-lg text-primary">
-                <span role="img" aria-label="star">⭐</span> Lesson / Moral
+            {/* Mode selector (optional, only show if creative/magic toggle is relevant) */}
+            <div>
+              <label className="flex items-center gap-2 font-bold text-lg text-orange-900 mb-2 ml-1">
+                <span role="img" aria-label="magic">🪄</span>
+                Choose Mode
               </label>
-              <input
-                id="story-moral"
-                type="text"
-                placeholder="e.g. Kindness, honesty"
-                className="w-full p-3 text-lg rounded-xl border-2 border-story-orange/30 focus:border-story-orange/70 focus:ring-2 focus:ring-story-orange/20 bg-white transition shadow"
-                value={storyData.moral}
-                onChange={e => updateStoryData({ moral: e.target.value })}
-                autoComplete="off"
-                spellCheck={true}
-                maxLength={30}
-              />
+              <div className="flex gap-4">
+                <button
+                  type="button"
+                  onClick={() => setMode("magic")}
+                  className={`flex-1 py-3 rounded-xl text-lg font-bold border-2 transition-all ${
+                    mode === "magic"
+                      ? "bg-orange-400/90 text-white border-orange-400 shadow-lg"
+                      : "bg-orange-300/10 text-orange-800 border-orange-300/30 hover:bg-orange-200/40"
+                  }`}
+                >
+                  Magic
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMode("creative")}
+                  className={`flex-1 py-3 rounded-xl text-lg font-bold border-2 transition-all ${
+                    mode === "creative"
+                      ? "bg-purple-400/90 text-white border-purple-400 shadow-lg"
+                      : "bg-purple-300/10 text-purple-800 border-purple-300/30 hover:bg-purple-200/40"
+                  }`}
+                >
+                  Creative
+                </button>
+              </div>
             </div>
-          </div>
-
-          {/* Fun footer cloud illustration */}
-          <div className="w-full flex justify-center mt-1">
-            <div className="w-[65%] h-8 rounded-full bg-story-blue/40 blur-sm opacity-60 animate-fade-in pointer-events-none" />
           </div>
         </div>
       </Card>
