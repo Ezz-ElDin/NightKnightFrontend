@@ -44,7 +44,7 @@ const NarrativeStyleSelector: React.FC<NarrativeStyleSelectorProps> = ({ selecte
             key={card.id}
             type="button"
             onClick={() => onSelectStyle(card.id)}
-            className={`rounded-2xl border-2 shadow-lg px-8 py-7 text-left flex flex-col gap-2 transition-transform hover:scale-105 focus:scale-105 bg-gradient-to-br ${card.color} 
+            className={`rounded-2xl border-2 shadow-lg px-8 py-7 flex flex-col items-center justify-center gap-2 text-center transition-transform hover:scale-105 focus:scale-105 bg-gradient-to-br ${card.color} 
               ${selectedStyle === card.id ? "ring-4 ring-violet-400 scale-105 border-primary" : "border-transparent"}`}
             aria-pressed={selectedStyle === card.id}
           >
