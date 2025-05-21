@@ -48,12 +48,11 @@ const CreateStory = () => {
         ]
       : [
           { id: 1, name: "Start" },
-          { id: 2, name: "Details" },
-          { id: 3, name: "Theme" },
-          { id: 4, name: "Tone" },
-          { id: 5, name: "Style" },
-          { id: 6, name: "Characters" },
-          { id: 7, name: "Summary" },
+          { id: 2, name: "Theme" },
+          { id: 3, name: "Tone" },
+          { id: 4, name: "Style" },
+          { id: 5, name: "Characters" },
+          { id: 6, name: "Summary" },
         ];
 
   // Handle language and age changes
@@ -230,7 +229,7 @@ const CreateStory = () => {
             />
           )}
 
-          {/* Characters for magic mode, or details (creative) */}
+          {/* Characters for magic mode, or other creative steps */}
           {mode === "magic" && currentStep === 3 && (
             <CharacterStep storyData={storyData} updateStoryData={updateStoryData} />
           )}
@@ -239,22 +238,20 @@ const CreateStory = () => {
           )}
 
           {/* Creative Mode flow */}
+          {/* "Details" step is removed; adjust creative steps accordingly */}
           {mode === "creative" && currentStep === 2 && (
-            <StoryDetailsStep storyData={storyData} updateStoryData={updateStoryData} />
-          )}
-          {mode === "creative" && currentStep === 3 && (
             <ThemeStep storyData={storyData} updateStoryData={updateStoryData} />
           )}
-          {mode === "creative" && currentStep === 4 && (
+          {mode === "creative" && currentStep === 3 && (
             <ToneStep storyData={storyData} updateStoryData={updateStoryData} />
           )}
-          {mode === "creative" && currentStep === 5 && (
+          {mode === "creative" && currentStep === 4 && (
             <StyleStep storyData={storyData} updateStoryData={updateStoryData} />
           )}
-          {mode === "creative" && currentStep === 6 && (
+          {mode === "creative" && currentStep === 5 && (
             <CharacterStep storyData={storyData} updateStoryData={updateStoryData} />
           )}
-          {mode === "creative" && currentStep === 7 && (
+          {mode === "creative" && currentStep === 6 && (
             <StorySummary storyData={storyData} onGenerateStory={handleGenerateStory} />
           )}
         </div>
