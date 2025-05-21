@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,7 +21,7 @@ interface StorySummaryProps {
   mode?: StoryMode; // Optionally pass, default to 'creative'
 }
 
-// Creative mode: Story Title, Age, Language, Story Lesson, Length, Theme, Tone, Style, Characters
+// Creative mode: Story Title, Age, Language, Story Lesson, Theme, Tone, Style, Characters
 const creativeFields = [
   {
     key: "title",
@@ -43,11 +42,6 @@ const creativeFields = [
     key: "moral",
     label: "Story Lesson",
     icon: <Handshake className="text-green-400 w-6 h-6 shrink-0" />,
-  },
-  {
-    key: "pages",
-    label: "Length",
-    icon: <Clock className="text-blue-400 w-6 h-6 shrink-0" />,
   },
   {
     key: "genre",
@@ -71,7 +65,7 @@ const creativeFields = [
   },
 ];
 
-// Magic mode: Age, Language, Story Lesson, Length, Story World (genre), Characters
+// Magic mode: Age, Language, Story Lesson, Story World (genre), Characters
 const magicFields = [
   {
     key: "ageRange",
@@ -87,11 +81,6 @@ const magicFields = [
     key: "moral",
     label: "Story Lesson",
     icon: <Handshake className="text-green-400 w-6 h-6 shrink-0" />,
-  },
-  {
-    key: "pages",
-    label: "Length",
-    icon: <Clock className="text-blue-400 w-6 h-6 shrink-0" />,
   },
   {
     key: "genre",
@@ -149,21 +138,6 @@ const StorySummary: React.FC<StorySummaryProps> = ({
                       No characters yet
                     </span>
                   )}
-                </li>
-              );
-            }
-            // Length (pages) special style
-            if (key === "pages") {
-              return (
-                <li
-                  key={key}
-                  className="flex items-center gap-3 bg-white/80 px-4 py-3 rounded-xl border shadow transition-all hover:scale-105"
-                >
-                  {icon}
-                  <span className="font-bold text-blue-600">{label}:</span>
-                  <span className="ml-auto text-lg">
-                    {storyData.pages} pages
-                  </span>
                 </li>
               );
             }
