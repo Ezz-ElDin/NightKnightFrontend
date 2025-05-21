@@ -35,26 +35,17 @@ const STYLE_CARDS = [
   },
 ];
 
-const CARD_HEIGHT = "h-36"; // consistent
-
 const NarrativeStyleSelector: React.FC<NarrativeStyleSelectorProps> = ({ selectedStyle, onSelectStyle }) => {
   return (
     <div>
-      <div
-        className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto mt-8
-          min-h-[300px] max-h-[420px] overflow-y-auto
-          pr-1"
-        style={{ scrollbarWidth: "thin" }}
-      >
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto mt-8">
         {STYLE_CARDS.map((card) => (
           <button
             key={card.id}
             type="button"
             onClick={() => onSelectStyle(card.id)}
             className={`rounded-2xl border-2 shadow-lg px-8 py-7 flex flex-col items-center justify-center gap-2 text-center transition-transform hover:scale-105 focus:scale-105 bg-gradient-to-br ${card.color} 
-              ${selectedStyle === card.id ? "ring-4 ring-violet-400 scale-105 border-primary" : "border-transparent"}
-              ${CARD_HEIGHT}
-            `}
+              ${selectedStyle === card.id ? "ring-4 ring-violet-400 scale-105 border-primary" : "border-transparent"}`}
             aria-pressed={selectedStyle === card.id}
           >
             <span className="text-4xl">{card.emoji}</span>
@@ -72,3 +63,4 @@ const NarrativeStyleSelector: React.FC<NarrativeStyleSelectorProps> = ({ selecte
 };
 
 export default NarrativeStyleSelector;
+

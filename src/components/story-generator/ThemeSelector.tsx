@@ -40,26 +40,17 @@ const THEME_CARDS = [
   },
 ];
 
-const CARD_HEIGHT = "h-36"; // consistent card height
-
 const ThemeSelector: React.FC<ThemeSelectorProps> = ({ selectedTheme, onSelectTheme }) => {
   return (
     <div>
-      <div
-        className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto mt-8 
-          min-h-[300px] max-h-[420px] overflow-y-auto 
-          pr-1"
-        style={{ scrollbarWidth: "thin" }}
-      >
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto mt-8">
         {THEME_CARDS.map((card) => (
           <button
             key={card.id}
             type="button"
             onClick={() => onSelectTheme(card.id)}
             className={`rounded-2xl border-2 shadow-lg px-8 py-7 flex flex-col items-center justify-center gap-2 text-center transition-transform hover:scale-105 focus:scale-105 bg-gradient-to-br ${card.color} 
-              ${selectedTheme === card.id ? "ring-4 ring-violet-400 scale-105 border-primary" : "border-transparent"}
-              ${CARD_HEIGHT}
-            `}
+              ${selectedTheme === card.id ? "ring-4 ring-violet-400 scale-105 border-primary" : "border-transparent"}`}
             aria-pressed={selectedTheme === card.id}
           >
             <span className="text-4xl">{card.emoji}</span>
@@ -77,3 +68,4 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({ selectedTheme, onSelectTh
 };
 
 export default ThemeSelector;
+
