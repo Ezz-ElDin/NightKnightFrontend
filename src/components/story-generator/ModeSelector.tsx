@@ -25,7 +25,7 @@ const ModeSelector: React.FC<ModeSelectorProps> = ({ mode, setMode }) => (
       >
         Magic
         <span className="block text-xs font-normal mt-1 text-orange-900/90">
-          Choose a story world to begin!
+          The fairy will create the story for you.
         </span>
       </button>
       <div className="relative flex-1 h-20">
@@ -41,7 +41,7 @@ const ModeSelector: React.FC<ModeSelectorProps> = ({ mode, setMode }) => (
         >
           Creative
           <span className="block text-xs font-normal mt-1 text-purple-900/90">
-            Make your own story your way!
+            You’re the storyteller! Choose every piece of the adventure.
           </span>
         </button>
       </div>
