@@ -2,7 +2,7 @@
 import React from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { LANGUAGES } from "./constants";
-import { Flag, Wrench, Magic } from "lucide-react";
+import { Flag, Wrench } from "lucide-react";
 
 interface StoryModeStepProps {
   mode: "magic" | "creative";
@@ -24,9 +24,9 @@ const StoryModeStep: React.FC<StoryModeStepProps> = ({
   return (
     <div className="space-y-8">
       <h1 className="text-2xl md:text-3xl font-bold text-primary flex items-center gap-3 justify-center mb-2">
-        <Magic className="h-7 w-7 text-yellow-400" />
+        <span className="text-2xl" role="img" aria-label="Sparkles">✨</span>
         Let's Make a Story!
-        <Magic className="h-7 w-7 text-yellow-400" />
+        <span className="text-2xl" role="img" aria-label="Sparkles">✨</span>
       </h1>
       <div className="flex flex-col gap-4 max-w-lg mx-auto">
         <label className="font-semibold mb-1 text-lg">Choose Your Adventure</label>
@@ -41,7 +41,7 @@ const StoryModeStep: React.FC<StoryModeStepProps> = ({
             aria-label="Magic Mode"
             className={`flex-1 rounded-xl border-2 border-violet-300 py-5 px-3 flex flex-col items-center gap-2 bg-violet-50 ${mode === "magic" ? "ring-4 ring-pink-200 scale-105 text-violet-700 font-bold" : ""}`}
           >
-            <span className="text-3xl">✨</span>
+            <span className="text-3xl" role="img" aria-label="Magic">✨</span>
             <span className="font-bold text-lg">Magic Mode</span>
             <span className="text-sm text-muted-foreground">Recommended for young adventurers!</span>
           </ToggleGroupItem>
@@ -99,4 +99,3 @@ const StoryModeStep: React.FC<StoryModeStepProps> = ({
 };
 
 export default StoryModeStep;
-
