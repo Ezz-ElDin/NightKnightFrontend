@@ -15,11 +15,10 @@ import StoryDetailsStep from "@/components/story-generator/StoryDetailsStep";
 import StorySummary from "@/components/story-generator/StorySummary";
 import StoryModeStep from "@/components/story-generator/StoryModeStep";
 import MagicModeCards, { MAGIC_CARDS } from "@/components/story-generator/MagicModeCards";
+import StoryStartStep from "@/components/story-generator/StoryStartStep";
 
 const CreateStory = () => {
   const [currentStep, setCurrentStep] = useState(1);
-
-  // Track mode and magic card selection
   const [mode, setMode] = useState<"magic" | "creative">("magic");
   const [magicSelected, setMagicSelected] = useState<string | null>(null);
 
@@ -31,24 +30,24 @@ const CreateStory = () => {
     ageRange: "6-8",
     moral: "",
     characters: [],
-    pages: 10,
+    pages: 12,           // always set to 12
     language: "English",
     illustrationStyle: "",
   });
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  // New steps: 1 - Mode, 2 - Magic Cards (if magic) or Details (if creative), etc.
+  // Only two main flows: Start (combined), then rest
   const steps =
     mode === "magic"
       ? [
-          { id: 1, name: "Adventure Mode" },
+          { id: 1, name: "Start" },
           { id: 2, name: "Choose Magic Card" },
           { id: 3, name: "Characters" },
           { id: 4, name: "Summary" },
         ]
       : [
-          { id: 1, name: "Adventure Mode" },
+          { id: 1, name: "Start" },
           { id: 2, name: "Details" },
           { id: 3, name: "Theme" },
           { id: 4, name: "Tone" },
@@ -63,9 +62,13 @@ const CreateStory = () => {
     else setStoryData(prev => ({ ...prev, [field]: value }));
   };
 
-  // Unified data update for inside flow
+  // In updateStoryData, always reset pages to 12
   const updateStoryData = (data) => {
-    setStoryData(prev => ({ ...prev, ...data }));
+    setStoryData(prev => ({
+      ...prev,
+      ...data,
+      pages: 12 // always force to 12, in case it's ever changed in any input
+    }));
   };
 
   // Next step logic
@@ -194,7 +197,7 @@ const CreateStory = () => {
       >
         <div className="story-step-content min-h-[400px]">
           {currentStep === 1 && (
-            <StoryModeStep
+            <StoryStartStep
               mode={mode}
               setMode={v => {
                 setMode(v);
@@ -204,6 +207,8 @@ const CreateStory = () => {
               setLanguage={v => updateStoryData({ language: v })}
               ageRange={storyData.ageRange}
               setAgeRange={v => updateStoryData({ ageRange: v })}
+              storyData={storyData}
+              updateStoryData={updateStoryData}
             />
           )}
 
@@ -211,10 +216,7 @@ const CreateStory = () => {
             <MagicModeCards
               selected={magicSelected}
               onSelect={(settings) => {
-                // Find which card is selected
-                const card = MAGIC_CARDS.find(
-                  card => card.set.genre === settings.genre
-                );
+                const card = MAGIC_CARDS.find(card => card.set.genre === settings.genre);
                 setMagicSelected(card?.id ?? null);
 
                 setStoryData((prev) => ({
@@ -222,6 +224,7 @@ const CreateStory = () => {
                   genre: settings.genre,
                   tone: settings.tone,
                   narrativeStyle: settings.narrativeStyle,
+                  pages: 12, // Ensure it's 12 for payload
                 }));
               }}
             />
