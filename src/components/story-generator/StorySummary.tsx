@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -114,7 +113,7 @@ const StorySummary: React.FC<StorySummaryProps> = ({
         </p>
         <ul className="flex flex-col gap-4">
           {fields.map(({ key, label, icon }) => {
-            // Characters rendered as tags, always show
+            // Characters rendered as tags
             if (key === "characters") {
               return (
                 <li
@@ -140,7 +139,7 @@ const StorySummary: React.FC<StorySummaryProps> = ({
                 </li>
               );
             }
-            // Age (make color match - use text-story-seafoam for the label and value)
+            // Age field
             if (key === "ageRange") {
               return (
                 <li
@@ -157,7 +156,7 @@ const StorySummary: React.FC<StorySummaryProps> = ({
                 </li>
               );
             }
-            // Language/Lesson/etc: Always show, show empty/emphasized if blank
+            // Other fields
             return (
               <li
                 key={key}
@@ -174,13 +173,13 @@ const StorySummary: React.FC<StorySummaryProps> = ({
             );
           })}
         </ul>
-        <div className="flex flex-col sm:flex-row sm:justify-between gap-4 pt-6 px-2 border-t-2 border-dashed border-primary/30">
+        {/* Center the button */}
+        <div className="flex justify-center pt-6 px-2 border-t-2 border-dashed border-primary/30">
           <Button
             data-testid="generate-btn"
             onClick={onGenerateStory}
             size="lg"
-            className="w-full sm:w-auto justify-center px-8 py-6 text-xl font-black rounded-full bg-gradient-to-br from-violet-500 via-purple-400 to-blue-400
-              shadow-lg hover:from-violet-600 hover:via-purple-500 hover:to-blue-500 transition-all duration-300 button-bounce tracking-wide"
+            className="w-full sm:w-auto justify-center px-8 py-6 text-xl font-black rounded-full bg-gradient-to-br from-violet-500 via-purple-400 to-blue-400 shadow-lg hover:from-violet-600 hover:via-purple-500 hover:to-blue-500 transition-all duration-300 button-bounce tracking-wide"
           >
             Create My Story
           </Button>
@@ -191,4 +190,3 @@ const StorySummary: React.FC<StorySummaryProps> = ({
 };
 
 export default StorySummary;
-
