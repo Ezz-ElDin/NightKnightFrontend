@@ -11,7 +11,7 @@ import {
   Users,
   Handshake,
   Star,
-  Language,
+  Languages, // <-- fixed here
 } from "lucide-react";
 
 type StoryMode = "magic" | "creative";
@@ -37,7 +37,7 @@ const creativeFields = [
   {
     key: "language",
     label: "Language",
-    icon: <Language className="text-blue-400 w-6 h-6 shrink-0" />,
+    icon: <Languages className="text-blue-400 w-6 h-6 shrink-0" />, // <-- updated here
   },
   {
     key: "moral",
@@ -81,7 +81,7 @@ const magicFields = [
   {
     key: "language",
     label: "Language",
-    icon: <Language className="text-blue-400 w-6 h-6 shrink-0" />,
+    icon: <Languages className="text-blue-400 w-6 h-6 shrink-0" />, // <-- updated here
   },
   {
     key: "moral",
