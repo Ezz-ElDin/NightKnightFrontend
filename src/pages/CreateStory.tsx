@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
@@ -14,9 +13,16 @@ import StyleStep from "@/components/story-generator/StyleStep";
 import CharacterStep from "@/components/story-generator/CharacterStep";
 import StoryDetailsStep from "@/components/story-generator/StoryDetailsStep";
 import StorySummary from "@/components/story-generator/StorySummary";
+import StoryModeStep from "@/components/story-generator/StoryModeStep";
+import MagicModeCards, { MAGIC_CARDS } from "@/components/story-generator/MagicModeCards";
 
 const CreateStory = () => {
   const [currentStep, setCurrentStep] = useState(1);
+
+  // Track mode and magic card selection
+  const [mode, setMode] = useState<"magic" | "creative">("magic");
+  const [magicSelected, setMagicSelected] = useState<string | null>(null);
+
   const [storyData, setStoryData] = useState({
     title: "",
     genre: "",
@@ -32,54 +38,92 @@ const CreateStory = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const steps = [
-    { id: 1, name: "Details" },
-    { id: 2, name: "Theme" },
-    { id: 3, name: "Tone" },
-    { id: 4, name: "Style" },
-    { id: 5, name: "Characters" },
-    { id: 6, name: "Create!" },
-  ];
+  // New steps: 1 - Mode, 2 - Magic Cards (if magic) or Details (if creative), etc.
+  const steps =
+    mode === "magic"
+      ? [
+          { id: 1, name: "Adventure Mode" },
+          { id: 2, name: "Choose Magic Card" },
+          { id: 3, name: "Characters" },
+          { id: 4, name: "Summary" },
+        ]
+      : [
+          { id: 1, name: "Adventure Mode" },
+          { id: 2, name: "Details" },
+          { id: 3, name: "Theme" },
+          { id: 4, name: "Tone" },
+          { id: 5, name: "Style" },
+          { id: 6, name: "Characters" },
+          { id: 7, name: "Summary" },
+        ];
 
-  const updateStoryData = (data) => {
-    setStoryData((prev) => ({ ...prev, ...data }));
+  // Handle language and age changes
+  const updateModeStep = (field: "language" | "ageRange" | "mode", value: string) => {
+    if (field === "mode") setMode(value as "magic" | "creative");
+    else setStoryData(prev => ({ ...prev, [field]: value }));
   };
 
+  // Unified data update for inside flow
+  const updateStoryData = (data) => {
+    setStoryData(prev => ({ ...prev, ...data }));
+  };
+
+  // Next step logic
   const handleNext = () => {
-    // Skip validation for kid-friendly experience except for key steps
-    if (currentStep === 2 && !storyData.genre) {
-      toast({
-        title: "Pick a theme first!",
-        description: "Choose your favorite story theme to continue",
-        variant: "destructive",
-      });
-      return;
+    if (currentStep === 1) {
+      // Mode selection must have language & age
+      if (!storyData.language || !storyData.ageRange) {
+        toast({ title: "Choose language & age!", description: "Before you begin, please select your language and age group.", variant: "destructive" });
+        return;
+      }
     }
 
-    if (currentStep === 3 && !storyData.tone) {
-      toast({
-        title: "Pick a tone first!",
-        description: "How should your story feel?",
-        variant: "destructive",
-      });
-      return;
+    if (mode === "magic") {
+      if (currentStep === 2 && !magicSelected) {
+        toast({
+          title: "Pick a Magic Card!",
+          description: "Choose your story vibe to start the magic.",
+          variant: "destructive",
+        });
+        return;
+      }
+    } else {
+      // Validate creative flow as before
+      if (currentStep === 3 && !storyData.genre) {
+        toast({
+          title: "Pick a theme first!",
+          description: "Choose your favorite story theme to continue",
+          variant: "destructive",
+        });
+        return;
+      }
+      if (currentStep === 4 && !storyData.tone) {
+        toast({
+          title: "Pick a tone first!",
+          description: "How should your story feel?",
+          variant: "destructive",
+        });
+        return;
+      }
+      if (currentStep === 5 && !storyData.narrativeStyle) {
+        toast({
+          title: "Pick a style first!",
+          description: "How should your story be told?",
+          variant: "destructive",
+        });
+        return;
+      }
     }
-    
-    if (currentStep === 4 && !storyData.narrativeStyle) {
-      toast({
-        title: "Pick a style first!",
-        description: "How should your story be told?",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    if (currentStep === steps.length) {
+
+    if (
+      (mode === "magic" && currentStep === steps.length) ||
+      (mode === "creative" && currentStep === steps.length)
+    ) {
       handleGenerateStory();
       return;
     }
-    
-    // Animation for step transition
+
+    // Animate step transition
     const mainContent = document.querySelector(".story-step-content");
     if (mainContent) {
       mainContent.classList.add("animate-fade-out");
@@ -97,7 +141,7 @@ const CreateStory = () => {
   };
 
   const handleBack = () => {
-    // Animation for step transition
+    // Animate step transition
     const mainContent = document.querySelector(".story-step-content");
     if (mainContent) {
       mainContent.classList.add("animate-fade-out");
@@ -115,17 +159,31 @@ const CreateStory = () => {
   };
 
   const handleGenerateStory = () => {
-    // Show a more exciting toast for kids
     toast({
       title: "Your magic story is coming to life! ✨",
       description: "The story fairies are working hard to create your adventure!",
     });
-    
-    // For now, we'll just simulate a generation delay and redirect to the viewer
+
     setTimeout(() => {
       navigate("/story-viewer", { state: { storyData } });
     }, 2000);
   };
+
+  // If in magic mode and hitting "next" from card choose: set genre, tone, style accordingly
+  React.useEffect(() => {
+    if (mode === "magic" && currentStep === 3 && magicSelected) {
+      // Find mapping for magic card
+      const picked = MAGIC_CARDS.find((c) => c.id === magicSelected);
+      if (picked) {
+        setStoryData((prev) => ({
+          ...prev,
+          genre: picked.set.genre,
+          tone: picked.set.tone,
+          narrativeStyle: picked.set.narrativeStyle,
+        }));
+      }
+    }
+  }, [mode, currentStep, magicSelected]);
 
   return (
     <TooltipProvider>
@@ -136,26 +194,64 @@ const CreateStory = () => {
       >
         <div className="story-step-content min-h-[400px]">
           {currentStep === 1 && (
-            <StoryDetailsStep storyData={storyData} updateStoryData={updateStoryData} />
+            <StoryModeStep
+              mode={mode}
+              setMode={v => {
+                setMode(v);
+                setCurrentStep(1); // reset
+              }}
+              language={storyData.language}
+              setLanguage={v => updateStoryData({ language: v })}
+              ageRange={storyData.ageRange}
+              setAgeRange={v => updateStoryData({ ageRange: v })}
+            />
           )}
-          
-          {currentStep === 2 && (
-            <ThemeStep storyData={storyData} updateStoryData={updateStoryData} />
+
+          {mode === "magic" && currentStep === 2 && (
+            <MagicModeCards
+              selected={magicSelected}
+              onSelect={(settings) => {
+                // Find which card is selected
+                const card = MAGIC_CARDS.find(
+                  card => card.set.genre === settings.genre
+                );
+                setMagicSelected(card?.id ?? null);
+
+                setStoryData((prev) => ({
+                  ...prev,
+                  genre: settings.genre,
+                  tone: settings.tone,
+                  narrativeStyle: settings.narrativeStyle,
+                }));
+              }}
+            />
           )}
-          
-          {currentStep === 3 && (
-            <ToneStep storyData={storyData} updateStoryData={updateStoryData} />
-          )}
-          
-          {currentStep === 4 && (
-            <StyleStep storyData={storyData} updateStoryData={updateStoryData} />
-          )}
-          
-          {currentStep === 5 && (
+
+          {/* Characters for magic mode, or details (creative) */}
+          {mode === "magic" && currentStep === 3 && (
             <CharacterStep storyData={storyData} updateStoryData={updateStoryData} />
           )}
-          
-          {currentStep === 6 && (
+          {mode === "magic" && currentStep === 4 && (
+            <StorySummary storyData={storyData} onGenerateStory={handleGenerateStory} />
+          )}
+
+          {/* Creative Mode flow */}
+          {mode === "creative" && currentStep === 2 && (
+            <StoryDetailsStep storyData={storyData} updateStoryData={updateStoryData} />
+          )}
+          {mode === "creative" && currentStep === 3 && (
+            <ThemeStep storyData={storyData} updateStoryData={updateStoryData} />
+          )}
+          {mode === "creative" && currentStep === 4 && (
+            <ToneStep storyData={storyData} updateStoryData={updateStoryData} />
+          )}
+          {mode === "creative" && currentStep === 5 && (
+            <StyleStep storyData={storyData} updateStoryData={updateStoryData} />
+          )}
+          {mode === "creative" && currentStep === 6 && (
+            <CharacterStep storyData={storyData} updateStoryData={updateStoryData} />
+          )}
+          {mode === "creative" && currentStep === 7 && (
             <StorySummary storyData={storyData} onGenerateStory={handleGenerateStory} />
           )}
         </div>
