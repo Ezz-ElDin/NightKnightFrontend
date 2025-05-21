@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,7 +11,7 @@ import {
   Users,
   Handshake,
   Star,
-  Languages, // <-- fixed here
+  Languages,
 } from "lucide-react";
 
 type StoryMode = "magic" | "creative";
@@ -25,7 +26,7 @@ interface StorySummaryProps {
 const creativeFields = [
   {
     key: "title",
-    label: "Story Title",
+    label: "Title",
     icon: <Text className="text-indigo-400 w-6 h-6 shrink-0" />,
   },
   {
@@ -36,7 +37,7 @@ const creativeFields = [
   {
     key: "language",
     label: "Language",
-    icon: <Languages className="text-blue-400 w-6 h-6 shrink-0" />, // <-- updated here
+    icon: <Languages className="text-blue-400 w-6 h-6 shrink-0" />,
   },
   {
     key: "moral",
@@ -75,7 +76,7 @@ const magicFields = [
   {
     key: "language",
     label: "Language",
-    icon: <Languages className="text-blue-400 w-6 h-6 shrink-0" />, // <-- updated here
+    icon: <Languages className="text-blue-400 w-6 h-6 shrink-0" />,
   },
   {
     key: "moral",
@@ -134,14 +135,12 @@ const StorySummary: React.FC<StorySummaryProps> = ({
                       ))}
                     </span>
                   ) : (
-                    <span className="ml-auto text-gray-400 italic">
-                      No characters yet
-                    </span>
+                    <span className="ml-auto text-muted-foreground italic">{`No ${label}`}</span>
                   )}
                 </li>
               );
             }
-            // Age
+            // Age (make color match - use text-story-seafoam for the label and value)
             if (key === "ageRange") {
               return (
                 <li
@@ -149,13 +148,16 @@ const StorySummary: React.FC<StorySummaryProps> = ({
                   className="flex items-center gap-3 bg-white/80 px-4 py-3 rounded-xl border shadow transition-all hover:scale-105"
                 >
                   {icon}
-                  <span className="font-bold text-emerald-600">{label}:</span>
-                  <span className="ml-auto text-lg">{storyData.ageRange || "—"}</span>
+                  <span className="font-bold text-story-seafoam">{label}:</span>
+                  {storyData.ageRange ? (
+                    <span className="ml-auto text-lg text-story-seafoam">{storyData.ageRange}</span>
+                  ) : (
+                    <span className="ml-auto text-muted-foreground italic">{`No ${label}`}</span>
+                  )}
                 </li>
               );
             }
-            // Language/Lesson etc. Always show,
-            // show empty/emphasized if blank
+            // Language/Lesson/etc: Always show, show empty/emphasized if blank
             return (
               <li
                 key={key}
@@ -163,11 +165,11 @@ const StorySummary: React.FC<StorySummaryProps> = ({
               >
                 {icon}
                 <span className="font-bold text-story-seafoam">{label}:</span>
-                <span className="ml-auto text-lg">
-                  {storyData[key]
-                    ? storyData[key]
-                    : <span className="text-gray-400 italic">Not set yet</span>}
-                </span>
+                {storyData[key] ? (
+                  <span className="ml-auto text-lg">{storyData[key]}</span>
+                ) : (
+                  <span className="ml-auto text-muted-foreground italic">{`No ${label}`}</span>
+                )}
               </li>
             );
           })}
@@ -189,3 +191,4 @@ const StorySummary: React.FC<StorySummaryProps> = ({
 };
 
 export default StorySummary;
+
