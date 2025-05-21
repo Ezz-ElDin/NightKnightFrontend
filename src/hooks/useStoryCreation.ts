@@ -71,14 +71,14 @@ export const useStoryCreation = () => {
     { id: 2, name: "Theme" },
     { id: 3, name: "Tone" },
     { id: 4, name: "Style" },
-    { id: 5, name: "Choose Illustrations" },
+    { id: 5, name: "Illustrations" },
     { id: 6, name: "Characters" },
     { id: 7, name: "Summary" },
   ];
   const magicSteps = [
     { id: 1, name: "Start" },
-    { id: 2, name: "Choose Magic Card" },
-    { id: 3, name: "Choose Illustrations" },
+    { id: 2, name: "Magic" },
+    { id: 3, name: "Illustrations" },
     { id: 4, name: "Characters" },
     { id: 5, name: "Summary" },
   ];
