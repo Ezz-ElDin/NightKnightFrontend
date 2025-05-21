@@ -72,10 +72,10 @@ const StoryStartStep: React.FC<StoryStartStepProps> = ({
                 >
                   Magic
                   <span className="block text-xs font-normal mt-1 text-orange-900/90">
-                    A fun and easy way to start — just pick a card and let the story magic begin!
+                    Choose a story world to begin!
                   </span>
                 </button>
-                {/* Creative Mode Square with NO Tooltip, description underneath */}
+                {/* Creative Mode Square with description underneath */}
                 <div className="relative flex-1 h-20">
                   <button
                     type="button"
@@ -89,7 +89,7 @@ const StoryStartStep: React.FC<StoryStartStepProps> = ({
                   >
                     Creative
                     <span className="block text-xs font-normal mt-1 text-purple-900/90">
-                      The full experience for kids storytellers who want to choose every part of the story.
+                      Make your own story your way!
                     </span>
                   </button>
                 </div>
