@@ -16,6 +16,7 @@ import StorySummary from "@/components/story-generator/StorySummary";
 import StoryModeStep from "@/components/story-generator/StoryModeStep";
 import MagicModeCards, { MAGIC_CARDS } from "@/components/story-generator/MagicModeCards";
 import StoryStartStep from "@/components/story-generator/StoryStartStep";
+import IllustrationStep from "@/components/story-generator/IllustrationStep";
 
 const CreateStory = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -37,25 +38,27 @@ const CreateStory = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  // Only two main flows: Start (combined), then rest
+  // Set steps for both flows, now with Illustration step
   const steps =
     mode === "magic"
       ? [
           { id: 1, name: "Start" },
           { id: 2, name: "Choose Magic Card" },
-          { id: 3, name: "Characters" },
-          { id: 4, name: "Summary" },
+          { id: 3, name: "Choose Illustrations" },
+          { id: 4, name: "Characters" },
+          { id: 5, name: "Summary" },
         ]
       : [
           { id: 1, name: "Start" },
           { id: 2, name: "Theme" },
           { id: 3, name: "Tone" },
           { id: 4, name: "Style" },
-          { id: 5, name: "Characters" },
-          { id: 6, name: "Summary" },
+          { id: 5, name: "Choose Illustrations" },
+          { id: 6, name: "Characters" },
+          { id: 7, name: "Summary" },
         ];
 
-  // Handle language and age changes
+  // Only two main flows: Start (combined), then rest
   const updateModeStep = (field: "language" | "ageRange" | "mode", value: string) => {
     if (field === "mode") setMode(value as "magic" | "creative");
     else setStoryData(prev => ({ ...prev, [field]: value }));
@@ -89,6 +92,15 @@ const CreateStory = () => {
         });
         return;
       }
+      // After illustration step, require illustrationStyle
+      if (currentStep === 3 && !storyData.illustrationStyle) {
+        toast({
+          title: "Pick an illustration style first!",
+          description: "Choose your preferred illustration style to continue",
+          variant: "destructive",
+        });
+        return;
+      }
     } else {
       // --- Add validation for creative mode steps ---
       // Step 2: Theme (genre) required
@@ -114,6 +126,15 @@ const CreateStory = () => {
         toast({
           title: "Pick a style first!",
           description: "How should your story be told?",
+          variant: "destructive",
+        });
+        return;
+      }
+      // After illustration step, require illustrationStyle
+      if (currentStep === 5 && !storyData.illustrationStyle) {
+        toast({
+          title: "Pick an illustration style first!",
+          description: "Choose your preferred illustration style to continue",
           variant: "destructive",
         });
         return;
@@ -214,34 +235,37 @@ const CreateStory = () => {
             />
           )}
 
+          {/* Magic Mode */}
           {mode === "magic" && currentStep === 2 && (
             <MagicModeCards
               selected={magicSelected}
               onSelect={(settings) => {
                 const card = MAGIC_CARDS.find(card => card.set.genre === settings.genre);
                 setMagicSelected(card?.id ?? null);
-
                 setStoryData((prev) => ({
                   ...prev,
                   genre: settings.genre,
                   tone: settings.tone,
                   narrativeStyle: settings.narrativeStyle,
-                  pages: 12, // Ensure it's 12 for payload
+                  pages: 12,
                 }));
               }}
             />
           )}
-
-          {/* Characters for magic mode, or other creative steps */}
           {mode === "magic" && currentStep === 3 && (
-            <CharacterStep storyData={storyData} updateStoryData={updateStoryData} />
+            <IllustrationStep
+              illustrationStyle={storyData.illustrationStyle}
+              setIllustrationStyle={value => updateStoryData({ illustrationStyle: value })}
+            />
           )}
           {mode === "magic" && currentStep === 4 && (
+            <CharacterStep storyData={storyData} updateStoryData={updateStoryData} />
+          )}
+          {mode === "magic" && currentStep === 5 && (
             <StorySummary storyData={storyData} onGenerateStory={handleGenerateStory} />
           )}
 
           {/* Creative Mode flow */}
-          {/* "Details" step is removed; adjust creative steps accordingly */}
           {mode === "creative" && currentStep === 2 && (
             <ThemeStep storyData={storyData} updateStoryData={updateStoryData} />
           )}
@@ -252,9 +276,15 @@ const CreateStory = () => {
             <StyleStep storyData={storyData} updateStoryData={updateStoryData} />
           )}
           {mode === "creative" && currentStep === 5 && (
-            <CharacterStep storyData={storyData} updateStoryData={updateStoryData} />
+            <IllustrationStep
+              illustrationStyle={storyData.illustrationStyle}
+              setIllustrationStyle={value => updateStoryData({ illustrationStyle: value })}
+            />
           )}
           {mode === "creative" && currentStep === 6 && (
+            <CharacterStep storyData={storyData} updateStoryData={updateStoryData} />
+          )}
+          {mode === "creative" && currentStep === 7 && (
             <StorySummary storyData={storyData} onGenerateStory={handleGenerateStory} />
           )}
         </div>
