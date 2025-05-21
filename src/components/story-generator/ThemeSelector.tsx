@@ -10,32 +10,32 @@ interface ThemeSelectorProps {
 const THEME_CARDS = [
   {
     id: "fantasy",
-    emoji: "🏰✨",
+    emoji: "🏰",
     color: "from-pink-200 to-violet-200",
   },
   {
     id: "animals",
-    emoji: "🐾🦊",
+    emoji: "🐾",
     color: "from-yellow-100 to-green-100",
   },
   {
     id: "exploration",
-    emoji: "🌍🚀",
+    emoji: "🌍",
     color: "from-blue-100 to-sky-100",
   },
   {
     id: "daily",
-    emoji: "🏡🧠",
+    emoji: "🏡",
     color: "from-orange-100 to-pink-100",
   },
   {
     id: "space",
-    emoji: "🪐👽",
+    emoji: "🪐",
     color: "from-sky-200 to-blue-200",
   },
   {
     id: "whimsical",
-    emoji: "🌈🦄",
+    emoji: "🌈",
     color: "from-pink-100 to-yellow-200",
   },
 ];
@@ -68,3 +68,4 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({ selectedTheme, onSelectTh
 };
 
 export default ThemeSelector;
+

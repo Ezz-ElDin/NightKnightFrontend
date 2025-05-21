@@ -10,32 +10,32 @@ interface ToneSelectorProps {
 const TONE_CARDS = [
   {
     id: "playful",
-    emoji: "😂🐒",
+    emoji: "😂",
     color: "from-yellow-100 to-green-100",
   },
   {
     id: "calm",
-    emoji: "😌🌙",
+    emoji: "😌",
     color: "from-pink-200 to-violet-200",
   },
   {
     id: "exciting",
-    emoji: "🎉🚀",
+    emoji: "🎉",
     color: "from-blue-100 to-sky-100",
   },
   {
     id: "kind",
-    emoji: "💖🤲",
+    emoji: "💖",
     color: "from-orange-100 to-pink-100",
   },
   {
     id: "inspirational",
-    emoji: "🌟✨",
+    emoji: "🌟",
     color: "from-yellow-100 to-pink-100",
   },
   {
     id: "educational",
-    emoji: "📚🧠",
+    emoji: "📚",
     color: "from-sky-200 to-blue-200",
   },
 ];
@@ -68,3 +68,4 @@ const ToneSelector: React.FC<ToneSelectorProps> = ({ selectedTone, onSelectTone 
 };
 
 export default ToneSelector;
+

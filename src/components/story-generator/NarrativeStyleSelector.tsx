@@ -10,27 +10,27 @@ interface NarrativeStyleSelectorProps {
 const STYLE_CARDS = [
   {
     id: "classic",
-    emoji: "📖🕰️",
+    emoji: "📖",
     color: "from-yellow-100 to-green-100",
   },
   {
     id: "rhyming",
-    emoji: "🎶🧑‍🎤",
+    emoji: "🎶",
     color: "from-pink-200 to-violet-200",
   },
   {
     id: "dialogue",
-    emoji: "💬🎭",
+    emoji: "💬",
     color: "from-blue-100 to-sky-100",
   },
   {
     id: "simple",
-    emoji: "✏️🍎",
+    emoji: "✏️",
     color: "from-orange-100 to-pink-100",
   },
   {
     id: "dreamy",
-    emoji: "☁️💫",
+    emoji: "☁️",
     color: "from-yellow-100 to-pink-100",
   },
 ];
@@ -63,3 +63,4 @@ const NarrativeStyleSelector: React.FC<NarrativeStyleSelectorProps> = ({ selecte
 };
 
 export default NarrativeStyleSelector;
+
