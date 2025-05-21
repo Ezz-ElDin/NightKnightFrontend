@@ -1,4 +1,3 @@
-
 import React from "react";
 
 interface IllustrationStepProps {
@@ -61,11 +60,7 @@ const IllustrationStep: React.FC<IllustrationStepProps> = ({
           </button>
         ))}
       </div>
-      {illustrationStyle && (
-        <div className="mt-4 text-sm text-center text-muted-foreground">
-          Selected: <span className="font-semibold">{ILLUSTRATIONS.find(i => i.id === illustrationStyle)?.title}</span>
-        </div>
-      )}
+      
     </div>
   );
 };
