@@ -4,7 +4,7 @@ import React from "react";
 const MAGIC_CARDS = [
   {
     id: "magic-worlds",
-    emoji: "🏰✨",
+    emoji: "🏰",
     title: "Magical Worlds",
     description: "Wander into enchanted forests, meet fairies, talking animals, and discover castles full of magic.",
     set: {
@@ -15,7 +15,7 @@ const MAGIC_CARDS = [
   },
   {
     id: "animal-adventures",
-    emoji: "🐾🦊",
+    emoji: "🐾",
     title: "Animal Adventures",
     description: "Join furry, feathery, and finned friends on silly quests, jungle fun, or bathtime mischief!",
     set: {
@@ -26,7 +26,7 @@ const MAGIC_CARDS = [
   },
   {
     id: "exploring-beyond",
-    emoji: "🌍🚀",
+    emoji: "🌍",
     title: "Exploring & Beyond",
     description: "Zoom through forests, oceans, cities — or fly to the stars with robots and aliens!",
     set: {
@@ -37,7 +37,7 @@ const MAGIC_CARDS = [
   },
   {
     id: "real-life-moments",
-    emoji: "🏡🧠",
+    emoji: "🏡",
     title: "Real Life Moments",
     description: "Big feelings in little moments — like your first day of school or learning something new with your family.",
     set: {
@@ -67,7 +67,7 @@ const MagicModeCards: React.FC<MagicModeCardsProps> = ({ onSelect, selected }) =
         key={card.id}
         type="button"
         onClick={() => onSelect(card.set)}
-        className={`rounded-2xl border-2 shadow-lg px-8 py-7 text-left flex flex-col gap-2 transition-transform hover:scale-105 focus:scale-105 bg-gradient-to-br ${cardColors[idx % 4]} 
+        className={`rounded-2xl border-2 shadow-lg px-8 py-7 flex flex-col items-center justify-center gap-3 text-center transition-transform hover:scale-105 focus:scale-105 bg-gradient-to-br ${cardColors[idx % 4]} 
         ${selected === card.id ? "ring-4 ring-violet-400 scale-105 border-primary" : "border-transparent"}`}
         aria-pressed={selected === card.id}
       >
@@ -81,3 +81,4 @@ const MagicModeCards: React.FC<MagicModeCardsProps> = ({ onSelect, selected }) =
 
 export default MagicModeCards;
 export { MAGIC_CARDS };
+
