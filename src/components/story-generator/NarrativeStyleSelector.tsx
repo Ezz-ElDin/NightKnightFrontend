@@ -1,47 +1,61 @@
 
 import React from "react";
-import { cn } from "@/lib/utils";
 import { NARRATIVE_STYLES } from "./constants";
-import { getNarrativeStyleIcon } from "./IconUtils";
 
 interface NarrativeStyleSelectorProps {
   selectedStyle: string;
   onSelectStyle: (styleId: string) => void;
 }
 
-const NarrativeStyleSelector: React.FC<NarrativeStyleSelectorProps> = ({ 
-  selectedStyle, 
-  onSelectStyle 
-}) => {
+const STYLE_CARDS = [
+  {
+    id: "classic",
+    emoji: "📖🕰️",
+    color: "from-yellow-100 to-green-100",
+  },
+  {
+    id: "rhyming",
+    emoji: "🎶🧑‍🎤",
+    color: "from-pink-200 to-violet-200",
+  },
+  {
+    id: "dialogue",
+    emoji: "💬🎭",
+    color: "from-blue-100 to-sky-100",
+  },
+  {
+    id: "simple",
+    emoji: "✏️🍎",
+    color: "from-orange-100 to-pink-100",
+  },
+  {
+    id: "dreamy",
+    emoji: "☁️💫",
+    color: "from-yellow-100 to-pink-100",
+  },
+];
+
+const NarrativeStyleSelector: React.FC<NarrativeStyleSelectorProps> = ({ selectedStyle, onSelectStyle }) => {
   return (
     <div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {NARRATIVE_STYLES.map((style) => (
-          <div
-            key={style.id}
-            className={cn(
-              "p-4 rounded-xl cursor-pointer transition-all hover:scale-105 transform duration-200 border-2 flex flex-col items-center text-center shadow-md",
-              selectedStyle === style.id
-                ? "border-primary bg-primary/10 ring-4 ring-primary/30 animate-scale-pulse"
-                : `border-${style.color}/50 hover:border-${style.color}`
-            )}
-            onClick={() => onSelectStyle(style.id)}
-            style={{
-              backgroundColor: style.color,
-              color: style.textColor,
-              borderColor: selectedStyle === style.id ? "#7E69AB" : style.color,
-            }}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto mt-8">
+        {STYLE_CARDS.map((card) => (
+          <button
+            key={card.id}
+            type="button"
+            onClick={() => onSelectStyle(card.id)}
+            className={`rounded-2xl border-2 shadow-lg px-8 py-7 text-left flex flex-col gap-2 transition-transform hover:scale-105 focus:scale-105 bg-gradient-to-br ${card.color} 
+              ${selectedStyle === card.id ? "ring-4 ring-violet-400 scale-105 border-primary" : "border-transparent"}`}
+            aria-pressed={selectedStyle === card.id}
           >
-            <div className="mb-3 flex justify-center items-center h-24">
-              <div className="h-16 w-16 transform transition-transform duration-300 hover:rotate-6">
-                {getNarrativeStyleIcon(style.id)}
-              </div>
-            </div>
-            <div>
-              <h3 className="font-bold text-xl mb-2">{style.name}</h3>
-              <p className="text-sm">{style.description}</p>
-            </div>
-          </div>
+            <span className="text-4xl">{card.emoji}</span>
+            <span className="font-bold text-lg">
+              {NARRATIVE_STYLES.find((s) => s.id === card.id)?.name || card.id}
+            </span>
+            <span className="text-sm text-muted-foreground">
+              {NARRATIVE_STYLES.find((s) => s.id === card.id)?.description || ""}
+            </span>
+          </button>
         ))}
       </div>
     </div>
@@ -49,4 +63,3 @@ const NarrativeStyleSelector: React.FC<NarrativeStyleSelectorProps> = ({
 };
 
 export default NarrativeStyleSelector;
-

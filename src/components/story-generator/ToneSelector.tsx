@@ -1,44 +1,66 @@
 
 import React from "react";
-import { cn } from "@/lib/utils";
 import { TONES } from "./constants";
-import { getToneIcon } from "./IconUtils";
 
 interface ToneSelectorProps {
   selectedTone: string;
   onSelectTone: (toneId: string) => void;
 }
 
+const TONE_CARDS = [
+  {
+    id: "playful",
+    emoji: "😂🐒",
+    color: "from-yellow-100 to-green-100",
+  },
+  {
+    id: "calm",
+    emoji: "😌🌙",
+    color: "from-pink-200 to-violet-200",
+  },
+  {
+    id: "exciting",
+    emoji: "🎉🚀",
+    color: "from-blue-100 to-sky-100",
+  },
+  {
+    id: "kind",
+    emoji: "💖🤲",
+    color: "from-orange-100 to-pink-100",
+  },
+  {
+    id: "inspirational",
+    emoji: "🌟✨",
+    color: "from-yellow-100 to-pink-100",
+  },
+  {
+    id: "educational",
+    emoji: "📚🧠",
+    color: "from-sky-200 to-blue-200",
+  },
+];
+
 const ToneSelector: React.FC<ToneSelectorProps> = ({ selectedTone, onSelectTone }) => {
   return (
     <div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {TONES.map((tone) => (
-          <div
-            key={tone.id}
-            className={cn(
-              "p-4 rounded-xl cursor-pointer transition-all hover:scale-105 transform duration-200 border-2 flex flex-col items-center text-center shadow-md",
-              selectedTone === tone.id
-                ? "border-primary bg-primary/10 ring-4 ring-primary/30 animate-scale-pulse"
-                : `border-${tone.color}/50 hover:border-${tone.color}`
-            )}
-            onClick={() => onSelectTone(tone.id)}
-            style={{
-              backgroundColor: tone.color,
-              color: tone.textColor,
-              borderColor: selectedTone === tone.id ? "#7E69AB" : tone.color,
-            }}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto mt-8">
+        {TONE_CARDS.map((card) => (
+          <button
+            key={card.id}
+            type="button"
+            onClick={() => onSelectTone(card.id)}
+            className={`rounded-2xl border-2 shadow-lg px-8 py-7 text-left flex flex-col gap-2 transition-transform hover:scale-105 focus:scale-105 bg-gradient-to-br ${card.color} 
+              ${selectedTone === card.id ? "ring-4 ring-violet-400 scale-105 border-primary" : "border-transparent"}`}
+            aria-pressed={selectedTone === card.id}
           >
-            <div className="mb-3 flex justify-center items-center h-24">
-              <div className="h-16 w-16 transform transition-transform duration-300 hover:rotate-6">
-                {getToneIcon(tone.id)}
-              </div>
-            </div>
-            <div>
-              <h3 className="font-bold text-xl mb-2">{tone.name}</h3>
-              <p className="text-sm">{tone.description}</p>
-            </div>
-          </div>
+            <span className="text-4xl">{card.emoji}</span>
+            <span className="font-bold text-lg">
+              {TONES.find((t) => t.id === card.id)?.name || card.id}
+            </span>
+            <span className="text-sm text-muted-foreground">
+              {TONES.find((t) => t.id === card.id)?.description || ""}
+            </span>
+          </button>
         ))}
       </div>
     </div>
@@ -46,4 +68,3 @@ const ToneSelector: React.FC<ToneSelectorProps> = ({ selectedTone, onSelectTone 
 };
 
 export default ToneSelector;
-
