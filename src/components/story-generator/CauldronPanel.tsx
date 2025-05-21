@@ -1,6 +1,7 @@
 
-import React, { useRef, useEffect, useState } from "react";
+import React from "react";
 import { X } from "lucide-react";
+import { CookingPot } from "lucide-react"; // Import witch cauldron icon
 
 export interface CauldronIngredient {
   icon: string; // Emoji or icon
@@ -24,9 +25,6 @@ const CauldronPanel: React.FC<CauldronPanelProps> = ({
   cauldronLabel = "Your story is taking shape…",
   onAnimationEnd,
 }) => {
-  // Simple stirring animation uses CSS class `animate-cauldron-stir`
-  // Animation triggered whenever `stirring` turns true
-
   // Ingredient list transitions in with fade
   return (
     <div className="flex flex-col h-full px-2 md:px-4 py-4 items-center justify-between bg-gradient-to-b from-purple-100 to-purple-200 rounded-3xl shadow-xl border-2 border-primary/10 min-h-[450px]">
@@ -43,21 +41,26 @@ const CauldronPanel: React.FC<CauldronPanelProps> = ({
 
       <div className="flex flex-col items-center flex-1 justify-center min-h-[280px]">
         {/* Cauldron Image & Animation */}
-        <div className="relative">
-          {/* Cauldron image */}
+        <div className="relative flex flex-col items-center">
+          {/* Witch Cauldron image */}
           <div
-            className={`w-36 h-36 md:w-48 md:h-48 bg-gradient-to-t from-purple-400 to-purple-200 rounded-full shadow-lg flex items-center justify-center transition-transform ${
+            className={`w-36 h-36 md:w-48 md:h-48 bg-gradient-to-t from-purple-700 to-purple-300 rounded-full shadow-lg flex items-center justify-center transition-transform ${
               stirring ? "animate-cauldron-stir" : ""
             }`}
             onAnimationEnd={onAnimationEnd}
             style={{
-              border: "6px solid #7E69AB",
+              border: "7px solid #38205c",
               marginBottom: "0.5rem",
               position: "relative",
-              // Placeholder for image or SVG: can replace with an SVG cauldron illustration
             }}
           >
-            <span className="text-[56px] md:text-[70px] select-none" role="img" aria-label="Cauldron">🫕</span>
+            <CookingPot 
+              size={104}
+              color="#343036"
+              strokeWidth={2.5}
+              className="drop-shadow-2xl w-24 h-24 md:w-28 md:h-28"
+              aria-label="Witch Cauldron"
+            />
             {/* Simulated surface bubbles */}
             <span
               className="absolute left-10 top-9 md:left-14 md:top-14 text-green-300 text-2xl animate-pulse pointer-events-none"
@@ -74,12 +77,6 @@ const CauldronPanel: React.FC<CauldronPanelProps> = ({
             </span>
             {/* Add more bubbles if desired */}
           </div>
-          {/* Stir visual: ladle/spoon - Optional, kept simple */}
-          {/* 
-          <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-full`}>
-            <span className="text-3xl">🥄</span>
-          </div>
-          */}
         </div>
         <div className="w-full text-center text-muted-foreground mt-1 text-sm">{ingredients.length === 0 ? "Nothing added yet!" : ""}</div>
       </div>
@@ -105,13 +102,13 @@ const CauldronPanel: React.FC<CauldronPanelProps> = ({
         {`
           @keyframes cauldron-stir {
             0% { transform: rotate(0deg) }
-            20% { transform: rotate(-5deg) }
-            50% { transform: rotate(7deg) }
-            80% { transform: rotate(-3deg) }
+            20% { transform: rotate(-6deg) }
+            50% { transform: rotate(9deg) }
+            80% { transform: rotate(-4deg) }
             100% { transform: rotate(0deg) }
           }
           .animate-cauldron-stir {
-            animation: cauldron-stir 0.85s cubic-bezier(0.61,0.16,0.38,1.12);
+            animation: cauldron-stir 0.95s cubic-bezier(0.53,0.18,0.57,1.04);
           }
         `}
       </style>
