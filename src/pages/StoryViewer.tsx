@@ -1,8 +1,9 @@
 
-import React, { useMemo } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Fullscreen } from "lucide-react";
+import clsx from "clsx";
 
 const MOCK_STORIES = [
   {
@@ -33,8 +34,10 @@ const MOCK_STORIES = [
 const isArabic = (text: string) => /[\u0600-\u06FF]/.test(text);
 
 const StoryViewer = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const { storyId } = useParams<{ storyId?: string }>();
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   // Find the current story and index for navigation
   const storyIndex = useMemo(
@@ -61,6 +64,26 @@ const StoryViewer = () => {
   // RTL check
   const rtl = story && (isArabic(story.title) || isArabic(story.text));
 
+  // Fullscreen handlers
+  const handleToggleFullscreen = () => {
+    if (!document.fullscreenElement && containerRef.current) {
+      containerRef.current.requestFullscreen?.();
+      setIsFullscreen(true);
+    } else {
+      document.exitFullscreen?.();
+      setIsFullscreen(false);
+    }
+  };
+
+  // Listen to fullscreen change event to sync state
+  React.useEffect(() => {
+    const cb = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener("fullscreenchange", cb);
+    return () => document.removeEventListener("fullscreenchange", cb);
+  }, []);
+
   if (!story) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh]">
@@ -76,15 +99,23 @@ const StoryViewer = () => {
   }
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center px-2 py-6 bg-white">
+    <div 
+      className={clsx(
+        "w-full min-h-screen flex flex-col items-center justify-center px-1 py-4 bg-white"
+      )}
+      style={{ minHeight: "100vh" }}
+    >
       <div
-        className="
+        ref={containerRef}
+        className={clsx(
+          `
+          relative
           w-full
           max-w-5xl
           mx-auto
           bg-white
           rounded-3xl
-          shadow-lg
+          shadow-2xl
           p-0
           overflow-hidden
           flex
@@ -92,13 +123,20 @@ const StoryViewer = () => {
           border
           border-solid
           border-gray-200
+          duration-200
+          transition-all
           animate-fade-in
-        "
-        style={{ minHeight: "60vh" }}
+          `,
+          isFullscreen ? "max-w-none w-screen min-h-screen h-screen !rounded-none" : "min-h-[70vh]"
+        )}
+        style={{
+          boxShadow: "0 10px 40px 2px rgba(80,60,120,0.13)",
+        }}
       >
         {/* Book Content */}
         <div
-          className="
+          className={clsx(
+            `
             flex
             flex-col
             md:flex-row
@@ -108,28 +146,23 @@ const StoryViewer = () => {
             md:divide-y-0
             divide-gray-200
             flex-1
-          "
+            `
+          )}
         >
           {/* Left Side - Story Text */}
           <div
-            className={`
-              flex-1
-              p-8
-              flex
-              flex-col
-              justify-center
-              items-start
-              ${rtl ? "rtl text-right" : "ltr text-left"}
-              min-h-[340px]
-            `}
+            className={clsx(
+              "flex-1 p-10 flex flex-col justify-center items-start min-h-[340px]",
+              rtl ? "rtl text-right" : "ltr text-left"
+            )}
             dir={rtl ? "rtl" : "ltr"}
           >
-            <h3 className="font-ghibli text-2xl md:text-3xl font-bold mb-4">{story.title}</h3>
-            <p className="text-lg mb-2" style={{ wordBreak: "break-word" }}>{story.text}</p>
+            <h3 className="font-ghibli text-2xl md:text-4xl font-bold mb-6">{story.title}</h3>
+            <p className="text-lg md:text-xl" style={{ wordBreak: "break-word" }}>{story.text}</p>
           </div>
 
           {/* Right Side - Story Visual */}
-          <div className="flex-1 p-8 flex flex-col items-center justify-center bg-[#fafafd] min-h-[340px]">
+          <div className="flex-1 p-10 flex flex-col items-center justify-center bg-[#fafafd] min-h-[340px]">
             <img
               src={story.coverUrl}
               alt={"Illustration for " + story.title}
@@ -138,8 +171,9 @@ const StoryViewer = () => {
           </div>
         </div>
 
-        {/* Navigation Row */}
-        <div className="flex flex-row items-center justify-between w-full px-4 py-4 bg-white border-t border-gray-100 gap-2">
+        {/* Navigation & Fullscreen Controls */}
+        <div className="flex w-full items-center justify-between px-6 py-5 bg-white border-t border-gray-100 relative min-h-[72px]">
+          {/* Back Button */}
           <Button
             onClick={goBack}
             variant="outline"
@@ -148,7 +182,12 @@ const StoryViewer = () => {
           >
             <ArrowLeft className="h-5 w-5 mr-2" /> Back to Dashboard
           </Button>
-          <div className="flex gap-2 ml-auto">
+          
+          {/* Centered Navigation */}
+          <div className={clsx(
+            "flex flex-row items-center gap-5 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
+            "z-10"
+          )}>
             <Button
               onClick={goPrev}
               variant="outline"
@@ -156,7 +195,8 @@ const StoryViewer = () => {
               aria-label="Previous story"
               className="px-3"
             >
-              <ArrowLeft className="h-5 w-5" /> <span className="sr-only">Previous</span>
+              <ArrowLeft className="h-5 w-5" />
+              <span className="sr-only">Previous</span>
             </Button>
             <Button
               onClick={goNext}
@@ -165,7 +205,21 @@ const StoryViewer = () => {
               aria-label="Next story"
               className="px-3"
             >
-              <span className="sr-only">Next</span> <ArrowRight className="h-5 w-5" />
+              <span className="sr-only">Next</span>
+              <ArrowRight className="h-5 w-5" />
+            </Button>
+          </div>
+          
+          {/* Fullscreen Button: bottom-right (fixed inside container) */}
+          <div className="absolute bottom-6 right-6">
+            <Button
+              onClick={handleToggleFullscreen}
+              variant={isFullscreen ? "secondary" : "outline"}
+              size="icon"
+              aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+              className="rounded-full shadow border"
+            >
+              <Fullscreen className="h-6 w-6" />
             </Button>
           </div>
         </div>
@@ -175,4 +229,3 @@ const StoryViewer = () => {
 };
 
 export default StoryViewer;
-
