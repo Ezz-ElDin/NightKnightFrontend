@@ -10,7 +10,7 @@ const Footer = () => {
           <div>
             <h3 className="text-xl font-bold mb-4 text-story-purple">NightKnight</h3>
             <p className="text-gray-700 mb-4">
-              Creating magical bedtime moments for children around the world.
+              Creating magical stories for children and families around the world.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-story-purple hover:text-story-blue transition-colors">
@@ -100,7 +100,7 @@ const Footer = () => {
         
         <div className="pt-8 border-t border-story-purple/20 text-center text-gray-600">
           <p className="flex items-center justify-center">
-            Made with <Heart className="h-4 w-4 mx-1 text-red-500" fill="currentColor" /> for children everywhere
+            Made with <Heart className="h-4 w-4 mx-1 text-red-500" fill="currentColor" /> for creative storytellers everywhere
           </p>
           <p className="mt-2">
             &copy; {new Date().getFullYear()} NightKnight. All rights reserved.
