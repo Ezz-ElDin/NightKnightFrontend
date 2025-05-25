@@ -27,10 +27,8 @@ const MOCK_STORIES = [
     createdAt: "2024-05-22T16:54:00Z",
     text: "A group of friends discovers a magical treehouse that travels to fantastical lands.",
   },
-  // ... add more mock stories as needed
 ];
 
-// Helper to determine if string is in Arabic for RTL
 const isArabic = (text: string) => /[\u0600-\u06FF]/.test(text);
 
 const StoryViewer = () => {
@@ -39,6 +37,9 @@ const StoryViewer = () => {
   const { storyId } = useParams<{ storyId?: string }>();
   const [isFullscreen, setIsFullscreen] = useState(false);
 
+  // Pagination for page: 0 = title, 1 = story text (description)
+  const [currentPage, setCurrentPage] = useState(0);
+
   // Find the current story and index for navigation
   const storyIndex = useMemo(
     () => MOCK_STORIES.findIndex(s => String(s.id) === storyId),
@@ -46,19 +47,29 @@ const StoryViewer = () => {
   );
   const story = MOCK_STORIES[storyIndex];
 
-  // Navigation logic for next/prev story
-  const hasPrev = storyIndex > 0;
-  const hasNext = storyIndex < MOCK_STORIES.length - 1;
-  const goPrev = () => {
-    if (hasPrev) {
+  const hasPrevStory = storyIndex > 0;
+  const hasNextStory = storyIndex < MOCK_STORIES.length - 1;
+
+  // Paging logic
+  const isFirstPage = currentPage === 0;
+  const isLastPage = currentPage === 1;
+  const totalPages = 2; // 0: title, 1: story text
+
+  const handleGoPrevPage = () => {
+    if (currentPage > 0) setCurrentPage(currentPage - 1);
+    else if (hasPrevStory) {
       navigate(`/dashboard/stories/${MOCK_STORIES[storyIndex - 1].id}`);
+      setCurrentPage(0);
     }
   };
-  const goNext = () => {
-    if (hasNext) {
+  const handleGoNextPage = () => {
+    if (currentPage < totalPages - 1) setCurrentPage(currentPage + 1);
+    else if (hasNextStory) {
       navigate(`/dashboard/stories/${MOCK_STORIES[storyIndex + 1].id}`);
+      setCurrentPage(0);
     }
   };
+
   const goBack = () => navigate("/dashboard");
 
   // RTL check
@@ -75,14 +86,16 @@ const StoryViewer = () => {
     }
   };
 
-  // Listen to fullscreen change event to sync state
   React.useEffect(() => {
-    const cb = () => {
-      setIsFullscreen(!!document.fullscreenElement);
-    };
+    const cb = () => setIsFullscreen(!!document.fullscreenElement);
     document.addEventListener("fullscreenchange", cb);
     return () => document.removeEventListener("fullscreenchange", cb);
   }, []);
+
+  // When switching stories, reset to page 0
+  React.useEffect(() => {
+    setCurrentPage(0);
+  }, [storyId]);
 
   if (!story) {
     return (
@@ -133,7 +146,6 @@ const StoryViewer = () => {
           boxShadow: "0 10px 40px 2px rgba(80,60,120,0.13)",
         }}
       >
-        {/* Book Content */}
         <div
           className={clsx(
             `
@@ -149,31 +161,53 @@ const StoryViewer = () => {
             `
           )}
         >
-          {/* Left Side - Story Text */}
+          {/* Left Side - Story Text or Title */}
           <div
             className={clsx(
-              "flex-1 p-10 flex flex-col justify-center items-start min-h-[340px]",
-              rtl ? "rtl text-right" : "ltr text-left"
+              "flex-1 p-10 flex flex-col min-h-[340px]",
+              rtl ? "rtl text-right" : "ltr text-left",
+              isFirstPage
+                ? "justify-center items-start" // title page: center vertically
+                : "justify-start items-start" // story: align to top
             )}
             dir={rtl ? "rtl" : "ltr"}
           >
-            <h3 className="font-ghibli text-2xl md:text-4xl font-bold mb-6">{story.title}</h3>
-            <p className="text-lg md:text-xl" style={{ wordBreak: "break-word" }}>{story.text}</p>
+            {isFirstPage ? (
+              <h3 className="font-ghibli text-4xl md:text-5xl font-bold mb-2">{story.title}</h3>
+            ) : (
+              <>
+                <p className="text-lg md:text-xl mt-0" style={{ wordBreak: "break-word" }}>{story.text}</p>
+              </>
+            )}
           </div>
 
-          {/* Right Side - Story Visual */}
-          <div className="flex-1 p-10 flex flex-col items-center justify-center bg-[#fafafd] min-h-[340px]">
-            <img
-              src={story.coverUrl}
-              alt={"Illustration for " + story.title}
-              className="w-full max-w-xs rounded-xl shadow-lg object-cover aspect-[3/4] mx-auto"
-            />
+          {/* Right Side - Story Visual, fills ENTIRE column */}
+          <div className="flex-1 p-0 flex flex-col items-center justify-center bg-[#fafafd] min-h-[340px]">
+            <div
+              className="w-full h-full flex items-center justify-center relative"
+              style={{
+                minHeight: isFullscreen ? "100vh" : "100%",
+                aspectRatio: "1 / 1",
+              }}
+            >
+              <img
+                src={story.coverUrl}
+                alt={"Illustration for " + story.title}
+                className="object-contain w-full h-full max-w-full max-h-full rounded-xl shadow-lg"
+                style={{
+                  aspectRatio: "1 / 1",
+                  minWidth: 0,
+                  minHeight: 0,
+                  background: "#e7edf7",
+                }}
+              />
+            </div>
           </div>
         </div>
 
         {/* Navigation & Fullscreen Controls */}
         <div className="flex w-full items-center justify-between px-6 py-5 bg-white border-t border-gray-100 relative min-h-[72px]">
-          {/* Back Button */}
+          {/* Back Button (left) */}
           <Button
             onClick={goBack}
             variant="outline"
@@ -182,34 +216,35 @@ const StoryViewer = () => {
           >
             <ArrowLeft className="h-5 w-5 mr-2" /> Back to Dashboard
           </Button>
-          
-          {/* Centered Navigation */}
-          <div className={clsx(
-            "flex flex-row items-center gap-5 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
-            "z-10"
-          )}>
+
+          {/* Centered Navigation (page left/right) */}
+          <div
+            className={clsx(
+              "flex flex-row items-center gap-5 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10"
+            )}
+          >
             <Button
-              onClick={goPrev}
+              onClick={handleGoPrevPage}
               variant="outline"
-              disabled={!hasPrev}
-              aria-label="Previous story"
+              disabled={isFirstPage && !hasPrevStory}
+              aria-label="Previous"
               className="px-3"
             >
               <ArrowLeft className="h-5 w-5" />
               <span className="sr-only">Previous</span>
             </Button>
             <Button
-              onClick={goNext}
+              onClick={handleGoNextPage}
               variant="outline"
-              disabled={!hasNext}
-              aria-label="Next story"
+              disabled={isLastPage && !hasNextStory}
+              aria-label="Next"
               className="px-3"
             >
               <span className="sr-only">Next</span>
               <ArrowRight className="h-5 w-5" />
             </Button>
           </div>
-          
+
           {/* Fullscreen Button: bottom-right (fixed inside container) */}
           <div className="absolute bottom-6 right-6">
             <Button
@@ -229,3 +264,4 @@ const StoryViewer = () => {
 };
 
 export default StoryViewer;
+
