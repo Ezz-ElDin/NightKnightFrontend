@@ -8,7 +8,6 @@ import {
   SelectTrigger, 
   SelectValue 
 } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge"; // Add Badge import
 
 // Age options for the appearance dropdown with emojis - ordered chronologically
 const AGE_OPTIONS = [
@@ -36,20 +35,9 @@ const CHARACTER_TYPE_OPTIONS = [
   { value: "other", label: "other", emoji: "👤" },
 ];
 
-// Possible badge color variants for playful tag colors
-const BADGE_VARIANTS = [
-  "default", "secondary", "destructive", "outline"
-];
-
-// Helper assigns a badge variant deterministically based on key
-function getBadgeVariant(key: string) {
-  const hash = Array.from(key).reduce((acc, c) => acc + c.charCodeAt(0), 0);
-  return BADGE_VARIANTS[hash % BADGE_VARIANTS.length] as any;
-}
-
 interface AppearanceFormProps {
   onAppearanceChange: (appearance: string) => void;
-  initialAppearance?: string;
+  initialAppearance?: string; // <-- Fix: add optional initialAppearance
 }
 
 const AppearanceForm: React.FC<AppearanceFormProps> = ({ onAppearanceChange, initialAppearance }) => {
@@ -144,80 +132,6 @@ const AppearanceForm: React.FC<AppearanceFormProps> = ({ onAppearanceChange, ini
     setAppearanceAccessory1("");
     setAppearanceAccessory2("");
   };
-
-  // Helper to create the colored-tag styled preview sentence
-  function renderAppearancePreview() {
-    const colorValue = appearanceColor === "other" ? appearanceColorCustom : appearanceColor;
-    const typeValue = appearanceType === "other" ? appearanceTypeCustom : appearanceType;
-    const tags = [
-      { label: appearanceAge, key: "age" },
-      { label: colorValue, key: "color" },
-      { label: typeValue, key: "type" },
-    ];
-    let sentence: React.ReactNode[] = [];
-    // "A [age] [color] [type]" as tags
-    sentence.push("A ");
-    tags.forEach((item, idx) => {
-      sentence.push(
-        <Badge
-          key={item.key}
-          variant={getBadgeVariant(item.label + item.key)}
-          className="mx-1 text-base capitalize px-3 py-2 rounded-lg"
-          style={{
-            // Lighten default/outline for 'default', extra fun.
-            backgroundColor: item.label === "other" ? "#ececec" : undefined,
-            fontWeight: 500,
-            fontSize: "1.1em"
-          }}
-        >
-          {item.label}
-        </Badge>
-      );
-      if (idx < tags.length - 1) sentence.push(" ");
-    });
-    // Accessories
-    if (appearanceAccessory1 || appearanceAccessory2) {
-      sentence.push(" with ");
-      if (appearanceAccessory1) {
-        sentence.push(
-          <Badge
-            key="acc1"
-            variant={getBadgeVariant(appearanceAccessory1 + "acc1")}
-            className="mx-1 text-base capitalize px-3 py-2 rounded-lg"
-            style={{ fontWeight: 500, fontSize: "1.1em" }}
-          >
-            {appearanceAccessory1}
-          </Badge>
-        );
-        if (appearanceAccessory2) {
-          sentence.push(" and ");
-          sentence.push(
-            <Badge
-              key="acc2"
-              variant={getBadgeVariant(appearanceAccessory2 + "acc2")}
-              className="mx-1 text-base capitalize px-3 py-2 rounded-lg"
-              style={{ fontWeight: 500, fontSize: "1.1em" }}
-            >
-              {appearanceAccessory2}
-            </Badge>
-          );
-        }
-      } else if (appearanceAccessory2) {
-        sentence.push(
-          <Badge
-            key="acc2"
-            variant={getBadgeVariant(appearanceAccessory2 + "acc2")}
-            className="mx-1 text-base capitalize px-3 py-2 rounded-lg"
-            style={{ fontWeight: 500, fontSize: "1.1em" }}
-          >
-            {appearanceAccessory2}
-          </Badge>
-        );
-      }
-    }
-    sentence.push(".");
-    return sentence;
-  }
 
   return (
     <div className="space-y-4">
@@ -341,9 +255,7 @@ const AppearanceForm: React.FC<AppearanceFormProps> = ({ onAppearanceChange, ini
         {/* Preview of the generated appearance */}
         <div className="mt-4 p-5 bg-white rounded-xl border shadow-sm">
           <p className="text-md text-muted-foreground mb-2">Preview:</p>
-          <div className="flex flex-wrap items-center gap-y-2">
-            {renderAppearancePreview()}
-          </div>
+          <p className="font-medium text-lg">{generatedAppearance}</p>
         </div>
       </div>
     </div>
