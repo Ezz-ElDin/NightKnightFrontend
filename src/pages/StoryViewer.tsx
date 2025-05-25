@@ -30,7 +30,6 @@ const MOCK_STORIES = [
   // ... add more mock stories as needed
 ];
 
-// Helper to determine if string is in Arabic for RTL
 const isArabic = (text: string) => /[\u0600-\u06FF]/.test(text);
 
 const StoryViewer = () => {
@@ -38,6 +37,7 @@ const StoryViewer = () => {
   const navigate = useNavigate();
   const { storyId } = useParams<{ storyId?: string }>();
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [page, setPage] = useState(0); // 0 for title, 1 for text
 
   // Find the current story and index for navigation
   const storyIndex = useMemo(
@@ -46,25 +46,18 @@ const StoryViewer = () => {
   );
   const story = MOCK_STORIES[storyIndex];
 
-  // Navigation logic for next/prev story
   const hasPrev = storyIndex > 0;
   const hasNext = storyIndex < MOCK_STORIES.length - 1;
   const goPrev = () => {
-    if (hasPrev) {
-      navigate(`/dashboard/stories/${MOCK_STORIES[storyIndex - 1].id}`);
-    }
+    if (hasPrev) navigate(`/dashboard/stories/${MOCK_STORIES[storyIndex - 1].id}`);
   };
   const goNext = () => {
-    if (hasNext) {
-      navigate(`/dashboard/stories/${MOCK_STORIES[storyIndex + 1].id}`);
-    }
+    if (hasNext) navigate(`/dashboard/stories/${MOCK_STORIES[storyIndex + 1].id}`);
   };
   const goBack = () => navigate("/dashboard");
 
-  // RTL check
   const rtl = story && (isArabic(story.title) || isArabic(story.text));
 
-  // Fullscreen handlers
   const handleToggleFullscreen = () => {
     if (!document.fullscreenElement && containerRef.current) {
       containerRef.current.requestFullscreen?.();
@@ -74,8 +67,6 @@ const StoryViewer = () => {
       setIsFullscreen(false);
     }
   };
-
-  // Listen to fullscreen change event to sync state
   React.useEffect(() => {
     const cb = () => {
       setIsFullscreen(!!document.fullscreenElement);
@@ -97,6 +88,9 @@ const StoryViewer = () => {
       </div>
     );
   }
+
+  // For demonstration, use only 2 "pages" (0=title, 1=story text)
+  const numPages = 2;
 
   return (
     <div 
@@ -149,25 +143,55 @@ const StoryViewer = () => {
             `
           )}
         >
-          {/* Left Side - Story Text */}
+          {/* Left Side - Story (Title Page or Text Page) */}
           <div
             className={clsx(
-              "flex-1 p-10 flex flex-col justify-center items-start min-h-[340px]",
-              rtl ? "rtl text-right" : "ltr text-left"
+              "flex-1 flex flex-col min-h-[340px] px-8 md:px-10 py-8 md:py-10",
+              rtl ? "rtl text-right" : "ltr text-left",
+              page === 0
+                ? "justify-center items-center"
+                : "justify-start items-start"
             )}
             dir={rtl ? "rtl" : "ltr"}
           >
-            <h3 className="font-ghibli text-2xl md:text-4xl font-bold mb-6">{story.title}</h3>
-            <p className="text-lg md:text-xl" style={{ wordBreak: "break-word" }}>{story.text}</p>
+            {page === 0 ? (
+              // Title Page: center the title vertically and horizontally
+              <h3 className="font-ghibli text-[2.3rem] md:text-5xl font-bold mb-0 w-full text-center">
+                {story.title}
+              </h3>
+            ) : (
+              // Text Page: start from the top
+              <p className="text-lg md:text-xl mt-0" style={{ wordBreak: "break-word" }}>
+                {story.text}
+              </p>
+            )}
           </div>
 
-          {/* Right Side - Story Visual */}
-          <div className="flex-1 p-10 flex flex-col items-center justify-center bg-[#fafafd] min-h-[340px]">
-            <img
-              src={story.coverUrl}
-              alt={"Illustration for " + story.title}
-              className="w-full max-w-xs rounded-xl shadow-lg object-cover aspect-[3/4] mx-auto"
-            />
+          {/* Right Side - Visual - fill fully and use 1:1 aspect ratio */}
+          <div className="flex-1 min-h-[340px] bg-[#fafafd] flex items-center justify-center relative p-0 m-0">
+            <div className="w-full h-full flex items-center justify-center">
+              <div
+                className="relative w-full max-w-full max-h-full flex items-center justify-center"
+                style={{
+                  aspectRatio: "1 / 1",
+                  height: "min(100vw, 100vh, 100%)", // Fit to container, keep square
+                  maxHeight: "calc(100vh - 80px)",
+                  background: "#e8eafd",
+                  borderRadius: "1.2rem",
+                  overflow: "hidden",
+                  boxShadow: "0 4px 32px 3px rgba(100,100,115,0.10)"
+                }}
+              >
+                <img
+                  src={story.coverUrl}
+                  alt={"Illustration for " + story.title}
+                  className="absolute top-0 left-0 w-full h-full object-cover"
+                  style={{
+                    objectFit: "cover",
+                  }}
+                />
+              </div>
+            </div>
           </div>
         </div>
 
@@ -183,30 +207,28 @@ const StoryViewer = () => {
             <ArrowLeft className="h-5 w-5 mr-2" /> Back to Dashboard
           </Button>
           
-          {/* Centered Navigation */}
+          {/* Centered Navigation for Pages */}
           <div className={clsx(
             "flex flex-row items-center gap-5 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
             "z-10"
           )}>
             <Button
-              onClick={goPrev}
-              variant="outline"
-              disabled={!hasPrev}
-              aria-label="Previous story"
-              className="px-3"
+              onClick={() => setPage(0)}
+              variant={page === 0 ? "default" : "outline"}
+              aria-label="Title Page"
+              disabled={page === 0}
+              className="px-4"
             >
-              <ArrowLeft className="h-5 w-5" />
-              <span className="sr-only">Previous</span>
+              1
             </Button>
             <Button
-              onClick={goNext}
-              variant="outline"
-              disabled={!hasNext}
-              aria-label="Next story"
-              className="px-3"
+              onClick={() => setPage(1)}
+              variant={page === 1 ? "default" : "outline"}
+              aria-label="Story Page"
+              disabled={page === 1}
+              className="px-4"
             >
-              <span className="sr-only">Next</span>
-              <ArrowRight className="h-5 w-5" />
+              2
             </Button>
           </div>
           
