@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
@@ -80,7 +79,7 @@ const MOCK_STORIES = [
   },
 ];
 
-const STORIES_PER_PAGE = 5;
+const STORIES_PER_PAGE = 6;
 
 const Dashboard = () => {
   const [showSuccess, setShowSuccess] = useState(false);
@@ -126,6 +125,10 @@ const Dashboard = () => {
   const handleDismissInfo = () => {
     setShowInfo(false);
     localStorage.setItem(EMAIL_DISMISS_INFO, "1");
+  };
+
+  const handleStoryClick = (storyId: number) => {
+    navigate("/story-viewer");
   };
 
   // Pagination logic
@@ -200,7 +203,11 @@ const Dashboard = () => {
           {/* Gallery */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             {pagedStories.map(story => (
-              <StoryCard key={story.id} story={story} />
+              <StoryCard
+                key={story.id}
+                story={story}
+                onClick={() => handleStoryClick(story.id)}
+              />
             ))}
           </div>
           {/* Pagination */}
