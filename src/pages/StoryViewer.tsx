@@ -89,9 +89,10 @@ const StoryViewer = () => {
     );
   }
 
-  // For demonstration, use only 2 "pages" (0=title, 1=story text)
+  // Only 2 "pages" (0=title, 1=story text)
   const numPages = 2;
 
+  // --- RENDER ---
   return (
     <div 
       className={clsx(
@@ -146,7 +147,7 @@ const StoryViewer = () => {
           {/* Left Side - Story (Title Page or Text Page) */}
           <div
             className={clsx(
-              "flex-1 flex flex-col min-h-[340px] px-8 md:px-10 py-8 md:py-10",
+              "flex-1 flex flex-col min-h-[340px] px-8 md:px-10 py-8 md:py-10 gap-0",
               rtl ? "rtl text-right" : "ltr text-left",
               page === 0
                 ? "justify-center items-center"
@@ -156,7 +157,7 @@ const StoryViewer = () => {
           >
             {page === 0 ? (
               // Title Page: center the title vertically and horizontally
-              <h3 className="font-ghibli text-[2.3rem] md:text-5xl font-bold mb-0 w-full text-center">
+              <h3 className="font-ghibli text-[2.6rem] md:text-5xl font-bold mb-0 w-full text-center leading-tight">
                 {story.title}
               </h3>
             ) : (
@@ -167,72 +168,71 @@ const StoryViewer = () => {
             )}
           </div>
 
-          {/* Right Side - Visual - fill fully and use 1:1 aspect ratio */}
+          {/* Right Side - Visual - fill fully, 1:1 aspect, no rounded corners */}
           <div className="flex-1 min-h-[340px] bg-[#fafafd] flex items-center justify-center relative p-0 m-0">
-            <div className="w-full h-full flex items-center justify-center">
-              <div
-                className="relative w-full max-w-full max-h-full flex items-center justify-center"
+            <div
+              className="relative w-full max-w-full max-h-full flex items-center justify-center"
+              style={{
+                aspectRatio: "1 / 1",
+                height: "min(100vw, 100vh, 100%)",
+                maxHeight: "calc(100vh - 80px)",
+                background: "#e8eafd",
+                borderRadius: "0", // No rounded corners!
+                overflow: "hidden",
+                boxShadow: "0 4px 32px 3px rgba(100,100,115,0.10)"
+              }}
+            >
+              <img
+                src={story.coverUrl}
+                alt={"Illustration for " + story.title}
+                className="absolute top-0 left-0 w-full h-full object-cover"
                 style={{
-                  aspectRatio: "1 / 1",
-                  height: "min(100vw, 100vh, 100%)", // Fit to container, keep square
-                  maxHeight: "calc(100vh - 80px)",
-                  background: "#e8eafd",
-                  borderRadius: "1.2rem",
-                  overflow: "hidden",
-                  boxShadow: "0 4px 32px 3px rgba(100,100,115,0.10)"
+                  objectFit: "cover",
+                  borderRadius: "0", // No rounded corners!
                 }}
-              >
-                <img
-                  src={story.coverUrl}
-                  alt={"Illustration for " + story.title}
-                  className="absolute top-0 left-0 w-full h-full object-cover"
-                  style={{
-                    objectFit: "cover",
-                  }}
-                />
-              </div>
+              />
             </div>
           </div>
         </div>
 
-        {/* Navigation & Fullscreen Controls */}
+        {/* Footer - Navigation & Fullscreen Controls */}
         <div className="flex w-full items-center justify-between px-6 py-5 bg-white border-t border-gray-100 relative min-h-[72px]">
           {/* Back Button */}
           <Button
             onClick={goBack}
             variant="outline"
-            className="font-semibold px-4"
+            className="font-semibold px-4 flex gap-2 items-center"
             aria-label="Back to dashboard"
           >
             <ArrowLeft className="h-5 w-5 mr-2" /> Back to Dashboard
           </Button>
           
-          {/* Centered Navigation for Pages */}
-          <div className={clsx(
-            "flex flex-row items-center gap-5 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
-            "z-10"
-          )}>
+          {/* Centered Arrows for Page Navigation */}
+          <div className="flex flex-row items-center gap-5 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
             <Button
-              onClick={() => setPage(0)}
-              variant={page === 0 ? "default" : "outline"}
-              aria-label="Title Page"
+              onClick={() => setPage(Math.max(0, page - 1))}
+              variant="outline"
+              aria-label="Previous Page"
+              className="px-4"
               disabled={page === 0}
-              className="px-4"
+              size="icon"
             >
-              1
+              <ArrowLeft className="h-6 w-6" />
             </Button>
+            <span className="text-muted-foreground font-semibold text-lg select-none">{page + 1}</span>
             <Button
-              onClick={() => setPage(1)}
-              variant={page === 1 ? "default" : "outline"}
-              aria-label="Story Page"
-              disabled={page === 1}
+              onClick={() => setPage(Math.min(numPages - 1, page + 1))}
+              variant="outline"
+              aria-label="Next Page"
               className="px-4"
+              disabled={page === numPages - 1}
+              size="icon"
             >
-              2
+              <ArrowRight className="h-6 w-6" />
             </Button>
           </div>
           
-          {/* Fullscreen Button: bottom-right (fixed inside container) */}
+          {/* Fullscreen Button */}
           <div className="absolute bottom-6 right-6">
             <Button
               onClick={handleToggleFullscreen}
@@ -251,3 +251,4 @@ const StoryViewer = () => {
 };
 
 export default StoryViewer;
+
