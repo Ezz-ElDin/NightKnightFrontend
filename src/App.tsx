@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -7,7 +8,7 @@ import Navbar from "./components/Navbar";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Dashboard from "./pages/Dashboard";
+// Removed Dashboard import, as the page doesn't exist and is now Library
 import CreateStory from "./pages/CreateStory";
 import AccountSettings from "./pages/AccountSettings";
 import StoryViewer from "./pages/StoryViewer";
