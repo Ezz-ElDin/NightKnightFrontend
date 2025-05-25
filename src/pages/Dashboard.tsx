@@ -1,26 +1,21 @@
+
 import { useEffect, useState } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { Check, Info, Star, MoreVertical } from "lucide-react";
+import { Check, Info, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import StoryBackground from "@/components/StoryBackground";
 import { Pagination, PaginationContent, PaginationItem, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import StoryCard from "@/components/dashboard/StoryCard";
-
-// Helper to get query param
-function useQuery() {
-  return new URLSearchParams(useLocation().search);
-}
+import ConfirmDeleteDialog from "@/components/dashboard/ConfirmDeleteDialog";
 
 const EMAIL_VERIFIED_FLAG = "email_verified_success_banner_dismissed";
 const EMAIL_DISMISS_INFO = "email_verify_info_banner_dismissed";
 
-// Mock story data
 const MOCK_STORIES = [
   {
     id: 1,
-    // Arabic title for demonstration of RTL support
-    title: "القطة الشجاعة والقمر",
+    title: "القطة الشجاعة والقمر", // Arabic for demonstration
     coverUrl: "/images/moon-kittens.png",
     createdAt: "2024-05-24T22:00:00Z",
   },
@@ -82,10 +77,20 @@ const MOCK_STORIES = [
 
 const STORIES_PER_PAGE = 6;
 
+// Helper to get query param
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
+
 const Dashboard = () => {
   const [showSuccess, setShowSuccess] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
   const [page, setPage] = useState(1);
+
+  // App logic for favourite stories
+  const [stories, setStories] = useState(MOCK_STORIES);
+  const [favourites, setFavourites] = useState<number[]>([]);
+  const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; storyId: null | number }>({ open: false, storyId: null });
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -132,15 +137,33 @@ const Dashboard = () => {
     navigate("/story-viewer");
   };
 
-  // Pagination logic
-  const totalPages = Math.ceil(MOCK_STORIES.length / STORIES_PER_PAGE);
-  const pagedStories = MOCK_STORIES.slice(
+  // Pagination logic (non-favourites)
+  const allFavouriteStories = stories.filter((s) => favourites.includes(s.id));
+  const allNonFavouriteStories = stories.filter((s) => !favourites.includes(s.id));
+  const totalPages = Math.ceil(allNonFavouriteStories.length / STORIES_PER_PAGE);
+  const pagedStories = allNonFavouriteStories.slice(
     (page - 1) * STORIES_PER_PAGE,
     page * STORIES_PER_PAGE
   );
   const goToPage = (p: number) => {
     setPage(p);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Add/Remove favourite
+  const toggleFavourite = (id: number) => {
+    setFavourites((prevFavs) =>
+      prevFavs.includes(id)
+        ? prevFavs.filter((fav) => fav !== id)
+        : [id, ...prevFavs]
+    );
+  };
+
+  // Delete a story (after confirmation)
+  const handleDeleteStory = (storyId: number) => {
+    setStories((prev) => prev.filter((s) => s.id !== storyId));
+    setFavourites((prevFavs) => prevFavs.filter((id) => id !== storyId));
+    setDeleteDialog({ open: false, storyId: null });
   };
 
   return (
@@ -201,17 +224,43 @@ const Dashboard = () => {
               </Button>
             </Link>
           </div>
-          {/* Gallery */}
+
+          {/* Favourite stories section */}
+          {allFavouriteStories.length > 0 && (
+            <div className="mb-9">
+              <h3 className="text-xl font-semibold text-amber-600 mb-3">
+                ★ Favourite Stories
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {allFavouriteStories.map(story => (
+                  <StoryCard
+                    key={story.id}
+                    story={story}
+                    isFavourite={true}
+                    onClick={() => handleStoryClick(story.id)}
+                    onFavourite={() => toggleFavourite(story.id)}
+                    onDelete={() => setDeleteDialog({ open: true, storyId: story.id })}
+                  />
+                ))}
+              </div>
+              <hr className="my-7 border-gray-300" />
+            </div>
+          )}
+
+          {/* Gallery for non-favourites */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             {pagedStories.map(story => (
               <StoryCard
                 key={story.id}
                 story={story}
+                isFavourite={false}
                 onClick={() => handleStoryClick(story.id)}
+                onFavourite={() => toggleFavourite(story.id)}
+                onDelete={() => setDeleteDialog({ open: true, storyId: story.id })}
               />
             ))}
           </div>
-          {/* Pagination */}
+          {/* Pagination for non-favourites */}
           <div className="flex justify-center mt-6">
             <Pagination>
               <PaginationContent>
@@ -244,6 +293,12 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      {/* Delete confirmation dialog */}
+      <ConfirmDeleteDialog
+        open={deleteDialog.open}
+        onCancel={() => setDeleteDialog({ open: false, storyId: null })}
+        onConfirm={() => deleteDialog.storyId && handleDeleteStory(deleteDialog.storyId)}
+      />
     </StoryBackground>
   );
 };

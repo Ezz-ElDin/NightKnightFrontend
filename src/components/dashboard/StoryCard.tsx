@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Heart, Delete } from "lucide-react";
@@ -12,7 +13,10 @@ interface StoryCardProps {
     coverUrl: string;
     createdAt: string;
   };
+  isFavourite?: boolean;
   onClick?: () => void;
+  onFavourite?: () => void;
+  onDelete?: () => void;
 }
 
 // Modern, visually appealing date + time, e.g. "May 26, 2024 · 11:30 PM"
@@ -38,10 +42,9 @@ const formatDate = (dateString: string) => {
   );
 };
 
-const StoryCard: React.FC<StoryCardProps> = ({ story, onClick }) => {
+const StoryCard: React.FC<StoryCardProps> = ({ story, isFavourite, onClick, onFavourite, onDelete }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // To avoid triggering card click when menu is clicked
   const handleMenuButtonClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     setMenuOpen((v) => !v);
@@ -77,6 +80,7 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, onClick }) => {
             }}
             onClick={handleMenuButtonClick}
             aria-label="Story actions"
+            type="button"
           >
             <svg
               width="22"
@@ -101,16 +105,34 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, onClick }) => {
               <ul className="py-1">
                 <li>
                   <button
-                    className="w-full px-4 py-2 flex items-center gap-2 text-story-purple font-medium focus:outline-none"
+                    className={
+                      "w-full px-4 py-2 flex items-center gap-2 font-medium focus:outline-none " +
+                      (isFavourite
+                        ? "text-amber-600"
+                        : "text-story-purple")
+                    }
                     tabIndex={0}
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onFavourite?.();
+                      setMenuOpen(false);
+                    }}
                   >
-                    <Heart size={18} /> Favourite
+                    <Heart size={18} fill={isFavourite ? "#f59e42" : "none"} color={isFavourite ? "#f59e42" : "#a093f4"} /> 
+                    {isFavourite ? "Favourited" : "Favourite"}
                   </button>
                 </li>
                 <li>
                   <button
                     className="w-full px-4 py-2 flex items-center gap-2 text-red-700 font-medium focus:outline-none"
                     tabIndex={0}
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDelete?.();
+                      setMenuOpen(false);
+                    }}
                   >
                     <Delete size={18} /> Delete
                   </button>
