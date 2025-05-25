@@ -13,7 +13,7 @@ interface StoryCardProps {
   onClick?: () => void;
 }
 
-// Modern, clear US/ISO-like date + time, e.g. "May 26, 2024 · 11:30 PM"
+// Modern, visually appealing date + time, e.g. "May 26, 2024 · 11:30 PM"
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
   const dateOptions: Intl.DateTimeFormatOptions = {
@@ -26,10 +26,13 @@ const formatDate = (dateString: string) => {
     minute: "2-digit",
     hour12: true,
   };
+  // Use more visually separated style
   return (
-    date.toLocaleDateString(undefined, dateOptions) +
-    " \u00B7 " +
-    date.toLocaleTimeString(undefined, timeOptions)
+    <span>
+      <span className="font-semibold">{date.toLocaleDateString(undefined, dateOptions)}</span>
+      <span className="mx-1 text-gray-400">·</span>
+      <span className="">{date.toLocaleTimeString(undefined, timeOptions)}</span>
+    </span>
   );
 };
 
@@ -65,11 +68,26 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, onClick }) => {
         <div className="absolute top-2 right-2 z-20">
           <Button
             variant="ghost"
-            className="rounded-full p-2 h-9 w-9"
+            className="rounded-full p-0 h-11 w-11 bg-[#FEF2C8] shadow-md flex items-center justify-center transition-none"
+            style={{
+              backgroundColor: "#FEF2C8",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+            }}
             onClick={handleMenuButtonClick}
             aria-label="Story actions"
           >
-            <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="6" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="18" r="1.5"/></svg>
+            <svg
+              width="22"
+              height="22"
+              fill="none"
+              stroke="#48505A"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <circle cx="12" cy="6" r="1.5" />
+              <circle cx="12" cy="12" r="1.5" />
+              <circle cx="12" cy="18" r="1.5" />
+            </svg>
           </Button>
           {/* Action dropdown menu */}
           {menuOpen && (
@@ -113,4 +131,3 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, onClick }) => {
 };
 
 export default StoryCard;
-
