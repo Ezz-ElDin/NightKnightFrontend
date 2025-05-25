@@ -15,6 +15,7 @@ import NotFound from "./pages/NotFound";
 import AuthCallback from "./pages/AuthCallback";
 import WaitingList from "./pages/WaitingList";
 import RequireAuth from "./components/RequireAuth";
+import Library from "./pages/Library";
 
 // Create a new QueryClient instance
 const queryClient = new QueryClient();
@@ -47,9 +48,9 @@ const App = () => (
               <Route path="/homepage" element={<Index />} />
               
               {/* Protected routes */}
-              <Route path="/dashboard" element={
+              <Route path="/library" element={
                 <RequireAuth>
-                  <Dashboard />
+                  <Library />
                 </RequireAuth>
               } />
               <Route path="/create-story" element={
@@ -65,7 +66,7 @@ const App = () => (
                 </RequireAuth>
               } />
               {/* UPDATED route for story viewer with storyId param */}
-              <Route path="/dashboard/stories/:storyId" element={
+              <Route path="/library/stories/:storyId" element={
                 <RequireAuth>
                   <StoryViewer />
                 </RequireAuth>
@@ -84,9 +85,9 @@ const App = () => (
               <Route path="/waiting-list" element={<WaitingList />} />
               
               {/* Protected routes */}
-              <Route path="/dashboard" element={
+              <Route path="/library" element={
                 <RequireAuth>
-                  <Dashboard />
+                  <Library />
                 </RequireAuth>
               } />
               <Route path="/create-story" element={
@@ -102,7 +103,7 @@ const App = () => (
                 </RequireAuth>
               } />
               {/* UPDATED route for story viewer with storyId param */}
-              <Route path="/dashboard/stories/:storyId" element={
+              <Route path="/library/stories/:storyId" element={
                 <RequireAuth>
                   <StoryViewer />
                 </RequireAuth>

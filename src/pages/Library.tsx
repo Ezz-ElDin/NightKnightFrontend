@@ -81,7 +81,7 @@ function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
-const Dashboard = () => {
+const Library = () => {
   const [showSuccess, setShowSuccess] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
   const [page, setPage] = useState(1);
@@ -133,7 +133,7 @@ const Dashboard = () => {
   };
 
   const handleStoryClick = (storyId: number) => {
-    navigate(`/dashboard/stories/${storyId}`);
+    navigate(`/library/stories/${storyId}`);
   };
 
   // Pagination logic (non-favourites)
@@ -302,4 +302,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Library;

@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { Home, BookOpen, User, Settings, LogOut } from "lucide-react";
@@ -31,9 +30,9 @@ const LoggedInMenu = ({ isMobile = false, onMobileMenuClose }: LoggedInMenuProps
   if (isMobile) {
     return (
       <>
-        <Link to="/dashboard" className="px-3 py-2 rounded-xl hover:bg-story-lightPurple/50 text-story-purple font-medium flex items-center gap-2" onClick={handleClick}>
+        <Link to="/library" className="px-3 py-2 rounded-xl hover:bg-story-lightPurple/50 text-story-purple font-medium flex items-center gap-2" onClick={handleClick}>
           <Home className="h-4 w-4" />
-          Dashboard
+          Library
         </Link>
         <Link to="/create-story" className="px-3 py-2 rounded-xl hover:bg-story-lightPurple/50 text-story-purple font-medium flex items-center gap-2" onClick={handleClick}>
           <BookOpen className="h-4 w-4" />
@@ -55,9 +54,9 @@ const LoggedInMenu = ({ isMobile = false, onMobileMenuClose }: LoggedInMenuProps
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <Link to="/dashboard" className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-story-lightPurple/50 hover:text-story-purple focus:bg-story-lightPurple/50 focus:text-story-purple focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-story-lightPurple/50 data-[state=open]:bg-story-lightPurple/50 text-story-purple">
+          <Link to="/library" className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-story-lightPurple/50 hover:text-story-purple focus:bg-story-lightPurple/50 focus:text-story-purple focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-story-lightPurple/50 data-[state=open]:bg-story-lightPurple/50 text-story-purple">
             <Home className="mr-1.5 h-4 w-4" />
-            Dashboard
+            Library
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>

@@ -51,12 +51,12 @@ const StoryViewer = () => {
   const hasPrev = storyIndex > 0;
   const hasNext = storyIndex < MOCK_STORIES.length - 1;
   const goPrev = () => {
-    if (hasPrev) navigate(`/dashboard/stories/${MOCK_STORIES[storyIndex - 1].id}`);
+    if (hasPrev) navigate(`/library/stories/${MOCK_STORIES[storyIndex - 1].id}`);
   };
   const goNext = () => {
-    if (hasNext) navigate(`/dashboard/stories/${MOCK_STORIES[storyIndex + 1].id}`);
+    if (hasNext) navigate(`/library/stories/${MOCK_STORIES[storyIndex + 1].id}`);
   };
-  const goBack = () => navigate("/dashboard");
+  const goBack = () => navigate("/library");
 
   const rtl = story && (isArabic(story.title) || isArabic(story.text));
 
