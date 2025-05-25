@@ -1,5 +1,5 @@
-
 import React from "react";
+import { Edit } from "lucide-react";
 
 // Role options with emojis - girl empowerment focused
 const ROLE_EMOJIS = {
@@ -90,15 +90,15 @@ const CharacterList: React.FC<CharacterListProps> = ({ characters, onRemoveChara
           >
             ✕
           </button>
-          {/* Edit button */}
+          {/* Bigger, more visible Edit button at bottom-right */}
           {onEditCharacter && (
             <button
               onClick={() => onEditCharacter(character)}
-              className="absolute top-2 left-2 text-muted-foreground hover:text-primary h-6 w-6 flex items-center justify-center rounded-full hover:bg-primary/10"
+              className="absolute bottom-3 right-3 bg-primary text-primary-foreground hover:bg-primary/80 shadow-lg rounded-full p-3 w-12 h-12 flex items-center justify-center transition-all duration-150"
               aria-label="Edit character"
               title="Edit"
             >
-              <span role="img" aria-label="Edit">✏️</span>
+              <Edit size={28} strokeWidth={2.5} />
             </button>
           )}
         </div>
