@@ -1,9 +1,11 @@
-
 import React, { useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, Fullscreen } from "lucide-react";
 import clsx from "clsx";
+import StoryVisual from "@/components/story-viewer/StoryVisual";
+import StoryText from "@/components/story-viewer/StoryText";
+import StoryNavigation from "@/components/story-viewer/StoryNavigation";
 
 const MOCK_STORIES = [
   {
@@ -92,7 +94,6 @@ const StoryViewer = () => {
   // Only 2 "pages" (0=title, 1=story text)
   const numPages = 2;
 
-  // --- RENDER ---
   return (
     <div 
       className={clsx(
@@ -145,110 +146,35 @@ const StoryViewer = () => {
           )}
         >
           {/* Left Side - Story (Title Page or Text Page) */}
-          <div
-            className={clsx(
-              "flex-1 flex flex-col min-h-[340px] px-8 md:px-10 py-8 md:py-10 gap-0",
-              rtl ? "rtl text-right" : "ltr text-left",
-              page === 0
-                ? "justify-center items-center"
-                : "justify-start items-start"
-            )}
-            dir={rtl ? "rtl" : "ltr"}
-          >
-            {page === 0 ? (
-              // Title Page: center the title vertically and horizontally
-              <h3 className="font-ghibli text-[2.6rem] md:text-5xl font-bold mb-0 w-full text-center leading-tight">
-                {story.title}
-              </h3>
-            ) : (
-              // Text Page: start from the top
-              <p className="text-lg md:text-xl mt-0" style={{ wordBreak: "break-word" }}>
-                {story.text}
-              </p>
-            )}
-          </div>
+          <StoryText
+            title={story.title}
+            text={story.text}
+            page={page}
+            rtl={rtl}
+          />
 
-          {/* Right Side - Visual - fill fully, 1:1 aspect, no rounded corners */}
-          <div className="flex-1 min-h-[340px] bg-[#fafafd] flex items-center justify-center relative p-0 m-0">
-            <div
-              className="relative w-full max-w-full max-h-full flex items-center justify-center"
-              style={{
-                aspectRatio: "1 / 1",
-                height: "min(100vw, 100vh, 100%)",
-                maxHeight: "calc(100vh - 80px)",
-                background: "#e8eafd",
-                borderRadius: "0", // No rounded corners!
-                overflow: "hidden",
-                boxShadow: "0 4px 32px 3px rgba(100,100,115,0.10)"
-              }}
-            >
-              <img
-                src={story.coverUrl}
-                alt={"Illustration for " + story.title}
-                className="absolute top-0 left-0 w-full h-full object-cover"
-                style={{
-                  objectFit: "cover",
-                  borderRadius: "0", // No rounded corners!
-                }}
-              />
-            </div>
-          </div>
+          {/* Right Side - Visual - No Rounded Corners! */}
+          <StoryVisual
+            coverUrl={story.coverUrl}
+            title={story.title}
+          />
         </div>
 
         {/* Footer - Navigation & Fullscreen Controls */}
-        <div className="flex w-full items-center justify-between px-6 py-5 bg-white border-t border-gray-100 relative min-h-[72px]">
-          {/* Back Button */}
-          <Button
-            onClick={goBack}
-            variant="outline"
-            className="font-semibold px-4 flex gap-2 items-center"
-            aria-label="Back to dashboard"
-          >
-            <ArrowLeft className="h-5 w-5 mr-2" /> Back to Dashboard
-          </Button>
-          
-          {/* Centered Arrows for Page Navigation */}
-          <div className="flex flex-row items-center gap-5 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-            <Button
-              onClick={() => setPage(Math.max(0, page - 1))}
-              variant="outline"
-              aria-label="Previous Page"
-              className="px-4"
-              disabled={page === 0}
-              size="icon"
-            >
-              <ArrowLeft className="h-6 w-6" />
-            </Button>
-            <span className="text-muted-foreground font-semibold text-lg select-none">{page + 1}</span>
-            <Button
-              onClick={() => setPage(Math.min(numPages - 1, page + 1))}
-              variant="outline"
-              aria-label="Next Page"
-              className="px-4"
-              disabled={page === numPages - 1}
-              size="icon"
-            >
-              <ArrowRight className="h-6 w-6" />
-            </Button>
-          </div>
-          
-          {/* Fullscreen Button */}
-          <div className="absolute bottom-6 right-6">
-            <Button
-              onClick={handleToggleFullscreen}
-              variant={isFullscreen ? "secondary" : "outline"}
-              size="icon"
-              aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
-              className="rounded-full shadow border"
-            >
-              <Fullscreen className="h-6 w-6" />
-            </Button>
-          </div>
-        </div>
+        <StoryNavigation
+          onBack={goBack}
+          onPrevPage={() => setPage(Math.max(0, page - 1))}
+          onNextPage={() => setPage(Math.min(numPages - 1, page + 1))}
+          onToggleFullscreen={handleToggleFullscreen}
+          isFullscreen={isFullscreen}
+          canPrev={page > 0}
+          canNext={page < numPages - 1}
+          page={page}
+          numPages={numPages}
+        />
       </div>
     </div>
   );
 };
 
 export default StoryViewer;
-
