@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { 
   Dialog, 
   DialogContent, 
@@ -17,12 +17,14 @@ interface CharacterDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onAddCharacter: (character: Omit<Character, "id">) => void;
+  initialCharacter?: Omit<Character, "id">; // New
 }
 
 const CharacterDialog: React.FC<CharacterDialogProps> = ({ 
   open, 
   onOpenChange,
-  onAddCharacter
+  onAddCharacter,
+  initialCharacter
 }) => {
   const [character, setCharacter] = useState<Omit<Character, "id">>({
     name: "",
@@ -30,6 +32,19 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
     personality: [],
     role: "Hero"
   });
+
+  useEffect(() => {
+    if (open && initialCharacter) {
+      setCharacter({ ...initialCharacter });
+    } else if (open && !initialCharacter) {
+      setCharacter({
+        name: "",
+        appearance: "",
+        personality: [],
+        role: "Hero"
+      });
+    }
+  }, [open, initialCharacter]);
 
   const handleAddCharacter = () => {
     if (!character.name) return;
@@ -52,7 +67,6 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
       const traits = prev.personality.includes(trait)
         ? prev.personality.filter(t => t !== trait)
         : [...prev.personality, trait];
-      
       return { ...prev, personality: traits };
     });
   };
@@ -65,7 +79,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
       <DialogContent className="sm:max-w-[700px] md:max-w-[800px] max-h-[90vh] overflow-y-auto bg-gradient-to-b from-white to-primary/5 border-2 border-primary/30 rounded-xl shadow-xl">
         <DialogHeader>
           <DialogTitle className="text-2xl text-center font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600">
-            Create a Magical Character
+            {initialCharacter ? "Edit Magical Character" : "Create a Magical Character"}
           </DialogTitle>
         </DialogHeader>
         <div className="space-y-5 py-4">
@@ -74,16 +88,14 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
             selectedRole={character.role} 
             onRoleChange={(role) => setCharacter({...character, role})} 
           />
-          
           <CharacterNameInput
             name={character.name}
             onNameChange={(name) => setCharacter({...character, name})}
           />
-          
           <AppearanceForm
             onAppearanceChange={(appearance) => setCharacter({...character, appearance})}
+            initialAppearance={character.appearance}
           />
-          
           <PersonalitySelector
             selectedTraits={character.personality}
             onTraitToggle={togglePersonalityTrait}
@@ -94,7 +106,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
             onClick={handleAddCharacter}
             className="text-lg px-8 py-6 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 shadow-lg"
           >
-            Add Character ✨
+            {initialCharacter ? "Save Changes" : "Add Character"} ✨
           </Button>
         </div>
       </DialogContent>

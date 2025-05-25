@@ -22,9 +22,10 @@ interface Character {
 interface CharacterListProps {
   characters: Character[];
   onRemoveCharacter: (id: string) => void;
+  onEditCharacter?: (character: Character) => void; // new optional prop
 }
 
-const CharacterList: React.FC<CharacterListProps> = ({ characters, onRemoveCharacter }) => {
+const CharacterList: React.FC<CharacterListProps> = ({ characters, onRemoveCharacter, onEditCharacter }) => {
   // Helper function to get a gradient color based on character role
   const getCharacterGradient = (role: string) => {
     switch(role) {
@@ -81,6 +82,7 @@ const CharacterList: React.FC<CharacterListProps> = ({ characters, onRemoveChara
             </div>
           </div>
           
+          {/* Remove button */}
           <button
             onClick={() => onRemoveCharacter(character.id)}
             className="absolute top-2 right-2 text-muted-foreground hover:text-destructive h-6 w-6 flex items-center justify-center rounded-full hover:bg-destructive/10"
@@ -88,6 +90,17 @@ const CharacterList: React.FC<CharacterListProps> = ({ characters, onRemoveChara
           >
             ✕
           </button>
+          {/* Edit button */}
+          {onEditCharacter && (
+            <button
+              onClick={() => onEditCharacter(character)}
+              className="absolute top-2 left-2 text-muted-foreground hover:text-primary h-6 w-6 flex items-center justify-center rounded-full hover:bg-primary/10"
+              aria-label="Edit character"
+              title="Edit"
+            >
+              <span role="img" aria-label="Edit">✏️</span>
+            </button>
+          )}
         </div>
       ))}
     </div>
