@@ -1,7 +1,7 @@
 
-import { MoreVertical, Star } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Heart, Delete } from "lucide-react";
 
 interface StoryCardProps {
   story: {
@@ -13,21 +13,30 @@ interface StoryCardProps {
   onClick?: () => void;
 }
 
+// Modern, clear US/ISO-like date + time, e.g. "May 26, 2024 · 11:30 PM"
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
-  return date.toLocaleDateString(undefined, {
+  const dateOptions: Intl.DateTimeFormatOptions = {
     month: "short",
     day: "numeric",
     year: "numeric",
+  };
+  const timeOptions: Intl.DateTimeFormatOptions = {
     hour: "2-digit",
     minute: "2-digit",
-  });
+    hour12: true,
+  };
+  return (
+    date.toLocaleDateString(undefined, dateOptions) +
+    " \u00B7 " +
+    date.toLocaleTimeString(undefined, timeOptions)
+  );
 };
 
 const StoryCard: React.FC<StoryCardProps> = ({ story, onClick }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Stop propagation to avoid triggering card click when clicking the menu
+  // To avoid triggering card click when menu is clicked
   const handleMenuButtonClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     setMenuOpen((v) => !v);
@@ -60,40 +69,30 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, onClick }) => {
             onClick={handleMenuButtonClick}
             aria-label="Story actions"
           >
-            <MoreVertical />
+            <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="6" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="18" r="1.5"/></svg>
           </Button>
           {/* Action dropdown menu */}
           {menuOpen && (
             <div
-              className="absolute right-0 mt-2 w-44 bg-white border border-story-seafoam/40 rounded-xl shadow-lg z-30 animate-in fade-in"
-              style={{ backgroundColor: "#fbfaff" }}
+              className="absolute right-0 mt-2 w-40 bg-[#f4f0fc] border border-story-seafoam/40 rounded-xl shadow-lg z-30 animate-in fade-in"
+              style={{ backgroundColor: "#f4f0fc" }}
               onClick={handleMenuClose}
             >
               <ul className="py-1">
                 <li>
                   <button
-                    className="w-full px-4 py-2 hover:bg-muted flex items-center gap-2 text-story-purple font-medium"
+                    className="w-full px-4 py-2 flex items-center gap-2 text-story-purple font-medium focus:outline-none"
                     tabIndex={0}
                   >
-                    <Star className="h-4 w-4" /> Favourite
+                    <Heart size={18} /> Favourite
                   </button>
                 </li>
                 <li>
                   <button
-                    className="w-full px-4 py-2 hover:bg-muted flex items-center gap-2 text-story-purple font-medium"
+                    className="w-full px-4 py-2 flex items-center gap-2 text-red-700 font-medium focus:outline-none"
                     tabIndex={0}
                   >
-                    <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" className="mr-1"><path d="M12 17v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1"/><circle cx="9" cy="7" r="4"/><rect x="14" y="11" width="6" height="2" rx="1"/><path d="M17 8v6"/></svg>
-                    Make Public to Share
-                  </button>
-                </li>
-                <li>
-                  <button
-                    className="w-full px-4 py-2 hover:bg-red-100 flex items-center gap-2 text-red-700 font-medium"
-                    tabIndex={0}
-                  >
-                    <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 6h12"/><path d="M6 6V4a2 2 0 1 1 4 0v2"/><path d="M5 9v6a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2V9"/></svg>
-                    Delete
+                    <Delete size={18} /> Delete
                   </button>
                 </li>
               </ul>
@@ -103,8 +102,10 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, onClick }) => {
       </div>
       <div className="p-4 flex-1 flex flex-col">
         <h3 className="font-bold text-lg line-clamp-2 mb-2">{story.title}</h3>
-        <div className="text-sm text-gray-500 mt-auto">
-          Created on {formatDate(story.createdAt)}
+        <div className="flex items-center gap-2 mt-auto">
+          <span className="inline-block px-3 py-1 text-xs font-semibold rounded-full bg-[#eeeaf7] text-story-purple/80 shadow-sm">
+            {formatDate(story.createdAt)}
+          </span>
         </div>
       </div>
     </div>
@@ -112,3 +113,4 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, onClick }) => {
 };
 
 export default StoryCard;
+
