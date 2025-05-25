@@ -64,7 +64,8 @@ const App = () => (
                   <AccountSettings />
                 </RequireAuth>
               } />
-              <Route path="/story-viewer" element={
+              {/* UPDATED route for story viewer with storyId param */}
+              <Route path="/dashboard/stories/:storyId" element={
                 <RequireAuth>
                   <StoryViewer />
                 </RequireAuth>
@@ -100,7 +101,8 @@ const App = () => (
                   <AccountSettings />
                 </RequireAuth>
               } />
-              <Route path="/story-viewer" element={
+              {/* UPDATED route for story viewer with storyId param */}
+              <Route path="/dashboard/stories/:storyId" element={
                 <RequireAuth>
                   <StoryViewer />
                 </RequireAuth>

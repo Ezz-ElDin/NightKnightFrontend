@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
@@ -134,7 +133,7 @@ const Dashboard = () => {
   };
 
   const handleStoryClick = (storyId: number) => {
-    navigate("/story-viewer");
+    navigate(`/dashboard/stories/${storyId}`);
   };
 
   // Pagination logic (non-favourites)
