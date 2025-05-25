@@ -19,7 +19,8 @@ const EMAIL_DISMISS_INFO = "email_verify_info_banner_dismissed";
 const MOCK_STORIES = [
   {
     id: 1,
-    title: "The Brave Moon Cat",
+    // Arabic title for demonstration of RTL support
+    title: "القطة الشجاعة والقمر",
     coverUrl: "/images/moon-kittens.png",
     createdAt: "2024-05-24T22:00:00Z",
   },

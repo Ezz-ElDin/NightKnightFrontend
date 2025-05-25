@@ -1,7 +1,9 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Heart, Delete } from "lucide-react";
+
+// Helper to determine if string is in Arabic for RTL
+const isArabic = (text: string) => /[\u0600-\u06FF]/.test(text);
 
 interface StoryCardProps {
   story: {
@@ -119,7 +121,15 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, onClick }) => {
         </div>
       </div>
       <div className="p-4 flex-1 flex flex-col">
-        <h3 className="font-bold text-lg line-clamp-2 mb-2">{story.title}</h3>
+        <h3
+          className={
+            "font-bold text-lg line-clamp-2 mb-2 " +
+            (isArabic(story.title) ? "rtl text-right font-ghibli" : "")
+          }
+          dir={isArabic(story.title) ? "rtl" : "ltr"}
+        >
+          {story.title}
+        </h3>
         <div className="flex items-center gap-2 mt-auto">
           <span className="inline-block px-3 py-1 text-xs font-semibold rounded-full bg-[#eeeaf7] text-story-purple/80 shadow-sm">
             {formatDate(story.createdAt)}
