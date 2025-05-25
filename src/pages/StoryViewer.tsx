@@ -1,8 +1,8 @@
 
-import React from "react";
+import React, { useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 const MOCK_STORIES = [
   {
@@ -36,65 +36,137 @@ const StoryViewer = () => {
   const navigate = useNavigate();
   const { storyId } = useParams<{ storyId?: string }>();
 
-  const goBack = () => {
-    navigate('/dashboard');
-  };
+  // Find the current story and index for navigation
+  const storyIndex = useMemo(
+    () => MOCK_STORIES.findIndex(s => String(s.id) === storyId),
+    [storyId]
+  );
+  const story = MOCK_STORIES[storyIndex];
 
-  const story = MOCK_STORIES.find(s => String(s.id) === storyId);
+  // Navigation logic for next/prev story
+  const hasPrev = storyIndex > 0;
+  const hasNext = storyIndex < MOCK_STORIES.length - 1;
+  const goPrev = () => {
+    if (hasPrev) {
+      navigate(`/dashboard/stories/${MOCK_STORIES[storyIndex - 1].id}`);
+    }
+  };
+  const goNext = () => {
+    if (hasNext) {
+      navigate(`/dashboard/stories/${MOCK_STORIES[storyIndex + 1].id}`);
+    }
+  };
+  const goBack = () => navigate("/dashboard");
+
+  // RTL check
+  const rtl = story && (isArabic(story.title) || isArabic(story.text));
 
   if (!story) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh]">
         <h1 className="text-3xl font-bold text-primary mb-2">Story Not Found</h1>
-        <p className="text-lg text-muted-foreground mb-6">Sorry, we couldn't find that story.</p>
-        <Button onClick={goBack} variant="outline">Back to Dashboard</Button>
+        <p className="text-lg text-muted-foreground mb-6">
+          Sorry, we couldn't find that story.
+        </p>
+        <Button onClick={goBack} variant="outline">
+          Back to Dashboard
+        </Button>
       </div>
     );
   }
 
-  // Determine if this story content should be rendered RTL.
-  const rtl = isArabic(story.title) || isArabic(story.text);
-
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center px-4 py-12 bg-white">
-      <div className="w-full max-w-3xl mx-auto bg-white rounded-2xl shadow-md p-0 md:p-0 overflow-hidden flex flex-col">
-        {/* Mock-up like forbidden screen */}
-        <div className="py-16 flex flex-col items-center border-b">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-[#28a5e5]">NightKnight</h1>
-          <h2 className="text-2xl font-bold mb-2">Story Viewer</h2>
-          <span className="text-gray-500 mb-6">Enjoy your adventure below!</span>
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={goBack}
-            className="mb-2"
-            aria-label="Go back"
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-        </div>
-        {/* Book-like layout */}
-        <div className="flex flex-col md:flex-row w-full divide-y md:divide-y-0 md:divide-x divide-gray-200">
+    <div className="min-h-screen w-full flex flex-col items-center justify-center px-2 py-6 bg-white">
+      <div
+        className="
+          w-full
+          max-w-5xl
+          mx-auto
+          bg-white
+          rounded-3xl
+          shadow-lg
+          p-0
+          overflow-hidden
+          flex
+          flex-col
+          border
+          border-solid
+          border-gray-200
+          animate-fade-in
+        "
+        style={{ minHeight: "60vh" }}
+      >
+        {/* Book Content */}
+        <div
+          className="
+            flex
+            flex-col
+            md:flex-row
+            w-full
+            md:divide-x
+            divide-y
+            md:divide-y-0
+            divide-gray-200
+            flex-1
+          "
+        >
           {/* Left Side - Story Text */}
-          <div 
-            className={`flex-1 p-8 flex flex-col ${rtl ? "rtl text-right" : "ltr text-left"} justify-center`}
+          <div
+            className={`
+              flex-1
+              p-8
+              flex
+              flex-col
+              justify-center
+              items-start
+              ${rtl ? "rtl text-right" : "ltr text-left"}
+              min-h-[340px]
+            `}
             dir={rtl ? "rtl" : "ltr"}
           >
-            <h3 className="font-ghibli text-2xl font-bold mb-4">{story.title}</h3>
-            <p className="text-lg mb-2">{story.text}</p>
-            <div className="text-xs text-gray-400 mt-auto">
-              Created: {new Date(story.createdAt).toLocaleDateString()} · {new Date(story.createdAt).toLocaleTimeString()}
-            </div>
+            <h3 className="font-ghibli text-2xl md:text-3xl font-bold mb-4">{story.title}</h3>
+            <p className="text-lg mb-2" style={{ wordBreak: "break-word" }}>{story.text}</p>
           </div>
+
           {/* Right Side - Story Visual */}
-          <div className="flex-1 p-8 flex flex-col items-center justify-center bg-[#fafafd]">
-            <img 
-              src={story.coverUrl} 
-              alt={"Illustration for " + story.title} 
-              className="w-full max-w-xs rounded-xl shadow-lg mb-4"
-              style={{ objectFit: "cover", aspectRatio: "3/4" }}
+          <div className="flex-1 p-8 flex flex-col items-center justify-center bg-[#fafafd] min-h-[340px]">
+            <img
+              src={story.coverUrl}
+              alt={"Illustration for " + story.title}
+              className="w-full max-w-xs rounded-xl shadow-lg object-cover aspect-[3/4] mx-auto"
             />
-            <span className="block text-gray-400 text-center text-xs">Illustration</span>
+          </div>
+        </div>
+
+        {/* Navigation Row */}
+        <div className="flex flex-row items-center justify-between w-full px-4 py-4 bg-white border-t border-gray-100 gap-2">
+          <Button
+            onClick={goBack}
+            variant="outline"
+            className="font-semibold px-4"
+            aria-label="Back to dashboard"
+          >
+            <ArrowLeft className="h-5 w-5 mr-2" /> Back to Dashboard
+          </Button>
+          <div className="flex gap-2 ml-auto">
+            <Button
+              onClick={goPrev}
+              variant="outline"
+              disabled={!hasPrev}
+              aria-label="Previous story"
+              className="px-3"
+            >
+              <ArrowLeft className="h-5 w-5" /> <span className="sr-only">Previous</span>
+            </Button>
+            <Button
+              onClick={goNext}
+              variant="outline"
+              disabled={!hasNext}
+              aria-label="Next story"
+              className="px-3"
+            >
+              <span className="sr-only">Next</span> <ArrowRight className="h-5 w-5" />
+            </Button>
           </div>
         </div>
       </div>
@@ -103,3 +175,4 @@ const StoryViewer = () => {
 };
 
 export default StoryViewer;
+
