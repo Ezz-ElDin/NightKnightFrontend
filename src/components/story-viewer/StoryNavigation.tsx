@@ -32,9 +32,9 @@ const StoryNavigation: React.FC<StoryNavigationProps> = ({
       onClick={onBack}
       variant="outline"
       className="font-semibold px-4 flex gap-2 items-center"
-      aria-label="Back to dashboard"
+      aria-label="Back to library"
     >
-      <ArrowLeft className="h-5 w-5 mr-2" /> Back to Dashboard
+      <ArrowLeft className="h-5 w-5 mr-2" /> Back to Library
     </Button>
     
     {/* Centered Arrows for Page Navigation */}
