@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -38,9 +37,10 @@ const CHARACTER_TYPE_OPTIONS = [
 
 interface AppearanceFormProps {
   onAppearanceChange: (appearance: string) => void;
+  initialAppearance?: string; // <-- Fix: add optional initialAppearance
 }
 
-const AppearanceForm: React.FC<AppearanceFormProps> = ({ onAppearanceChange }) => {
+const AppearanceForm: React.FC<AppearanceFormProps> = ({ onAppearanceChange, initialAppearance }) => {
   // Mad Lib-style appearance state
   const [appearanceAge, setAppearanceAge] = useState("young");
   const [appearanceColor, setAppearanceColor] = useState("dark");
@@ -50,6 +50,45 @@ const AppearanceForm: React.FC<AppearanceFormProps> = ({ onAppearanceChange }) =
   const [appearanceAccessory1, setAppearanceAccessory1] = useState("");
   const [appearanceAccessory2, setAppearanceAccessory2] = useState("");
   const [generatedAppearance, setGeneratedAppearance] = useState("");
+
+  // Initialize fields from initialAppearance prop if provided
+  useEffect(() => {
+    if (initialAppearance) {
+      // Try to parse parts of the sentence "A young dark girl with X and Y." for editing experience
+      const initial = initialAppearance;
+
+      // Basic matching:
+      // A {age} {color} {type} [with {accessory} [and {accessory2}]].
+      let age = "young";
+      let color = "dark";
+      let type = "girl";
+      let accessory1 = "";
+      let accessory2 = "";
+
+      const ageMatch = initial.match(/A ([a-zA-Z-]+)/);
+      if (ageMatch) age = ageMatch[1];
+      // Attempt crude color detection (the word after age)
+      const colorMatch = initial.match(/A [a-zA-Z-]+ ([a-zA-Z]+) /);
+      if (colorMatch) color = colorMatch[1];
+      // Attempt crude type detection (the word after color)
+      const typeMatch = initial.match(/A [a-zA-Z-]+ [a-zA-Z]+ ([a-zA-Z]+)/);
+      if (typeMatch) type = typeMatch[1];
+      // Accessory 1
+      const accessory1Match = initial.match(/with ([^and\.]+)/);
+      if (accessory1Match) accessory1 = accessory1Match[1].trim();
+      // Accessory 2
+      const accessory2Match = initial.match(/and ([^\.]+)/);
+      if (accessory2Match) accessory2 = accessory2Match[1].trim();
+
+      setAppearanceAge(age);
+      setAppearanceColor(color);
+      setAppearanceColorCustom("");
+      setAppearanceType(type);
+      setAppearanceTypeCustom("");
+      setAppearanceAccessory1(accessory1);
+      setAppearanceAccessory2(accessory2);
+    }
+  }, [initialAppearance]);
 
   // Effect to generate the appearance sentence when inputs change
   useEffect(() => {
