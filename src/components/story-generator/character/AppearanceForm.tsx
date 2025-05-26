@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+
+import React from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { 
@@ -9,7 +10,6 @@ import {
   SelectValue 
 } from "@/components/ui/select";
 
-// Age options for the appearance dropdown with emojis - ordered chronologically
 const AGE_OPTIONS = [
   { value: "baby", label: "baby", emoji: "👶" },
   { value: "little", label: "little", emoji: "🧒" },
@@ -18,10 +18,8 @@ const AGE_OPTIONS = [
   { value: "grown-up", label: "grown-up", emoji: "👩‍🚀" },
 ];
 
-// Color options for the appearance dropdown
 const COLOR_OPTIONS = ["golden", "dark", "white", "red", "blue", "green", "brown", "other"];
 
-// Character type options for the appearance dropdown with emojis
 const CHARACTER_TYPE_OPTIONS = [
   { value: "girl", label: "girl", emoji: "👸" },
   { value: "boy", label: "boy", emoji: "👦" },
@@ -36,115 +34,53 @@ const CHARACTER_TYPE_OPTIONS = [
 ];
 
 interface AppearanceFormProps {
-  onAppearanceChange: (appearance: string) => void;
-  initialAppearance?: string; // <-- Fix: add optional initialAppearance
+  appearanceAge: string;
+  onAppearanceAgeChange: (v: string) => void;
+  appearanceColor: string;
+  onAppearanceColorChange: (v: string) => void;
+  appearanceColorCustom: string;
+  onAppearanceColorCustomChange: (v: string) => void;
+
+  appearanceType: string;
+  onAppearanceTypeChange: (v: string) => void;
+  appearanceTypeCustom: string;
+  onAppearanceTypeCustomChange: (v: string) => void;
+
+  appearanceAccessory1: string;
+  onAppearanceAccessory1Change: (v: string) => void;
+  appearanceAccessory2: string;
+  onAppearanceAccessory2Change: (v: string) => void;
+
+  generatedAppearance: string;
 }
 
-const AppearanceForm: React.FC<AppearanceFormProps> = ({ onAppearanceChange, initialAppearance }) => {
-  // Mad Lib-style appearance state
-  const [appearanceAge, setAppearanceAge] = useState("young");
-  const [appearanceColor, setAppearanceColor] = useState("dark");
-  const [appearanceColorCustom, setAppearanceColorCustom] = useState("");
-  const [appearanceType, setAppearanceType] = useState("girl");
-  const [appearanceTypeCustom, setAppearanceTypeCustom] = useState("");
-  const [appearanceAccessory1, setAppearanceAccessory1] = useState("");
-  const [appearanceAccessory2, setAppearanceAccessory2] = useState("");
-  const [generatedAppearance, setGeneratedAppearance] = useState("");
-
-  // Initialize fields from initialAppearance prop if provided
-  useEffect(() => {
-    if (initialAppearance) {
-      // Try to parse parts of the sentence "A young dark girl with X and Y." for editing experience
-      const initial = initialAppearance;
-
-      // Basic matching:
-      // A {age} {color} {type} [with {accessory} [and {accessory2}]].
-      let age = "young";
-      let color = "dark";
-      let type = "girl";
-      let accessory1 = "";
-      let accessory2 = "";
-
-      const ageMatch = initial.match(/A ([a-zA-Z-]+)/);
-      if (ageMatch) age = ageMatch[1];
-      // Attempt crude color detection (the word after age)
-      const colorMatch = initial.match(/A [a-zA-Z-]+ ([a-zA-Z]+) /);
-      if (colorMatch) color = colorMatch[1];
-      // Attempt crude type detection (the word after color)
-      const typeMatch = initial.match(/A [a-zA-Z-]+ [a-zA-Z]+ ([a-zA-Z]+)/);
-      if (typeMatch) type = typeMatch[1];
-      // Accessory 1
-      const accessory1Match = initial.match(/with ([^and\.]+)/);
-      if (accessory1Match) accessory1 = accessory1Match[1].trim();
-      // Accessory 2
-      const accessory2Match = initial.match(/and ([^\.]+)/);
-      if (accessory2Match) accessory2 = accessory2Match[1].trim();
-
-      setAppearanceAge(age);
-      setAppearanceColor(color);
-      setAppearanceColorCustom("");
-      setAppearanceType(type);
-      setAppearanceTypeCustom("");
-      setAppearanceAccessory1(accessory1);
-      setAppearanceAccessory2(accessory2);
-    }
-  }, [initialAppearance]);
-
-  // Effect to generate the appearance sentence when inputs change
-  useEffect(() => {
-    const color = appearanceColor === "other" ? appearanceColorCustom : appearanceColor;
-    const type = appearanceType === "other" ? appearanceTypeCustom : appearanceType;
-    
-    let sentence = `A ${appearanceAge} ${color} ${type}`;
-    
-    if (appearanceAccessory1) {
-      sentence += ` with ${appearanceAccessory1}`;
-      
-      if (appearanceAccessory2) {
-        sentence += ` and ${appearanceAccessory2}`;
-      }
-    } else if (appearanceAccessory2) {
-      sentence += ` with ${appearanceAccessory2}`;
-    }
-    
-    sentence += ".";
-    setGeneratedAppearance(sentence);
-    
-    // Update the parent component with the generated sentence
-    onAppearanceChange(sentence);
-  }, [
-    appearanceAge,
-    appearanceColor,
-    appearanceColorCustom,
-    appearanceType,
-    appearanceTypeCustom,
-    appearanceAccessory1,
-    appearanceAccessory2,
-    onAppearanceChange
-  ]);
-
-  const resetFields = () => {
-    setAppearanceAge("young");
-    setAppearanceColor("dark");
-    setAppearanceColorCustom("");
-    setAppearanceType("girl");
-    setAppearanceTypeCustom("");
-    setAppearanceAccessory1("");
-    setAppearanceAccessory2("");
-  };
-
+const AppearanceForm: React.FC<AppearanceFormProps> = ({
+  appearanceAge,
+  onAppearanceAgeChange,
+  appearanceColor,
+  onAppearanceColorChange,
+  appearanceColorCustom,
+  onAppearanceColorCustomChange,
+  appearanceType,
+  onAppearanceTypeChange,
+  appearanceTypeCustom,
+  onAppearanceTypeCustomChange,
+  appearanceAccessory1,
+  onAppearanceAccessory1Change,
+  appearanceAccessory2,
+  onAppearanceAccessory2Change,
+  generatedAppearance,
+}) => {
   return (
     <div className="space-y-4">
       <Label className="text-lg">What does your character look like?</Label>
-      
       <div className="bg-primary/5 p-6 rounded-xl space-y-5 border border-primary/20">
         <div className="grid grid-cols-2 gap-4">
-          {/* Age Dropdown with emoji */}
           <div className="space-y-2">
             <Label htmlFor="age" className="text-lg">Age</Label>
             <Select 
-              value={appearanceAge} 
-              onValueChange={setAppearanceAge}
+              value={appearanceAge}
+              onValueChange={onAppearanceAgeChange}
             >
               <SelectTrigger id="age" className="bg-white text-lg p-5">
                 <SelectValue placeholder="Select age" />
@@ -161,13 +97,11 @@ const AppearanceForm: React.FC<AppearanceFormProps> = ({ onAppearanceChange, ini
               </SelectContent>
             </Select>
           </div>
-          
-          {/* Color Dropdown */}
           <div className="space-y-2">
             <Label htmlFor="color" className="text-lg">Color</Label>
             <Select 
-              value={appearanceColor} 
-              onValueChange={setAppearanceColor}
+              value={appearanceColor}
+              onValueChange={onAppearanceColorChange}
             >
               <SelectTrigger id="color" className="bg-white text-lg p-5">
                 <SelectValue placeholder="Select color" />
@@ -180,25 +114,21 @@ const AppearanceForm: React.FC<AppearanceFormProps> = ({ onAppearanceChange, ini
                 ))}
               </SelectContent>
             </Select>
-            
-            {/* Custom color input if "other" is selected */}
             {appearanceColor === "other" && (
               <Input 
                 value={appearanceColorCustom}
-                onChange={(e) => setAppearanceColorCustom(e.target.value)}
+                onChange={(e) => onAppearanceColorCustomChange(e.target.value)}
                 placeholder="Type a color..."
                 className="mt-2 p-5 text-lg"
               />
             )}
           </div>
         </div>
-        
-        {/* Character Type Dropdown with emoji */}
         <div className="space-y-2">
           <Label htmlFor="characterType" className="text-lg">Character Type</Label>
           <Select 
-            value={appearanceType} 
-            onValueChange={setAppearanceType}
+            value={appearanceType}
+            onValueChange={onAppearanceTypeChange}
           >
             <SelectTrigger id="characterType" className="bg-white text-lg p-5">
               <SelectValue placeholder="Select type" />
@@ -214,45 +144,37 @@ const AppearanceForm: React.FC<AppearanceFormProps> = ({ onAppearanceChange, ini
               ))}
             </SelectContent>
           </Select>
-          
-          {/* Custom type input if "other" is selected */}
           {appearanceType === "other" && (
             <Input 
               value={appearanceTypeCustom}
-              onChange={(e) => setAppearanceTypeCustom(e.target.value)}
+              onChange={(e) => onAppearanceTypeCustomChange(e.target.value)}
               placeholder="Type a character type..."
               className="mt-2 p-5 text-lg"
             />
           )}
         </div>
-        
         <div className="grid grid-cols-2 gap-4">
-          {/* Accessory 1 Input */}
           <div className="space-y-2">
             <Label htmlFor="accessory1" className="text-lg">Accessory 1</Label>
             <Input
               id="accessory1"
               value={appearanceAccessory1}
-              onChange={(e) => setAppearanceAccessory1(e.target.value)}
+              onChange={(e) => onAppearanceAccessory1Change(e.target.value)}
               placeholder="e.g., magic wand, robot arm"
               className="p-5 text-lg"
             />
           </div>
-          
-          {/* Accessory 2 Input */}
           <div className="space-y-2">
             <Label htmlFor="accessory2" className="text-lg">Accessory 2</Label>
             <Input
               id="accessory2"
               value={appearanceAccessory2}
-              onChange={(e) => setAppearanceAccessory2(e.target.value)}
+              onChange={(e) => onAppearanceAccessory2Change(e.target.value)}
               placeholder="e.g., cape, lab coat"
               className="p-5 text-lg"
             />
           </div>
         </div>
-        
-        {/* Preview of the generated appearance */}
         <div className="mt-4 p-5 bg-white rounded-xl border shadow-sm">
           <p className="text-md text-muted-foreground mb-2">Preview:</p>
           <p className="font-medium text-lg">{generatedAppearance}</p>
