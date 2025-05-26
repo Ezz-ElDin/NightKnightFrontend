@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useToast } from '@/hooks/use-toast';
@@ -20,9 +19,13 @@ export const useAuthForm = ({ initialMode = 'login' }: UseAuthFormProps = {}) =>
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const handleSuccess = (token: string) => {
+  const handleSuccess = (token: string, userData?: { name?: string, email?: string }) => {
     localStorage.setItem('authToken', token);
     localStorage.setItem('loginMethod', 'email');
+    // Save user name and email for menu usage
+    if (userData?.name) localStorage.setItem('userName', userData.name);
+    if (userData?.email) localStorage.setItem('userEmail', userData.email);
+
     toast({
       title: mode === 'login' ? 'Welcome back!' : 'Account created!',
       description: mode === 'login' 
@@ -35,7 +38,15 @@ export const useAuthForm = ({ initialMode = 'login' }: UseAuthFormProps = {}) =>
   const { mutate: login, isPending: isLoginPending } = useMutation({
     mutationFn: (data: LoginData) => authApi.login(data),
     onSuccess: (response) => {
-      handleSuccess(response.data.key);
+      // Try to get name/email from response, fallback to input values
+      const responseData = response.data;
+      handleSuccess(
+        responseData.key,
+        {
+          name: responseData.name || name,
+          email: responseData.email || email,
+        }
+      );
     },
     onError: (error: any) => {
       toast({
@@ -48,7 +59,16 @@ export const useAuthForm = ({ initialMode = 'login' }: UseAuthFormProps = {}) =>
 
   const { mutate: register, isPending: isRegisterPending } = useMutation({
     mutationFn: (data: RegisterData) => authApi.register(data),
-    onSuccess: (response) => handleSuccess(response.data.key),
+    onSuccess: (response) => {
+      const responseData = response.data;
+      handleSuccess(
+        responseData.key,
+        {
+          name: responseData.name || name,
+          email: responseData.email || email,
+        }
+      );
+    },
     onError: (error: any) => {
       toast({
         title: 'Error',

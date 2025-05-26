@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Link } from "react-router-dom";
 import { Home, BookOpen, User, Settings, LogOut } from "lucide-react";
@@ -15,6 +16,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 
+// Get current user name/email from localStorage util
+function getUserInfo() {
+  return {
+    name: localStorage.getItem("userName") || "User",
+    email: localStorage.getItem("userEmail") || "user@example.com",
+  };
+}
+
 interface LoggedInMenuProps {
   isMobile?: boolean;
   onMobileMenuClose?: () => void;
@@ -26,6 +35,8 @@ const LoggedInMenu = ({ isMobile = false, onMobileMenuClose }: LoggedInMenuProps
       onMobileMenuClose();
     }
   };
+
+  const { name, email } = getUserInfo();
 
   if (isMobile) {
     return (
@@ -79,8 +90,8 @@ const LoggedInMenu = ({ isMobile = false, onMobileMenuClose }: LoggedInMenuProps
                   <User className="h-4 w-4 text-story-purple" />
                 </div>
                 <div className="flex flex-col space-y-0.5">
-                  <p className="text-sm font-medium">User</p>
-                  <p className="text-xs text-muted-foreground">user@example.com</p>
+                  <p className="text-sm font-medium">{name}</p>
+                  <p className="text-xs text-muted-foreground">{email}</p>
                 </div>
               </div>
               <DropdownMenuSeparator />
