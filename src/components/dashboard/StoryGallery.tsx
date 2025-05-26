@@ -36,10 +36,16 @@ const StoryGallery = ({
   if (showFavourites && stories.length === 0) return null;
   return (
     <div>
-      {showFavourites && (
+      {showFavourites ? (
         <div className="mb-9">
           <h3 className="text-xl font-semibold text-amber-600 mb-3">
             ★ Favourite Stories
+          </h3>
+        </div>
+      ) : (
+        <div className="mb-9">
+          <h3 className="text-xl font-semibold text-story-blue mb-3">
+            Other Stories
           </h3>
         </div>
       )}
