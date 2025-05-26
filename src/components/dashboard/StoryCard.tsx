@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Heart, Delete } from "lucide-react";
+import { Heart, Delete, Download } from "lucide-react";
 
 // Helper to determine if string is in Arabic for RTL
 const isArabic = (text: string) => /[\u0600-\u06FF]/.test(text);
@@ -127,15 +127,15 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, isFavourite, onClick, onFa
           {/* Action dropdown menu */}
           {menuOpen && (
             <div
-              className="absolute right-0 mt-2 w-40 bg-[#f4f0fc] border border-story-seafoam/40 rounded-xl shadow-lg z-30 animate-in fade-in"
+              className="absolute right-0 mt-2 w-44 bg-[#f4f0fc] border border-story-seafoam/40 rounded-2xl shadow-lg z-30 animate-in fade-in py-2"
               style={{ backgroundColor: "#f4f0fc" }}
               onClick={handleMenuClose}
             >
-              <ul className="py-1">
+              <ul className="flex flex-col gap-1">
                 <li>
                   <button
                     className={
-                      "w-full px-4 py-2 flex items-center gap-2 font-medium focus:outline-none " +
+                      "w-full px-5 py-3 flex items-center gap-3 font-medium text-base rounded-xl transition focus:outline-none " +
                       (isFavourite
                         ? "text-amber-600"
                         : "text-story-purple")
@@ -148,27 +148,28 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, isFavourite, onClick, onFa
                       setMenuOpen(false);
                     }}
                   >
-                    <Heart size={18} fill={isFavourite ? "#f59e42" : "none"} color={isFavourite ? "#f59e42" : "#a093f4"} /> 
-                    {isFavourite ? "Favourited" : "Favourite"}
+                    <Heart size={20} strokeWidth={2} fill={isFavourite ? "#f59e42" : "none"} color={isFavourite ? "#f59e42" : "#a093f4"} />
+                    <span className="mt-0.5">{isFavourite ? "Favourited" : "Favourite"}</span>
                   </button>
                 </li>
                 <li>
                   <button
-                    className="w-full px-4 py-2 flex items-center gap-2 text-green-700 font-medium focus:outline-none"
+                    className="w-full px-5 py-3 flex items-center gap-3 text-green-700 font-semibold focus:outline-none text-base rounded-xl transition"
                     tabIndex={0}
                     type="button"
                     onClick={handleExportPDF}
                     disabled={loadingPDF}
+                    style={{
+                      color: "#159544", // Strong visible green
+                    }}
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 11V3.5a.5.5 0 00-.5-.5h-3a.5.5 0 00-.5.5V11m4 0V7m0 4a4 4 0 11-8 0m8 0H9m4 0v4m0 0a2 2 0 11-4 0v-4m4 4H9m0 0V3.5a.5.5 0 01.5-.5h3a.5.5 0 01.5.5V11" />
-                    </svg>
-                    {loadingPDF ? "Exporting..." : "Export to PDF"}
+                    <Download size={20} strokeWidth={2} />
+                    <span className="mt-0.5">{loadingPDF ? "Exporting..." : <>Export to<br />PDF</>}</span>
                   </button>
                 </li>
                 <li>
                   <button
-                    className="w-full px-4 py-2 flex items-center gap-2 text-red-700 font-medium focus:outline-none"
+                    className="w-full px-5 py-3 flex items-center gap-3 text-red-700 font-semibold focus:outline-none text-base rounded-xl transition"
                     tabIndex={0}
                     type="button"
                     onClick={(e) => {
@@ -177,7 +178,8 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, isFavourite, onClick, onFa
                       setMenuOpen(false);
                     }}
                   >
-                    <Delete size={18} /> Delete
+                    <Delete size={20} />
+                    <span className="mt-0.5">Delete</span>
                   </button>
                 </li>
               </ul>
