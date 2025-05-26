@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import NavLogo from "./NavLogo";
@@ -10,8 +11,13 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
   
-  // Mock authentication status - replace with real auth logic later
-  const isLoggedIn = ['/library', '/create-story', '/account-settings'].includes(location.pathname);
+  // Determine authentication status by route prefix
+  const loggedInPrefixes = [
+    "/library",
+    "/create-story",
+    "/account-settings"
+  ];
+  const isLoggedIn = loggedInPrefixes.some(prefix => location.pathname.startsWith(prefix));
   
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -47,3 +53,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
