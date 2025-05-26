@@ -1,4 +1,6 @@
+
 import StoryCard from "./StoryCard";
+import { BookOpen } from "lucide-react";
 
 interface Story {
   id: number;
@@ -43,7 +45,8 @@ const StoryGallery = ({
         </div>
       ) : (
         <div className="mb-9">
-          <h3 className="text-xl font-semibold text-story-blue mb-3">
+          <h3 className="text-xl font-semibold text-story-blue mb-3 flex items-center gap-2">
+            <BookOpen className="h-6 w-6 text-story-blue" aria-hidden="true" />
             Recent Stories
           </h3>
         </div>
