@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 
 // Use Vite env variable, fallback to prod URL if not set.
@@ -54,4 +53,31 @@ export const authApi = {
         headers: { Authorization: undefined }, // Explicitly remove Authorization header
       }
     ),
+};
+
+// === STORIES API ===
+
+export interface Story {
+  id: number;
+  title: string;
+  coverUrl: string;
+  createdAt: string;
+  is_favourite: boolean;
+  // any other fields from the backend
+}
+
+export const storiesApi = {
+  list: async (): Promise<Story[]> => {
+    const res = await api.get('/api/stories/');
+    return res.data;
+  },
+  favourite: async (id: number): Promise<void> => {
+    await api.post(`/api/stories/${id}/favourite/`);
+  },
+  unfavourite: async (id: number): Promise<void> => {
+    await api.delete(`/api/stories/${id}/favourite/`);
+  },
+  delete: async (id: number): Promise<void> => {
+    await api.delete(`/api/stories/${id}/`);
+  },
 };

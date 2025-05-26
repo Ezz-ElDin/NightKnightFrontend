@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
@@ -7,77 +8,16 @@ import StoryBackground from "@/components/StoryBackground";
 import { Pagination, PaginationContent, PaginationItem, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import StoryCard from "@/components/dashboard/StoryCard";
 import ConfirmDeleteDialog from "@/components/dashboard/ConfirmDeleteDialog";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { storiesApi, Story } from "@/lib/api";
 
 const EMAIL_VERIFIED_FLAG = "email_verified_success_banner_dismissed";
 const EMAIL_DISMISS_INFO = "email_verify_info_banner_dismissed";
 
-const MOCK_STORIES = [
-  {
-    id: 1,
-    title: "القطة الشجاعة والقمر", // Arabic for demonstration
-    coverUrl: "/images/moon-kittens.png",
-    createdAt: "2024-05-24T22:00:00Z",
-  },
-  {
-    id: 2,
-    title: "The Lost Pirate Hat",
-    coverUrl: "/images/dragon-treasure.png",
-    createdAt: "2024-05-23T20:03:00Z",
-  },
-  {
-    id: 3,
-    title: "The Magical Treehouse",
-    coverUrl: "/images/space-journey.png",
-    createdAt: "2024-05-22T16:54:00Z",
-  },
-  {
-    id: 4,
-    title: "Dancing with Stars",
-    coverUrl: "/images/storybook_illustration.png",
-    createdAt: "2024-05-21T12:20:00Z",
-  },
-  {
-    id: 5,
-    title: "Pirate Cats Go Home",
-    coverUrl: "/images/paper_cutout_illustration.png",
-    createdAt: "2024-05-20T09:11:00Z",
-  },
-  {
-    id: 6,
-    title: "The Colorful Parade",
-    coverUrl: "/images/cinematic_illustration.png",
-    createdAt: "2024-05-19T13:50:00Z",
-  },
-  {
-    id: 7,
-    title: "The Rainbow Cave",
-    coverUrl: "/images/dragon-treasure.png",
-    createdAt: "2024-05-18T16:02:00Z",
-  },
-  {
-    id: 8,
-    title: "The Space Picnic",
-    coverUrl: "/images/space-journey.png",
-    createdAt: "2024-05-17T10:45:00Z",
-  },
-  {
-    id: 9,
-    title: "Amazing Cloud Riders",
-    coverUrl: "/images/moon-kittens.png",
-    createdAt: "2024-05-16T19:38:00Z",
-  },
-  {
-    id: 10,
-    title: "The Whispering Forest",
-    coverUrl: "/images/storybook_illustration.png",
-    createdAt: "2024-05-15T15:15:00Z",
-  },
-];
-
 const STORIES_PER_PAGE = 6;
 
 // Helper to get query param
-function useQuery() {
+function useQueryParams() {
   return new URLSearchParams(useLocation().search);
 }
 
@@ -86,19 +26,55 @@ const Library = () => {
   const [showInfo, setShowInfo] = useState(false);
   const [page, setPage] = useState(1);
 
-  // App logic for favourite stories
-  const [stories, setStories] = useState(MOCK_STORIES);
-  const [favourites, setFavourites] = useState<number[]>([]);
   const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; storyId: null | number }>({ open: false, storyId: null });
 
   const location = useLocation();
   const navigate = useNavigate();
-  const query = useQuery();
+  const query = useQueryParams();
 
   // Determine if user used email/password login
   const loginMethod = localStorage.getItem('loginMethod');
   const shouldShowVerificationBanner = loginMethod === 'email';
 
+  // ==== React Query: list stories ====
+  const queryClient = useQueryClient();
+  const {
+    data: stories,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ['stories'],
+    queryFn: storiesApi.list,
+    refetchOnWindowFocus: false,
+  });
+
+  // ==== React Query: toggle favourite ====
+  const favMutation = useMutation({
+    mutationFn: async (input: { id: number; isFav: boolean }) => {
+      if (input.isFav) {
+        await storiesApi.unfavourite(input.id);
+      } else {
+        await storiesApi.favourite(input.id);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['stories'] });
+    },
+  });
+
+  // ==== React Query: delete story ====
+  const deleteMutation = useMutation({
+    mutationFn: async (id: number) => {
+      await storiesApi.delete(id);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['stories'] });
+      setDeleteDialog({ open: false, storyId: null });
+    },
+  });
+
+  // Email banners
   useEffect(() => {
     if (!shouldShowVerificationBanner) return;
     const verifiedInQuery = query.get("verified") === "1";
@@ -136,9 +112,10 @@ const Library = () => {
     navigate(`/library/stories/${storyId}`);
   };
 
-  // Pagination logic (non-favourites)
-  const allFavouriteStories = stories.filter((s) => favourites.includes(s.id));
-  const allNonFavouriteStories = stories.filter((s) => !favourites.includes(s.id));
+  // Pagination (non-favorites)
+  // Show favourite stories first if any
+  const allFavouriteStories = stories?.filter((s) => s.is_favourite) ?? [];
+  const allNonFavouriteStories = stories?.filter((s) => !s.is_favourite) ?? [];
   const totalPages = Math.ceil(allNonFavouriteStories.length / STORIES_PER_PAGE);
   const pagedStories = allNonFavouriteStories.slice(
     (page - 1) * STORIES_PER_PAGE,
@@ -149,20 +126,14 @@ const Library = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Add/Remove favourite
-  const toggleFavourite = (id: number) => {
-    setFavourites((prevFavs) =>
-      prevFavs.includes(id)
-        ? prevFavs.filter((fav) => fav !== id)
-        : [id, ...prevFavs]
-    );
+  // Toggle favourite: send appropriate API call
+  const toggleFavourite = (id: number, isFav: boolean) => {
+    favMutation.mutate({ id, isFav });
   };
 
   // Delete a story (after confirmation)
   const handleDeleteStory = (storyId: number) => {
-    setStories((prev) => prev.filter((s) => s.id !== storyId));
-    setFavourites((prevFavs) => prevFavs.filter((id) => id !== storyId));
-    setDeleteDialog({ open: false, storyId: null });
+    deleteMutation.mutate(storyId);
   };
 
   return (
@@ -224,8 +195,16 @@ const Library = () => {
             </Link>
           </div>
 
+          {/* Loading & error states */}
+          {isLoading && (
+            <div className="text-center text-muted-foreground py-12">Loading your stories...</div>
+          )}
+          {isError && (
+            <div className="text-center text-red-500 py-12">Failed to load your stories. Please try again.</div>
+          )}
+
           {/* Favourite stories section */}
-          {allFavouriteStories.length > 0 && (
+          {allFavouriteStories.length > 0 && !isLoading && (
             <div className="mb-9">
               <h3 className="text-xl font-semibold text-amber-600 mb-3">
                 ★ Favourite Stories
@@ -237,7 +216,7 @@ const Library = () => {
                     story={story}
                     isFavourite={true}
                     onClick={() => handleStoryClick(story.id)}
-                    onFavourite={() => toggleFavourite(story.id)}
+                    onFavourite={() => toggleFavourite(story.id, true)}
                     onDelete={() => setDeleteDialog({ open: true, storyId: story.id })}
                   />
                 ))}
@@ -248,48 +227,50 @@ const Library = () => {
 
           {/* Gallery for non-favourites */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {pagedStories.map(story => (
+            {!isLoading && pagedStories.map(story => (
               <StoryCard
                 key={story.id}
                 story={story}
                 isFavourite={false}
                 onClick={() => handleStoryClick(story.id)}
-                onFavourite={() => toggleFavourite(story.id)}
+                onFavourite={() => toggleFavourite(story.id, false)}
                 onDelete={() => setDeleteDialog({ open: true, storyId: story.id })}
               />
             ))}
           </div>
           {/* Pagination for non-favourites */}
-          <div className="flex justify-center mt-6">
-            <Pagination>
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious
-                    onClick={() => goToPage(Math.max(1, page - 1))}
-                    className={page === 1 ? "pointer-events-none opacity-40" : ""}
-                  />
-                </PaginationItem>
-                {[...Array(totalPages)].map((_, idx) => (
-                  <PaginationItem key={idx}>
-                    <Button
-                      size="sm"
-                      variant={page === idx + 1 ? "default" : "outline"}
-                      className="rounded-full w-10 h-10 flex items-center justify-center"
-                      onClick={() => goToPage(idx + 1)}
-                    >
-                      {idx + 1}
-                    </Button>
+          {!isLoading && totalPages > 1 && (
+            <div className="flex justify-center mt-6">
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      onClick={() => goToPage(Math.max(1, page - 1))}
+                      className={page === 1 ? "pointer-events-none opacity-40" : ""}
+                    />
                   </PaginationItem>
-                ))}
-                <PaginationItem>
-                  <PaginationNext
-                    onClick={() => goToPage(Math.min(totalPages, page + 1))}
-                    className={page === totalPages ? "pointer-events-none opacity-40" : ""}
-                  />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
-          </div>
+                  {[...Array(totalPages)].map((_, idx) => (
+                    <PaginationItem key={idx}>
+                      <Button
+                        size="sm"
+                        variant={page === idx + 1 ? "default" : "outline"}
+                        className="rounded-full w-10 h-10 flex items-center justify-center"
+                        onClick={() => goToPage(idx + 1)}
+                      >
+                        {idx + 1}
+                      </Button>
+                    </PaginationItem>
+                  ))}
+                  <PaginationItem>
+                    <PaginationNext
+                      onClick={() => goToPage(Math.min(totalPages, page + 1))}
+                      className={page === totalPages ? "pointer-events-none opacity-40" : ""}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
+          )}
         </div>
       </div>
       {/* Delete confirmation dialog */}
@@ -303,3 +284,4 @@ const Library = () => {
 };
 
 export default Library;
+
