@@ -206,8 +206,11 @@ export const useStoryCreation = () => {
     }
   };
 
+  const [isGenerating, setIsGenerating] = useState(false);
+
   // MAIN: POST generate endpoint
   const handleGenerateStory = async () => {
+    setIsGenerating(true);
     toast({
       title: "Your magic story is coming to life! ✨",
       description: "The story fairies are working hard to create your adventure!",
@@ -262,8 +265,18 @@ export const useStoryCreation = () => {
     try {
       const res = await api.post("/api/generate-story/", payload);
       // Pass response to next view as needed
-      navigate("/story-viewer", { state: { storyData, storyResp: res.data } });
+      setIsGenerating(false);
+      // Use the returned story, get its `id` for navigation
+      const storyId =
+        res.data && (res.data.id || (Array.isArray(res.data) && res.data[0]?.id));
+      if (storyId) {
+        navigate(`/library/stories/${storyId}`);
+      } else {
+        // fallback: go to the library if no id found
+        navigate("/library");
+      }
     } catch (err: any) {
+      setIsGenerating(false);
       toast({
         title: "Failed to generate story 😬",
         description:
@@ -304,5 +317,6 @@ export const useStoryCreation = () => {
     handleBack,
     handleGenerateStory,
     steps,
+    isGenerating,
   };
 };
