@@ -47,7 +47,7 @@ const StoryViewer = () => {
       if (e.key === "ArrowLeft") {
         setPage(prev => Math.max(0, prev - 1));
       } else if (e.key === "ArrowRight") {
-        if (data && prev < (data.pages.length - 1)) {
+        if (data && page < (data.pages.length - 1)) {
           setPage(prev => Math.min(data.pages.length - 1, prev + 1));
         }
       }
@@ -56,7 +56,7 @@ const StoryViewer = () => {
     window.addEventListener("keydown", handleKeyDown);
 
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [data]);
+  }, [data, page]);  // Add 'page' to dependencies to always have latest
 
   const goBack = () => navigate("/library");
 
