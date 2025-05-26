@@ -1,36 +1,23 @@
 
-import { useEffect, useState } from "react";
-import { useLocation, Link, useNavigate } from "react-router-dom";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { Check, Info, Star } from "lucide-react";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import StoryBackground from "@/components/StoryBackground";
-import { Pagination, PaginationContent, PaginationItem, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
-import StoryCard from "@/components/dashboard/StoryCard";
+import StoryGallery from "@/components/dashboard/StoryGallery";
+import PaginationNav from "@/components/dashboard/PaginationNav";
+import EmailVerificationBanners from "@/components/dashboard/EmailVerificationBanners";
 import ConfirmDeleteDialog from "@/components/dashboard/ConfirmDeleteDialog";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { storiesApi, Story } from "@/lib/api";
 
-const EMAIL_VERIFIED_FLAG = "email_verified_success_banner_dismissed";
-const EMAIL_DISMISS_INFO = "email_verify_info_banner_dismissed";
-
 const STORIES_PER_PAGE = 6;
 
-// Helper to get query param
-function useQueryParams() {
-  return new URLSearchParams(useLocation().search);
-}
-
 const Library = () => {
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [showInfo, setShowInfo] = useState(false);
   const [page, setPage] = useState(1);
-
   const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; storyId: null | number }>({ open: false, storyId: null });
 
-  const location = useLocation();
   const navigate = useNavigate();
-  const query = useQueryParams();
 
   // Determine if user used email/password login
   const loginMethod = localStorage.getItem('loginMethod');
@@ -39,10 +26,9 @@ const Library = () => {
   // ==== React Query: list stories ====
   const queryClient = useQueryClient();
   const {
-    data: stories,
+    data: stories = [],
     isLoading,
     isError,
-    error,
   } = useQuery({
     queryKey: ['stories'],
     queryFn: storiesApi.list,
@@ -74,48 +60,9 @@ const Library = () => {
     },
   });
 
-  // Email banners
-  useEffect(() => {
-    if (!shouldShowVerificationBanner) return;
-    const verifiedInQuery = query.get("verified") === "1";
-    const successDismissed = localStorage.getItem(EMAIL_VERIFIED_FLAG) === "1";
-    if (verifiedInQuery && !successDismissed) {
-      setShowSuccess(true);
-      const params = new URLSearchParams(location.search);
-      params.delete("verified");
-      navigate({ pathname: location.pathname, search: params.toString() }, { replace: true });
-    }
-    // eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
-    if (!shouldShowVerificationBanner) return;
-    const infoDismissed = localStorage.getItem(EMAIL_DISMISS_INFO) === "1";
-    const successDismissed = localStorage.getItem(EMAIL_VERIFIED_FLAG) === "1";
-    if (!infoDismissed && !successDismissed) {
-      setShowInfo(true);
-    }
-  }, [shouldShowVerificationBanner]);
-
-  const handleDismissSuccess = () => {
-    setShowSuccess(false);
-    localStorage.setItem(EMAIL_VERIFIED_FLAG, "1");
-    setShowInfo(false);
-  };
-
-  const handleDismissInfo = () => {
-    setShowInfo(false);
-    localStorage.setItem(EMAIL_DISMISS_INFO, "1");
-  };
-
-  const handleStoryClick = (storyId: number) => {
-    navigate(`/library/stories/${storyId}`);
-  };
-
-  // Pagination (non-favorites)
-  // Show favourite stories first if any
-  const allFavouriteStories = stories?.filter((s) => s.is_favourite) ?? [];
-  const allNonFavouriteStories = stories?.filter((s) => !s.is_favourite) ?? [];
+  // Segregation
+  const allFavouriteStories = stories.filter((s) => s.is_favourite);
+  const allNonFavouriteStories = stories.filter((s) => !s.is_favourite);
   const totalPages = Math.ceil(allNonFavouriteStories.length / STORIES_PER_PAGE);
   const pagedStories = allNonFavouriteStories.slice(
     (page - 1) * STORIES_PER_PAGE,
@@ -126,54 +73,22 @@ const Library = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Toggle favourite: send appropriate API call
+  // Handlers
   const toggleFavourite = (id: number, isFav: boolean) => {
     favMutation.mutate({ id, isFav });
   };
-
-  // Delete a story (after confirmation)
   const handleDeleteStory = (storyId: number) => {
     deleteMutation.mutate(storyId);
+  };
+  const handleStoryClick = (storyId: number) => {
+    navigate(`/library/stories/${storyId}`);
   };
 
   return (
     <StoryBackground>
       <div className="container max-w-6xl mx-auto px-2 z-10">
         {/* Email verification banners */}
-        <div className="flex flex-col gap-4 w-full max-w-2xl mx-auto mb-4">
-          {shouldShowVerificationBanner && showSuccess && (
-            <Alert variant="default" className="flex items-center justify-between bg-green-50 border-green-200 text-green-900 animate-in fade-in slide-in-from-top-4">
-              <div className="flex items-center gap-4">
-                <Check className="h-6 w-6 text-green-600" />
-                <div>
-                  <AlertTitle className="font-semibold">Email Verified</AlertTitle>
-                  <AlertDescription>
-                    Your email address has been successfully verified.
-                  </AlertDescription>
-                </div>
-              </div>
-              <Button variant="ghost" size="sm" onClick={handleDismissSuccess} className="ml-2" aria-label="Dismiss success alert">
-                ✕
-              </Button>
-            </Alert>
-          )}
-          {shouldShowVerificationBanner && showInfo && (
-            <Alert variant="default" className="flex items-center justify-between bg-blue-50 border-blue-200 text-blue-900 animate-in fade-in slide-in-from-top-4">
-              <div className="flex items-center gap-4">
-                <Info className="h-6 w-6 text-blue-600" />
-                <div>
-                  <AlertTitle className="font-semibold">Please Verify Your Email</AlertTitle>
-                  <AlertDescription>
-                    Please verify your email address. Check your inbox to complete registration.
-                  </AlertDescription>
-                </div>
-              </div>
-              <Button variant="ghost" size="sm" onClick={handleDismissInfo} className="ml-2" aria-label="Dismiss info alert">
-                ✕
-              </Button>
-            </Alert>
-          )}
-        </div>
+        <EmailVerificationBanners shouldShow={shouldShowVerificationBanner} />
 
         <div className="mb-8 mt-6">
           <h1 className="text-4xl md:text-5xl font-bold mb-3 text-story-purple text-center">
@@ -194,83 +109,30 @@ const Library = () => {
               </Button>
             </Link>
           </div>
-
-          {/* Loading & error states */}
-          {isLoading && (
-            <div className="text-center text-muted-foreground py-12">Loading your stories...</div>
-          )}
+          {/* Error state */}
           {isError && (
             <div className="text-center text-red-500 py-12">Failed to load your stories. Please try again.</div>
           )}
-
           {/* Favourite stories section */}
-          {allFavouriteStories.length > 0 && !isLoading && (
-            <div className="mb-9">
-              <h3 className="text-xl font-semibold text-amber-600 mb-3">
-                ★ Favourite Stories
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {allFavouriteStories.map(story => (
-                  <StoryCard
-                    key={story.id}
-                    story={story}
-                    isFavourite={true}
-                    onClick={() => handleStoryClick(story.id)}
-                    onFavourite={() => toggleFavourite(story.id, true)}
-                    onDelete={() => setDeleteDialog({ open: true, storyId: story.id })}
-                  />
-                ))}
-              </div>
-              <hr className="my-7 border-gray-300" />
-            </div>
-          )}
-
+          <StoryGallery
+            stories={allFavouriteStories}
+            isLoading={isLoading}
+            showFavourites={true}
+            onStoryClick={handleStoryClick}
+            onFavourite={toggleFavourite}
+            onDelete={(id) => setDeleteDialog({ open: true, storyId: id })}
+          />
           {/* Gallery for non-favourites */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {!isLoading && pagedStories.map(story => (
-              <StoryCard
-                key={story.id}
-                story={story}
-                isFavourite={false}
-                onClick={() => handleStoryClick(story.id)}
-                onFavourite={() => toggleFavourite(story.id, false)}
-                onDelete={() => setDeleteDialog({ open: true, storyId: story.id })}
-              />
-            ))}
-          </div>
+          <StoryGallery
+            stories={pagedStories}
+            isLoading={isLoading}
+            showFavourites={false}
+            onStoryClick={handleStoryClick}
+            onFavourite={toggleFavourite}
+            onDelete={(id) => setDeleteDialog({ open: true, storyId: id })}
+          />
           {/* Pagination for non-favourites */}
-          {!isLoading && totalPages > 1 && (
-            <div className="flex justify-center mt-6">
-              <Pagination>
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious
-                      onClick={() => goToPage(Math.max(1, page - 1))}
-                      className={page === 1 ? "pointer-events-none opacity-40" : ""}
-                    />
-                  </PaginationItem>
-                  {[...Array(totalPages)].map((_, idx) => (
-                    <PaginationItem key={idx}>
-                      <Button
-                        size="sm"
-                        variant={page === idx + 1 ? "default" : "outline"}
-                        className="rounded-full w-10 h-10 flex items-center justify-center"
-                        onClick={() => goToPage(idx + 1)}
-                      >
-                        {idx + 1}
-                      </Button>
-                    </PaginationItem>
-                  ))}
-                  <PaginationItem>
-                    <PaginationNext
-                      onClick={() => goToPage(Math.min(totalPages, page + 1))}
-                      className={page === totalPages ? "pointer-events-none opacity-40" : ""}
-                    />
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
-            </div>
-          )}
+          <PaginationNav totalPages={totalPages} page={page} goToPage={goToPage} />
         </div>
       </div>
       {/* Delete confirmation dialog */}
@@ -284,4 +146,3 @@ const Library = () => {
 };
 
 export default Library;
-
