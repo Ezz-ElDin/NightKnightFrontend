@@ -51,6 +51,17 @@ const AppearanceForm: React.FC<AppearanceFormProps> = ({ onAppearanceChange, ini
   const [appearanceAccessory2, setAppearanceAccessory2] = useState("");
   const [generatedAppearance, setGeneratedAppearance] = useState("");
 
+  // Fix: When user picks a preset, clear the custom input
+  const handleColorChange = (value: string) => {
+    setAppearanceColor(value);
+    if (value !== "other") setAppearanceColorCustom("");
+  };
+
+  const handleTypeChange = (value: string) => {
+    setAppearanceType(value);
+    if (value !== "other") setAppearanceTypeCustom("");
+  };
+
   // Initialize fields from initialAppearance prop if provided
   useEffect(() => {
     if (initialAppearance) {
@@ -167,7 +178,7 @@ const AppearanceForm: React.FC<AppearanceFormProps> = ({ onAppearanceChange, ini
             <Label htmlFor="color" className="text-lg">Color</Label>
             <Select 
               value={appearanceColor} 
-              onValueChange={setAppearanceColor}
+              onValueChange={handleColorChange}
             >
               <SelectTrigger id="color" className="bg-white text-lg p-5">
                 <SelectValue placeholder="Select color" />
@@ -198,7 +209,7 @@ const AppearanceForm: React.FC<AppearanceFormProps> = ({ onAppearanceChange, ini
           <Label htmlFor="characterType" className="text-lg">Character Type</Label>
           <Select 
             value={appearanceType} 
-            onValueChange={setAppearanceType}
+            onValueChange={handleTypeChange}
           >
             <SelectTrigger id="characterType" className="bg-white text-lg p-5">
               <SelectValue placeholder="Select type" />
