@@ -20,9 +20,9 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
       doc.addPage();
     }
 
-    // --- LEFT COLUMN: Centered Text ---
+    // --- LEFT COLUMN: Left-Aligned Text ---
     if (i === 0) {
-      // First page: use big title style, centered
+      // First page: use big title style, left-aligned
       const fontSize = 42;
       doc.setFont("helvetica", "bold");
       doc.setFontSize(fontSize);
@@ -32,20 +32,20 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
       // Measure text block height
       const lineHeight = fontSize * 1.1;
       const blockHeight = titleLines.length * lineHeight;
-      // Center vertically and horizontally in the left column
+      // Left-align vertically centered in the left column
       const y = margin + (columnHeight - blockHeight) / 2 + fontSize;
       doc.text(
         titleLines,
-        margin + 12 + (columnWidth - 24) / 2,
+        margin + 12,
         y,
-        { maxWidth: columnWidth - 24, align: "center" }
+        { maxWidth: columnWidth - 24, align: "left" }
       );
       // Restore default style for next page
       doc.setFont("helvetica", "normal");
       doc.setFontSize(16);
       doc.setTextColor(0, 0, 0);
     } else {
-      // Other pages: text centered vertically and horizontally
+      // Other pages: text left-aligned vertically centered
       doc.setFont("helvetica", "normal");
       doc.setFontSize(16);
       doc.setTextColor(0, 0, 0);
@@ -55,9 +55,9 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
       const y = margin + (columnHeight - blockHeight) / 2 + 16;
       doc.text(
         textLines,
-        margin + 12 + (columnWidth - 24) / 2,
+        margin + 12,
         y,
-        { maxWidth: columnWidth - 24, align: "center" }
+        { maxWidth: columnWidth - 24, align: "left" }
       );
     }
 
