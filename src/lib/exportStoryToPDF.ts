@@ -1,4 +1,3 @@
-
 import jsPDF from "jspdf";
 import { StoryDetails } from "@/lib/api";
 
@@ -16,24 +15,53 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
   const columnWidth = (pageWidth - 2 * margin) / 2;
   const columnHeight = pageHeight - 2 * margin;
 
-  // --- Loop through all the story pages, making the first page use cover_front image if available ---
   for (let i = 0; i < story.pages.length; i++) {
-    // Always addPage except for the very first iteration
     if (i !== 0) {
       doc.addPage();
     }
-    // Left column: text
-    doc.setFontSize(16);
-    doc.setFont("helvetica", "normal");
-    doc.setTextColor(0, 0, 0);
-    doc.text(
-      doc.splitTextToSize(story.pages[i].text, columnWidth - 24),
-      margin + 12,
-      margin + 32,
-      { maxWidth: columnWidth - 24, align: "left" }
-    );
 
-    // Right column: image
+    // --- LEFT COLUMN: Centered Text ---
+    if (i === 0) {
+      // First page: use big title style, centered
+      const fontSize = 42;
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(fontSize);
+      doc.setTextColor(51, 51, 51);
+      // Split title if it's too long
+      const titleLines = doc.splitTextToSize(story.title, columnWidth - 24);
+      // Measure text block height
+      const lineHeight = fontSize * 1.1;
+      const blockHeight = titleLines.length * lineHeight;
+      // Center vertically and horizontally in the left column
+      const y = margin + (columnHeight - blockHeight) / 2 + fontSize;
+      doc.text(
+        titleLines,
+        margin + 12 + (columnWidth - 24) / 2,
+        y,
+        { maxWidth: columnWidth - 24, align: "center" }
+      );
+      // Restore default style for next page
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(16);
+      doc.setTextColor(0, 0, 0);
+    } else {
+      // Other pages: text centered vertically and horizontally
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(16);
+      doc.setTextColor(0, 0, 0);
+      const textLines = doc.splitTextToSize(story.pages[i].text, columnWidth - 24);
+      const lineHeight = 19;
+      const blockHeight = textLines.length * lineHeight;
+      const y = margin + (columnHeight - blockHeight) / 2 + 16;
+      doc.text(
+        textLines,
+        margin + 12 + (columnWidth - 24) / 2,
+        y,
+        { maxWidth: columnWidth - 24, align: "center" }
+      );
+    }
+
+    // --- RIGHT COLUMN: Image ---
     let imageUrl: string | undefined = story.pages[i].image_url;
     if (i === 0 && story.cover_front?.image_url) {
       imageUrl = story.cover_front.image_url;
