@@ -38,8 +38,11 @@ export interface RegisterData {
   name: string;
 }
 
+// Note: Updated to include name and email from backend serializer responses
 export interface AuthResponse {
   key: string;
+  name: string;
+  email: string;
 }
 
 export const authApi = {
