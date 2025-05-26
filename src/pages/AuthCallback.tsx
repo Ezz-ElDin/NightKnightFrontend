@@ -13,7 +13,7 @@ const AuthCallback = () => {
     
     if (token) {
       localStorage.setItem('authToken', token);
-      navigate('/dashboard');
+      navigate('/library'); // <-- Redirect to /library now!
     } else {
       toast({
         title: 'Authentication Error',

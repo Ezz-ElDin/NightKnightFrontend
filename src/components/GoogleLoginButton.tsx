@@ -41,7 +41,7 @@ const GoogleLoginButton = ({ disabled }: GoogleLoginButtonProps) => {
           description: 'Logged in via Google successfully.',
         });
 
-        navigate('/dashboard');
+        navigate('/library'); // <-- Redirect to /library now!
       } catch (error: any) {
         toast({
           title: 'Google login failed',
@@ -56,7 +56,7 @@ const GoogleLoginButton = ({ disabled }: GoogleLoginButtonProps) => {
         description: 'Error during Google authentication.',
         variant: 'destructive',
       }),
-    flow: 'implicit', // ensures access_token is returned
+    flow: 'implicit',
   });
 
   return (
