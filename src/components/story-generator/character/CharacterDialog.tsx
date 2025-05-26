@@ -30,19 +30,36 @@ function summarizeAppearance({
   appearanceAccessory1: string;
   appearanceAccessory2: string;
 }) {
+  // Choose custom or regular values
   const color = appearanceColor === "other" ? appearanceColorCustom : appearanceColor;
   const type = appearanceType === "other" ? appearanceTypeCustom : appearanceType;
-  const accessory1 = appearanceAccessory1 ? `, ${appearanceAccessory1}` : "";
-  const accessory2 = appearanceAccessory2 ? `, ${appearanceAccessory2}` : "";
-  return [
-    appearanceAge,
-    color,
-    type,
-    accessory1,
-    accessory2
-  ]
-    .filter(x => !!x && typeof x === "string")
-    .join(" ");
+
+  // Compose the "A" or "An" logic (simple: check for vowel)
+  const firstWord = [appearanceAge, color, type].find((v) => v && v.trim());
+  const article = firstWord && /^[aeiou]/i.test(firstWord) ? "An" : "A";
+
+  // Compose main phrase
+  let phrase = `${article}`;
+  if (appearanceAge) phrase += ` ${appearanceAge}`;
+  if (color) phrase += ` ${color}`;
+  if (type) phrase += ` ${type}`;
+  
+  // Compose accessories
+  const accessories = [appearanceAccessory1, appearanceAccessory2].filter(x => !!x && x.trim());
+  if (accessories.length === 1) {
+    phrase += `, with ${accessories[0]}`;
+  } else if (accessories.length === 2) {
+    phrase += `, with ${accessories[0]} and ${accessories[1]}`;
+  }
+
+  phrase += ".";
+
+  // If nothing filled in, avoid "A  ." (return empty).
+  if (
+    !appearanceAge && !color && !type && accessories.length === 0
+  ) return "";
+
+  return phrase;
 }
 
 interface AppearanceFields {
