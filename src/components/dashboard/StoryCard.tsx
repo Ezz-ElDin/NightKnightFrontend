@@ -161,10 +161,13 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, isFavourite, onClick, onFa
                     disabled={loadingPDF}
                     style={{
                       color: "#159544", // Strong visible green
+                      whiteSpace: "nowrap", // Ensure one line
                     }}
                   >
                     <Download size={20} strokeWidth={2} />
-                    <span className="mt-0.5">{loadingPDF ? "Exporting..." : <>Export to<br />PDF</>}</span>
+                    <span className="mt-0.5">
+                      {loadingPDF ? "Exporting..." : "Export"}
+                    </span>
                   </button>
                 </li>
                 <li>
