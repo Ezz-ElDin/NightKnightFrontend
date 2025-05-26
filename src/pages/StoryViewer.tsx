@@ -1,4 +1,3 @@
-
 import React, { useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -42,6 +41,23 @@ const StoryViewer = () => {
     return () => document.removeEventListener("fullscreenchange", cb);
   }, []);
 
+  // --- Keyboard navigation (arrow keys) ---
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") {
+        setPage(prev => Math.max(0, prev - 1));
+      } else if (e.key === "ArrowRight") {
+        if (data && prev < (data.pages.length - 1)) {
+          setPage(prev => Math.min(data.pages.length - 1, prev + 1));
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [data]);
+
   const goBack = () => navigate("/library");
 
   if (isLoading) {
@@ -71,8 +87,6 @@ const StoryViewer = () => {
 
   const story: StoryDetails = data;
   const numPages = story.pages.length;
-
-  // Each page entry in API is now one page in the book
   const currentPage = story.pages[page];
   // Use RTL if title or page text is arabic
   const rtl = currentPage && (isArabic(story.title) || isArabic(currentPage.text));
