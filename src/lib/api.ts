@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 
 // Use Vite env variable, fallback to prod URL if not set.
@@ -104,7 +105,8 @@ export const storiesApi = {
     await api.post(`/api/stories/${id}/favourite/`);
   },
   unfavourite: async (id: number): Promise<void> => {
-    await api.post(`/api/stories/${id}/unfavourite/`);
+    // Use the same endpoint and method for unfavourite as for favourite.
+    await api.post(`/api/stories/${id}/favourite/`);
   },
   delete: async (id: number): Promise<void> => {
     await api.delete(`/api/stories/${id}/`);
