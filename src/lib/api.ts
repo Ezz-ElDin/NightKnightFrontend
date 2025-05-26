@@ -67,11 +67,21 @@ export interface Story {
   // any other fields from the backend
 }
 
+// Helper to prepend API_URL to media paths
+const adjustCoverUrl = (url: string) => {
+  if (!url) return "";
+  if (url.startsWith("/media/")) {
+    // Remove any duplicate slashes except in protocol part, just in case
+    return `${API_URL.replace(/\/$/, "")}${url}`;
+  }
+  return url;
+};
+
 // Map backend story format to frontend Story interface
 const normalizeStory = (raw: any): Story => ({
   id: raw.id,
   title: raw.story_title,
-  coverUrl: raw.cover_front?.image_url || "",
+  coverUrl: adjustCoverUrl(raw.cover_front?.image_url || ""),
   createdAt: raw.created_at,
   is_favourite: raw.is_favourite,
 });
@@ -101,3 +111,4 @@ export const storiesApi = {
     await api.delete(`/api/stories/${id}/`);
   },
 };
+
