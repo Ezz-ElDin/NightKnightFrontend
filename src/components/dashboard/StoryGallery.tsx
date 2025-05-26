@@ -1,4 +1,3 @@
-
 import StoryCard from "./StoryCard";
 
 interface Story {
@@ -45,7 +44,7 @@ const StoryGallery = ({
       ) : (
         <div className="mb-9">
           <h3 className="text-xl font-semibold text-story-blue mb-3">
-            Other Stories
+            Recent Stories
           </h3>
         </div>
       )}
