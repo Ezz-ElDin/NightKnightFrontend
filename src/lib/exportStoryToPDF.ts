@@ -11,7 +11,7 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
   const margin = 40;
-  const watermark = "Created with love by NightKnight · http://nightknight.app";
+  const watermark = "Created with love by NightKnight · https://nightknight.app";
   const columnWidth = (pageWidth - 2 * margin) / 2;
   const columnHeight = pageHeight - 2 * margin;
 
