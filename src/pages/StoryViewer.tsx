@@ -1,4 +1,3 @@
-
 import React, { useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -184,7 +183,7 @@ const StoryViewer = () => {
             <Button
               size="icon"
               variant="secondary"
-              className="rounded-full shadow border hover:scale-105 transition text-green-700 border-green-100 bg-green-50"
+              className="rounded-full shadow border border-green-100 bg-green-50 text-green-700 transition-transform duration-200 hover:scale-105 hover:border-green-300 hover:bg-green-100 focus-visible:ring-2 focus-visible:ring-green-400"
               onClick={handleExportPDF}
               aria-label="Export story to PDF"
             >
@@ -197,7 +196,7 @@ const StoryViewer = () => {
               variant={isFullscreen ? "secondary" : "outline"}
               size="icon"
               aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
-              className="rounded-full shadow border"
+              className="rounded-full shadow border transition-transform duration-200 hover:scale-105"
             >
               {/* Import Fullscreen icon from lucide-react */}
               <svg className="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -213,4 +212,3 @@ const StoryViewer = () => {
 };
 
 export default StoryViewer;
-
