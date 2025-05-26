@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 
 // Use Vite env variable, fallback to prod URL if not set.
@@ -58,13 +57,17 @@ export const authApi = {
 
 // === STORIES API ===
 
-export interface Story {
+export interface StoryPage {
+  page: string;
+  text: string;
+  image_url: string;
+}
+
+export interface StoryDetails {
   id: number;
   title: string;
-  coverUrl: string;
   createdAt: string;
-  is_favourite: boolean;
-  // any other fields from the backend
+  pages: StoryPage[];
 }
 
 // Helper to prepend API_URL to media paths
@@ -86,20 +89,35 @@ const normalizeStory = (raw: any): Story => ({
   is_favourite: raw.is_favourite,
 });
 
+// Map backend story GET /api/stories/:id/ to StoryDetails
+const normalizeStoryDetails = (raw: any): StoryDetails => ({
+  id: raw.id,
+  title: raw.story_title,
+  createdAt: raw.created_at,
+  pages: Array.isArray(raw.pages)
+    ? raw.pages.map((p: any) => ({
+        page: p.page,
+        text: p.text,
+        image_url: adjustCoverUrl(p.image_url), // always absolute
+      }))
+    : [],
+});
+
 export const storiesApi = {
   list: async (): Promise<Story[]> => {
     const res = await api.get('/api/stories/');
-    // If response is { results: [...] }
     if (Array.isArray(res.data.results)) {
       return res.data.results.map(normalizeStory);
     } else if (Array.isArray(res.data)) {
-      // Fallback (not expected based on your payload, just in case!)
       return res.data.map(normalizeStory);
     } else {
-      // Unexpected format
       console.error("Unexpected stories API response format", res.data);
       return [];
     }
+  },
+  get: async (id: string | number): Promise<StoryDetails> => {
+    const res = await api.get(`/api/stories/${id}/`);
+    return normalizeStoryDetails(res.data);
   },
   favourite: async (id: number): Promise<void> => {
     await api.post(`/api/stories/${id}/favourite/`);
@@ -111,4 +129,3 @@ export const storiesApi = {
     await api.delete(`/api/stories/${id}/`);
   },
 };
-
