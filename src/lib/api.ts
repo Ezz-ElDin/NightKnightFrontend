@@ -55,6 +55,15 @@ export const authApi = {
     ),
 };
 
+// Exported Story type for normalized stories
+export interface Story {
+  id: number;
+  title: string;
+  coverUrl: string;
+  createdAt: string;
+  is_favourite: boolean;
+}
+
 // === STORIES API ===
 
 export interface StoryPage {
