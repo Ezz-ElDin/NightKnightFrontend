@@ -2,7 +2,6 @@
 import axios from 'axios';
 
 // Use Vite env variable, fallback to prod URL if not set.
-// Change the value of VITE_API_URL at build or run time for local/dev/prod.
 const API_URL = import.meta.env.VITE_API_URL || 'https://api.nightknight.app';
 
 export const api = axios.create({
@@ -27,60 +26,31 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-export interface LoginData {
-  email: string;
-  password: string;
-}
-
-export interface RegisterData {
-  email: string;
-  password1: string;
-  password2: string;
-  name: string;
-}
-
-export interface AuthResponse {
-  key: string;
-}
-
-export const authApi = {
-  login: (data: LoginData) =>
-    api.post<AuthResponse>('/api/auth/login/', data),
-  register: (data: RegisterData) =>
-    api.post<AuthResponse>(
-      '/api/auth/registration/',
-      data,
-      {
-        headers: { Authorization: undefined }, // Explicitly remove Authorization header
-      }
-    ),
-};
-
-// === STORIES API ===
-
 export interface Story {
   id: number;
   title: string;
   coverUrl: string;
   createdAt: string;
   is_favourite: boolean;
-  // any other fields from the backend
+  // any other fields from the backend can be added if needed
 }
 
 export const storiesApi = {
   list: async (): Promise<Story[]> => {
     const res = await api.get('/api/stories/');
-    console.log('Stories API response:', res.data); // 👈 See what the backend returns
-    // If the backend response is { results: [...] }, return results!
-    if (Array.isArray(res.data)) {
-      return res.data;
-    } else if (Array.isArray(res.data.results)) {
-      return res.data.results;
-    } else {
-      // Fallback: return empty array to prevent errors and log for debugging
-      console.error("Unexpected stories API response format", res.data);
-      return [];
-    }
+    const apiResults = Array.isArray(res.data?.results)
+      ? res.data.results
+      : Array.isArray(res.data) // just in case
+      ? res.data
+      : [];
+    // Normalize backend response to the expected Story type
+    return apiResults.map((s: any) => ({
+      id: s.id,
+      title: s.story_title ?? "",
+      coverUrl: s.cover_front?.image_url ?? "",
+      createdAt: s.created_at ?? "",
+      is_favourite: !!s.is_favourite,
+    }));
   },
   favourite: async (id: number): Promise<void> => {
     await api.post(`/api/stories/${id}/favourite/`);

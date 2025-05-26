@@ -78,7 +78,7 @@ const Library = () => {
   useEffect(() => {
     if (!shouldShowVerificationBanner) return;
     const verifiedInQuery = query.get("verified") === "1";
-    const successDismissed = localStorage.getItem(EMAIL_VERIFIED_FLAG) === "1";
+    const successDismissed = localStorage.getItem("email_verified_success_banner_dismissed") === "1";
     if (verifiedInQuery && !successDismissed) {
       setShowSuccess(true);
       const params = new URLSearchParams(location.search);
@@ -90,8 +90,8 @@ const Library = () => {
 
   useEffect(() => {
     if (!shouldShowVerificationBanner) return;
-    const infoDismissed = localStorage.getItem(EMAIL_DISMISS_INFO) === "1";
-    const successDismissed = localStorage.getItem(EMAIL_VERIFIED_FLAG) === "1";
+    const infoDismissed = localStorage.getItem("email_verify_info_banner_dismissed") === "1";
+    const successDismissed = localStorage.getItem("email_verified_success_banner_dismissed") === "1";
     if (!infoDismissed && !successDismissed) {
       setShowInfo(true);
     }
@@ -99,21 +99,20 @@ const Library = () => {
 
   const handleDismissSuccess = () => {
     setShowSuccess(false);
-    localStorage.setItem(EMAIL_VERIFIED_FLAG, "1");
+    localStorage.setItem("email_verified_success_banner_dismissed", "1");
     setShowInfo(false);
   };
 
   const handleDismissInfo = () => {
     setShowInfo(false);
-    localStorage.setItem(EMAIL_DISMISS_INFO, "1");
+    localStorage.setItem("email_verify_info_banner_dismissed", "1");
   };
 
   const handleStoryClick = (storyId: number) => {
     navigate(`/library/stories/${storyId}`);
   };
 
-  // Pagination (non-favorites)
-  // Show favourite stories first if any
+  // ==== Show both favourite and non-favourite stories ====
   const allFavouriteStories = stories?.filter((s) => s.is_favourite) ?? [];
   const allNonFavouriteStories = stories?.filter((s) => !s.is_favourite) ?? [];
   const totalPages = Math.ceil(allNonFavouriteStories.length / STORIES_PER_PAGE);
@@ -203,7 +202,7 @@ const Library = () => {
             <div className="text-center text-red-500 py-12">Failed to load your stories. Please try again.</div>
           )}
 
-          {/* Favourite stories section */}
+          {/* Both sections appear if there are favourites & non-favourites */}
           {allFavouriteStories.length > 0 && !isLoading && (
             <div className="mb-9">
               <h3 className="text-xl font-semibold text-amber-600 mb-3">
@@ -226,18 +225,21 @@ const Library = () => {
           )}
 
           {/* Gallery for non-favourites */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {!isLoading && pagedStories.map(story => (
-              <StoryCard
-                key={story.id}
-                story={story}
-                isFavourite={false}
-                onClick={() => handleStoryClick(story.id)}
-                onFavourite={() => toggleFavourite(story.id, false)}
-                onDelete={() => setDeleteDialog({ open: true, storyId: story.id })}
-              />
-            ))}
-          </div>
+          {allNonFavouriteStories.length > 0 && !isLoading && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              {pagedStories.map(story => (
+                <StoryCard
+                  key={story.id}
+                  story={story}
+                  isFavourite={false}
+                  onClick={() => handleStoryClick(story.id)}
+                  onFavourite={() => toggleFavourite(story.id, false)}
+                  onDelete={() => setDeleteDialog({ open: true, storyId: story.id })}
+                />
+              ))}
+            </div>
+          )}
+
           {/* Pagination for non-favourites */}
           {!isLoading && totalPages > 1 && (
             <div className="flex justify-center mt-6">
@@ -271,6 +273,11 @@ const Library = () => {
               </Pagination>
             </div>
           )}
+
+          {/* Show message if there are no stories */}
+          {!isLoading && stories && stories.length === 0 && (
+            <div className="text-center text-muted-foreground py-12">You have no stories yet. Start by creating one!</div>
+          )}
         </div>
       </div>
       {/* Delete confirmation dialog */}
@@ -284,4 +291,3 @@ const Library = () => {
 };
 
 export default Library;
-
