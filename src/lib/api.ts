@@ -15,7 +15,7 @@ export const api = axios.create({
 // Add token to requests if it exists
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('authToken');
-  console.log("Auth token in request:", token); // 👈 Add this
+  console.log("Auth token in request:", token);
   // Only add Authorization to requests that are NOT for registration
   if (
     token &&
@@ -67,17 +67,26 @@ export interface Story {
   // any other fields from the backend
 }
 
+// Map backend story format to frontend Story interface
+const normalizeStory = (raw: any): Story => ({
+  id: raw.id,
+  title: raw.story_title,
+  coverUrl: raw.cover_front?.image_url || "",
+  createdAt: raw.created_at,
+  is_favourite: raw.is_favourite,
+});
+
 export const storiesApi = {
   list: async (): Promise<Story[]> => {
     const res = await api.get('/api/stories/');
-    console.log('Stories API response:', res.data); // 👈 See what the backend returns
-    // If the backend response is { results: [...] }, return results!
-    if (Array.isArray(res.data)) {
-      return res.data;
-    } else if (Array.isArray(res.data.results)) {
-      return res.data.results;
+    // If response is { results: [...] }
+    if (Array.isArray(res.data.results)) {
+      return res.data.results.map(normalizeStory);
+    } else if (Array.isArray(res.data)) {
+      // Fallback (not expected based on your payload, just in case!)
+      return res.data.map(normalizeStory);
     } else {
-      // Fallback: return empty array to prevent errors and log for debugging
+      // Unexpected format
       console.error("Unexpected stories API response format", res.data);
       return [];
     }
@@ -92,4 +101,3 @@ export const storiesApi = {
     await api.delete(`/api/stories/${id}/`);
   },
 };
-
