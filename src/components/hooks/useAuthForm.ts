@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useToast } from '@/hooks/use-toast';
@@ -19,7 +20,7 @@ export const useAuthForm = ({ initialMode = 'login' }: UseAuthFormProps = {}) =>
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const handleSuccess = (token: string, userData?: { name?: string, email?: string }) => {
+  const handleSuccess = (token: string, userData?: { name?: string; email?: string }) => {
     localStorage.setItem('authToken', token);
     localStorage.setItem('loginMethod', 'email');
     // Save user name and email for menu usage
@@ -28,8 +29,8 @@ export const useAuthForm = ({ initialMode = 'login' }: UseAuthFormProps = {}) =>
 
     toast({
       title: mode === 'login' ? 'Welcome back!' : 'Account created!',
-      description: mode === 'login' 
-        ? 'You have successfully logged in.' 
+      description: mode === 'login'
+        ? 'You have successfully logged in.'
         : 'Your account has been created successfully.',
     });
     navigate('/dashboard');
@@ -38,12 +39,13 @@ export const useAuthForm = ({ initialMode = 'login' }: UseAuthFormProps = {}) =>
   const { mutate: login, isPending: isLoginPending } = useMutation({
     mutationFn: (data: LoginData) => authApi.login(data),
     onSuccess: (response) => {
-      // The login API response contains only .key, so fallback to input values
+      // Use name/email from server if available
+      const responseData = response.data;
       handleSuccess(
-        response.data.key,
+        responseData.key,
         {
-          name,
-          email,
+          name: responseData.name ?? name,
+          email: responseData.email ?? email,
         }
       );
     },
@@ -59,12 +61,13 @@ export const useAuthForm = ({ initialMode = 'login' }: UseAuthFormProps = {}) =>
   const { mutate: register, isPending: isRegisterPending } = useMutation({
     mutationFn: (data: RegisterData) => authApi.register(data),
     onSuccess: (response) => {
-      // If the backend expands AuthResponse with name/email, update type and parse accordingly. For now, fallback to form data.
+      // Registration endpoint may or may not return name/email.
+      const responseData = response.data;
       handleSuccess(
-        response.data.key,
+        responseData.key,
         {
-          name,
-          email,
+          name: responseData.name ?? name,
+          email: responseData.email ?? email,
         }
       );
     },
@@ -101,8 +104,8 @@ export const useAuthForm = ({ initialMode = 'login' }: UseAuthFormProps = {}) =>
     if (mode === 'login') {
       login({ email, password });
     } else {
-      register({ 
-        email, 
+      register({
+        email,
         password1: password,
         password2: confirmPassword,
         name,
