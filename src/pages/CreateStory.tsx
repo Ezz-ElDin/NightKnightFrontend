@@ -1,3 +1,4 @@
+
 import React from "react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import StoryCreationLayout from "@/components/story-generator/StoryCreationLayout";
@@ -12,7 +13,6 @@ import StoryStartStepWrapper from "@/components/story-generator/steps/StoryStart
 import MagicModeCardsStep from "@/components/story-generator/steps/MagicModeCardsStep";
 import IllustrationStepWrapper from "@/components/story-generator/steps/IllustrationStepWrapper";
 import StorySummaryStep from "@/components/story-generator/steps/StorySummaryStep";
-import StoryLoadingScreen from "@/components/story-generator/StoryLoadingScreen";
 
 const CreateStory = () => {
   const {
@@ -30,13 +30,7 @@ const CreateStory = () => {
     handleBack,
     handleGenerateStory,
     steps,
-    isGenerating,
   } = useStoryCreation();
-
-  // Show loading screen while generating story
-  if (isGenerating) {
-    return <StoryLoadingScreen />;
-  }
 
   return (
     <TooltipProvider>
