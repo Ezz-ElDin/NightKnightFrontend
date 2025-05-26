@@ -1,3 +1,4 @@
+
 import React, { useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -164,12 +165,13 @@ const StoryViewer = () => {
             title={story.title}
           />
         </div>
-        {/* Footer - Navigation & Fullscreen Controls */}
+        {/* Footer - Navigation & Fullscreen/Export Controls */}
         <div className="relative">
           <StoryNavigation
             onBack={goBack}
             onPrevPage={() => setPage(Math.max(0, page - 1))}
             onNextPage={() => setPage(Math.min(numPages - 1, page + 1))}
+            // SWAP ORDER: Remove fullscreen button from StoryNavigation, so no fullscreen btn here
             onToggleFullscreen={handleToggleFullscreen}
             isFullscreen={isFullscreen}
             canPrev={page > 0}
@@ -177,8 +179,8 @@ const StoryViewer = () => {
             page={page}
             numPages={numPages}
           />
-          {/* Export to PDF button NEXT to fullscreen */}
-          <div className="absolute bottom-6 right-24 z-40">
+          {/* Swap buttons: Export at right-6, Fullscreen at right-24 */}
+          <div className="absolute bottom-6 right-6 z-40">
             <Button
               size="icon"
               variant="secondary"
@@ -189,6 +191,21 @@ const StoryViewer = () => {
               <Download className="h-6 w-6" />
             </Button>
           </div>
+          <div className="absolute bottom-6 right-24 z-40">
+            <Button
+              onClick={handleToggleFullscreen}
+              variant={isFullscreen ? "secondary" : "outline"}
+              size="icon"
+              aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+              className="rounded-full shadow border"
+            >
+              {/* Import Fullscreen icon from lucide-react */}
+              <svg className="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                <rect x="9" y="9" width="6" height="6" rx="1" />
+                <path d="M3 9V5a2 2 0 0 1 2-2h4M21 9V5a2 2 0 0 0-2-2h-4M3 15v4a2 2 0 0 0 2 2h4m10 0h-4m4 0a2 2 0 0 0 2-2v-4m0 0v0" />
+              </svg>
+            </Button>
+          </div>
         </div>
       </div>
     </div>
@@ -196,3 +213,4 @@ const StoryViewer = () => {
 };
 
 export default StoryViewer;
+
