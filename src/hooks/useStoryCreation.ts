@@ -260,7 +260,7 @@ export const useStoryCreation = () => {
     }
 
     try {
-      const res = await api.post("/api/generate_story/", payload);
+      const res = await api.post("/api/generate-story/", payload);
       // Pass response to next view as needed
       navigate("/story-viewer", { state: { storyData, storyResp: res.data } });
     } catch (err: any) {
