@@ -8,6 +8,11 @@ import {
   SelectTrigger, 
   SelectValue 
 } from "@/components/ui/select";
+import AppearanceAgeSelector from "./AppearanceAgeSelector";
+import AppearanceColorSelector from "./AppearanceColorSelector";
+import AppearanceTypeSelector from "./AppearanceTypeSelector";
+import AppearanceAccessories from "./AppearanceAccessories";
+import AppearancePreview from "./AppearancePreview";
 
 // Age options for the appearance dropdown with emojis - ordered chronologically
 const AGE_OPTIONS = [
@@ -51,12 +56,11 @@ const AppearanceForm: React.FC<AppearanceFormProps> = ({ onAppearanceChange, ini
   const [appearanceAccessory2, setAppearanceAccessory2] = useState("");
   const [generatedAppearance, setGeneratedAppearance] = useState("");
 
-  // When user picks a preset, clear the custom input
+  // Slightly improved preset/custom handler logic below to clear custom field when not "other"
   const handleColorChange = (value: string) => {
     setAppearanceColor(value);
     if (value !== "other") setAppearanceColorCustom("");
   };
-
   const handleTypeChange = (value: string) => {
     setAppearanceType(value);
     if (value !== "other") setAppearanceTypeCustom("");
@@ -147,168 +151,29 @@ const AppearanceForm: React.FC<AppearanceFormProps> = ({ onAppearanceChange, ini
   return (
     <div className="space-y-4">
       <Label className="text-lg">What does your character look like?</Label>
-      
       <div className="bg-primary/5 p-6 rounded-xl space-y-5 border border-primary/20">
         <div className="grid grid-cols-2 gap-4">
-          {/* Age Dropdown with emoji */}
-          <div className="space-y-2">
-            <Label htmlFor="age" className="text-lg">Age</Label>
-            <Select 
-              value={appearanceAge} 
-              onValueChange={setAppearanceAge}
-            >
-              <SelectTrigger 
-                id="age" 
-                className="bg-white text-lg p-5 pr-12" // Added extra right padding
-              >
-                <SelectValue placeholder="Select age" />
-              </SelectTrigger>
-              <SelectContent className="max-h-[300px]">
-                {AGE_OPTIONS.map(age => (
-                  <SelectItem key={age.value} value={age.value} className="text-lg p-3">
-                    <div className="flex items-center">
-                      <span className="text-3xl mr-3">{age.emoji}</span>
-                      <span>{age.label}</span>
-                    </div>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          
-          {/* Color Dropdown */}
-          <div className="space-y-2">
-            <Label htmlFor="color" className="text-lg">Color</Label>
-            <Select 
-              value={appearanceColor} 
-              onValueChange={handleColorChange}
-            >
-              <SelectTrigger 
-                id="color" 
-                className="bg-white text-lg p-5 pr-12" // Added extra right padding
-              >
-                <SelectValue placeholder="Select color" />
-              </SelectTrigger>
-              <SelectContent className="max-h-[300px] z-50">
-                {COLOR_OPTIONS.map(color => (
-                  <SelectItem 
-                    key={color} 
-                    value={color} 
-                    className={
-                      color === "other" 
-                      ? "text-lg p-3 bg-yellow-100 text-yellow-900 hover:bg-yellow-200" 
-                      : "text-lg p-3"
-                    }
-                  >
-                    {color}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            
-            {/* Custom color input if "other" is selected */}
-            <div
-              style={{
-                maxHeight: appearanceColor === "other" ? 100 : 0,
-                opacity: appearanceColor === "other" ? 1 : 0,
-                pointerEvents: appearanceColor === "other" ? "auto" : "none",
-                transition: "all 0.25s cubic-bezier(.26,1.04,.55,.94)"
-              }}
-              className="overflow-hidden"
-            >
-              {appearanceColor === "other" && (
-                <Input 
-                  value={appearanceColorCustom}
-                  onChange={(e) => setAppearanceColorCustom(e.target.value)}
-                  placeholder="Type a color..."
-                  className="mt-2 p-5 text-lg"
-                  autoFocus
-                  key="color-other-input"
-                />
-              )}
-            </div>
-          </div>
+          <AppearanceAgeSelector value={appearanceAge} onChange={setAppearanceAge} />
+          <AppearanceColorSelector
+            value={appearanceColor}
+            customValue={appearanceColorCustom}
+            onChange={handleColorChange}
+            onCustomChange={setAppearanceColorCustom}
+          />
         </div>
-        
-        {/* Character Type Dropdown with emoji */}
-        <div className="space-y-2">
-          <Label htmlFor="characterType" className="text-lg">Character Type</Label>
-          <Select 
-            value={appearanceType} 
-            onValueChange={handleTypeChange}
-          >
-            <SelectTrigger 
-              id="characterType" 
-              className="bg-white text-lg p-5 pr-12" // Added right padding
-            >
-              <SelectValue placeholder="Select type" />
-            </SelectTrigger>
-            <SelectContent className="max-h-[300px] z-50">
-              {CHARACTER_TYPE_OPTIONS.map(type => (
-                <SelectItem key={type.value} value={type.value} className="text-lg p-3">
-                  <div className="flex items-center">
-                    <span className="text-3xl mr-3">{type.emoji}</span>
-                    <span>{type.label}</span>
-                  </div>
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          
-          {/* Custom type input if "other" is selected */}
-          <div
-            style={{
-              maxHeight: appearanceType === "other" ? 100 : 0,
-              opacity: appearanceType === "other" ? 1 : 0,
-              pointerEvents: appearanceType === "other" ? "auto" : "none",
-              transition: "all 0.25s cubic-bezier(.26,1.04,.55,.94)"
-            }}
-            className="overflow-hidden"
-          >
-            {appearanceType === "other" && (
-              <Input 
-                value={appearanceTypeCustom}
-                onChange={(e) => setAppearanceTypeCustom(e.target.value)}
-                placeholder="Type a character type..."
-                className="mt-2 p-5 text-lg"
-                autoFocus
-                key="type-other-input"
-              />
-            )}
-          </div>
-        </div>
-        
-        <div className="grid grid-cols-2 gap-4">
-          {/* Accessory 1 Input */}
-          <div className="space-y-2">
-            <Label htmlFor="accessory1" className="text-lg">Accessory 1</Label>
-            <Input
-              id="accessory1"
-              value={appearanceAccessory1}
-              onChange={(e) => setAppearanceAccessory1(e.target.value)}
-              placeholder="e.g., magic wand, robot arm"
-              className="p-5 text-lg"
-            />
-          </div>
-          
-          {/* Accessory 2 Input */}
-          <div className="space-y-2">
-            <Label htmlFor="accessory2" className="text-lg">Accessory 2</Label>
-            <Input
-              id="accessory2"
-              value={appearanceAccessory2}
-              onChange={(e) => setAppearanceAccessory2(e.target.value)}
-              placeholder="e.g., cape, lab coat"
-              className="p-5 text-lg"
-            />
-          </div>
-        </div>
-        
-        {/* Preview of the generated appearance */}
-        <div className="mt-4 p-5 bg-white rounded-xl border shadow-sm">
-          <p className="text-md text-muted-foreground mb-2">Preview:</p>
-          <p className="font-medium text-lg">{generatedAppearance}</p>
-        </div>
+        <AppearanceTypeSelector
+          value={appearanceType}
+          customValue={appearanceTypeCustom}
+          onChange={handleTypeChange}
+          onCustomChange={setAppearanceTypeCustom}
+        />
+        <AppearanceAccessories
+          accessory1={appearanceAccessory1}
+          accessory2={appearanceAccessory2}
+          onAccessory1Change={setAppearanceAccessory1}
+          onAccessory2Change={setAppearanceAccessory2}
+        />
+        <AppearancePreview text={generatedAppearance} />
       </div>
     </div>
   );
