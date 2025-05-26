@@ -38,13 +38,12 @@ export const useAuthForm = ({ initialMode = 'login' }: UseAuthFormProps = {}) =>
   const { mutate: login, isPending: isLoginPending } = useMutation({
     mutationFn: (data: LoginData) => authApi.login(data),
     onSuccess: (response) => {
-      // Try to get name/email from response, fallback to input values
-      const responseData = response.data;
+      // The login API response contains only .key, so fallback to input values
       handleSuccess(
-        responseData.key,
+        response.data.key,
         {
-          name: responseData.name || name,
-          email: responseData.email || email,
+          name,
+          email,
         }
       );
     },
@@ -60,12 +59,12 @@ export const useAuthForm = ({ initialMode = 'login' }: UseAuthFormProps = {}) =>
   const { mutate: register, isPending: isRegisterPending } = useMutation({
     mutationFn: (data: RegisterData) => authApi.register(data),
     onSuccess: (response) => {
-      const responseData = response.data;
+      // If the backend expands AuthResponse with name/email, update type and parse accordingly. For now, fallback to form data.
       handleSuccess(
-        responseData.key,
+        response.data.key,
         {
-          name: responseData.name || name,
-          email: responseData.email || email,
+          name,
+          email,
         }
       );
     },
