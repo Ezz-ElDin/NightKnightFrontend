@@ -1,12 +1,11 @@
 
 import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
 import { StoryDetails } from "@/lib/api";
 
 // Utility function to export a story to PDF
 export async function exportStoryToPDF(story: StoryDetails) {
   const doc = new jsPDF({
-    orientation: 'landscape', // Changed to landscape for website-like layout
+    orientation: 'landscape', // Landscape for "storybook" layout
     unit: 'pt',
     format: 'a4',
   });
@@ -18,17 +17,12 @@ export async function exportStoryToPDF(story: StoryDetails) {
   for (let i = 0; i < story.pages.length; i++) {
     const page = story.pages[i];
 
-    // Title for first page
     if (i === 0) {
-      doc.setFontSize(22);
+      // First page: Just the title centered (like a cover), no page number, no image
+      doc.setFontSize(32);
       doc.setFont("helvetica", "bold");
-      doc.text(story.title, pageWidth / 2, margin + 10, { align: "center", maxWidth: pageWidth - 2 * margin });
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(16);
-      doc.text(`Page ${i + 1} of ${story.pages.length}`, pageWidth / 2, margin + 38, { align: "center" });
-      doc.setFontSize(14);
-      doc.text(page.text, margin, margin + 80, { maxWidth: pageWidth - 2 * margin });
-      // Watermark with smaller size, different font (italic), and at the bottom
+      doc.text(story.title, pageWidth / 2, pageHeight / 2, { align: "center", maxWidth: pageWidth - 2 * margin });
+      // Add watermark at the bottom
       doc.setFontSize(9);
       doc.setTextColor(130, 130, 130);
       doc.setFont("times", "italic");
@@ -37,25 +31,22 @@ export async function exportStoryToPDF(story: StoryDetails) {
       doc.setFont("helvetica", "normal");
     } else {
       doc.addPage();
-      // If there is story text, render it with watermark
-      if (page.text && page.text.trim() !== "") {
-        doc.setFontSize(18);
-        doc.setFont("helvetica", "bold");
-        doc.text(story.title, pageWidth / 2, margin + 8, { align: "center", maxWidth: pageWidth - 2 * margin });
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(14);
-        doc.text(`Page ${i + 1} of ${story.pages.length}`, pageWidth / 2, margin + 34, { align: "center" });
-        doc.setFontSize(14);
-        doc.text(page.text, margin, margin + 72, { maxWidth: pageWidth - 2 * margin });
-        // Watermark with new style
-        doc.setFontSize(9);
-        doc.setTextColor(130, 130, 130);
-        doc.setFont("times", "italic");
-        doc.text(watermark, pageWidth / 2, pageHeight - margin / 2.5, { align: "center" });
-        doc.setTextColor(0, 0, 0);
-        doc.setFont("helvetica", "normal");
-      }
-      // If there is an image, render it (scaled and centered)
+      // Draw a two-column layout: text left, image right, each filling 50% width
+      const columnWidth = (pageWidth - 2 * margin) / 2;
+      const columnHeight = pageHeight - 2 * margin;
+      
+      // --- Text column on the left ---
+      doc.setFontSize(16);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(0, 0, 0);
+      doc.text(
+        doc.splitTextToSize(page.text, columnWidth - 24), // leave some padding
+        margin + 12,
+        margin + 32,
+        { maxWidth: columnWidth - 24, align: "left" }
+      );
+
+      // --- Image column on the right ---
       if (page.image_url) {
         try {
           const img = await loadImage(page.image_url);
@@ -70,29 +61,32 @@ export async function exportStoryToPDF(story: StoryDetails) {
             ctx?.drawImage(img, 0, 0);
             dataUrl = canvas.toDataURL("image/jpeg");
           }
-          // Calculate dimensions for landscape
-          const maxImgWidth = pageWidth - 2 * margin;
-          const maxImgHeight = pageHeight / 2;
-          let imgW = img.width;
-          let imgH = img.height;
-          if (imgW > maxImgWidth) {
-            const ratio = maxImgWidth / imgW;
-            imgW = maxImgWidth;
-            imgH = imgH * ratio;
-          }
-          if (imgH > maxImgHeight) {
-            const ratio = maxImgHeight / imgH;
-            imgH = maxImgHeight;
-            imgW = imgW * ratio;
-          }
-          const imgX = (pageWidth - imgW) / 2;
-          const imgY = pageHeight / 2 - imgH / 2;
+          // Calculate image dimensions to fit only within the right column
+          let targetW = columnWidth - 24;
+          let targetH = columnHeight - 24;
+          let imgW = img.width, imgH = img.height;
+          // Scale proportionally to fit inside column
+          const widthRatio = targetW / imgW;
+          const heightRatio = targetH / imgH;
+          const scale = Math.min(widthRatio, heightRatio, 1);
+          imgW = imgW * scale;
+          imgH = imgH * scale;
+          const imgX = margin + columnWidth + ((columnWidth - imgW) / 2);
+          const imgY = margin + ((columnHeight - imgH) / 2);
           doc.addImage(dataUrl, "JPEG", imgX, imgY, imgW, imgH);
         } catch (e) {
           // Ignore image load errors in PDF
           console.warn("Failed to load image for PDF", e);
         }
       }
+
+      // --- Add watermark at the bottom ---
+      doc.setFontSize(9);
+      doc.setTextColor(130, 130, 130);
+      doc.setFont("times", "italic");
+      doc.text(watermark, pageWidth / 2, pageHeight - margin / 2.5, { align: "center" });
+      doc.setTextColor(0, 0, 0);
+      doc.setFont("helvetica", "normal");
     }
   }
 
@@ -109,3 +103,4 @@ function loadImage(url: string): Promise<HTMLImageElement> {
     img.src = url;
   });
 }
+
