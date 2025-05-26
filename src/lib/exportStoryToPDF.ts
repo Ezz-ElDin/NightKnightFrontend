@@ -61,7 +61,7 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
       );
     }
 
-    // --- RIGHT COLUMN: Image ---
+    // --- RIGHT COLUMN: Image, fill column completely (cover) ---
     let imageUrl: string | undefined = story.pages[i].image_url;
     if (i === 0 && story.cover_front?.image_url) {
       imageUrl = story.cover_front.image_url;
@@ -69,29 +69,36 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
     if (imageUrl) {
       try {
         const img = await loadImage(imageUrl);
-        let dataUrl: string;
-        if (/^data:/.test(imageUrl)) {
-          dataUrl = imageUrl;
-        } else {
-          const canvas = document.createElement("canvas");
-          canvas.width = img.width;
-          canvas.height = img.height;
-          const ctx = canvas.getContext("2d");
-          ctx?.drawImage(img, 0, 0);
-          dataUrl = canvas.toDataURL("image/jpeg");
+        // Canvas for cropping/cover behavior
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.round(columnWidth);
+        canvas.height = Math.round(columnHeight);
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          // "Cover" logic: scale and crop so image fills entire canvas
+          const scale = Math.max(
+            columnWidth / img.width,
+            columnHeight / img.height
+          );
+          const cropWidth = Math.round(columnWidth / scale);
+          const cropHeight = Math.round(columnHeight / scale);
+          const sx = Math.round((img.width - cropWidth) / 2);
+          const sy = Math.round((img.height - cropHeight) / 2);
+          ctx.drawImage(
+            img,
+            sx, sy, cropWidth, cropHeight, // source crop
+            0, 0, canvas.width, canvas.height // destination fill
+          );
+          const dataUrl = canvas.toDataURL("image/jpeg");
+          doc.addImage(
+            dataUrl,
+            "JPEG",
+            margin + columnWidth, // X: start of right column
+            margin,               // Y: top margin
+            columnWidth,          // width of column
+            columnHeight          // height of column
+          );
         }
-        // Calculate image dimensions to fit within the right column
-        let targetW = columnWidth - 24;
-        let targetH = columnHeight - 24;
-        let imgW = img.width, imgH = img.height;
-        const widthRatio = targetW / imgW;
-        const heightRatio = targetH / imgH;
-        const scale = Math.min(widthRatio, heightRatio, 1);
-        imgW = imgW * scale;
-        imgH = imgH * scale;
-        const imgX = margin + columnWidth + ((columnWidth - imgW) / 2);
-        const imgY = margin + ((columnHeight - imgH) / 2);
-        doc.addImage(dataUrl, "JPEG", imgX, imgY, imgW, imgH);
       } catch (e) {
         // Ignore image load errors in PDF
         console.warn("Failed to load image for PDF (page " + (i + 1) + ")", e);
