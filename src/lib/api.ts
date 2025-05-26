@@ -105,10 +105,10 @@ export const storiesApi = {
     await api.post(`/api/stories/${id}/favourite/`);
   },
   unfavourite: async (id: number): Promise<void> => {
-    // Use the same endpoint and method for unfavourite as for favourite.
-    await api.post(`/api/stories/${id}/favourite/`);
+    await api.delete(`/api/stories/${id}/favourite/`);
   },
   delete: async (id: number): Promise<void> => {
     await api.delete(`/api/stories/${id}/`);
   },
 };
+
