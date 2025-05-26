@@ -51,7 +51,7 @@ const AppearanceForm: React.FC<AppearanceFormProps> = ({ onAppearanceChange, ini
   const [appearanceAccessory2, setAppearanceAccessory2] = useState("");
   const [generatedAppearance, setGeneratedAppearance] = useState("");
 
-  // Fix: When user picks a preset, clear the custom input
+  // When user picks a preset, clear the custom input
   const handleColorChange = (value: string) => {
     setAppearanceColor(value);
     if (value !== "other") setAppearanceColorCustom("");
@@ -103,8 +103,8 @@ const AppearanceForm: React.FC<AppearanceFormProps> = ({ onAppearanceChange, ini
 
   // Effect to generate the appearance sentence when inputs change
   useEffect(() => {
-    const color = appearanceColor === "other" ? appearanceColorCustom : appearanceColor;
-    const type = appearanceType === "other" ? appearanceTypeCustom : appearanceType;
+    const color = appearanceColor === "other" && appearanceColorCustom ? appearanceColorCustom : appearanceColor;
+    const type = appearanceType === "other" && appearanceTypeCustom ? appearanceTypeCustom : appearanceType;
     
     let sentence = `A ${appearanceAge} ${color} ${type}`;
     
@@ -157,7 +157,10 @@ const AppearanceForm: React.FC<AppearanceFormProps> = ({ onAppearanceChange, ini
               value={appearanceAge} 
               onValueChange={setAppearanceAge}
             >
-              <SelectTrigger id="age" className="bg-white text-lg p-5">
+              <SelectTrigger 
+                id="age" 
+                className="bg-white text-lg p-5 pr-12" // Added extra right padding
+              >
                 <SelectValue placeholder="Select age" />
               </SelectTrigger>
               <SelectContent className="max-h-[300px]">
@@ -180,12 +183,23 @@ const AppearanceForm: React.FC<AppearanceFormProps> = ({ onAppearanceChange, ini
               value={appearanceColor} 
               onValueChange={handleColorChange}
             >
-              <SelectTrigger id="color" className="bg-white text-lg p-5">
+              <SelectTrigger 
+                id="color" 
+                className="bg-white text-lg p-5 pr-12" // Added extra right padding
+              >
                 <SelectValue placeholder="Select color" />
               </SelectTrigger>
-              <SelectContent className="max-h-[300px]">
+              <SelectContent className="max-h-[300px] z-50">
                 {COLOR_OPTIONS.map(color => (
-                  <SelectItem key={color} value={color} className="text-lg p-3">
+                  <SelectItem 
+                    key={color} 
+                    value={color} 
+                    className={
+                      color === "other" 
+                      ? "text-lg p-3 bg-yellow-100 text-yellow-900 hover:bg-yellow-200" 
+                      : "text-lg p-3"
+                    }
+                  >
                     {color}
                   </SelectItem>
                 ))}
@@ -193,14 +207,26 @@ const AppearanceForm: React.FC<AppearanceFormProps> = ({ onAppearanceChange, ini
             </Select>
             
             {/* Custom color input if "other" is selected */}
-            {appearanceColor === "other" && (
-              <Input 
-                value={appearanceColorCustom}
-                onChange={(e) => setAppearanceColorCustom(e.target.value)}
-                placeholder="Type a color..."
-                className="mt-2 p-5 text-lg"
-              />
-            )}
+            <div
+              style={{
+                maxHeight: appearanceColor === "other" ? 100 : 0,
+                opacity: appearanceColor === "other" ? 1 : 0,
+                pointerEvents: appearanceColor === "other" ? "auto" : "none",
+                transition: "all 0.25s cubic-bezier(.26,1.04,.55,.94)"
+              }}
+              className="overflow-hidden"
+            >
+              {appearanceColor === "other" && (
+                <Input 
+                  value={appearanceColorCustom}
+                  onChange={(e) => setAppearanceColorCustom(e.target.value)}
+                  placeholder="Type a color..."
+                  className="mt-2 p-5 text-lg"
+                  autoFocus
+                  key="color-other-input"
+                />
+              )}
+            </div>
           </div>
         </div>
         
@@ -211,10 +237,13 @@ const AppearanceForm: React.FC<AppearanceFormProps> = ({ onAppearanceChange, ini
             value={appearanceType} 
             onValueChange={handleTypeChange}
           >
-            <SelectTrigger id="characterType" className="bg-white text-lg p-5">
+            <SelectTrigger 
+              id="characterType" 
+              className="bg-white text-lg p-5 pr-12" // Added right padding
+            >
               <SelectValue placeholder="Select type" />
             </SelectTrigger>
-            <SelectContent className="max-h-[300px]">
+            <SelectContent className="max-h-[300px] z-50">
               {CHARACTER_TYPE_OPTIONS.map(type => (
                 <SelectItem key={type.value} value={type.value} className="text-lg p-3">
                   <div className="flex items-center">
@@ -227,14 +256,26 @@ const AppearanceForm: React.FC<AppearanceFormProps> = ({ onAppearanceChange, ini
           </Select>
           
           {/* Custom type input if "other" is selected */}
-          {appearanceType === "other" && (
-            <Input 
-              value={appearanceTypeCustom}
-              onChange={(e) => setAppearanceTypeCustom(e.target.value)}
-              placeholder="Type a character type..."
-              className="mt-2 p-5 text-lg"
-            />
-          )}
+          <div
+            style={{
+              maxHeight: appearanceType === "other" ? 100 : 0,
+              opacity: appearanceType === "other" ? 1 : 0,
+              pointerEvents: appearanceType === "other" ? "auto" : "none",
+              transition: "all 0.25s cubic-bezier(.26,1.04,.55,.94)"
+            }}
+            className="overflow-hidden"
+          >
+            {appearanceType === "other" && (
+              <Input 
+                value={appearanceTypeCustom}
+                onChange={(e) => setAppearanceTypeCustom(e.target.value)}
+                placeholder="Type a character type..."
+                className="mt-2 p-5 text-lg"
+                autoFocus
+                key="type-other-input"
+              />
+            )}
+          </div>
         </div>
         
         <div className="grid grid-cols-2 gap-4">
