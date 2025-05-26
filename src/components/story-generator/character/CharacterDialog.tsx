@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { 
   Dialog, 
@@ -30,19 +31,26 @@ function summarizeAppearance({
   appearanceAccessory1: string;
   appearanceAccessory2: string;
 }) {
-  const color = appearanceColor === "other" ? appearanceColorCustom : appearanceColor;
-  const type = appearanceType === "other" ? appearanceTypeCustom : appearanceType;
-  const accessory1 = appearanceAccessory1 ? `, ${appearanceAccessory1}` : "";
-  const accessory2 = appearanceAccessory2 ? `, ${appearanceAccessory2}` : "";
-  return [
-    appearanceAge,
-    color,
-    type,
-    accessory1,
-    accessory2
-  ]
+  // Use custom for color/type if selected
+  const color = appearanceColor === "other" && appearanceColorCustom
+    ? appearanceColorCustom
+    : appearanceColor;
+  const type = appearanceType === "other" && appearanceTypeCustom
+    ? appearanceTypeCustom
+    : appearanceType;
+  // Accessory formatting: only include if provided
+  const accessories = [appearanceAccessory1, appearanceAccessory2]
+    .filter(a => a && a.trim())
+    .join(", ");
+
+  // Format: "[age] [color] [type][, accessories]"
+  let preview = [appearanceAge, color, type]
     .filter(x => !!x && typeof x === "string")
     .join(" ");
+  if (accessories) {
+    preview += " (" + accessories + ")";
+  }
+  return preview.trim();
 }
 
 interface AppearanceFields {
@@ -130,6 +138,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
     onAppearanceAccessory1Change: (v: string) => handleAppearanceField("appearanceAccessory1", v),
     appearanceAccessory2: appearanceFields.appearanceAccessory2,
     onAppearanceAccessory2Change: (v: string) => handleAppearanceField("appearanceAccessory2", v),
+    // Use freshly generated summary for preview
     generatedAppearance: summarizeAppearance({ ...appearanceFields }),
   };
 
@@ -204,3 +213,4 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
 };
 
 export default CharacterDialog;
+
