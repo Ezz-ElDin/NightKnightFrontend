@@ -6,17 +6,18 @@ import { StoryDetails } from "@/lib/api";
 // Utility function to export a story to PDF
 export async function exportStoryToPDF(story: StoryDetails) {
   const doc = new jsPDF({
-    orientation: 'portrait',
+    orientation: 'landscape', // Changed to landscape for website-like layout
     unit: 'pt',
     format: 'a4',
   });
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
   const margin = 40;
-  const watermark = "Created with ❤️ by NightKnight · nightknight.app";
+  const watermark = "Created with love by NightKnight · nightknight.app";
 
   for (let i = 0; i < story.pages.length; i++) {
     const page = story.pages[i];
+
     // Title for first page
     if (i === 0) {
       doc.setFontSize(22);
@@ -27,11 +28,13 @@ export async function exportStoryToPDF(story: StoryDetails) {
       doc.text(`Page ${i + 1} of ${story.pages.length}`, pageWidth / 2, margin + 38, { align: "center" });
       doc.setFontSize(14);
       doc.text(page.text, margin, margin + 80, { maxWidth: pageWidth - 2 * margin });
-      // Watermark
-      doc.setFontSize(11);
-      doc.setTextColor(150, 150, 150);
-      doc.text(watermark, pageWidth / 2, pageHeight - margin / 2, { align: "center" });
+      // Watermark with smaller size, different font (italic), and at the bottom
+      doc.setFontSize(9);
+      doc.setTextColor(130, 130, 130);
+      doc.setFont("times", "italic");
+      doc.text(watermark, pageWidth / 2, pageHeight - margin / 2.5, { align: "center" });
       doc.setTextColor(0, 0, 0);
+      doc.setFont("helvetica", "normal");
     } else {
       doc.addPage();
       // If there is story text, render it with watermark
@@ -44,17 +47,18 @@ export async function exportStoryToPDF(story: StoryDetails) {
         doc.text(`Page ${i + 1} of ${story.pages.length}`, pageWidth / 2, margin + 34, { align: "center" });
         doc.setFontSize(14);
         doc.text(page.text, margin, margin + 72, { maxWidth: pageWidth - 2 * margin });
-        // Watermark
-        doc.setFontSize(11);
-        doc.setTextColor(150, 150, 150);
-        doc.text(watermark, pageWidth / 2, pageHeight - margin / 2, { align: "center" });
+        // Watermark with new style
+        doc.setFontSize(9);
+        doc.setTextColor(130, 130, 130);
+        doc.setFont("times", "italic");
+        doc.text(watermark, pageWidth / 2, pageHeight - margin / 2.5, { align: "center" });
         doc.setTextColor(0, 0, 0);
+        doc.setFont("helvetica", "normal");
       }
       // If there is an image, render it (scaled and centered)
       if (page.image_url) {
         try {
           const img = await loadImage(page.image_url);
-          // Use html2canvas to get data URL if it's SVG or not CORS-allowed (fallback to image only if possible)
           let dataUrl: string;
           if (/^data:/.test(page.image_url)) {
             dataUrl = page.image_url;
@@ -66,7 +70,7 @@ export async function exportStoryToPDF(story: StoryDetails) {
             ctx?.drawImage(img, 0, 0);
             dataUrl = canvas.toDataURL("image/jpeg");
           }
-          // Calculate dimensions
+          // Calculate dimensions for landscape
           const maxImgWidth = pageWidth - 2 * margin;
           const maxImgHeight = pageHeight / 2;
           let imgW = img.width;
