@@ -8,6 +8,7 @@ import clsx from "clsx";
 import StoryVisual from "@/components/story-viewer/StoryVisual";
 import StoryText from "@/components/story-viewer/StoryText";
 import StoryNavigation from "@/components/story-viewer/StoryNavigation";
+import { exportStoryToPDF } from "@/lib/exportStoryToPDF";
 
 const isArabic = (text: string) => /[\u0600-\u06FF]/.test(text);
 
@@ -59,6 +60,13 @@ const StoryViewer = () => {
   }, [data, page]);  // Add 'page' to dependencies to always have latest
 
   const goBack = () => navigate("/library");
+
+  // Handle export to PDF
+  const handleExportPDF = async () => {
+    if (data) {
+      await exportStoryToPDF(data);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -126,6 +134,21 @@ const StoryViewer = () => {
           boxShadow: "0 10px 40px 2px rgba(80,60,120,0.13)",
         }}
       >
+        {/* Export to PDF Button */}
+        <div className="absolute top-4 right-5 z-30">
+          <Button
+            size="sm"
+            variant="secondary"
+            className="rounded-lg shadow text-story-purple flex gap-2 items-center"
+            onClick={handleExportPDF}
+            aria-label="Export to PDF"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 11V3.5a.5.5 0 00-.5-.5h-3a.5.5 0 00-.5.5V11m4 0V7m0 4a4 4 0 11-8 0m8 0H9m4 0v4m0 0a2 2 0 11-4 0v-4m4 4H9m0 0V3.5a.5.5 0 01.5-.5h3a.5.5 0 01.5.5V11" />
+            </svg>
+            Export to PDF
+          </Button>
+        </div>
         {/* Book Content */}
         <div
           className={clsx(

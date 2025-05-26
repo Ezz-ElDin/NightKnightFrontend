@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Heart, Delete } from "lucide-react";
@@ -42,8 +41,22 @@ const formatDate = (dateString: string) => {
   );
 };
 
+import { storiesApi, StoryDetails } from "@/lib/api";
+import { exportStoryToPDF } from "@/lib/exportStoryToPDF";
+import { useQuery } from "@tanstack/react-query";
+
 const StoryCard: React.FC<StoryCardProps> = ({ story, isFavourite, onClick, onFavourite, onDelete }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [loadingPDF, setLoadingPDF] = useState(false);
+
+  // Fetch the full story details for export (only on demand)
+  const { data: storyDetails, refetch: refetchDetails } = useQuery<StoryDetails>(
+    {
+      queryKey: ["story-export", story.id],
+      queryFn: () => storiesApi.get(story.id),
+      enabled: false,
+    }
+  );
 
   const handleMenuButtonClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -52,6 +65,22 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, isFavourite, onClick, onFa
   const handleMenuClose = (e: React.MouseEvent) => {
     e.stopPropagation();
     setMenuOpen(false);
+  };
+
+  const handleExportPDF = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setMenuOpen(false);
+    setLoadingPDF(true);
+    // Refetch in case not loaded
+    let details = storyDetails;
+    if (!details) {
+      const { data } = await refetchDetails();
+      details = data;
+    }
+    if (details) {
+      await exportStoryToPDF(details);
+    }
+    setLoadingPDF(false);
   };
 
   return (
@@ -121,6 +150,20 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, isFavourite, onClick, onFa
                   >
                     <Heart size={18} fill={isFavourite ? "#f59e42" : "none"} color={isFavourite ? "#f59e42" : "#a093f4"} /> 
                     {isFavourite ? "Favourited" : "Favourite"}
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className="w-full px-4 py-2 flex items-center gap-2 text-green-700 font-medium focus:outline-none"
+                    tabIndex={0}
+                    type="button"
+                    onClick={handleExportPDF}
+                    disabled={loadingPDF}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 11V3.5a.5.5 0 00-.5-.5h-3a.5.5 0 00-.5.5V11m4 0V7m0 4a4 4 0 11-8 0m8 0H9m4 0v4m0 0a2 2 0 11-4 0v-4m4 4H9m0 0V3.5a.5.5 0 01.5-.5h3a.5.5 0 01.5.5V11" />
+                    </svg>
+                    {loadingPDF ? "Exporting..." : "Export to PDF"}
                   </button>
                 </li>
                 <li>
