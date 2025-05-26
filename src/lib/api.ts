@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 
 // Use Vite env variable, fallback to prod URL if not set.
@@ -69,7 +70,17 @@ export interface Story {
 export const storiesApi = {
   list: async (): Promise<Story[]> => {
     const res = await api.get('/api/stories/');
-    return res.data;
+    console.log('Stories API response:', res.data); // 👈 See what the backend returns
+    // If the backend response is { results: [...] }, return results!
+    if (Array.isArray(res.data)) {
+      return res.data;
+    } else if (Array.isArray(res.data.results)) {
+      return res.data.results;
+    } else {
+      // Fallback: return empty array to prevent errors and log for debugging
+      console.error("Unexpected stories API response format", res.data);
+      return [];
+    }
   },
   favourite: async (id: number): Promise<void> => {
     await api.post(`/api/stories/${id}/favourite/`);
@@ -81,3 +92,4 @@ export const storiesApi = {
     await api.delete(`/api/stories/${id}/`);
   },
 };
+
