@@ -27,7 +27,7 @@ const GoogleLoginButton = ({ disabled }: GoogleLoginButtonProps) => {
 
       try {
         const res = await axios.post(
-          `${import.meta.env.VITE_API_URL}/api/auth/social/google/`,
+          `${import.meta.env.VITE_API_URL}/api/auth/google/`,
           { access_token },
           { headers: { 'Content-Type': 'application/json' } }
         );
@@ -35,6 +35,12 @@ const GoogleLoginButton = ({ disabled }: GoogleLoginButtonProps) => {
         const key = res.data.key || res.data.access;
         localStorage.setItem('authToken', key);
         localStorage.setItem('loginMethod', 'google');
+        // Save user name and email if present
+        if (res.data.name) localStorage.setItem('userName', res.data.name);
+        if (res.data.email) localStorage.setItem('userEmail', res.data.email);
+
+        // Fire custom event so Navbar/Menu listeners can update live
+        window.dispatchEvent(new Event("user-info-updated"));
 
         toast({
           title: 'Welcome!',

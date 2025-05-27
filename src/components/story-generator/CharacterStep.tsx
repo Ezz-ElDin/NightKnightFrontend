@@ -55,4 +55,4 @@ const CharacterStep: React.FC<CharacterStepProps> = ({ storyData, updateStoryDat
   );
 };
 
-export default CharacterStep;
+export default React.memo(CharacterStep);
