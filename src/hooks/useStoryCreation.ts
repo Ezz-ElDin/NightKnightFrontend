@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -37,6 +38,21 @@ const ILLUSTRATION_MAP: Record<string, string> = {
   "cinematic": "cinematic",
   "paper_cutout": "paper_cutout",
   "storybook": "storybook",
+};
+
+// Personality traits mapping - convert frontend traits to backend lowercase format
+const PERSONALITY_TRAITS_MAP: Record<string, string> = {
+  "Brave": "brave",
+  "Shy": "shy", 
+  "Wise": "wise",
+  "Clever": "clever",
+  "Funny": "funny",
+  "Mischievous": "mischievous",
+  "Curious": "curious",
+  "Playful": "playful",
+  "Kind": "kind",
+  "Adventurous": "adventurous",
+  "Loyal": "loyal",
 };
 
 const CARD_MAPPINGS: Record<string, { theme: string, tone: string, narrative: string }> = {
@@ -219,6 +235,9 @@ export const useStoryCreation = () => {
           name: c.name,
           appearance: c.appearance,
           role: c.role,
+          personality_traits: Array.isArray(c.personality) 
+            ? c.personality.map((trait: string) => PERSONALITY_TRAITS_MAP[trait] || trait.toLowerCase())
+            : [],
         }))
       : [];
 
