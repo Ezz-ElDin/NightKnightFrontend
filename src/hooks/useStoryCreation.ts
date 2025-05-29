@@ -39,6 +39,21 @@ const ILLUSTRATION_MAP: Record<string, string> = {
   "storybook": "storybook",
 };
 
+// Personality traits mapping - convert frontend traits to backend lowercase format
+const PERSONALITY_TRAITS_MAP: Record<string, string> = {
+  "Brave": "brave",
+  "Shy": "shy", 
+  "Wise": "wise",
+  "Clever": "clever",
+  "Funny": "funny",
+  "Mischievous": "mischievous",
+  "Curious": "curious",
+  "Playful": "playful",
+  "Kind": "kind",
+  "Adventurous": "adventurous",
+  "Loyal": "loyal",
+};
+
 const CARD_MAPPINGS: Record<string, { theme: string, tone: string, narrative: string }> = {
   "magic-worlds":     { theme: "fantasy",  tone: "soothing",    narrative: "dreamy" },
   "animal-adventures":{ theme: "animal",   tone: "playful",     narrative: "rhyming" },
@@ -59,7 +74,7 @@ export const useStoryCreation = () => {
     ageRange: "6-8",
     moral: "",
     characters: [],
-    pages: 12,
+    pages: 15,
     language: "English",
     illustrationStyle: "",
   });
@@ -94,7 +109,7 @@ export const useStoryCreation = () => {
     setStoryData((prev) => ({
       ...prev,
       ...data,
-      pages: 12
+      pages: data.pages !== undefined ? data.pages : 15
     }));
   };
 
@@ -219,6 +234,9 @@ export const useStoryCreation = () => {
           name: c.name,
           appearance: c.appearance,
           role: c.role,
+          personality_traits: Array.isArray(c.personality) 
+            ? c.personality.map((trait: string) => PERSONALITY_TRAITS_MAP[trait] || trait.toLowerCase())
+            : [],
         }))
       : [];
 
@@ -234,7 +252,7 @@ export const useStoryCreation = () => {
         tone: TONE_MAP[storyData.tone] || "",
         narrative_style: NARRATIVE_MAP[storyData.narrativeStyle] || "",
         illustration_style: ILLUSTRATION_MAP[storyData.illustrationStyle] || "",
-        number_of_pages: storyData.pages || 12,
+        number_of_pages: storyData.pages || 15,
         characters: characterList,
       };
     } else if (mode === "magic") {
@@ -254,7 +272,7 @@ export const useStoryCreation = () => {
         tone: cardSettings.tone,
         narrative_style: cardSettings.narrative,
         illustration_style: ILLUSTRATION_MAP[storyData.illustrationStyle] || "",
-        number_of_pages: storyData.pages || 12,
+        number_of_pages: storyData.pages || 15,
         characters: characterList,
       };
     }
