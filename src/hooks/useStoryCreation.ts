@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -75,7 +74,7 @@ export const useStoryCreation = () => {
     ageRange: "6-8",
     moral: "",
     characters: [],
-    pages: 12,
+    pages: 15,
     language: "English",
     illustrationStyle: "",
   });
@@ -110,7 +109,7 @@ export const useStoryCreation = () => {
     setStoryData((prev) => ({
       ...prev,
       ...data,
-      pages: 12
+      pages: data.pages !== undefined ? data.pages : 15
     }));
   };
 
@@ -253,7 +252,7 @@ export const useStoryCreation = () => {
         tone: TONE_MAP[storyData.tone] || "",
         narrative_style: NARRATIVE_MAP[storyData.narrativeStyle] || "",
         illustration_style: ILLUSTRATION_MAP[storyData.illustrationStyle] || "",
-        number_of_pages: storyData.pages || 12,
+        number_of_pages: storyData.pages || 15,
         characters: characterList,
       };
     } else if (mode === "magic") {
@@ -273,7 +272,7 @@ export const useStoryCreation = () => {
         tone: cardSettings.tone,
         narrative_style: cardSettings.narrative,
         illustration_style: ILLUSTRATION_MAP[storyData.illustrationStyle] || "",
-        number_of_pages: storyData.pages || 12,
+        number_of_pages: storyData.pages || 15,
         characters: characterList,
       };
     }
