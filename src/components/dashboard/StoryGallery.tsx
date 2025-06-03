@@ -51,17 +51,16 @@ const StoryGallery = ({
           </h3>
         </div>
       )}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8 auto-rows-fr">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         {stories.map(story => (
-          <div key={story.id} className="w-full">
-            <StoryCard
-              story={story}
-              isFavourite={showFavourites}
-              onClick={() => onStoryClick(story.id)}
-              onFavourite={() => onFavourite(story.id, showFavourites)}
-              onDelete={() => onDelete(story.id)}
-            />
-          </div>
+          <StoryCard
+            key={story.id}
+            story={story}
+            isFavourite={showFavourites}
+            onClick={() => onStoryClick(story.id)}
+            onFavourite={() => onFavourite(story.id, showFavourites)}
+            onDelete={() => onDelete(story.id)}
+          />
         ))}
       </div>
       {showFavourites && <hr className="my-7 border-gray-300" />}

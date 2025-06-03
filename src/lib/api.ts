@@ -124,23 +124,15 @@ const normalizeStoryDetails = (raw: any): StoryDetails => ({
 
 export const storiesApi = {
   list: async (): Promise<Story[]> => {
-    console.log("Fetching stories from API...");
     const res = await api.get('/api/stories/');
-    console.log("Raw API response:", res.data);
-    
-    let stories = [];
     if (Array.isArray(res.data.results)) {
-      stories = res.data.results.map(normalizeStory);
+      return res.data.results.map(normalizeStory);
     } else if (Array.isArray(res.data)) {
-      stories = res.data.map(normalizeStory);
+      return res.data.map(normalizeStory);
     } else {
       console.error("Unexpected stories API response format", res.data);
       return [];
     }
-    
-    console.log("Normalized stories:", stories);
-    console.log("Total stories retrieved:", stories.length);
-    return stories;
   },
   get: async (id: string | number): Promise<StoryDetails> => {
     const res = await api.get(`/api/stories/${id}/`);

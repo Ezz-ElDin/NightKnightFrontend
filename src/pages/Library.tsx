@@ -5,6 +5,7 @@ import { Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import StoryBackground from "@/components/StoryBackground";
 import StoryGallery from "@/components/dashboard/StoryGallery";
+import PaginationNav from "@/components/dashboard/PaginationNav";
 import EmailVerificationBanners from "@/components/dashboard/EmailVerificationBanners";
 import ConfirmDeleteDialog from "@/components/dashboard/ConfirmDeleteDialog";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -65,21 +66,16 @@ const Library = () => {
     },
   });
 
-  // Separate favourites and non-favourites
-  const favouriteStories = stories.filter((s) => s.is_favourite);
-  const nonFavouriteStories = stories.filter((s) => !s.is_favourite);
-  
-  // Pagination logic for recent stories only
-  const totalRecentStories = nonFavouriteStories.length;
-  const totalPages = Math.ceil(totalRecentStories / STORIES_PER_PAGE);
-  const startIndex = (page - 1) * STORIES_PER_PAGE;
-  const endIndex = startIndex + STORIES_PER_PAGE;
-  
-  // Get recent stories for current page
-  const currentPageRecentStories = nonFavouriteStories.slice(startIndex, endIndex);
-  
-  const goToPage = (pageNumber: number) => {
-    setPage(pageNumber);
+  // Segregation
+  const allFavouriteStories = stories.filter((s) => s.is_favourite);
+  const allNonFavouriteStories = stories.filter((s) => !s.is_favourite);
+  const totalPages = Math.ceil(allNonFavouriteStories.length / STORIES_PER_PAGE);
+  const pagedStories = allNonFavouriteStories.slice(
+    (page - 1) * STORIES_PER_PAGE,
+    page * STORIES_PER_PAGE
+  );
+  const goToPage = (p: number) => {
+    setPage(p);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -119,83 +115,32 @@ const Library = () => {
               </Button>
             </Link>
           </div>
-          
           {/* Error state */}
           {isError && (
             <div className="text-center text-red-500 py-12">Failed to load your stories. Please try again.</div>
           )}
-          
-          {/* Favourite stories section - always show all favourites */}
-          {favouriteStories.length > 0 && (
-            <StoryGallery
-              stories={favouriteStories}
-              isLoading={isLoading}
-              showFavourites={true}
-              onStoryClick={handleStoryClick}
-              onFavourite={toggleFavourite}
-              onDelete={(id) => setDeleteDialog({ open: true, storyId: id })}
-            />
-          )}
-          
-          {/* Recent stories section - paginated */}
-          {currentPageRecentStories.length > 0 && (
-            <StoryGallery
-              stories={currentPageRecentStories}
-              isLoading={isLoading}
-              showFavourites={false}
-              onStoryClick={handleStoryClick}
-              onFavourite={toggleFavourite}
-              onDelete={(id) => setDeleteDialog({ open: true, storyId: id })}
-            />
-          )}
-          
-          {/* Pagination for recent stories only - show when total recent stories > 6 */}
-          {totalRecentStories > STORIES_PER_PAGE && (
-            <div className="flex justify-center items-center gap-2 mt-8">
-              {/* Previous button */}
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => goToPage(Math.max(1, page - 1))}
-                disabled={page === 1}
-                className="flex items-center gap-1"
-              >
-                Previous
-              </Button>
-              
-              {/* Page numbers */}
-              <div className="flex items-center gap-1">
-                {Array.from({ length: totalPages }, (_, i) => {
-                  const pageNumber = i + 1;
-                  return (
-                    <Button
-                      key={pageNumber}
-                      size="sm"
-                      variant={page === pageNumber ? "default" : "outline"}
-                      className="w-10 h-10"
-                      onClick={() => goToPage(pageNumber)}
-                    >
-                      {pageNumber}
-                    </Button>
-                  );
-                })}
-              </div>
-              
-              {/* Next button */}
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => goToPage(Math.min(totalPages, page + 1))}
-                disabled={page === totalPages}
-                className="flex items-center gap-1"
-              >
-                Next
-              </Button>
-            </div>
-          )}
+          {/* Favourite stories section */}
+          <StoryGallery
+            stories={allFavouriteStories}
+            isLoading={isLoading}
+            showFavourites={true}
+            onStoryClick={handleStoryClick}
+            onFavourite={toggleFavourite}
+            onDelete={(id) => setDeleteDialog({ open: true, storyId: id })}
+          />
+          {/* Gallery for non-favourites */}
+          <StoryGallery
+            stories={pagedStories}
+            isLoading={isLoading}
+            showFavourites={false}
+            onStoryClick={handleStoryClick}
+            onFavourite={toggleFavourite}
+            onDelete={(id) => setDeleteDialog({ open: true, storyId: id })}
+          />
+          {/* Pagination for non-favourites */}
+          <PaginationNav totalPages={totalPages} page={page} goToPage={goToPage} />
         </div>
       </div>
-      
       {/* Delete confirmation dialog */}
       <ConfirmDeleteDialog
         open={deleteDialog.open}

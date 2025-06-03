@@ -1,6 +1,6 @@
 
+import { Pagination, PaginationContent, PaginationItem, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface PaginationNavProps {
   totalPages: number;
@@ -10,50 +10,36 @@ interface PaginationNavProps {
 
 const PaginationNav = ({ totalPages, page, goToPage }: PaginationNavProps) => {
   if (totalPages <= 1) return null;
-  
   return (
-    <div className="flex justify-center items-center gap-2 mt-6">
-      {/* Previous button */}
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => goToPage(Math.max(1, page - 1))}
-        disabled={page === 1}
-        className="flex items-center gap-1"
-      >
-        <ChevronLeft className="h-4 w-4" />
-        Previous
-      </Button>
-      
-      {/* Page numbers */}
-      <div className="flex items-center gap-1">
-        {[...Array(totalPages)].map((_, idx) => {
-          const pageNumber = idx + 1;
-          return (
-            <Button
-              key={pageNumber}
-              size="sm"
-              variant={page === pageNumber ? "default" : "outline"}
-              className="w-10 h-10"
-              onClick={() => goToPage(pageNumber)}
-            >
-              {pageNumber}
-            </Button>
-          );
-        })}
-      </div>
-      
-      {/* Next button */}
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => goToPage(Math.min(totalPages, page + 1))}
-        disabled={page === totalPages}
-        className="flex items-center gap-1"
-      >
-        Next
-        <ChevronRight className="h-4 w-4" />
-      </Button>
+    <div className="flex justify-center mt-6">
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious
+              onClick={() => goToPage(Math.max(1, page - 1))}
+              className={page === 1 ? "pointer-events-none opacity-40" : ""}
+            />
+          </PaginationItem>
+          {[...Array(totalPages)].map((_, idx) => (
+            <PaginationItem key={idx}>
+              <Button
+                size="sm"
+                variant={page === idx + 1 ? "default" : "outline"}
+                className="rounded-full w-10 h-10 flex items-center justify-center"
+                onClick={() => goToPage(idx + 1)}
+              >
+                {idx + 1}
+              </Button>
+            </PaginationItem>
+          ))}
+          <PaginationItem>
+            <PaginationNext
+              onClick={() => goToPage(Math.min(totalPages, page + 1))}
+              className={page === totalPages ? "pointer-events-none opacity-40" : ""}
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </div>
   );
 };
