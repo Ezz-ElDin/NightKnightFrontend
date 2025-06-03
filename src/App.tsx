@@ -12,6 +12,7 @@ import Register from "./pages/Register";
 import CreateStory from "./pages/CreateStory";
 import AccountSettings from "./pages/AccountSettings";
 import StoryViewer from "./pages/StoryViewer";
+import GeneratingStory from "./pages/GeneratingStory";
 import NotFound from "./pages/NotFound";
 import AuthCallback from "./pages/AuthCallback";
 import WaitingList from "./pages/WaitingList";
@@ -35,6 +36,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={null} />
           <Route path="/waiting-list" element={null} />
+          <Route path="/generating-story/*" element={null} />
           <Route path="*" element={<Navbar />} />
         </Routes>
         
@@ -57,6 +59,12 @@ const App = () => (
               <Route path="/create-story" element={
                 <RequireAuth>
                   <CreateStory />
+                </RequireAuth>
+              } />
+              {/* NEW: Generating story route */}
+              <Route path="/generating-story/:storyId" element={
+                <RequireAuth>
+                  <GeneratingStory />
                 </RequireAuth>
               } />
               {/* UNPROTECTED temp route for testing */}
@@ -94,6 +102,12 @@ const App = () => (
               <Route path="/create-story" element={
                 <RequireAuth>
                   <CreateStory />
+                </RequireAuth>
+              } />
+              {/* NEW: Generating story route */}
+              <Route path="/generating-story/:storyId" element={
+                <RequireAuth>
+                  <GeneratingStory />
                 </RequireAuth>
               } />
               {/* UNPROTECTED temp route for testing */}

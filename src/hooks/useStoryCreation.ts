@@ -279,11 +279,16 @@ export const useStoryCreation = () => {
 
     try {
       const res = await api.post("/api/generate-story/", payload);
-      // Pass response to next view as needed
-      navigate("/story-viewer", { state: { storyData, storyResp: res.data } });
+      // Extract story_id from response and navigate to generating page
+      const storyId = res.data.story_id;
+      if (storyId) {
+        navigate(`/generating-story/${storyId}`, { state: { storyData } });
+      } else {
+        throw new Error("No story_id received from server");
+      }
     } catch (err: any) {
       toast({
-        title: "Failed to generate story 😬",
+        title: "Failed to start story generation 😬",
         description:
           err?.response?.data?.detail ||
           err?.message ||
