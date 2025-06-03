@@ -30,7 +30,7 @@ const GeneratingStory = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Poll story status every 5 seconds
+  // Poll story status every 10 seconds
   const { data: statusData, isError } = useQuery({
     queryKey: ['story-status', storyId],
     queryFn: async () => {
@@ -38,7 +38,7 @@ const GeneratingStory = () => {
       return response.data;
     },
     enabled: !!storyId,
-    refetchInterval: 5000, // Poll every 5 seconds
+    refetchInterval: 10000, // Poll every 10 seconds
     refetchIntervalInBackground: true,
   });
 
