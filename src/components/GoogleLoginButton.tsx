@@ -41,7 +41,7 @@ const GoogleLoginButton = ({ disabled }: GoogleLoginButtonProps) => {
           description: 'Logged in via Google successfully.',
         });
 
-        navigate('/library'); // <-- Redirect to /library now!
+        navigate('/library');
       } catch (error: any) {
         toast({
           title: 'Google login failed',
@@ -62,12 +62,12 @@ const GoogleLoginButton = ({ disabled }: GoogleLoginButtonProps) => {
   return (
     <div className={disabled ? 'pointer-events-none opacity-60' : ''}>
       <button
+        type="button"
         onClick={() => login()}
         className="bg-white border px-4 py-2 rounded shadow flex items-center justify-center w-full">
         <img src="/google-icon.svg" alt="Google" className="h-5 w-5 mr-2" />
         Continue with Google
       </button>
-
     </div>
   );
 };
