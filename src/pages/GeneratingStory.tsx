@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { api } from "@/lib/api";
+import { storiesApi } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Sparkles, Wand2, BookOpen } from "lucide-react";
 
@@ -34,8 +34,8 @@ const GeneratingStory = () => {
   const { data: statusData, isError } = useQuery({
     queryKey: ['story-status', storyId],
     queryFn: async () => {
-      const response = await api.get(`/api/stories/status/${storyId}`);
-      return response.data;
+      if (!storyId) throw new Error('No story ID provided');
+      return await storiesApi.getStatus(storyId);
     },
     enabled: !!storyId,
     refetchInterval: 10000, // Poll every 10 seconds
