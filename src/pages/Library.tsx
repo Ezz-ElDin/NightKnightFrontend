@@ -76,6 +76,12 @@ const Library = () => {
   const endIndex = startIndex + STORIES_PER_PAGE;
   const pagedStories = allNonFavouriteStories.slice(startIndex, endIndex);
   
+  // Debug logging
+  console.log('Total non-favourite stories:', allNonFavouriteStories.length);
+  console.log('Total pages:', totalPages);
+  console.log('Current page:', page);
+  console.log('Stories per page:', STORIES_PER_PAGE);
+  
   const goToPage = (p: number) => {
     setPage(p);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -143,14 +149,19 @@ const Library = () => {
             onDelete={(id) => setDeleteDialog({ open: true, storyId: id })}
           />
           
-          {/* Pagination for non-favourites - always show if there are multiple pages */}
-          {totalPages > 1 && (
-            <PaginationNav 
-              totalPages={totalPages} 
-              page={page} 
-              goToPage={goToPage} 
-            />
-          )}
+          {/* Pagination for non-favourites */}
+          <div className="pagination-debug">
+            <p className="text-sm text-gray-600 mb-2">
+              Debug: {allNonFavouriteStories.length} stories, {totalPages} pages, showing page {page}
+            </p>
+            {totalPages > 1 && (
+              <PaginationNav 
+                totalPages={totalPages} 
+                page={page} 
+                goToPage={goToPage} 
+              />
+            )}
+          </div>
         </div>
       </div>
       
