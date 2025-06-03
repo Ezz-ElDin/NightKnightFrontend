@@ -5,7 +5,6 @@ import { Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import StoryBackground from "@/components/StoryBackground";
 import StoryGallery from "@/components/dashboard/StoryGallery";
-import PaginationNav from "@/components/dashboard/PaginationNav";
 import EmailVerificationBanners from "@/components/dashboard/EmailVerificationBanners";
 import ConfirmDeleteDialog from "@/components/dashboard/ConfirmDeleteDialog";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -66,26 +65,21 @@ const Library = () => {
     },
   });
 
-  // Segregation and pagination
-  const allFavouriteStories = stories.filter((s) => s.is_favourite);
-  const allNonFavouriteStories = stories.filter((s) => !s.is_favourite);
-  
-  // Calculate pagination based on total stories (favourite + non-favourite)
+  // Simple pagination logic
   const totalStories = stories.length;
   const totalPages = Math.ceil(totalStories / STORIES_PER_PAGE);
   const startIndex = (page - 1) * STORIES_PER_PAGE;
   const endIndex = startIndex + STORIES_PER_PAGE;
   
-  // For pagination, we need to combine and slice all stories
-  const allStoriesCombined = [...allFavouriteStories, ...allNonFavouriteStories];
-  const pagedAllStories = allStoriesCombined.slice(startIndex, endIndex);
+  // Get stories for current page
+  const currentPageStories = stories.slice(startIndex, endIndex);
   
-  // Separate the paged stories back into favourites and non-favourites
-  const pagedFavouriteStories = pagedAllStories.filter((s) => s.is_favourite);
-  const pagedNonFavouriteStories = pagedAllStories.filter((s) => !s.is_favourite);
+  // Separate into favourites and non-favourites for current page
+  const favouriteStories = currentPageStories.filter((s) => s.is_favourite);
+  const nonFavouriteStories = currentPageStories.filter((s) => !s.is_favourite);
   
-  const goToPage = (p: number) => {
-    setPage(p);
+  const goToPage = (pageNumber: number) => {
+    setPage(pageNumber);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -131,10 +125,10 @@ const Library = () => {
             <div className="text-center text-red-500 py-12">Failed to load your stories. Please try again.</div>
           )}
           
-          {/* Favourite stories section - only show if there are favourites on this page */}
-          {pagedFavouriteStories.length > 0 && (
+          {/* Favourite stories section */}
+          {favouriteStories.length > 0 && (
             <StoryGallery
-              stories={pagedFavouriteStories}
+              stories={favouriteStories}
               isLoading={isLoading}
               showFavourites={true}
               onStoryClick={handleStoryClick}
@@ -143,10 +137,10 @@ const Library = () => {
             />
           )}
           
-          {/* Gallery for non-favourites - only show if there are non-favourites on this page */}
-          {pagedNonFavouriteStories.length > 0 && (
+          {/* Non-favourite stories section */}
+          {nonFavouriteStories.length > 0 && (
             <StoryGallery
-              stories={pagedNonFavouriteStories}
+              stories={nonFavouriteStories}
               isLoading={isLoading}
               showFavourites={false}
               onStoryClick={handleStoryClick}
@@ -155,13 +149,49 @@ const Library = () => {
             />
           )}
           
-          {/* Pagination - show when total stories > 6 */}
+          {/* Simple pagination - show when total stories > 6 */}
           {totalStories > 6 && (
-            <PaginationNav 
-              totalPages={totalPages} 
-              page={page} 
-              goToPage={goToPage} 
-            />
+            <div className="flex justify-center items-center gap-2 mt-8">
+              {/* Previous button */}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => goToPage(Math.max(1, page - 1))}
+                disabled={page === 1}
+                className="flex items-center gap-1"
+              >
+                Previous
+              </Button>
+              
+              {/* Page numbers */}
+              <div className="flex items-center gap-1">
+                {Array.from({ length: totalPages }, (_, i) => {
+                  const pageNumber = i + 1;
+                  return (
+                    <Button
+                      key={pageNumber}
+                      size="sm"
+                      variant={page === pageNumber ? "default" : "outline"}
+                      className="w-10 h-10"
+                      onClick={() => goToPage(pageNumber)}
+                    >
+                      {pageNumber}
+                    </Button>
+                  );
+                })}
+              </div>
+              
+              {/* Next button */}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => goToPage(Math.min(totalPages, page + 1))}
+                disabled={page === totalPages}
+                className="flex items-center gap-1"
+              >
+                Next
+              </Button>
+            </div>
           )}
         </div>
       </div>
