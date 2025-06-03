@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -279,8 +280,8 @@ export const useStoryCreation = () => {
 
     try {
       const res = await api.post("/api/generate-story/", payload);
-      // Extract story_id from response and navigate to generating page
-      const storyId = res.data.story_id;
+      // Extract story_id from nested response structure
+      const storyId = res.data.data?.story_id;
       if (storyId) {
         navigate(`/generating-story/${storyId}`, { state: { storyData } });
       } else {
