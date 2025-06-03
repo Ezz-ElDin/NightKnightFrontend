@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Heart, Delete, Download } from "lucide-react";
@@ -86,7 +85,7 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, isFavourite, onClick, onFa
 
   return (
     <div
-      className="bg-white rounded-2xl overflow-hidden shadow-sm border border-story-seafoam/30 flex flex-col relative group hover:shadow-lg transition-shadow h-[305px] w-full cursor-pointer"
+      className="bg-white rounded-2xl overflow-hidden shadow-sm border border-story-seafoam/30 flex flex-col relative group hover:shadow-lg transition-shadow min-h-[305px] cursor-pointer"
       onClick={onClick}
       tabIndex={0}
       role="button"
