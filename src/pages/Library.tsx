@@ -66,14 +66,16 @@ const Library = () => {
     },
   });
 
-  // Segregation
+  // Segregation and pagination
   const allFavouriteStories = stories.filter((s) => s.is_favourite);
   const allNonFavouriteStories = stories.filter((s) => !s.is_favourite);
+  
+  // Calculate pagination
   const totalPages = Math.ceil(allNonFavouriteStories.length / STORIES_PER_PAGE);
-  const pagedStories = allNonFavouriteStories.slice(
-    (page - 1) * STORIES_PER_PAGE,
-    page * STORIES_PER_PAGE
-  );
+  const startIndex = (page - 1) * STORIES_PER_PAGE;
+  const endIndex = startIndex + STORIES_PER_PAGE;
+  const pagedStories = allNonFavouriteStories.slice(startIndex, endIndex);
+  
   const goToPage = (p: number) => {
     setPage(p);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -115,10 +117,12 @@ const Library = () => {
               </Button>
             </Link>
           </div>
+          
           {/* Error state */}
           {isError && (
             <div className="text-center text-red-500 py-12">Failed to load your stories. Please try again.</div>
           )}
+          
           {/* Favourite stories section */}
           <StoryGallery
             stories={allFavouriteStories}
@@ -128,6 +132,7 @@ const Library = () => {
             onFavourite={toggleFavourite}
             onDelete={(id) => setDeleteDialog({ open: true, storyId: id })}
           />
+          
           {/* Gallery for non-favourites */}
           <StoryGallery
             stories={pagedStories}
@@ -137,10 +142,18 @@ const Library = () => {
             onFavourite={toggleFavourite}
             onDelete={(id) => setDeleteDialog({ open: true, storyId: id })}
           />
-          {/* Pagination for non-favourites */}
-          <PaginationNav totalPages={totalPages} page={page} goToPage={goToPage} />
+          
+          {/* Pagination for non-favourites - always show if there are multiple pages */}
+          {totalPages > 1 && (
+            <PaginationNav 
+              totalPages={totalPages} 
+              page={page} 
+              goToPage={goToPage} 
+            />
+          )}
         </div>
       </div>
+      
       {/* Delete confirmation dialog */}
       <ConfirmDeleteDialog
         open={deleteDialog.open}
