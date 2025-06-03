@@ -84,14 +84,6 @@ const Library = () => {
   const pagedFavouriteStories = pagedAllStories.filter((s) => s.is_favourite);
   const pagedNonFavouriteStories = pagedAllStories.filter((s) => !s.is_favourite);
   
-  // Debug logging
-  console.log('Total stories:', totalStories);
-  console.log('Total pages:', totalPages);
-  console.log('Current page:', page);
-  console.log('Stories per page:', STORIES_PER_PAGE);
-  console.log('Favourite stories on this page:', pagedFavouriteStories.length);
-  console.log('Non-favourite stories on this page:', pagedNonFavouriteStories.length);
-  
   const goToPage = (p: number) => {
     setPage(p);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -164,18 +156,13 @@ const Library = () => {
           )}
           
           {/* Pagination - show when total stories > 6 */}
-          <div className="pagination-debug">
-            <p className="text-sm text-gray-600 mb-2">
-              Debug: {totalStories} total stories, {totalPages} pages, showing page {page}
-            </p>
-            {totalStories > 6 && (
-              <PaginationNav 
-                totalPages={totalPages} 
-                page={page} 
-                goToPage={goToPage} 
-              />
-            )}
-          </div>
+          {totalStories > 6 && (
+            <PaginationNav 
+              totalPages={totalPages} 
+              page={page} 
+              goToPage={goToPage} 
+            />
+          )}
         </div>
       </div>
       
