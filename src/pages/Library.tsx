@@ -70,17 +70,27 @@ const Library = () => {
   const allFavouriteStories = stories.filter((s) => s.is_favourite);
   const allNonFavouriteStories = stories.filter((s) => !s.is_favourite);
   
-  // Calculate pagination
-  const totalPages = Math.ceil(allNonFavouriteStories.length / STORIES_PER_PAGE);
+  // Calculate pagination based on total stories (favourite + non-favourite)
+  const totalStories = stories.length;
+  const totalPages = Math.ceil(totalStories / STORIES_PER_PAGE);
   const startIndex = (page - 1) * STORIES_PER_PAGE;
   const endIndex = startIndex + STORIES_PER_PAGE;
-  const pagedStories = allNonFavouriteStories.slice(startIndex, endIndex);
+  
+  // For pagination, we need to combine and slice all stories
+  const allStoriesCombined = [...allFavouriteStories, ...allNonFavouriteStories];
+  const pagedAllStories = allStoriesCombined.slice(startIndex, endIndex);
+  
+  // Separate the paged stories back into favourites and non-favourites
+  const pagedFavouriteStories = pagedAllStories.filter((s) => s.is_favourite);
+  const pagedNonFavouriteStories = pagedAllStories.filter((s) => !s.is_favourite);
   
   // Debug logging
-  console.log('Total non-favourite stories:', allNonFavouriteStories.length);
+  console.log('Total stories:', totalStories);
   console.log('Total pages:', totalPages);
   console.log('Current page:', page);
   console.log('Stories per page:', STORIES_PER_PAGE);
+  console.log('Favourite stories on this page:', pagedFavouriteStories.length);
+  console.log('Non-favourite stories on this page:', pagedNonFavouriteStories.length);
   
   const goToPage = (p: number) => {
     setPage(p);
@@ -129,32 +139,36 @@ const Library = () => {
             <div className="text-center text-red-500 py-12">Failed to load your stories. Please try again.</div>
           )}
           
-          {/* Favourite stories section */}
-          <StoryGallery
-            stories={allFavouriteStories}
-            isLoading={isLoading}
-            showFavourites={true}
-            onStoryClick={handleStoryClick}
-            onFavourite={toggleFavourite}
-            onDelete={(id) => setDeleteDialog({ open: true, storyId: id })}
-          />
+          {/* Favourite stories section - only show if there are favourites on this page */}
+          {pagedFavouriteStories.length > 0 && (
+            <StoryGallery
+              stories={pagedFavouriteStories}
+              isLoading={isLoading}
+              showFavourites={true}
+              onStoryClick={handleStoryClick}
+              onFavourite={toggleFavourite}
+              onDelete={(id) => setDeleteDialog({ open: true, storyId: id })}
+            />
+          )}
           
-          {/* Gallery for non-favourites */}
-          <StoryGallery
-            stories={pagedStories}
-            isLoading={isLoading}
-            showFavourites={false}
-            onStoryClick={handleStoryClick}
-            onFavourite={toggleFavourite}
-            onDelete={(id) => setDeleteDialog({ open: true, storyId: id })}
-          />
+          {/* Gallery for non-favourites - only show if there are non-favourites on this page */}
+          {pagedNonFavouriteStories.length > 0 && (
+            <StoryGallery
+              stories={pagedNonFavouriteStories}
+              isLoading={isLoading}
+              showFavourites={false}
+              onStoryClick={handleStoryClick}
+              onFavourite={toggleFavourite}
+              onDelete={(id) => setDeleteDialog({ open: true, storyId: id })}
+            />
+          )}
           
-          {/* Pagination for non-favourites */}
+          {/* Pagination - show when total stories >= 6 */}
           <div className="pagination-debug">
             <p className="text-sm text-gray-600 mb-2">
-              Debug: {allNonFavouriteStories.length} stories, {totalPages} pages, showing page {page}
+              Debug: {totalStories} total stories, {totalPages} pages, showing page {page}
             </p>
-            {totalPages > 1 && (
+            {totalStories >= 6 && (
               <PaginationNav 
                 totalPages={totalPages} 
                 page={page} 
