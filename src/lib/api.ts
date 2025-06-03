@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 
 // Use Vite env variable, fallback to prod URL if not set.
@@ -82,6 +83,12 @@ export interface StoryDetails {
   pages: StoryPage[];
 }
 
+export interface StoryStatus {
+  status: 'pending' | 'processing' | 'completed' | 'failed';
+  progress?: number;
+  message?: string;
+}
+
 // Helper to prepend API_URL to media paths
 const adjustCoverUrl = (url: string) => {
   if (!url) return "";
@@ -130,6 +137,10 @@ export const storiesApi = {
   get: async (id: string | number): Promise<StoryDetails> => {
     const res = await api.get(`/api/stories/${id}/`);
     return normalizeStoryDetails(res.data);
+  },
+  getStatus: async (id: string | number): Promise<StoryStatus> => {
+    const res = await api.get(`/api/stories/status/${id}/`);
+    return res.data;
   },
   favourite: async (id: number): Promise<void> => {
     await api.post(`/api/stories/${id}/favourite/`);
