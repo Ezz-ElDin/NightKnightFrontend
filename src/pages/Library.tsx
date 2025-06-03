@@ -163,12 +163,12 @@ const Library = () => {
             />
           )}
           
-          {/* Pagination - show when total stories >= 6 */}
+          {/* Pagination - show when total stories > 6 */}
           <div className="pagination-debug">
             <p className="text-sm text-gray-600 mb-2">
               Debug: {totalStories} total stories, {totalPages} pages, showing page {page}
             </p>
-            {totalStories >= 6 && (
+            {totalStories > 6 && (
               <PaginationNav 
                 totalPages={totalPages} 
                 page={page} 
