@@ -26,13 +26,19 @@ const Library = () => {
   // ==== React Query: list stories ====
   const queryClient = useQueryClient();
   const {
-    data: stories = [],
+    data: allStories = [],
     isLoading,
     isError,
   } = useQuery({
     queryKey: ['stories'],
     queryFn: storiesApi.list,
     refetchOnWindowFocus: false,
+  });
+
+  // Filter stories to only show completed ones
+  const stories = allStories.filter((story: Story & { status?: string }) => {
+    // If status is not provided, assume it's completed (backward compatibility)
+    return !story.status || story.status === 'completed';
   });
 
   // ==== React Query: toggle favourite ====
