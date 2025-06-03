@@ -65,18 +65,18 @@ const Library = () => {
     },
   });
 
-  // Simple pagination logic
-  const totalStories = stories.length;
-  const totalPages = Math.ceil(totalStories / STORIES_PER_PAGE);
+  // Separate favourites and non-favourites
+  const favouriteStories = stories.filter((s) => s.is_favourite);
+  const nonFavouriteStories = stories.filter((s) => !s.is_favourite);
+  
+  // Pagination logic for recent stories only
+  const totalRecentStories = nonFavouriteStories.length;
+  const totalPages = Math.ceil(totalRecentStories / STORIES_PER_PAGE);
   const startIndex = (page - 1) * STORIES_PER_PAGE;
   const endIndex = startIndex + STORIES_PER_PAGE;
   
-  // Get stories for current page
-  const currentPageStories = stories.slice(startIndex, endIndex);
-  
-  // Separate into favourites and non-favourites for current page
-  const favouriteStories = currentPageStories.filter((s) => s.is_favourite);
-  const nonFavouriteStories = currentPageStories.filter((s) => !s.is_favourite);
+  // Get recent stories for current page
+  const currentPageRecentStories = nonFavouriteStories.slice(startIndex, endIndex);
   
   const goToPage = (pageNumber: number) => {
     setPage(pageNumber);
@@ -125,7 +125,7 @@ const Library = () => {
             <div className="text-center text-red-500 py-12">Failed to load your stories. Please try again.</div>
           )}
           
-          {/* Favourite stories section */}
+          {/* Favourite stories section - always show all favourites */}
           {favouriteStories.length > 0 && (
             <StoryGallery
               stories={favouriteStories}
@@ -137,10 +137,10 @@ const Library = () => {
             />
           )}
           
-          {/* Non-favourite stories section */}
-          {nonFavouriteStories.length > 0 && (
+          {/* Recent stories section - paginated */}
+          {currentPageRecentStories.length > 0 && (
             <StoryGallery
-              stories={nonFavouriteStories}
+              stories={currentPageRecentStories}
               isLoading={isLoading}
               showFavourites={false}
               onStoryClick={handleStoryClick}
@@ -149,8 +149,8 @@ const Library = () => {
             />
           )}
           
-          {/* Simple pagination - show when total stories > 6 */}
-          {totalStories > 6 && (
+          {/* Pagination for recent stories only - show when total recent stories > 6 */}
+          {totalRecentStories > STORIES_PER_PAGE && (
             <div className="flex justify-center items-center gap-2 mt-8">
               {/* Previous button */}
               <Button
