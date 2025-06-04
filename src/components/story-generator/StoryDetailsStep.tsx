@@ -83,7 +83,7 @@ const StoryDetailsStep: React.FC<StoryDetailsStepProps> = ({ storyData, updateSt
                 </div>
                 <button
                   className="p-3 rounded-xl bg-primary/10 hover:bg-primary/20"
-                  onClick={() => updateStoryData({ pages: Math.min(25, storyData.pages + 5) })}
+                  onClick={() => updateStoryData({ pages: Math.min(30, storyData.pages + 5) })}
                 >
                   Longer
                 </button>

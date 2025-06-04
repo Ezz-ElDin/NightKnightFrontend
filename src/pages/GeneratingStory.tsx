@@ -4,7 +4,7 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { storiesApi } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
-import { Sparkles, Wand2, BookOpen, Palette, Camera } from "lucide-react";
+import { Loader2, Sparkles, Wand2, BookOpen, Palette, Camera } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
 const GeneratingStory = () => {
@@ -151,6 +151,11 @@ const GeneratingStory = () => {
             <div className="animate-bounce" style={{ animationDelay: '400ms' }}>
               <BookOpen className="w-8 h-8 text-blue-500" />
             </div>
+          </div>
+          
+          {/* Central spinning loader */}
+          <div className="flex justify-center mb-6">
+            <Loader2 className="w-16 h-16 text-purple-600 animate-spin" />
           </div>
         </div>
 
