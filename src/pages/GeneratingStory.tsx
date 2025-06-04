@@ -4,7 +4,8 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { storiesApi } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Sparkles, Wand2, BookOpen } from "lucide-react";
+import { Loader2, Sparkles, Wand2, BookOpen, Palette, Camera } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 
 const GeneratingStory = () => {
   const { storyId } = useParams<{ storyId: string }>();
@@ -12,25 +13,57 @@ const GeneratingStory = () => {
   const location = useLocation();
   const { toast } = useToast();
   const [currentMessage, setCurrentMessage] = useState(0);
+  const [failedAttempts, setFailedAttempts] = useState(0);
 
-  const messages = [
-    "Your magic story is coming to life! ✨",
-    "The story fairies are working hard to create your adventure...",
-    "Sprinkling some magic dust on your characters...",
-    "Painting beautiful illustrations just for you...",
-    "Adding the perfect words to your tale...",
-    "Almost ready! Putting the finishing touches...",
-  ];
+  // Stage-specific content
+  const stageContent = {
+    generating_concept: {
+      title: "Crafting Your Story Concept",
+      messages: [
+        "✨ Weaving together the perfect story idea...",
+        "🌟 Creating magical characters and settings...",
+        "📚 Building the foundation of your adventure...",
+        "💫 Designing the heart of your tale..."
+      ],
+      icon: <Sparkles className="w-10 h-10 text-purple-500" />,
+      progress: 25
+    },
+    generating_script: {
+      title: "Writing Your Story",
+      messages: [
+        "✍️ Penning beautiful words for your story...",
+        "📖 Crafting engaging dialogue and narration...",
+        "🎭 Bringing characters to life with words...",
+        "📝 Weaving plot threads together..."
+      ],
+      icon: <BookOpen className="w-10 h-10 text-blue-500" />,
+      progress: 50
+    },
+    generating_visuals: {
+      title: "Designing Visual Elements",
+      messages: [
+        "🎨 Choosing the perfect art style...",
+        "🖼️ Planning beautiful illustrations...",
+        "🌈 Selecting colors that bring magic to life...",
+        "✨ Designing visual storytelling elements..."
+      ],
+      icon: <Palette className="w-10 h-10 text-pink-500" />,
+      progress: 75
+    },
+    generating_images: {
+      title: "Creating Magical Illustrations",
+      messages: [
+        "🖌️ Painting beautiful story illustrations...",
+        "🎭 Bringing scenes to vivid life...",
+        "🌟 Adding the final touches of magic...",
+        "📸 Capturing perfect story moments..."
+      ],
+      icon: <Camera className="w-10 h-10 text-green-500" />,
+      progress: 90
+    }
+  };
 
-  // Rotate messages every 4 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentMessage((prev) => (prev + 1) % messages.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
-
-  // Poll story status every 10 seconds
+  // Poll story status every 20 seconds (increased from 10 for better UX)
   const { data: statusData, isError } = useQuery({
     queryKey: ['story-status', storyId],
     queryFn: async () => {
@@ -38,23 +71,55 @@ const GeneratingStory = () => {
       return await storiesApi.getStatus(storyId);
     },
     enabled: !!storyId,
-    refetchInterval: 10000, // Poll every 10 seconds
+    refetchInterval: 20000, // Poll every 20 seconds
     refetchIntervalInBackground: true,
   });
+
+  // Get current stage content
+  const currentStage = statusData?.status && stageContent[statusData.status as keyof typeof stageContent] 
+    ? stageContent[statusData.status as keyof typeof stageContent]
+    : {
+        title: "Starting Your Story",
+        messages: [
+          "🚀 Preparing to create your magical adventure...",
+          "⭐ Getting everything ready...",
+          "🎪 Setting up the story creation process...",
+          "🌙 Beginning your storytelling journey..."
+        ],
+        icon: <Wand2 className="w-10 h-10 text-purple-500" />,
+        progress: 10
+      };
+
+  // Rotate messages every 4 seconds within the current stage
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentMessage((prev) => (prev + 1) % currentStage.messages.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [currentStage.messages.length]);
 
   // Handle status changes
   useEffect(() => {
     if (statusData?.status === 'completed') {
       navigate(`/library/stories/${storyId}`);
     } else if (statusData?.status === 'failed') {
-      toast({
-        title: "Story generation failed 😬",
-        description: "Something went wrong while creating your story. Please try again.",
-        variant: "destructive",
-      });
-      navigate("/create-story");
+      // Increment failed attempts counter
+      setFailedAttempts(prev => prev + 1);
+      
+      // Only show error after 3 failed attempts (60+ seconds)
+      if (failedAttempts >= 2) { // 0, 1, 2 = 3 attempts
+        toast({
+          title: "Story generation failed 😬",
+          description: "Something went wrong while creating your story. Please try again.",
+          variant: "destructive",
+        });
+        navigate("/create-story");
+      }
+    } else {
+      // Reset failed attempts if we get a non-failed status
+      setFailedAttempts(0);
     }
-  }, [statusData, navigate, storyId, toast]);
+  }, [statusData, navigate, storyId, toast, failedAttempts]);
 
   // Handle errors
   useEffect(() => {
@@ -83,7 +148,7 @@ const GeneratingStory = () => {
               <Sparkles className="w-8 h-8 text-purple-500" />
             </div>
             <div className="animate-bounce" style={{ animationDelay: '200ms' }}>
-              <Wand2 className="w-10 h-10 text-pink-500" />
+              {currentStage.icon}
             </div>
             <div className="animate-bounce" style={{ animationDelay: '400ms' }}>
               <BookOpen className="w-8 h-8 text-blue-500" />
@@ -96,26 +161,29 @@ const GeneratingStory = () => {
           </div>
         </div>
 
-        {/* Animated Message */}
+        {/* Stage Title and Message */}
         <div className="space-y-4">
-          <h1 className="text-3xl font-bold text-purple-800 animate-pulse">
-            Creating Your Story
+          <h1 className="text-3xl font-bold text-purple-800">
+            {currentStage.title}
           </h1>
           <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-purple-200">
             <p className="text-lg text-purple-700 font-medium transition-all duration-500 ease-in-out">
-              {messages[currentMessage]}
+              {currentStage.messages[currentMessage]}
             </p>
           </div>
         </div>
 
         {/* Progress Indicator */}
         <div className="space-y-4">
-          <div className="bg-white/50 rounded-full h-3 overflow-hidden">
-            <div className="bg-gradient-to-r from-purple-500 to-pink-500 h-full rounded-full animate-pulse w-3/4"></div>
-          </div>
+          <Progress value={currentStage.progress} className="h-3" />
           <p className="text-sm text-purple-600">
-            Status: {statusData?.status || 'Starting...'}
+            {Math.round(currentStage.progress)}% Complete • {statusData?.status || 'Starting...'}
           </p>
+          {failedAttempts > 0 && (
+            <p className="text-xs text-orange-600">
+              Retrying... (Attempt {failedAttempts + 1}/3)
+            </p>
+          )}
         </div>
 
         {/* Fun decorative elements */}
