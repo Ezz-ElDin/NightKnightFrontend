@@ -4,7 +4,7 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { storiesApi } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Sparkles, Wand2, BookOpen, Palette, Camera } from "lucide-react";
+import { Sparkles, Wand2, BookOpen, Palette, Camera } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
 const GeneratingStory = () => {
@@ -152,11 +152,6 @@ const GeneratingStory = () => {
               <BookOpen className="w-8 h-8 text-blue-500" />
             </div>
           </div>
-          
-          {/* Central spinning loader */}
-          <div className="flex justify-center mb-6">
-            <Loader2 className="w-16 h-16 text-purple-600 animate-spin" />
-          </div>
         </div>
 
         {/* Stage Title and Message */}
@@ -175,7 +170,7 @@ const GeneratingStory = () => {
         <div className="space-y-4">
           <Progress value={progress} className="h-3" />
           <p className="text-sm text-purple-600">
-            {Math.round(progress)}% Complete • {statusData?.status || 'Starting...'}
+            {Math.round(progress)}% Complete
           </p>
           {failedAttempts > 0 && (
             <p className="text-xs text-orange-600">
