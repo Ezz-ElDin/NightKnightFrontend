@@ -71,7 +71,7 @@ export const useStoryCreation = () => {
     genre: "",
     tone: "",
     narrativeStyle: "",
-    ageRange: "6-8",
+    ageRange: "", // CHANGED: Start with empty string to force selection
     moral: "",
     characters: [],
     // COMMENTED OUT: Let backend handle page count instead of frontend
@@ -120,8 +120,8 @@ export const useStoryCreation = () => {
       // Mode selection must have language & age
       if (!storyData.language || !storyData.ageRange) {
         toast({
-          title: "Choose language & age!",
-          description: "Before you begin, please select your language and age group.",
+          title: "Please complete all fields!",
+          description: "Select both your language and age group before continuing.",
           variant: "destructive",
         });
         return;
