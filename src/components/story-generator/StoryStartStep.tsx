@@ -29,10 +29,11 @@ const StoryStartStep: React.FC<StoryStartStepProps> = ({
   storyData,
   updateStoryData,
 }) => {
+  // COMMENTED OUT: Backend will handle page count instead of frontend forcing it
   // Always force pages=10
-  React.useEffect(() => {
-    if (storyData.pages !== 10) updateStoryData({ pages: 10 });
-  }, [storyData.pages, updateStoryData]);
+  // React.useEffect(() => {
+  //   if (storyData.pages !== 10) updateStoryData({ pages: 10 });
+  // }, [storyData.pages, updateStoryData]);
 
   return (
     <TooltipProvider>

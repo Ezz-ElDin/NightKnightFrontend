@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -75,7 +74,8 @@ export const useStoryCreation = () => {
     ageRange: "6-8",
     moral: "",
     characters: [],
-    pages: 10,
+    // COMMENTED OUT: Let backend handle page count instead of frontend
+    // pages: 10,
     language: "English",
     illustrationStyle: "",
   });
@@ -110,11 +110,11 @@ export const useStoryCreation = () => {
     setStoryData((prev) => ({
       ...prev,
       ...data,
-      pages: data.pages !== undefined ? data.pages : 10
+      // COMMENTED OUT: Backend will handle page count
+      // pages: data.pages !== undefined ? data.pages : 10
     }));
   };
 
-  // Next step logic
   const handleNext = () => {
     if (currentStep === 1) {
       // Mode selection must have language & age
@@ -253,7 +253,8 @@ export const useStoryCreation = () => {
         tone: TONE_MAP[storyData.tone] || "",
         narrative_style: NARRATIVE_MAP[storyData.narrativeStyle] || "",
         illustration_style: ILLUSTRATION_MAP[storyData.illustrationStyle] || "",
-        number_of_pages: storyData.pages || 15,
+        // COMMENTED OUT: Let backend determine optimal page count
+        // number_of_pages: storyData.pages || 15,
         characters: characterList,
       };
     } else if (mode === "magic") {
@@ -273,7 +274,8 @@ export const useStoryCreation = () => {
         tone: cardSettings.tone,
         narrative_style: cardSettings.narrative,
         illustration_style: ILLUSTRATION_MAP[storyData.illustrationStyle] || "",
-        number_of_pages: storyData.pages || 15,
+        // COMMENTED OUT: Let backend determine optimal page count
+        // number_of_pages: storyData.pages || 15,
         characters: characterList,
       };
     }
