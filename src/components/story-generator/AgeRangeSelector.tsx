@@ -1,10 +1,12 @@
 
 import React from "react";
 
+// UPDATED: Hide 7-9 years option, only show 0-3 and 4-6
 const AGE_OPTIONS = [
   { label: "0-3", display: "0-3 years" },
   { label: "4-6", display: "4-6 years" },
-  { label: "7-9", display: "7-9 years" },
+  // COMMENTED OUT: Hide 7-9 years option
+  // { label: "7-9", display: "7-9 years" },
 ];
 
 interface AgeRangeSelectorProps {
@@ -39,4 +41,3 @@ const AgeRangeSelector: React.FC<AgeRangeSelectorProps> = ({ ageRange, setAgeRan
 );
 
 export default AgeRangeSelector;
-

@@ -7,6 +7,9 @@ interface ThemeSelectorProps {
   onSelectTheme: (themeId: string) => void;
 }
 
+// FILTERED THEMES: Hide "exploration" and "whimsical" themes
+const ALLOWED_THEMES = ["fantasy", "animals", "space", "daily"];
+
 const THEME_CARDS = [
   {
     id: "fantasy",
@@ -18,11 +21,12 @@ const THEME_CARDS = [
     emoji: "🐾",
     color: "from-yellow-100 to-green-100",
   },
-  {
-    id: "exploration",
-    emoji: "🌍",
-    color: "from-blue-100 to-sky-100",
-  },
+  // COMMENTED OUT: Hide exploration theme
+  // {
+  //   id: "exploration",
+  //   emoji: "🌍",
+  //   color: "from-blue-100 to-sky-100",
+  // },
   {
     id: "daily",
     emoji: "🏡",
@@ -33,18 +37,19 @@ const THEME_CARDS = [
     emoji: "🪐",
     color: "from-sky-200 to-blue-200",
   },
-  {
-    id: "whimsical",
-    emoji: "🌈",
-    color: "from-pink-100 to-yellow-200",
-  },
+  // COMMENTED OUT: Hide whimsical theme
+  // {
+  //   id: "whimsical",
+  //   emoji: "🌈",
+  //   color: "from-pink-100 to-yellow-200",
+  // },
 ];
 
 const ThemeSelector: React.FC<ThemeSelectorProps> = ({ selectedTheme, onSelectTheme }) => {
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto mt-8">
-        {THEME_CARDS.map((card) => (
+        {THEME_CARDS.filter(card => ALLOWED_THEMES.includes(card.id)).map((card) => (
           <button
             key={card.id}
             type="button"
@@ -68,4 +73,3 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({ selectedTheme, onSelectTh
 };
 
 export default ThemeSelector;
-
