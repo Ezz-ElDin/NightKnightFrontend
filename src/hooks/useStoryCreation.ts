@@ -76,7 +76,7 @@ export const useStoryCreation = () => {
     characters: [],
     // COMMENTED OUT: Let backend handle page count instead of frontend
     // pages: 10,
-    language: "English",
+    language: "", // CHANGED: Start with empty string to force selection
     illustrationStyle: "",
   });
   const { toast } = useToast();
