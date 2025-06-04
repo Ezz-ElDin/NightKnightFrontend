@@ -7,6 +7,7 @@ interface ToneSelectorProps {
   onSelectTone: (toneId: string) => void;
 }
 
+// FILTERED TONES: Hide "kind" and "inspirational" tones
 const TONE_CARDS = [
   {
     id: "playful",
@@ -23,16 +24,18 @@ const TONE_CARDS = [
     emoji: "🎉",
     color: "from-blue-100 to-sky-100",
   },
-  {
-    id: "kind",
-    emoji: "💖",
-    color: "from-orange-100 to-pink-100",
-  },
-  {
-    id: "inspirational",
-    emoji: "🌟",
-    color: "from-yellow-100 to-pink-100",
-  },
+  // COMMENTED OUT: Hide kind tone
+  // {
+  //   id: "kind",
+  //   emoji: "💖",
+  //   color: "from-orange-100 to-pink-100",
+  // },
+  // COMMENTED OUT: Hide inspirational tone
+  // {
+  //   id: "inspirational",
+  //   emoji: "🌟",
+  //   color: "from-yellow-100 to-pink-100",
+  // },
   {
     id: "educational",
     emoji: "📚",
@@ -68,4 +71,3 @@ const ToneSelector: React.FC<ToneSelectorProps> = ({ selectedTone, onSelectTone 
 };
 
 export default ToneSelector;
-

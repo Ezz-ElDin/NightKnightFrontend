@@ -1,3 +1,4 @@
+
 import React from "react";
 
 interface IllustrationStepProps {
@@ -5,6 +6,7 @@ interface IllustrationStepProps {
   setIllustrationStyle: (value: string) => void;
 }
 
+// FILTERED ILLUSTRATIONS: Hide "storybook" style
 const ILLUSTRATIONS = [
   {
     id: "cinematic",
@@ -16,11 +18,12 @@ const ILLUSTRATIONS = [
     title: "Paper Cutout",
     image: "/images/paper_cutout_illustration.png",
   },
-  {
-    id: "storybook",
-    title: "Storybook",
-    image: "/images/storybook_illustration.png",
-  },
+  // COMMENTED OUT: Hide storybook illustration style
+  // {
+  //   id: "storybook",
+  //   title: "Storybook",
+  //   image: "/images/storybook_illustration.png",
+  // },
 ];
 
 const IllustrationStep: React.FC<IllustrationStepProps> = ({
@@ -35,7 +38,7 @@ const IllustrationStep: React.FC<IllustrationStepProps> = ({
       <p className="text-muted-foreground text-center mb-6">
         Select the type of visuals you want for your story.
       </p>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 w-full max-w-3xl">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full max-w-3xl">
         {ILLUSTRATIONS.map((card) => (
           <button
             key={card.id}

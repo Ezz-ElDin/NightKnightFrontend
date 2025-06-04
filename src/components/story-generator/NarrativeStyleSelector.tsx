@@ -7,6 +7,7 @@ interface NarrativeStyleSelectorProps {
   onSelectStyle: (styleId: string) => void;
 }
 
+// FILTERED STYLES: Hide "dreamy" style
 const STYLE_CARDS = [
   {
     id: "classic",
@@ -28,11 +29,12 @@ const STYLE_CARDS = [
     emoji: "✏️",
     color: "from-orange-100 to-pink-100",
   },
-  {
-    id: "dreamy",
-    emoji: "☁️",
-    color: "from-yellow-100 to-pink-100",
-  },
+  // COMMENTED OUT: Hide dreamy style
+  // {
+  //   id: "dreamy",
+  //   emoji: "☁️",
+  //   color: "from-yellow-100 to-pink-100",
+  // },
 ];
 
 const NarrativeStyleSelector: React.FC<NarrativeStyleSelectorProps> = ({ selectedStyle, onSelectStyle }) => {
@@ -63,4 +65,3 @@ const NarrativeStyleSelector: React.FC<NarrativeStyleSelectorProps> = ({ selecte
 };
 
 export default NarrativeStyleSelector;
-

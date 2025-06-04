@@ -2,7 +2,8 @@
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import ModeSelector from "./ModeSelector";
+// COMMENTED OUT: Hide mode selector from user - always use creative mode
+// import ModeSelector from "./ModeSelector";
 import AgeRangeSelector from "./AgeRangeSelector";
 import LanguageSelector from "./LanguageSelector";
 import LessonInput from "./LessonInput";
@@ -29,6 +30,13 @@ const StoryStartStep: React.FC<StoryStartStepProps> = ({
   storyData,
   updateStoryData,
 }) => {
+  // FORCE CREATIVE MODE: Always set mode to creative when component mounts
+  React.useEffect(() => {
+    if (mode !== "creative") {
+      setMode("creative");
+    }
+  }, [mode, setMode]);
+
   // COMMENTED OUT: Backend will handle page count instead of frontend forcing it
   // Always force pages=10
   // React.useEffect(() => {
@@ -49,7 +57,8 @@ const StoryStartStep: React.FC<StoryStartStepProps> = ({
             <p className="text-base text-muted-foreground mt-0.5 ml-8">Let's set up your story adventure!</p>
           </div>
           <div className="flex flex-col gap-6">
-            <ModeSelector mode={mode} setMode={setMode} />
+            {/* COMMENTED OUT: Hide mode selector - always use creative mode */}
+            {/* <ModeSelector mode={mode} setMode={setMode} /> */}
             <AgeRangeSelector ageRange={ageRange} setAgeRange={setAgeRange} />
             <LanguageSelector language={language} setLanguage={setLanguage} />
             <LessonInput value={storyData.moral} onChange={v => updateStoryData({ moral: v })} />
