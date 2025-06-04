@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 
 // Use Vite env variable, fallback to prod URL if not set.
@@ -87,6 +86,7 @@ export interface StoryStatus {
   status: 'pending' | 'processing' | 'completed' | 'failed';
   progress?: number;
   message?: string;
+  percent_complete?: number;
 }
 
 // Helper to prepend API_URL to media paths

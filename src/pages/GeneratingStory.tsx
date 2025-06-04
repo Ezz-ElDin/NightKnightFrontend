@@ -25,8 +25,7 @@ const GeneratingStory = () => {
         "📚 Building the foundation of your adventure...",
         "💫 Designing the heart of your tale..."
       ],
-      icon: <Sparkles className="w-10 h-10 text-purple-500" />,
-      progress: 25
+      icon: <Sparkles className="w-10 h-10 text-purple-500" />
     },
     generating_script: {
       title: "Writing Your Story",
@@ -36,8 +35,7 @@ const GeneratingStory = () => {
         "🎭 Bringing characters to life with words...",
         "📝 Weaving plot threads together..."
       ],
-      icon: <BookOpen className="w-10 h-10 text-blue-500" />,
-      progress: 50
+      icon: <BookOpen className="w-10 h-10 text-blue-500" />
     },
     generating_visuals: {
       title: "Designing Visual Elements",
@@ -47,8 +45,7 @@ const GeneratingStory = () => {
         "🌈 Selecting colors that bring magic to life...",
         "✨ Designing visual storytelling elements..."
       ],
-      icon: <Palette className="w-10 h-10 text-pink-500" />,
-      progress: 75
+      icon: <Palette className="w-10 h-10 text-pink-500" />
     },
     generating_images: {
       title: "Creating Magical Illustrations",
@@ -58,8 +55,7 @@ const GeneratingStory = () => {
         "🌟 Adding the final touches of magic...",
         "📸 Capturing perfect story moments..."
       ],
-      icon: <Camera className="w-10 h-10 text-green-500" />,
-      progress: 90
+      icon: <Camera className="w-10 h-10 text-green-500" />
     }
   };
 
@@ -86,9 +82,11 @@ const GeneratingStory = () => {
           "🎪 Setting up the story creation process...",
           "🌙 Beginning your storytelling journey..."
         ],
-        icon: <Wand2 className="w-10 h-10 text-purple-500" />,
-        progress: 10
+        icon: <Wand2 className="w-10 h-10 text-purple-500" />
       };
+
+  // Get progress from backend or fallback to 10%
+  const progress = statusData?.percent_complete || 10;
 
   // Rotate messages every 4 seconds within the current stage
   useEffect(() => {
@@ -175,9 +173,9 @@ const GeneratingStory = () => {
 
         {/* Progress Indicator */}
         <div className="space-y-4">
-          <Progress value={currentStage.progress} className="h-3" />
+          <Progress value={progress} className="h-3" />
           <p className="text-sm text-purple-600">
-            {Math.round(currentStage.progress)}% Complete • {statusData?.status || 'Starting...'}
+            {Math.round(progress)}% Complete • {statusData?.status || 'Starting...'}
           </p>
           {failedAttempts > 0 && (
             <p className="text-xs text-orange-600">
