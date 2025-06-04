@@ -75,7 +75,7 @@ export const useStoryCreation = () => {
     ageRange: "6-8",
     moral: "",
     characters: [],
-    pages: 15,
+    pages: 10,
     language: "English",
     illustrationStyle: "",
   });
@@ -110,7 +110,7 @@ export const useStoryCreation = () => {
     setStoryData((prev) => ({
       ...prev,
       ...data,
-      pages: data.pages !== undefined ? data.pages : 15
+      pages: data.pages !== undefined ? data.pages : 10
     }));
   };
 
