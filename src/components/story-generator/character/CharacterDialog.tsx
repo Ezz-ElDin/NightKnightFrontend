@@ -5,6 +5,7 @@ import {
   DialogHeader, 
   DialogTitle 
 } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Character } from "../constants";
 import { AppearanceForm } from "./AppearanceForm";
@@ -183,31 +184,33 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
       if (!newOpenState) resetCharacter();
       onOpenChange(newOpenState);
     }}>
-      <DialogContent className="sm:max-w-[700px] md:max-w-[800px] max-h-[90vh] overflow-y-auto bg-gradient-to-b from-white to-primary/5 border-2 border-primary/30 rounded-xl shadow-xl">
+      <DialogContent className="sm:max-w-[700px] md:max-w-[800px] max-h-[90vh] touch-pan-y bg-gradient-to-b from-white to-primary/5 border-2 border-primary/30 rounded-xl shadow-xl">
         <DialogHeader>
           <DialogTitle className="text-2xl text-center font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600">
             {initialCharacter ? "Edit Magical Character" : "Create a Magical Character"}
           </DialogTitle>
         </DialogHeader>
-        <div className="space-y-5 py-4">
-          {/* Role selection at the top */}
-          <RoleSelector 
-            selectedRole={role}
-            onRoleChange={setRole}
-          />
-          <CharacterNameInput
-            name={name}
-            onNameChange={setName}
-          />
-          <AppearanceForm
-            {...propsForForm}
-          />
-          <PersonalitySelector
-            selectedTraits={personality}
-            onTraitToggle={togglePersonalityTrait}
-          />
-        </div>
-        <div className="flex justify-end">
+        <ScrollArea className="h-[70vh] touch-pan-y">
+          <div className="space-y-5 py-4 px-1">
+            {/* Role selection at the top */}
+            <RoleSelector 
+              selectedRole={role}
+              onRoleChange={setRole}
+            />
+            <CharacterNameInput
+              name={name}
+              onNameChange={setName}
+            />
+            <AppearanceForm
+              {...propsForForm}
+            />
+            <PersonalitySelector
+              selectedTraits={personality}
+              onTraitToggle={togglePersonalityTrait}
+            />
+          </div>
+        </ScrollArea>
+        <div className="flex justify-end pt-4 border-t">
           <Button 
             onClick={handleAddCharacter}
             className="text-lg px-8 py-6 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 shadow-lg"
