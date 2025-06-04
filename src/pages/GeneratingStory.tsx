@@ -175,7 +175,7 @@ const GeneratingStory = () => {
         <div className="space-y-4">
           <Progress value={progress} className="h-3" />
           <p className="text-sm text-purple-600">
-            {Math.round(progress)}% Complete • {statusData?.status || 'Starting...'}
+            {Math.round(progress)}% Complete
           </p>
           {failedAttempts > 0 && (
             <p className="text-xs text-orange-600">
