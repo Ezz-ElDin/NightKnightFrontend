@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { User, Mail, Lock } from "lucide-react";
+import { User, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const ProfileSettings = () => {
@@ -12,11 +12,35 @@ const ProfileSettings = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { toast } = useToast();
 
   // Get user email from localStorage
   const userEmail = localStorage.getItem("userEmail") || "user@example.com";
   const userName = localStorage.getItem("userName") || "User";
+
+  // Password validation functions
+  const validatePassword = (password: string) => {
+    const errors = [];
+    if (password.length < 8) {
+      errors.push("Password must be at least 8 characters long");
+    }
+    if (!/(?=.*[a-z])/.test(password)) {
+      errors.push("Password must contain at least one lowercase letter");
+    }
+    if (!/(?=.*[A-Z])/.test(password)) {
+      errors.push("Password must contain at least one uppercase letter");
+    }
+    if (!/(?=.*\d)/.test(password)) {
+      errors.push("Password must contain at least one number");
+    }
+    if (!/(?=.*[@$!%*?&])/.test(password)) {
+      errors.push("Password must contain at least one special character (@$!%*?&)");
+    }
+    return errors;
+  };
 
   const handlePasswordChange = async () => {
     if (!currentPassword || !newPassword || !confirmPassword) {
@@ -37,10 +61,22 @@ const ProfileSettings = () => {
       return;
     }
 
-    if (newPassword.length < 6) {
+    // Validate new password
+    const passwordErrors = validatePassword(newPassword);
+    if (passwordErrors.length > 0) {
+      toast({
+        title: "Password Requirements Not Met",
+        description: passwordErrors.join(". "),
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Check if new password is different from current password
+    if (currentPassword === newPassword) {
       toast({
         title: "Error",
-        description: "Password must be at least 6 characters long.",
+        description: "New password must be different from current password.",
         variant: "destructive",
       });
       return;
@@ -62,6 +98,9 @@ const ProfileSettings = () => {
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
+      setShowCurrentPassword(false);
+      setShowNewPassword(false);
+      setShowConfirmPassword(false);
     } catch (error) {
       toast({
         title: "Error",
@@ -72,6 +111,17 @@ const ProfileSettings = () => {
       setIsChangingPassword(false);
     }
   };
+
+  const getPasswordStrength = (password: string) => {
+    const errors = validatePassword(password);
+    if (password.length === 0) return { strength: 0, label: "" };
+    if (errors.length === 0) return { strength: 100, label: "Strong" };
+    if (errors.length <= 2) return { strength: 70, label: "Good" };
+    if (errors.length <= 3) return { strength: 40, label: "Fair" };
+    return { strength: 20, label: "Weak" };
+  };
+
+  const passwordStrength = getPasswordStrength(newPassword);
 
   return (
     <div className="space-y-8">
@@ -127,35 +177,126 @@ const ProfileSettings = () => {
         <div className="space-y-4">
           <div>
             <Label htmlFor="current-password" className="font-medium">Current Password</Label>
-            <Input
-              id="current-password"
-              type="password"
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-              placeholder="Enter your current password"
-            />
+            <div className="relative">
+              <Input
+                id="current-password"
+                type={showCurrentPassword ? "text" : "password"}
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                placeholder="Enter your current password"
+                className="pr-10"
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+              >
+                {showCurrentPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+              </Button>
+            </div>
           </div>
 
           <div>
             <Label htmlFor="new-password" className="font-medium">New Password</Label>
-            <Input
-              id="new-password"
-              type="password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              placeholder="Enter your new password"
-            />
+            <div className="relative">
+              <Input
+                id="new-password"
+                type={showNewPassword ? "text" : "password"}
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder="Enter your new password"
+                className="pr-10"
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+              >
+                {showNewPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+              </Button>
+            </div>
+            
+            {/* Password strength indicator */}
+            {newPassword && (
+              <div className="mt-2 space-y-2">
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 bg-muted rounded-full h-2">
+                    <div 
+                      className={`h-2 rounded-full transition-all duration-300 ${
+                        passwordStrength.strength >= 70 ? 'bg-green-500' :
+                        passwordStrength.strength >= 40 ? 'bg-yellow-500' : 'bg-red-500'
+                      }`}
+                      style={{ width: `${passwordStrength.strength}%` }}
+                    />
+                  </div>
+                  <span className="text-sm font-medium">{passwordStrength.label}</span>
+                </div>
+                
+                {/* Password requirements */}
+                <div className="text-sm text-muted-foreground">
+                  <p className="font-medium mb-1">Password must contain:</p>
+                  <ul className="space-y-1">
+                    <li className={newPassword.length >= 8 ? "text-green-600" : ""}>
+                      • At least 8 characters
+                    </li>
+                    <li className={/(?=.*[a-z])/.test(newPassword) ? "text-green-600" : ""}>
+                      • One lowercase letter
+                    </li>
+                    <li className={/(?=.*[A-Z])/.test(newPassword) ? "text-green-600" : ""}>
+                      • One uppercase letter
+                    </li>
+                    <li className={/(?=.*\d)/.test(newPassword) ? "text-green-600" : ""}>
+                      • One number
+                    </li>
+                    <li className={/(?=.*[@$!%*?&])/.test(newPassword) ? "text-green-600" : ""}>
+                      • One special character (@$!%*?&)
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            )}
           </div>
 
           <div>
             <Label htmlFor="confirm-password" className="font-medium">Confirm New Password</Label>
-            <Input
-              id="confirm-password"
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="Confirm your new password"
-            />
+            <div className="relative">
+              <Input
+                id="confirm-password"
+                type={showConfirmPassword ? "text" : "password"}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Confirm your new password"
+                className="pr-10"
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+              </Button>
+            </div>
+            {confirmPassword && newPassword !== confirmPassword && (
+              <p className="text-sm text-red-500 mt-1">Passwords do not match</p>
+            )}
           </div>
 
           <Button 
