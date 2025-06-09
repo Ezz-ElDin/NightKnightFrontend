@@ -14,7 +14,7 @@ const AccountSettings = () => {
       <div className="container mx-auto py-8 px-4 max-w-4xl">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-primary">Account Settings</h1>
-          <Link to="/library">
+          <Link to="/a/library">
             <Button variant="outline">Back to Dashboard</Button>
           </Link>
         </div>

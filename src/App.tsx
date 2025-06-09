@@ -36,7 +36,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={null} />
           <Route path="/waiting-list" element={null} />
-          <Route path="/generating-story/*" element={null} />
+          <Route path="/a/generating-story/*" element={null} />
           <Route path="*" element={<Navbar />} />
         </Routes>
         
@@ -47,86 +47,86 @@ const App = () => (
               <Route path="/" element={<WaitingList />} />
               <Route path="/waiting-list" element={<WaitingList />} />
               
-              {/* Original homepage is now accessible via /homepage */}
-              <Route path="/homepage" element={<Index />} />
+              {/* Original homepage is now accessible via /a/homepage */}
+              <Route path="/a/homepage" element={<Index />} />
               
-              {/* Protected routes */}
-              <Route path="/library" element={
+              {/* Protected routes with /a/ prefix */}
+              <Route path="/a/library" element={
                 <RequireAuth>
                   <Library />
                 </RequireAuth>
               } />
-              <Route path="/create-story" element={
+              <Route path="/a/create-story" element={
                 <RequireAuth>
                   <CreateStory />
                 </RequireAuth>
               } />
               {/* NEW: Generating story route */}
-              <Route path="/generating-story/:storyId" element={
+              <Route path="/a/generating-story/:storyId" element={
                 <RequireAuth>
                   <GeneratingStory />
                 </RequireAuth>
               } />
               {/* UNPROTECTED temp route for testing */}
-              <Route path="/temp" element={<CreateStory />} />
-              <Route path="/account-settings" element={
+              <Route path="/a/temp" element={<CreateStory />} />
+              <Route path="/a/account-settings" element={
                 <RequireAuth>
                   <AccountSettings />
                 </RequireAuth>
               } />
               {/* UPDATED route for story viewer with storyId param */}
-              <Route path="/library/stories/:storyId" element={
+              <Route path="/a/library/stories/:storyId" element={
                 <RequireAuth>
                   <StoryViewer />
                 </RequireAuth>
               } />
 
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/auth/callback" element={<AuthCallback />} />
+              <Route path="/a/login" element={<Login />} />
+              <Route path="/a/register" element={<Register />} />
+              <Route path="/a/auth/callback" element={<AuthCallback />} />
               <Route path="*" element={<NotFound />} />
             </>
           ) : (
             <>
               {/* Standard routing configuration if waiting list mode is disabled */}
               <Route path="/" element={<Index />} />
-              <Route path="/homepage" element={<Index />} />
+              <Route path="/a/homepage" element={<Index />} />
               <Route path="/waiting-list" element={<WaitingList />} />
               
-              {/* Protected routes */}
-              <Route path="/library" element={
+              {/* Protected routes with /a/ prefix */}
+              <Route path="/a/library" element={
                 <RequireAuth>
                   <Library />
                 </RequireAuth>
               } />
-              <Route path="/create-story" element={
+              <Route path="/a/create-story" element={
                 <RequireAuth>
                   <CreateStory />
                 </RequireAuth>
               } />
               {/* NEW: Generating story route */}
-              <Route path="/generating-story/:storyId" element={
+              <Route path="/a/generating-story/:storyId" element={
                 <RequireAuth>
                   <GeneratingStory />
                 </RequireAuth>
               } />
               {/* UNPROTECTED temp route for testing */}
-              <Route path="/temp" element={<CreateStory />} />
-              <Route path="/account-settings" element={
+              <Route path="/a/temp" element={<CreateStory />} />
+              <Route path="/a/account-settings" element={
                 <RequireAuth>
                   <AccountSettings />
                 </RequireAuth>
               } />
               {/* UPDATED route for story viewer with storyId param */}
-              <Route path="/library/stories/:storyId" element={
+              <Route path="/a/library/stories/:storyId" element={
                 <RequireAuth>
                   <StoryViewer />
                 </RequireAuth>
               } />
 
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/auth/callback" element={<AuthCallback />} />
+              <Route path="/a/login" element={<Login />} />
+              <Route path="/a/register" element={<Register />} />
+              <Route path="/a/auth/callback" element={<AuthCallback />} />
               <Route path="*" element={<NotFound />} />
             </>
           )}

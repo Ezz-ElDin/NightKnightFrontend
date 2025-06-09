@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import NavLogo from "./NavLogo";
@@ -13,9 +12,9 @@ const Navbar = () => {
   
   // Determine authentication status by route prefix
   const loggedInPrefixes = [
-    "/library",
-    "/create-story",
-    "/account-settings"
+    "/a/library",
+    "/a/create-story",
+    "/a/account-settings"
   ];
   const isLoggedIn = loggedInPrefixes.some(prefix => location.pathname.startsWith(prefix));
   
@@ -53,4 +52,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-

@@ -13,14 +13,14 @@ const AuthCallback = () => {
     
     if (token) {
       localStorage.setItem('authToken', token);
-      navigate('/library'); // <-- Redirect to /library now!
+      navigate('/a/library'); // <-- Redirect to /a/library now!
     } else {
       toast({
         title: 'Authentication Error',
         description: 'No token received from authentication provider.',
         variant: 'destructive',
       });
-      navigate('/login');
+      navigate('/a/login');
     }
   }, [searchParams, navigate, toast]);
 

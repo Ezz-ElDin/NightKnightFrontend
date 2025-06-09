@@ -32,19 +32,19 @@ const GuestMenu = ({ isMobile = false, onMobileMenuClose }: GuestMenuProps) => {
           Pricing
         </Link>
         <div className="pt-2 flex flex-col space-y-3">
-          <Link to="/register" onClick={handleClick}>
+          <Link to="/a/register" onClick={handleClick}>
             <Button className="w-full bg-story-purple hover:bg-story-purple/90 text-white gap-1.5">
               <Sparkles className="h-4 w-4" />
               Start Creating
             </Button>
           </Link>
-          <Link to="/login" onClick={handleClick}>
+          <Link to="/a/login" onClick={handleClick}>
             <Button variant="ghost" className="w-full text-story-blue hover:bg-story-blue/10 gap-1.5">
               <LogIn className="h-4 w-4" />
               Log In
             </Button>
           </Link>
-          <Link to="/register" onClick={handleClick}>
+          <Link to="/a/register" onClick={handleClick}>
             <Button variant="outline" className="w-full border-story-blue text-story-blue hover:bg-story-blue/10 gap-1.5">
               <UserPlus className="h-4 w-4" />
               Sign Up
@@ -57,20 +57,20 @@ const GuestMenu = ({ isMobile = false, onMobileMenuClose }: GuestMenuProps) => {
 
   return (
     <div className="flex items-center gap-3 ml-2">
-      <Link to="/register">
+      <Link to="/a/register">
         <Button className="bg-story-purple hover:bg-story-purple/90 text-white gap-1.5">
           <Sparkles className="h-4 w-4" />
           Start Creating
         </Button>
       </Link>
       <div className="h-6 w-px bg-story-lightPurple/50"></div>
-      <Link to="/login">
+      <Link to="/a/login">
         <Button variant="ghost" className="text-story-blue hover:bg-story-blue/10 gap-1">
           <LogIn className="h-4 w-4" />
           Log In
         </Button>
       </Link>
-      <Link to="/register">
+      <Link to="/a/register">
         <Button variant="outline" className="border-story-blue text-story-blue hover:bg-story-blue/10 gap-1">
           <UserPlus className="h-4 w-4" />
           Sign Up
