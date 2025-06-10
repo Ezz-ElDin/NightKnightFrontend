@@ -49,7 +49,8 @@ const WaitingListForm = ({ onSubmissionMessage }: WaitingListFormProps) => {
       setFormSubmitted(true);
       setSubmissionStatus({
         type: 'success',
-        message: 'Thanks for joining! Please check your email to confirm your subscription.'
+        message: 'You are all set! Thank you for joining, we will let you know when the story fairy is ready.'
+        // message: 'Thanks for joining! Please check your email to confirm your subscription.'
       });
       setName("");
       setEmail("");
