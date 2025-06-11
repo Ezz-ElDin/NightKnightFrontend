@@ -33,7 +33,7 @@ export const useAuthForm = ({ initialMode = 'login' }: UseAuthFormProps = {}) =>
         ? 'You have successfully logged in.'
         : 'Your account has been created successfully.',
     });
-    navigate('/dashboard');
+    navigate('/a/library');
   };
 
   const { mutate: login, isPending: isLoginPending } = useMutation({

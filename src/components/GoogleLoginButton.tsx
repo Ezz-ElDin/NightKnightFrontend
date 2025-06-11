@@ -47,7 +47,7 @@ const GoogleLoginButton = ({ disabled }: GoogleLoginButtonProps) => {
           description: 'Logged in via Google successfully.',
         });
 
-        navigate('/library');
+        navigate('/a/library');
       } catch (error: any) {
         toast({
           title: 'Google login failed',
