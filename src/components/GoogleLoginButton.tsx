@@ -32,12 +32,9 @@ const GoogleLoginButton = ({ disabled }: GoogleLoginButtonProps) => {
           { headers: { 'Content-Type': 'application/json' } }
         );
 
-        const key = res.data.key || res.data.access;
+        const key = res.data.key;
         localStorage.setItem('authToken', key);
         localStorage.setItem('loginMethod', 'google');
-        // Save user name and email if present
-        if (res.data.name) localStorage.setItem('userName', res.data.name);
-        if (res.data.email) localStorage.setItem('userEmail', res.data.email);
 
         // Fire custom event so Navbar/Menu listeners can update live
         window.dispatchEvent(new Event("user-info-updated"));
