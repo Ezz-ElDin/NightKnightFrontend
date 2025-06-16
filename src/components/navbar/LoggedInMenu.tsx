@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Home, BookOpen, User, Settings, LogOut } from "lucide-react";
 import { 
@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { authApi } from "@/lib/api";
+import { useToast } from "@/hooks/use-toast";
 
 interface LoggedInMenuProps {
   isMobile?: boolean;
@@ -24,10 +25,38 @@ interface LoggedInMenuProps {
 }
 
 const LoggedInMenu = ({ isMobile = false, onMobileMenuClose }: LoggedInMenuProps) => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
   const handleClick = () => {
     if (isMobile && onMobileMenuClose) {
       onMobileMenuClose();
     }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await authApi.logout();
+    } catch (error) {
+      console.log("Logout error (non-critical):", error);
+    }
+    
+    // Clear auth token from localStorage
+    localStorage.removeItem('authToken');
+    
+    // Show success message
+    toast({
+      title: "Logged out successfully",
+      description: "You have been logged out of your account.",
+    });
+    
+    // Close mobile menu if applicable
+    if (isMobile && onMobileMenuClose) {
+      onMobileMenuClose();
+    }
+    
+    // Redirect to homepage
+    navigate('/');
   };
 
   // Fetch user data from API
@@ -61,10 +90,13 @@ const LoggedInMenu = ({ isMobile = false, onMobileMenuClose }: LoggedInMenuProps
           <Settings className="h-4 w-4" />
           Account Settings
         </Link>
-        <Link to="/" className="px-3 py-2 rounded-xl hover:bg-story-lightPurple/50 text-red-600 font-medium flex items-center gap-2" onClick={handleClick}>
+        <button 
+          onClick={handleLogout}
+          className="px-3 py-2 rounded-xl hover:bg-story-lightPurple/50 text-red-600 font-medium flex items-center gap-2 w-full text-left"
+        >
           <LogOut className="h-4 w-4" />
           Log Out
-        </Link>
+        </button>
       </>
     );
   }
@@ -111,10 +143,10 @@ const LoggedInMenu = ({ isMobile = false, onMobileMenuClose }: LoggedInMenuProps
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
-                <Link to="/" className="cursor-pointer flex items-center text-red-600">
+                <button onClick={handleLogout} className="cursor-pointer flex items-center text-red-600 w-full">
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>Log out</span>
-                </Link>
+                </button>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
