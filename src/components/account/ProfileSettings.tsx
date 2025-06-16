@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,6 @@ const ProfileSettings = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -24,6 +23,33 @@ const ProfileSettings = () => {
     queryFn: async () => {
       const response = await authApi.getUser();
       return response.data;
+    },
+  });
+
+  // Password change mutation
+  const { mutate: changePassword, isPending: isChangingPassword } = useMutation({
+    mutationFn: (data: { new_password1: string; new_password2: string }) => 
+      authApi.changePassword(data),
+    onSuccess: () => {
+      toast({
+        title: "Success",
+        description: "Password changed successfully.",
+      });
+
+      // Clear the form
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+      setShowCurrentPassword(false);
+      setShowNewPassword(false);
+      setShowConfirmPassword(false);
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error",
+        description: error.response?.data?.detail || "Failed to change password. Please try again.",
+        variant: "destructive",
+      });
     },
   });
 
@@ -92,34 +118,11 @@ const ProfileSettings = () => {
       return;
     }
 
-    setIsChangingPassword(true);
-
-    try {
-      // In a real app, this would call an API to change the password
-      // For now, we'll simulate the process
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      toast({
-        title: "Success",
-        description: "Password changed successfully.",
-      });
-
-      // Clear the form
-      setCurrentPassword("");
-      setNewPassword("");
-      setConfirmPassword("");
-      setShowCurrentPassword(false);
-      setShowNewPassword(false);
-      setShowConfirmPassword(false);
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to change password. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsChangingPassword(false);
-    }
+    // Call the API to change password
+    changePassword({
+      new_password1: newPassword,
+      new_password2: confirmPassword,
+    });
   };
 
   const getPasswordStrength = (password: string) => {
