@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 
 // Use Vite env variable, fallback to prod URL if not set.
@@ -19,7 +20,7 @@ api.interceptors.request.use((config) => {
   if (
     token &&
     config.url &&
-    !config.url.endsWith('/api/auth/registration/')
+    !config.url.endsWith('/api/registration/')
   ) {
     config.headers.Authorization = `Token ${token}`;
   }
@@ -47,7 +48,7 @@ export interface AuthResponse {
 
 export const authApi = {
   login: (data: LoginData) =>
-    api.post<AuthResponse>('/api/auth/login/', data),
+    api.post<AuthResponse>('/api/login/', data),
   register: (data: RegisterData) =>
     api.post<AuthResponse>(
       '/api/registration/',
