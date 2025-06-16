@@ -8,6 +8,7 @@ import Navbar from "./components/Navbar";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import ResetPassword from "./pages/ResetPassword";
 // Removed Dashboard import, as the page doesn't exist and is now Library
 import CreateStory from "./pages/CreateStory";
 import AccountSettings from "./pages/AccountSettings";
@@ -37,6 +38,7 @@ const App = () => (
           <Route path="/" element={null} />
           <Route path="/waiting-list" element={null} />
           <Route path="/a/generating-story/*" element={null} />
+          <Route path="/reset-password" element={null} />
           <Route path="*" element={<Navbar />} />
         </Routes>
         
@@ -49,6 +51,9 @@ const App = () => (
               
               {/* Original homepage is now accessible via /a/homepage */}
               <Route path="/a/homepage" element={<Index />} />
+              
+              {/* Password reset route (unprotected) */}
+              <Route path="/reset-password" element={<ResetPassword />} />
               
               {/* Protected routes with /a/ prefix */}
               <Route path="/a/library" element={
@@ -92,6 +97,9 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/a/homepage" element={<Index />} />
               <Route path="/waiting-list" element={<WaitingList />} />
+              
+              {/* Password reset route (unprotected) */}
+              <Route path="/reset-password" element={<ResetPassword />} />
               
               {/* Protected routes with /a/ prefix */}
               <Route path="/a/library" element={
