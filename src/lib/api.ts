@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 
 // Use Vite env variable, fallback to prod URL if not set.
@@ -86,7 +87,7 @@ export const authApi = {
       headers: { Authorization: undefined }, // Explicitly remove Authorization header
     }),
   confirmResetPassword: (data: ConfirmResetPasswordData) =>
-    api.post(`/api/password/reset/confirm/${data.uid}/${data.token}/`, {
+    api.post(`/api/auth/password/reset/confirm/${data.uid}/${data.token}/`, {
       new_password1: data.new_password1,
       new_password2: data.new_password2,
     }, {
