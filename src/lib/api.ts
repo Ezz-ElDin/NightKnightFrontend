@@ -38,6 +38,11 @@ export interface RegisterData {
   name: string;
 }
 
+export interface ChangePasswordData {
+  new_password1: string;
+  new_password2: string;
+}
+
 // Note: Updated to include name and email from backend serializer responses
 export interface AuthResponse {
   key: string;
@@ -58,6 +63,8 @@ export const authApi = {
     ),
   logout: () =>
     api.post('/api/auth/logout/', {}),
+  changePassword: (data: ChangePasswordData) =>
+    api.post('/api/auth/password/change/', data),
 };
 
 // Exported Story type for normalized stories
