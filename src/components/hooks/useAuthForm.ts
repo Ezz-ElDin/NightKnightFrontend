@@ -39,13 +39,12 @@ export const useAuthForm = ({ initialMode = 'login' }: UseAuthFormProps = {}) =>
   const { mutate: login, isPending: isLoginPending } = useMutation({
     mutationFn: (data: LoginData) => authApi.login(data),
     onSuccess: (response) => {
-      // Use name/email from server if available
-      const responseData = response.data;
+      // Only key is returned from login endpoint
       handleSuccess(
-        responseData.key,
+        response.data.key,
         {
-          name: responseData.name ?? name,
-          email: responseData.email ?? email,
+          name: name,
+          email: email,
         }
       );
     },
@@ -61,13 +60,12 @@ export const useAuthForm = ({ initialMode = 'login' }: UseAuthFormProps = {}) =>
   const { mutate: register, isPending: isRegisterPending } = useMutation({
     mutationFn: (data: RegisterData) => authApi.register(data),
     onSuccess: (response) => {
-      // Registration endpoint may or may not return name/email.
-      const responseData = response.data;
+      // Only key is returned from registration endpoint
       handleSuccess(
-        responseData.key,
+        response.data.key,
         {
-          name: responseData.name ?? name,
-          email: responseData.email ?? email,
+          name: name,
+          email: email,
         }
       );
     },

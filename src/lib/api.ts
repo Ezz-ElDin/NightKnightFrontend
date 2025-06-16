@@ -54,11 +54,9 @@ export interface ConfirmResetPasswordData {
   new_password2: string;
 }
 
-// Note: Updated to include name and email from backend serializer responses
+// Updated to only include key for login and registration
 export interface AuthResponse {
   key: string;
-  name: string;
-  email: string;
 }
 
 export interface UserData {
