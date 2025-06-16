@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { User, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { authApi } from "@/lib/api";
+import { useNavigate } from "react-router-dom";
 
 const ProfileSettings = () => {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -16,6 +17,7 @@ const ProfileSettings = () => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   // Fetch user data from API
   const { data: userData, isLoading, error } = useQuery({
@@ -30,10 +32,10 @@ const ProfileSettings = () => {
   const { mutate: changePassword, isPending: isChangingPassword } = useMutation({
     mutationFn: (data: { new_password1: string; new_password2: string }) => 
       authApi.changePassword(data),
-    onSuccess: () => {
+    onSuccess: async () => {
       toast({
         title: "Success",
-        description: "Password changed successfully.",
+        description: "Password changed successfully. You will be logged out.",
       });
 
       // Clear the form
@@ -43,6 +45,19 @@ const ProfileSettings = () => {
       setShowCurrentPassword(false);
       setShowNewPassword(false);
       setShowConfirmPassword(false);
+
+      // Logout user and redirect to homepage
+      try {
+        await authApi.logout();
+      } catch (error) {
+        console.log("Logout error (non-critical):", error);
+      }
+      
+      // Clear auth token from localStorage
+      localStorage.removeItem('authToken');
+      
+      // Redirect to homepage
+      navigate('/');
     },
     onError: (error: any) => {
       toast({
