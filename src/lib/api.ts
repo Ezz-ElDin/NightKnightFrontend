@@ -56,6 +56,8 @@ export const authApi = {
         headers: { Authorization: undefined }, // Explicitly remove Authorization header
       }
     ),
+  logout: () =>
+    api.post('/api/auth/logout/', {}),
 };
 
 // Exported Story type for normalized stories
