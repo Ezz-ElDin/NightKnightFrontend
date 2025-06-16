@@ -20,8 +20,8 @@ const ResetPassword = () => {
   const token = searchParams.get('token');
 
   const { mutate: resetPassword, isPending } = useMutation({
-    mutationFn: async (data: { uid: string; token: string; new_password1: string; new_password2: string }) => {
-      return api.post('/api/password/reset/confirm/', data);
+    mutationFn: async (data: { new_password1: string; new_password2: string }) => {
+      return api.post(`/api/password/reset/confirm/${uid}/${token}/`, data);
     },
     onSuccess: () => {
       toast({
@@ -70,8 +70,6 @@ const ResetPassword = () => {
     }
 
     resetPassword({
-      uid,
-      token,
       new_password1: password,
       new_password2: confirmPassword,
     });
