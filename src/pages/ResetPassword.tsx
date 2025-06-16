@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
@@ -22,7 +21,7 @@ const ResetPassword = () => {
 
   const { mutate: resetPassword, isPending } = useMutation({
     mutationFn: async (data: { uid: string; token: string; new_password1: string; new_password2: string }) => {
-      return api.post('/api/auth/password/reset/confirm/', data);
+      return api.post('/api/password/reset/confirm/', data);
     },
     onSuccess: () => {
       toast({
