@@ -43,6 +43,10 @@ export interface ChangePasswordData {
   new_password2: string;
 }
 
+export interface ForgotPasswordData {
+  email: string;
+}
+
 // Note: Updated to include name and email from backend serializer responses
 export interface AuthResponse {
   key: string;
@@ -65,6 +69,10 @@ export const authApi = {
     api.post('/api/auth/logout/', {}),
   changePassword: (data: ChangePasswordData) =>
     api.post('/api/auth/password/change/', data),
+  forgotPassword: (data: ForgotPasswordData) =>
+    api.post('/password/reset/', data, {
+      headers: { Authorization: undefined }, // Explicitly remove Authorization header
+    }),
 };
 
 // Exported Story type for normalized stories

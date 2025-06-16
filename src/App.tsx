@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,7 +8,7 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ResetPassword from "./pages/ResetPassword";
-// Removed Dashboard import, as the page doesn't exist and is now Library
+import ForgotPassword from "./pages/ForgotPassword";
 import CreateStory from "./pages/CreateStory";
 import AccountSettings from "./pages/AccountSettings";
 import StoryViewer from "./pages/StoryViewer";
@@ -39,6 +38,7 @@ const App = () => (
           <Route path="/waiting-list" element={null} />
           <Route path="/a/generating-story/*" element={null} />
           <Route path="/reset-password" element={null} />
+          <Route path="/forgot-password" element={null} />
           <Route path="*" element={<Navbar />} />
         </Routes>
         
@@ -52,8 +52,9 @@ const App = () => (
               {/* Original homepage is now accessible via /a/homepage */}
               <Route path="/a/homepage" element={<Index />} />
               
-              {/* Password reset route (unprotected) */}
+              {/* Password reset and forgot password routes (unprotected) */}
               <Route path="/reset-password" element={<ResetPassword />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
               
               {/* Protected routes with /a/ prefix */}
               <Route path="/a/library" element={
@@ -98,8 +99,9 @@ const App = () => (
               <Route path="/a/homepage" element={<Index />} />
               <Route path="/waiting-list" element={<WaitingList />} />
               
-              {/* Password reset route (unprotected) */}
+              {/* Password reset and forgot password routes (unprotected) */}
               <Route path="/reset-password" element={<ResetPassword />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
               
               {/* Protected routes with /a/ prefix */}
               <Route path="/a/library" element={
