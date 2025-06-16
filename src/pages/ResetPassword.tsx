@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import StoryBackground from '@/components/StoryBackground';
-import { api } from '@/lib/api';
+import { authApi, ConfirmResetPasswordData } from '@/lib/api';
 
 const ResetPassword = () => {
   const [searchParams] = useSearchParams();
@@ -21,8 +21,8 @@ const ResetPassword = () => {
   const token = searchParams.get('token');
 
   const { mutate: resetPassword, isPending } = useMutation({
-    mutationFn: async (data: { uid: string; token: string; new_password1: string; new_password2: string }) => {
-      return api.post(`/api/password/reset/confirm/${uid}/${token}/`, data);
+    mutationFn: async (data: ConfirmResetPasswordData) => {
+      return authApi.confirmResetPassword(data);
     },
     onSuccess: () => {
       toast({

@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 
 // Use Vite env variable, fallback to prod URL if not set.
@@ -48,6 +47,13 @@ export interface ForgotPasswordData {
   email: string;
 }
 
+export interface ConfirmResetPasswordData {
+  uid: string;
+  token: string;
+  new_password1: string;
+  new_password2: string;
+}
+
 // Note: Updated to include name and email from backend serializer responses
 export interface AuthResponse {
   key: string;
@@ -72,6 +78,13 @@ export const authApi = {
     api.post('/api/auth/password/change/', data),
   forgotPassword: (data: ForgotPasswordData) =>
     api.post('/api/auth/password/reset/', data, {
+      headers: { Authorization: undefined }, // Explicitly remove Authorization header
+    }),
+  confirmResetPassword: (data: ConfirmResetPasswordData) =>
+    api.post(`/api/password/reset/confirm/${data.uid}/${data.token}/`, {
+      new_password1: data.new_password1,
+      new_password2: data.new_password2,
+    }, {
       headers: { Authorization: undefined }, // Explicitly remove Authorization header
     }),
 };
