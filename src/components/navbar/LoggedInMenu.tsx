@@ -1,5 +1,7 @@
+
 import React from "react";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { Home, BookOpen, User, Settings, LogOut } from "lucide-react";
 import { 
   NavigationMenu,
@@ -14,14 +16,7 @@ import {
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-
-// Get current user name/email from localStorage util
-function getUserInfo() {
-  return {
-    name: localStorage.getItem("userName") || "User",
-    email: localStorage.getItem("userEmail") || "user@example.com",
-  };
-}
+import { authApi } from "@/lib/api";
 
 interface LoggedInMenuProps {
   isMobile?: boolean;
@@ -35,7 +30,21 @@ const LoggedInMenu = ({ isMobile = false, onMobileMenuClose }: LoggedInMenuProps
     }
   };
 
-  const { name, email } = getUserInfo();
+  // Fetch user data from API
+  const { data: userData } = useQuery({
+    queryKey: ['user'],
+    queryFn: async () => {
+      const response = await authApi.getUser();
+      return response.data;
+    },
+  });
+
+  // Construct full name from first_name and last_name, fallback to localStorage for compatibility
+  const userName = userData 
+    ? `${userData.first_name} ${userData.last_name}`.trim()
+    : localStorage.getItem("userName") || "User";
+  
+  const userEmail = userData?.email || localStorage.getItem("userEmail") || "user@example.com";
 
   if (isMobile) {
     return (
@@ -89,8 +98,8 @@ const LoggedInMenu = ({ isMobile = false, onMobileMenuClose }: LoggedInMenuProps
                   <User className="h-4 w-4 text-story-purple" />
                 </div>
                 <div className="flex flex-col space-y-0.5">
-                  <p className="text-sm font-medium">{name}</p>
-                  <p className="text-xs text-muted-foreground">{email}</p>
+                  <p className="text-sm font-medium">{userName}</p>
+                  <p className="text-xs text-muted-foreground">{userEmail}</p>
                 </div>
               </div>
               <DropdownMenuSeparator />

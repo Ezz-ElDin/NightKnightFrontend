@@ -1,11 +1,12 @@
-
 import React, { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { User, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { authApi } from "@/lib/api";
 
 const ProfileSettings = () => {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -17,9 +18,18 @@ const ProfileSettings = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { toast } = useToast();
 
-  // Get user email from localStorage
-  const userEmail = localStorage.getItem("userEmail") || "user@example.com";
-  const userName = localStorage.getItem("userName") || "User";
+  // Fetch user data from API
+  const { data: userData, isLoading, error } = useQuery({
+    queryKey: ['user'],
+    queryFn: async () => {
+      const response = await authApi.getUser();
+      return response.data;
+    },
+  });
+
+  // Construct full name from first_name and last_name
+  const userName = userData ? `${userData.first_name} ${userData.last_name}`.trim() : "";
+  const userEmail = userData?.email || "";
 
   // Password validation functions
   const validatePassword = (password: string) => {
@@ -122,6 +132,38 @@ const ProfileSettings = () => {
   };
 
   const passwordStrength = getPasswordStrength(newPassword);
+
+  if (isLoading) {
+    return (
+      <div className="space-y-8">
+        <h2 className="text-2xl font-bold text-primary mb-6 flex items-center gap-2">
+          <User className="h-6 w-6" />
+          Profile Settings
+        </h2>
+        <Card className="p-6">
+          <div className="text-center py-8">
+            <p>Loading user information...</p>
+          </div>
+        </Card>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="space-y-8">
+        <h2 className="text-2xl font-bold text-primary mb-6 flex items-center gap-2">
+          <User className="h-6 w-6" />
+          Profile Settings
+        </h2>
+        <Card className="p-6">
+          <div className="text-center py-8 text-red-600">
+            <p>Error loading user information. Please try again.</p>
+          </div>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">

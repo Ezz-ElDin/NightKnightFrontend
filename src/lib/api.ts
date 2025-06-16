@@ -61,6 +61,13 @@ export interface AuthResponse {
   email: string;
 }
 
+export interface UserData {
+  pk: number;
+  email: string;
+  first_name: string;
+  last_name: string;
+}
+
 export const authApi = {
   login: (data: LoginData) =>
     api.post<AuthResponse>('/api/auth/login/', data),
@@ -87,6 +94,8 @@ export const authApi = {
     }, {
       headers: { Authorization: undefined }, // Explicitly remove Authorization header
     }),
+  getUser: () =>
+    api.get<UserData>('/api/auth/user/'),
 };
 
 // Exported Story type for normalized stories
