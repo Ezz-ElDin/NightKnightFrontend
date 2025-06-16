@@ -50,7 +50,7 @@ export const authApi = {
     api.post<AuthResponse>('/api/auth/login/', data),
   register: (data: RegisterData) =>
     api.post<AuthResponse>(
-      '/api/auth/registration/',
+      '/api/registration/',
       data,
       {
         headers: { Authorization: undefined }, // Explicitly remove Authorization header
