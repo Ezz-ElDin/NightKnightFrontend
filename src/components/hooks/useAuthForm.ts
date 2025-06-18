@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useToast } from '@/hooks/use-toast';
@@ -70,11 +69,20 @@ export const useAuthForm = ({ initialMode = 'login' }: UseAuthFormProps = {}) =>
       );
     },
     onError: (error: any) => {
-      toast({
-        title: 'Error',
-        description: error.response?.data?.detail || 'Something went wrong. Please try again.',
-        variant: 'destructive',
-      });
+      // Check if the error is about email already existing
+      if (error.response?.data?.email?.[0]?.includes('A user with this email already exists')) {
+        toast({
+          title: 'Email already registered',
+          description: 'An account with this email already exists. Please try logging in instead or use a different email address.',
+          variant: 'destructive',
+        });
+      } else {
+        toast({
+          title: 'Error',
+          description: error.response?.data?.detail || 'Something went wrong. Please try again.',
+          variant: 'destructive',
+        });
+      }
     },
   });
 
