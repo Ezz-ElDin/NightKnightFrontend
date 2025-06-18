@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -36,27 +35,43 @@ const LoggedInMenu = ({ isMobile = false, onMobileMenuClose }: LoggedInMenuProps
 
   const handleLogout = async () => {
     try {
-      await authApi.logout();
+      const response = await authApi.logout();
+      
+      // Clear auth token from localStorage
+      localStorage.removeItem('authToken');
+      
+      // Show success message
+      toast({
+        title: "Logged out successfully",
+        description: "You have been logged out of your account.",
+      });
+      
+      // Close mobile menu if applicable
+      if (isMobile && onMobileMenuClose) {
+        onMobileMenuClose();
+      }
+      
+      // Use location from backend response if available, otherwise fallback to '/'
+      const redirectUrl = response.data?.location || '/';
+      navigate(redirectUrl);
     } catch (error) {
       console.log("Logout error (non-critical):", error);
+      
+      // Clear auth token even if logout request failed
+      localStorage.removeItem('authToken');
+      
+      toast({
+        title: "Logged out successfully",
+        description: "You have been logged out of your account.",
+      });
+      
+      if (isMobile && onMobileMenuClose) {
+        onMobileMenuClose();
+      }
+      
+      // Fallback to homepage on error
+      navigate('/');
     }
-    
-    // Clear auth token from localStorage
-    localStorage.removeItem('authToken');
-    
-    // Show success message
-    toast({
-      title: "Logged out successfully",
-      description: "You have been logged out of your account.",
-    });
-    
-    // Close mobile menu if applicable
-    if (isMobile && onMobileMenuClose) {
-      onMobileMenuClose();
-    }
-    
-    // Redirect to homepage
-    navigate('/');
   };
 
   // Fetch user data from API
