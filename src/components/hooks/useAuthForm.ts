@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useToast } from '@/hooks/use-toast';
@@ -17,24 +16,15 @@ export const useAuthForm = ({ initialMode = 'login' }: UseAuthFormProps = {}) =>
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [name, setName] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
   const handleLoginSuccess = (token: string, userData?: { name?: string; email?: string }) => {
-    // Store token based on "Remember me" choice
-    if (rememberMe) {
-      localStorage.setItem('authToken', token);
-      localStorage.setItem('loginMethod', 'email');
-    } else {
-      sessionStorage.setItem('authToken', token);
-      sessionStorage.setItem('loginMethod', 'email');
-    }
-    
+    localStorage.setItem('authToken', token);
+    localStorage.setItem('loginMethod', 'email');
     // Save user name and email for menu usage
-    const storage = rememberMe ? localStorage : sessionStorage;
-    if (userData?.name) storage.setItem('userName', userData.name);
-    if (userData?.email) storage.setItem('userEmail', userData.email);
+    if (userData?.name) localStorage.setItem('userName', userData.name);
+    if (userData?.email) localStorage.setItem('userEmail', userData.email);
 
     toast({
       title: 'Welcome back!',
@@ -147,8 +137,6 @@ export const useAuthForm = ({ initialMode = 'login' }: UseAuthFormProps = {}) =>
     setConfirmPassword,
     name,
     setName,
-    rememberMe,
-    setRememberMe,
     handleSubmit,
     loading,
   };
