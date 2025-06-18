@@ -51,8 +51,17 @@ const LoggedInMenu = ({ isMobile = false, onMobileMenuClose }: LoggedInMenuProps
         onMobileMenuClose();
       }
       
-      // Use location from backend response if available, otherwise fallback to '/'
-      const redirectUrl = response.data?.location || '/';
+      // Extract pathname from backend response URL to avoid double URL construction
+      let redirectUrl = '/';
+      if (response.data?.location) {
+        try {
+          const url = new URL(response.data.location);
+          redirectUrl = url.pathname;
+        } catch {
+          // If URL parsing fails, use the location as-is (might be a relative path)
+          redirectUrl = response.data.location;
+        }
+      }
       navigate(redirectUrl);
     } catch (error) {
       console.log("Logout error (non-critical):", error);
