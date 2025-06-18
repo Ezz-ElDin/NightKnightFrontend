@@ -46,11 +46,20 @@ export const useAuthForm = ({ initialMode = 'login' }: UseAuthFormProps = {}) =>
       );
     },
     onError: (error: any) => {
-      toast({
-        title: 'Error',
-        description: error.response?.data?.detail || 'Something went wrong. Please try again.',
-        variant: 'destructive',
-      });
+      // Check if the error is about email not being verified
+      if (error.response?.data?.non_field_errors?.[0]?.includes('E-mail is not verified')) {
+        toast({
+          title: 'Email not verified',
+          description: 'Please check your email and verify your account before logging in.',
+          variant: 'destructive',
+        });
+      } else {
+        toast({
+          title: 'Error',
+          description: error.response?.data?.detail || 'Something went wrong. Please try again.',
+          variant: 'destructive',
+        });
+      }
     },
   });
 
