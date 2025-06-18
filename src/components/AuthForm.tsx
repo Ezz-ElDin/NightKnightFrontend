@@ -20,6 +20,8 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
     setConfirmPassword,
     name,
     setName,
+    rememberMe,
+    setRememberMe,
     handleSubmit,
     loading,
   } = useAuthForm({ initialMode });
@@ -50,6 +52,8 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
             setConfirmPassword={setConfirmPassword}
             name={name}
             setName={setName}
+            rememberMe={rememberMe}
+            setRememberMe={setRememberMe}
             loading={loading}
           />
           

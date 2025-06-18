@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 
 // Use Vite env variable, fallback to prod URL if not set.
@@ -11,9 +12,9 @@ export const api = axios.create({
   },
 });
 
-// Add token to requests if it exists
+// Add token to requests if it exists (check both localStorage and sessionStorage)
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('authToken');
+  const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
   console.log("Auth token in request:", token);
   // Only add Authorization to requests that are NOT for registration
   if (

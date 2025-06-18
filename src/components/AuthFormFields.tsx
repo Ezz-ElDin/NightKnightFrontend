@@ -2,6 +2,7 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Stars } from 'lucide-react';
 import React from 'react';
 import { AuthMode } from './hooks/useAuthForm';
@@ -16,12 +17,15 @@ interface AuthFormFieldsProps {
   setConfirmPassword: (v: string) => void;
   name: string;
   setName: (v: string) => void;
+  rememberMe: boolean;
+  setRememberMe: (v: boolean) => void;
   loading: boolean;
 }
 
 const AuthFormFields: React.FC<AuthFormFieldsProps> = ({
   mode, email, setEmail, password, setPassword,
-  confirmPassword, setConfirmPassword, name, setName, loading
+  confirmPassword, setConfirmPassword, name, setName, 
+  rememberMe, setRememberMe, loading
 }) => (
   <>
     <div className="space-y-2">
@@ -78,6 +82,19 @@ const AuthFormFields: React.FC<AuthFormFieldsProps> = ({
           placeholder="Confirm your password"
           required
         />
+      </div>
+    )}
+
+    {mode === 'login' && (
+      <div className="flex items-center space-x-2">
+        <Checkbox 
+          id="rememberMe" 
+          checked={rememberMe}
+          onCheckedChange={(checked) => setRememberMe(checked === true)}
+        />
+        <Label htmlFor="rememberMe" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+          Remember me
+        </Label>
       </div>
     )}
 

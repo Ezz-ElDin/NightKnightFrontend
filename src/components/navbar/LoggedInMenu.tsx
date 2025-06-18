@@ -37,8 +37,15 @@ const LoggedInMenu = ({ isMobile = false, onMobileMenuClose }: LoggedInMenuProps
     try {
       const response = await authApi.logout();
       
-      // Clear auth token from localStorage
+      // Clear auth token from both localStorage and sessionStorage
       localStorage.removeItem('authToken');
+      sessionStorage.removeItem('authToken');
+      localStorage.removeItem('userName');
+      sessionStorage.removeItem('userName');
+      localStorage.removeItem('userEmail');
+      sessionStorage.removeItem('userEmail');
+      localStorage.removeItem('loginMethod');
+      sessionStorage.removeItem('loginMethod');
       
       // Show success message
       toast({
@@ -68,6 +75,13 @@ const LoggedInMenu = ({ isMobile = false, onMobileMenuClose }: LoggedInMenuProps
       
       // Clear auth token even if logout request failed
       localStorage.removeItem('authToken');
+      sessionStorage.removeItem('authToken');
+      localStorage.removeItem('userName');
+      sessionStorage.removeItem('userName');
+      localStorage.removeItem('userEmail');
+      sessionStorage.removeItem('userEmail');
+      localStorage.removeItem('loginMethod');
+      sessionStorage.removeItem('loginMethod');
       
       toast({
         title: "Logged out successfully",
@@ -92,12 +106,12 @@ const LoggedInMenu = ({ isMobile = false, onMobileMenuClose }: LoggedInMenuProps
     },
   });
 
-  // Construct full name from first_name and last_name, fallback to localStorage for compatibility
+  // Construct full name from first_name and last_name, fallback to localStorage/sessionStorage for compatibility
   const userName = userData 
     ? `${userData.first_name} ${userData.last_name}`.trim()
-    : localStorage.getItem("userName") || "User";
+    : localStorage.getItem("userName") || sessionStorage.getItem("userName") || "User";
   
-  const userEmail = userData?.email || localStorage.getItem("userEmail") || "user@example.com";
+  const userEmail = userData?.email || localStorage.getItem("userEmail") || sessionStorage.getItem("userEmail") || "user@example.com";
 
   if (isMobile) {
     return (
