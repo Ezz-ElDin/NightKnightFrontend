@@ -35,12 +35,20 @@ const EmailVerificationBanners = ({ shouldShow }: EmailVerificationBannersProps)
 
   useEffect(() => {
     if (!shouldShow) return;
+    const needsVerification = new URLSearchParams(location.search).get("needsVerification") === "1";
     const infoDismissed = localStorage.getItem(EMAIL_DISMISS_INFO) === "1";
     const successDismissed = localStorage.getItem(EMAIL_VERIFIED_FLAG) === "1";
-    if (!infoDismissed && !successDismissed) {
+    
+    if ((needsVerification || !infoDismissed) && !successDismissed) {
       setShowInfo(true);
+      // Clean up the URL parameter
+      if (needsVerification) {
+        const params = new URLSearchParams(location.search);
+        params.delete("needsVerification");
+        navigate({ pathname: location.pathname, search: params.toString() }, { replace: true });
+      }
     }
-  }, [shouldShow]);
+  }, [shouldShow, location.search, navigate]);
 
   const handleDismissSuccess = () => {
     setShowSuccess(false);

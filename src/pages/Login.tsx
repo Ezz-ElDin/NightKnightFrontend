@@ -1,11 +1,13 @@
 
 import AuthForm from "@/components/AuthForm";
 import StoryBackground from "@/components/StoryBackground";
+import EmailVerificationBanners from "@/components/dashboard/EmailVerificationBanners";
 import { Link } from "react-router-dom";
 
 const Login = () => {
   return (
     <StoryBackground>
+      <EmailVerificationBanners shouldShow={true} />
       <AuthForm initialMode="login" />
       <div className="text-center mt-4">
         <Link 

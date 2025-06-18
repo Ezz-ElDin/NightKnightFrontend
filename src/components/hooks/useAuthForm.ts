@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useToast } from '@/hooks/use-toast';
@@ -20,7 +19,7 @@ export const useAuthForm = ({ initialMode = 'login' }: UseAuthFormProps = {}) =>
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const handleSuccess = (token: string, userData?: { name?: string; email?: string }) => {
+  const handleLoginSuccess = (token: string, userData?: { name?: string; email?: string }) => {
     localStorage.setItem('authToken', token);
     localStorage.setItem('loginMethod', 'email');
     // Save user name and email for menu usage
@@ -28,10 +27,8 @@ export const useAuthForm = ({ initialMode = 'login' }: UseAuthFormProps = {}) =>
     if (userData?.email) localStorage.setItem('userEmail', userData.email);
 
     toast({
-      title: mode === 'login' ? 'Welcome back!' : 'Account created!',
-      description: mode === 'login'
-        ? 'You have successfully logged in.'
-        : 'Your account has been created successfully.',
+      title: 'Welcome back!',
+      description: 'You have successfully logged in.',
     });
     navigate('/a/library');
   };
@@ -40,7 +37,7 @@ export const useAuthForm = ({ initialMode = 'login' }: UseAuthFormProps = {}) =>
     mutationFn: (data: LoginData) => authApi.login(data),
     onSuccess: (response) => {
       // Only key is returned from login endpoint
-      handleSuccess(
+      handleLoginSuccess(
         response.data.key,
         {
           name: name,
@@ -60,14 +57,12 @@ export const useAuthForm = ({ initialMode = 'login' }: UseAuthFormProps = {}) =>
   const { mutate: register, isPending: isRegisterPending } = useMutation({
     mutationFn: (data: RegisterData) => authApi.register(data),
     onSuccess: (response) => {
-      // Only key is returned from registration endpoint
-      handleSuccess(
-        response.data.key,
-        {
-          name: name,
-          email: email,
-        }
-      );
+      // On successful registration, redirect to login page with verification prompt
+      toast({
+        title: 'Account created!',
+        description: 'Please check your email to verify your account before logging in.',
+      });
+      navigate('/a/login?needsVerification=1');
     },
     onError: (error: any) => {
       // Check if the error is about email already existing
