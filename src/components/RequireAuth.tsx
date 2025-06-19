@@ -14,7 +14,7 @@ const RequireAuth = ({ children }: RequireAuthProps) => {
     const token = localStorage.getItem('authToken');
     if (!token) {
       // Redirect unauthenticated users to login, preserve path for redirect-after-login if wanted
-      navigate("/login", { replace: true, state: { from: location } });
+      navigate("/a/login", { replace: true, state: { from: location } });
     }
   }, [navigate, location]);
 
