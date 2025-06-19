@@ -32,10 +32,10 @@ const ProfileSettings = () => {
   const { mutate: changePassword, isPending: isChangingPassword } = useMutation({
     mutationFn: (data: { new_password1: string; new_password2: string }) => 
       authApi.changePassword(data),
-    onSuccess: async () => {
+    onSuccess: async (response: any) => {
       toast({
         title: "Success",
-        description: "Password changed successfully. You will be logged out.",
+        description: "Password changed successfully. Redirecting...",
       });
 
       // Clear the form
@@ -46,18 +46,25 @@ const ProfileSettings = () => {
       setShowNewPassword(false);
       setShowConfirmPassword(false);
 
-      // Logout user and redirect to homepage
-      try {
-        await authApi.logout();
-      } catch (error) {
-        console.log("Logout error (non-critical):", error);
-      }
-      
       // Clear auth token from localStorage
       localStorage.removeItem('authToken');
       
-      // Redirect to homepage
-      navigate('/');
+      // Parse the location from response and redirect
+      try {
+        const locationUrl = response.data.location;
+        if (locationUrl) {
+          const url = new URL(locationUrl);
+          const pathname = url.pathname;
+          navigate(pathname);
+        } else {
+          // Fallback if no location provided
+          navigate('/');
+        }
+      } catch (error) {
+        console.log("Error parsing location URL:", error);
+        // Fallback to homepage if URL parsing fails
+        navigate('/');
+      }
     },
     onError: (error: any) => {
       toast({
