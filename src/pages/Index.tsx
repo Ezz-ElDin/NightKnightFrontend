@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import StoryBackground from "@/components/StoryBackground";
 import HowItWorks from "@/components/HowItWorks";
 import StorySamples from "@/components/StorySamples";
-import Pricing from "@/components/Pricing";
+import PricingSlider from "@/components/PricingSlider";
 import Footer from "@/components/Footer";
 
 const Index = () => {
@@ -85,7 +85,7 @@ const Index = () => {
       </section>
       
       <HowItWorks />
-      <Pricing />
+      <PricingSlider />
       <Footer />
     </div>;
 };
