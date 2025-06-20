@@ -7,6 +7,7 @@ import HowItWorks from "@/components/HowItWorks";
 import StorySamples from "@/components/StorySamples";
 import Pricing from "@/components/Pricing";
 import Footer from "@/components/Footer";
+
 const Index = () => {
   return <div className="overflow-auto">
       <StoryBackground>
@@ -40,7 +41,15 @@ const Index = () => {
               </Button>
             </Link>
           </div>
-          
+        </div>
+      </StoryBackground>
+      
+      {/* Move StorySamples to the top, right after hero section */}
+      <StorySamples />
+      
+      {/* Features section moved after story samples */}
+      <section className="py-16 px-4 bg-gradient-to-b from-story-lightPurple/30 to-white">
+        <div className="container mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             <div className="card-kiddy">
               <div className="mb-4 flex justify-center">
@@ -73,12 +82,12 @@ const Index = () => {
             </div>
           </div>
         </div>
-      </StoryBackground>
+      </section>
       
       <HowItWorks />
-      <StorySamples />
       <Pricing />
       <Footer />
     </div>;
 };
+
 export default Index;
