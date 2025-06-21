@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -25,7 +24,7 @@ const queryClient = new QueryClient();
 
 // Flag to control waiting list mode and page access
 // Set to true to make the waiting list the primary landing page but allow other URLs to be accessed
-const WAITING_LIST_AS_HOME = true;
+const WAITING_LIST_AS_HOME = false;
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
