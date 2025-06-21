@@ -96,27 +96,27 @@ const PricingSlider = () => {
             <div className="mb-8">
               <h3 className="text-xl font-bold mb-4 text-center">What's included:</h3>
               <ul className="space-y-3">
-                <li className="flex items-center justify-center">
+                <li className="flex items-center">
                   <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
                   <span>Multilingual stories</span>
                 </li>
-                <li className="flex items-center justify-center">
+                <li className="flex items-center">
                   <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
                   <span>Lessons learned customisation</span>
                 </li>
-                <li className="flex items-center justify-center">
+                <li className="flex items-center">
                   <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
                   <span>Characters customisation</span>
                 </li>
-                <li className="flex items-center justify-center">
+                <li className="flex items-center">
                   <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
                   <span>Multiple illustration styles</span>
                 </li>
-                <li className="flex items-center justify-center">
+                <li className="flex items-center">
                   <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
                   <span>Web reading experience</span>
                 </li>
-                <li className="flex items-center justify-center">
+                <li className="flex items-center">
                   <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
                   <span>PDF download</span>
                 </li>
