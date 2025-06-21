@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
@@ -60,7 +61,7 @@ const PricingSlider = () => {
           Slide to select how many stories you want
         </p>
         
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-lg mx-auto">
           <div className="ghibli-card mb-8">
             <div className="text-center mb-8">
               <div className="mb-6">
