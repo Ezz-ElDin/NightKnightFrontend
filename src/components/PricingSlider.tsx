@@ -72,7 +72,7 @@ const PricingSlider = () => {
                 </span>
               </div>
               
-              <div className="mb-8">
+              <div className="mb-8 max-w-md mx-auto">
                 <Slider
                   value={storyCount}
                   onValueChange={setStoryCount}
