@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -132,8 +133,8 @@
     @apply absolute rounded-full bg-black/5 animate-dust-float;
   }
 
-  .star-thumb {
-    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  .unicorn-thumb {
+    clip-path: polygon(50% 0%, 45% 20%, 30% 15%, 20% 30%, 15% 50%, 25% 65%, 40% 75%, 50% 85%, 60% 75%, 75% 65%, 85% 50%, 80% 30%, 70% 15%, 55% 20%);
     border-radius: 0;
   }
 }
