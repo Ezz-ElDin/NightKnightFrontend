@@ -133,8 +133,11 @@
     @apply absolute rounded-full bg-black/5 animate-dust-float;
   }
 
-  .unicorn-thumb {
-    clip-path: polygon(50% 0%, 45% 20%, 30% 15%, 20% 30%, 15% 50%, 25% 65%, 40% 75%, 50% 85%, 60% 75%, 75% 65%, 85% 50%, 80% 30%, 70% 15%, 55% 20%);
+  .unicorn-thumb-image {
+    background-image: url('/lovable-uploads/06769b41-6b7f-4753-838c-545f2bf1358d.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
     border-radius: 0;
   }
 }
