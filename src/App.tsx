@@ -1,9 +1,10 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/navbar/Navbar";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -36,7 +37,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={null} />
           <Route path="/waiting-list" element={null} />
-          <Route path="/a/generating-story/*" element={null} />
+          <Route path="/generating-story/*" element={null} />
           <Route path="/reset-password" element={null} />
           <Route path="/forgot-password" element={null} />
           <Route path="*" element={<Navbar />} />
@@ -49,94 +50,82 @@ const App = () => (
               <Route path="/" element={<WaitingList />} />
               <Route path="/waiting-list" element={<WaitingList />} />
               
-              {/* Original homepage is now accessible via /a/homepage */}
-              <Route path="/a/homepage" element={<Index />} />
-              
               {/* Password reset and forgot password routes (unprotected) */}
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               
-              {/* Protected routes with /a/ prefix */}
-              <Route path="/a/library" element={
+              {/* Protected routes without /a/ prefix */}
+              <Route path="/library" element={
                 <RequireAuth>
                   <Library />
                 </RequireAuth>
               } />
-              <Route path="/a/create-story" element={
+              <Route path="/create-story" element={
                 <RequireAuth>
                   <CreateStory />
                 </RequireAuth>
               } />
-              {/* NEW: Generating story route */}
-              <Route path="/a/generating-story/:storyId" element={
+              <Route path="/generating-story/:storyId" element={
                 <RequireAuth>
                   <GeneratingStory />
                 </RequireAuth>
               } />
-              {/* UNPROTECTED temp route for testing */}
-              <Route path="/a/temp" element={<CreateStory />} />
-              <Route path="/a/account-settings" element={
+              <Route path="/account-settings" element={
                 <RequireAuth>
                   <AccountSettings />
                 </RequireAuth>
               } />
-              {/* UPDATED route for story viewer with storyId param */}
-              <Route path="/a/library/stories/:storyId" element={
+              <Route path="/library/stories/:storyId" element={
                 <RequireAuth>
                   <StoryViewer />
                 </RequireAuth>
               } />
 
-              <Route path="/a/login" element={<Login />} />
-              <Route path="/a/register" element={<Register />} />
-              <Route path="/a/auth/callback" element={<AuthCallback />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/auth/callback" element={<AuthCallback />} />
               <Route path="*" element={<NotFound />} />
             </>
           ) : (
             <>
               {/* Standard routing configuration if waiting list mode is disabled */}
               <Route path="/" element={<Index />} />
-              <Route path="/a/homepage" element={<Index />} />
               <Route path="/waiting-list" element={<WaitingList />} />
               
               {/* Password reset and forgot password routes (unprotected) */}
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               
-              {/* Protected routes with /a/ prefix */}
-              <Route path="/a/library" element={
+              {/* Protected routes without /a/ prefix */}
+              <Route path="/library" element={
                 <RequireAuth>
                   <Library />
                 </RequireAuth>
               } />
-              <Route path="/a/create-story" element={
+              <Route path="/create-story" element={
                 <RequireAuth>
                   <CreateStory />
                 </RequireAuth>
               } />
-              {/* NEW: Generating story route */}
-              <Route path="/a/generating-story/:storyId" element={
+              <Route path="/generating-story/:storyId" element={
                 <RequireAuth>
                   <GeneratingStory />
                 </RequireAuth>
               } />
-              {/* UNPROTECTED temp route for testing */}
-              <Route path="/a/temp" element={<CreateStory />} />
-              <Route path="/a/account-settings" element={
+              <Route path="/account-settings" element={
                 <RequireAuth>
                   <AccountSettings />
                 </RequireAuth>
               } />
-              {/* UPDATED route for story viewer with storyId param */}
-              <Route path="/a/library/stories/:storyId" element={
+              <Route path="/library/stories/:storyId" element={
                 <RequireAuth>
                   <StoryViewer />
                 </RequireAuth>
               } />
 
-              <Route path="/a/login" element={<Login />} />
-              <Route path="/a/register" element={<Register />} />
-              <Route path="/a/auth/callback" element={<AuthCallback />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/auth/callback" element={<AuthCallback />} />
               <Route path="*" element={<NotFound />} />
             </>
           )}

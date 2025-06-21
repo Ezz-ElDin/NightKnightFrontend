@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import NavLogo from "./NavLogo";
@@ -10,11 +11,11 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
   
-  // Determine authentication status by route prefix
+  // Determine authentication status by route prefix (updated to remove /a/ prefix)
   const loggedInPrefixes = [
-    "/a/library",
-    "/a/create-story",
-    "/a/account-settings"
+    "/library",
+    "/create-story",
+    "/account-settings"
   ];
   const isLoggedIn = loggedInPrefixes.some(prefix => location.pathname.startsWith(prefix));
   
