@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
@@ -82,10 +81,6 @@ const PricingSlider = () => {
                   step={1}
                   className="w-full"
                 />
-                <div className="flex justify-between text-sm text-gray-500 mt-2">
-                  <span>1</span>
-                  <span>10</span>
-                </div>
               </div>
               
               <div className="mb-8">
