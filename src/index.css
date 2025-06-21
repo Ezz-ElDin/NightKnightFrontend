@@ -164,6 +164,70 @@
     @apply ring-4 ring-story-yellow/50;
     outline: none;
   }
+
+  /* Unicorn slider styling */
+  .unicorn-slider [data-radix-slider-track] {
+    @apply bg-gradient-to-r from-story-lightPurple via-story-yellow/30 to-story-lightPurple h-3 rounded-full shadow-inner;
+    background-image: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.1) 75%, transparent 75%);
+    background-size: 8px 8px;
+    animation: shimmer 3s ease-in-out infinite;
+  }
+
+  .unicorn-slider [data-radix-slider-range] {
+    @apply bg-gradient-to-r from-story-purple via-story-yellow to-story-purple rounded-full shadow-lg;
+    background-size: 200% 100%;
+    animation: magical-flow 2s ease-in-out infinite;
+  }
+
+  .unicorn-slider [data-radix-slider-thumb] {
+    width: 32px;
+    height: 24px;
+    background: linear-gradient(135deg, #FEF2C8 0%, #F5CDC9 50%, #6A75B3 100%);
+    border: 2px solid #fff;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    box-shadow: 0 4px 12px rgba(106, 117, 179, 0.4), 0 0 20px rgba(254, 242, 200, 0.6);
+    position: relative;
+    transform: scale(1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .unicorn-slider [data-radix-slider-thumb]:before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 12px solid #F5A666;
+    border-radius: 2px;
+  }
+
+  .unicorn-slider [data-radix-slider-thumb]:after {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 2px solid transparent;
+    border-right: 2px solid transparent;
+    border-bottom: 8px solid #FEF2C8;
+    border-radius: 1px;
+  }
+
+  .unicorn-slider [data-radix-slider-thumb]:hover {
+    transform: scale(1.2);
+    box-shadow: 0 6px 16px rgba(106, 117, 179, 0.5), 0 0 25px rgba(254, 242, 200, 0.8);
+  }
+
+  .unicorn-slider [data-radix-slider-thumb]:focus {
+    @apply ring-4 ring-story-yellow/50;
+    outline: none;
+  }
 }
 
 /* Add new animations for kid-friendly UI */

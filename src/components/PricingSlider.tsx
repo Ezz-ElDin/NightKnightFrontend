@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
@@ -73,18 +72,16 @@ const PricingSlider = () => {
 
             <div className="text-center mb-8 relative z-10">
               <div className="mb-6 flex items-center justify-center gap-2">
-                <Star className="h-8 w-8 text-story-yellow animate-bounce-slow" fill="currentColor" />
                 <span className="text-6xl font-bold text-story-purple animate-scale-pulse">
                   {storyCount[0]}
                 </span>
                 <span className="text-2xl text-gray-600 ml-2">
                   {isPlural ? 'stories' : 'story'}
                 </span>
-                <Sparkles className="h-8 w-8 text-story-purple animate-wiggle" />
               </div>
               
               <div className="mb-8 relative">
-                {/* Custom magical slider styling */}
+                {/* Custom magical slider styling with unicorn thumb */}
                 <div className="relative px-4">
                   <Slider
                     value={storyCount}
@@ -92,7 +89,7 @@ const PricingSlider = () => {
                     max={10}
                     min={1}
                     step={1}
-                    className="w-full magical-slider"
+                    className="w-full unicorn-slider"
                   />
                   {/* Magical glow effect */}
                   <div className="absolute inset-0 pointer-events-none">
