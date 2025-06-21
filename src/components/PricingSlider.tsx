@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
 const PricingSlider = () => {
-  const [storyCount, setStoryCount] = useState([10]);
+  const [storyCount, setStoryCount] = useState([1]);
   const [currency, setCurrency] = useState('$');
   const [currencySymbol, setCurrencySymbol] = useState('USD');
 
@@ -42,31 +42,14 @@ const PricingSlider = () => {
     detectLocation();
   }, []);
 
-  // Calculate price based on story count
+  // Calculate price per story
   const calculatePrice = (stories: number) => {
-    if (stories <= 3) return 0; // Free tier
-    
-    // Pricing tiers
-    let basePrice;
-    if (currency === '£') {
-      if (stories <= 10) basePrice = 2.99;
-      else if (stories <= 25) basePrice = 4.99;
-      else if (stories <= 50) basePrice = 7.99;
-      else if (stories <= 100) basePrice = 12.99;
-      else basePrice = 19.99;
-    } else {
-      if (stories <= 10) basePrice = 3.99;
-      else if (stories <= 25) basePrice = 6.99;
-      else if (stories <= 50) basePrice = 9.99;
-      else if (stories <= 100) basePrice = 15.99;
-      else basePrice = 24.99;
-    }
-    
-    return basePrice;
+    const pricePerStory = currency === '£' ? 0.99 : 1.29;
+    return stories * pricePerStory;
   };
 
   const currentPrice = calculatePrice(storyCount[0]);
-  const isFreeTier = currentPrice === 0;
+  const isPlural = storyCount[0] > 1;
 
   return (
     <section className="py-16 px-4" id="pricing">
@@ -75,7 +58,7 @@ const PricingSlider = () => {
           Choose Your Story Plan
         </h2>
         <p className="text-xl text-center mb-12 max-w-2xl mx-auto">
-          Slide to select how many stories you need per month
+          Slide to select how many stories you want
         </p>
         
         <div className="max-w-2xl mx-auto">
@@ -86,7 +69,7 @@ const PricingSlider = () => {
                   {storyCount[0]}
                 </span>
                 <span className="text-2xl text-gray-600 ml-2">
-                  {storyCount[0] === 1 ? 'story' : 'stories'} per month
+                  {isPlural ? 'stories' : 'story'}
                 </span>
               </div>
               
@@ -94,27 +77,24 @@ const PricingSlider = () => {
                 <Slider
                   value={storyCount}
                   onValueChange={setStoryCount}
-                  max={150}
+                  max={10}
                   min={1}
                   step={1}
                   className="w-full"
                 />
                 <div className="flex justify-between text-sm text-gray-500 mt-2">
                   <span>1</span>
-                  <span>150</span>
+                  <span>10</span>
                 </div>
               </div>
               
               <div className="mb-8">
                 <div className="text-5xl font-bold text-story-purple mb-2">
-                  {isFreeTier ? 'Free' : `${currency}${currentPrice.toFixed(2)}`}
-                  {!isFreeTier && (
-                    <span className="text-xl text-gray-600 ml-2">per month</span>
-                  )}
+                  {currency}{currentPrice.toFixed(2)}
                 </div>
-                {isFreeTier && (
-                  <p className="text-gray-600">Up to 3 stories per month</p>
-                )}
+                <p className="text-gray-600">
+                  {currency}{(currentPrice / storyCount[0]).toFixed(2)} per story
+                </p>
               </div>
             </div>
             
@@ -123,28 +103,28 @@ const PricingSlider = () => {
               <ul className="space-y-3">
                 <li className="flex items-center justify-center">
                   <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
-                  <span>{isFreeTier ? 'Basic customisation' : 'Advanced customisation'}</span>
+                  <span>Multilingual stories</span>
+                </li>
+                <li className="flex items-center justify-center">
+                  <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
+                  <span>Lessons learned customisation</span>
+                </li>
+                <li className="flex items-center justify-center">
+                  <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
+                  <span>Characters customisation</span>
+                </li>
+                <li className="flex items-center justify-center">
+                  <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
+                  <span>Multiple illustration styles</span>
                 </li>
                 <li className="flex items-center justify-center">
                   <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
                   <span>Web reading experience</span>
                 </li>
-                {!isFreeTier && (
-                  <>
-                    <li className="flex items-center justify-center">
-                      <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
-                      <span>PDF downloads</span>
-                    </li>
-                    <li className="flex items-center justify-center">
-                      <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
-                      <span>Multiple child profiles</span>
-                    </li>
-                    <li className="flex items-center justify-center">
-                      <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
-                      <span>Multiple languages</span>
-                    </li>
-                  </>
-                )}
+                <li className="flex items-center justify-center">
+                  <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
+                  <span>PDF download</span>
+                </li>
               </ul>
             </div>
             
@@ -153,7 +133,7 @@ const PricingSlider = () => {
                 <Button 
                   className="w-full h-12 rounded-xl button-bounce bg-story-purple text-white hover:bg-story-purple/90"
                 >
-                  {isFreeTier ? 'Get Started Free' : 'Start 7-Day Free Trial'}
+                  Get {isPlural ? 'Stories' : 'Story'}
                 </Button>
               </Link>
             </div>
