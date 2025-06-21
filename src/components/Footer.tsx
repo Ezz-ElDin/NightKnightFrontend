@@ -1,12 +1,11 @@
 
 import { Heart, Mail, Facebook, Twitter, Instagram } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
     <footer className="bg-story-lightPurple/50 pt-16 pb-8 px-4">
       <div className="container mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
           <div>
             <h3 className="text-xl font-bold mb-4 text-story-purple">NightKnight</h3>
             <p className="text-gray-700 mb-4">
@@ -46,55 +45,7 @@ const Footer = () => {
                   Pricing
                 </a>
               </li>
-              <li>
-                <Link to="/a/library" className="text-gray-700 hover:text-story-purple transition-colors">
-                  Dashboard
-                </Link>
-              </li>
             </ul>
-          </div>
-          
-          <div>
-            <h3 className="text-xl font-bold mb-4 text-story-purple">Support</h3>
-            <ul className="space-y-2">
-              <li>
-                <a href="#" className="text-gray-700 hover:text-story-purple transition-colors">
-                  Help Center
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-700 hover:text-story-purple transition-colors">
-                  FAQs
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-700 hover:text-story-purple transition-colors">
-                  Contact Us
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-700 hover:text-story-purple transition-colors">
-                  Terms of Service
-                </a>
-              </li>
-            </ul>
-          </div>
-          
-          <div>
-            <h3 className="text-xl font-bold mb-4 text-story-purple">Stay Updated</h3>
-            <p className="text-gray-700 mb-4">
-              Subscribe to our newsletter for new story themes and features.
-            </p>
-            <div className="flex">
-              <input 
-                type="email" 
-                placeholder="Your email" 
-                className="input-kiddy flex-grow"
-              />
-              <button className="ml-2 bg-story-purple text-white rounded-xl px-4 hover:bg-story-purple/90 button-bounce">
-                Join
-              </button>
-            </div>
           </div>
         </div>
         
