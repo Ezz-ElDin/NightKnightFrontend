@@ -4,6 +4,34 @@ import { StoryDetails } from "@/lib/api";
 // Utility function to detect Arabic text
 const isArabic = (text: string) => /[\u0600-\u06FF]/.test(text);
 
+// Utility function to register custom Arabic font
+const registerArabicFont = (doc: jsPDF) => {
+  // Check if the font is available from your .js file
+  // Assuming your .js file exports a font object like: window.CairoFont
+  if (typeof window !== 'undefined' && (window as any).CairoFont) {
+    const fontData = (window as any).CairoFont;
+    
+    try {
+      // Register the font with jsPDF
+      doc.addFileToVFS('Cairo-Regular.ttf', fontData.normal || fontData);
+      doc.addFont('Cairo-Regular.ttf', 'Cairo', 'normal');
+      
+      // If you have bold variant
+      if (fontData.bold) {
+        doc.addFileToVFS('Cairo-Bold.ttf', fontData.bold);
+        doc.addFont('Cairo-Bold.ttf', 'Cairo', 'bold');
+      }
+      
+      return true;
+    } catch (error) {
+      console.warn('Failed to register Arabic font:', error);
+      return false;
+    }
+  }
+  
+  return false;
+};
+
 // Utility function to export a story to PDF
 export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { image_url?: string } }) {
   const doc = new jsPDF({
@@ -11,6 +39,9 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
     unit: 'pt',
     format: 'a4',
   });
+  
+  // Register the custom Arabic font
+  const arabicFontAvailable = registerArabicFont(doc);
   
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
@@ -35,8 +66,13 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
       // First page: use big title style
       const fontSize = 42;
       
-      // Use default font for now - Arabic font will render with system fallback
-      doc.setFont("helvetica", "bold");
+      // Use Arabic font if available and text contains Arabic
+      if (currentPageHasArabic && arabicFontAvailable) {
+        doc.setFont("Cairo", "bold");
+      } else {
+        doc.setFont("helvetica", "bold");
+      }
+      
       doc.setFontSize(fontSize);
       doc.setTextColor(51, 51, 51);
       
@@ -79,7 +115,12 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
       doc.setTextColor(0, 0, 0);
     } else {
       // Other pages: text with proper direction
-      doc.setFont("helvetica", "normal");
+      if (currentPageHasArabic && arabicFontAvailable) {
+        doc.setFont("Cairo", "normal");
+      } else {
+        doc.setFont("helvetica", "normal");
+      }
+      
       doc.setFontSize(16);
       doc.setTextColor(0, 0, 0);
       
