@@ -1,5 +1,4 @@
 import jsPDF from "jspdf";
-import "jspdf-arabic";
 import { StoryDetails } from "@/lib/api";
 
 // Utility function to detect Arabic text
@@ -9,8 +8,8 @@ const isArabic = (text: string) => /[\u0600-\u06FF]/.test(text);
 const processArabicText = (text: string) => {
   if (!isArabic(text)) return text;
   
-  // The jspdf-arabic plugin will handle proper Arabic text rendering
-  // No need to reverse words anymore as the plugin handles RTL properly
+  // For now, we'll use the default jsPDF handling
+  // In a production environment, you'd want to add a proper Arabic font
   return text;
 };
 
@@ -45,13 +44,8 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
       // First page: use big title style
       const fontSize = 42;
       
-      // Set Arabic font if needed, otherwise use default
-      if (currentPageHasArabic) {
-        doc.setFont("arabic", "bold");
-      } else {
-        doc.setFont("helvetica", "bold");
-      }
-      
+      // Use default fonts for now - helvetica supports some unicode
+      doc.setFont("helvetica", "bold");
       doc.setFontSize(fontSize);
       doc.setTextColor(51, 51, 51);
       
@@ -94,14 +88,7 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
       doc.setTextColor(0, 0, 0);
     } else {
       // Other pages: text with proper direction
-      
-      // Set Arabic font if needed, otherwise use default
-      if (currentPageHasArabic) {
-        doc.setFont("arabic", "normal");
-      } else {
-        doc.setFont("helvetica", "normal");
-      }
-      
+      doc.setFont("helvetica", "normal");
       doc.setFontSize(16);
       doc.setTextColor(0, 0, 0);
       
