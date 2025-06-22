@@ -73,9 +73,7 @@ const PricingSlider = () => {
                   <span className="text-2xl text-gray-600">
                     {storyCount[0] > 1 ? 'stories' : 'story'}
                   </span>
-                  <span className="text-3xl font-bold text-story-green animate-pulse shadow-lg shadow-story-green/50 rounded-lg px-2 py-1">
-                    + 1 FREE
-                  </span>
+                  <span className="text-3xl font-bold text-story-green">+ 1 FREE</span>
                 </div>
                 <div className="bg-gradient-to-r from-story-yellow/20 to-story-green/20 rounded-full px-4 py-2 inline-block">
                   <p className="text-lg font-semibold text-story-purple">
