@@ -30,7 +30,7 @@ export const useAuthForm = ({ initialMode = 'login' }: UseAuthFormProps = {}) =>
       title: 'Welcome back!',
       description: 'You have successfully logged in.',
     });
-    navigate('/a/library');
+    navigate('/library');
   };
 
   const { mutate: login, isPending: isLoginPending } = useMutation({
@@ -71,7 +71,7 @@ export const useAuthForm = ({ initialMode = 'login' }: UseAuthFormProps = {}) =>
         title: 'Account created!',
         description: 'Please check your email to verify your account before logging in.',
       });
-      navigate('/a/login?needsVerification=1');
+      navigate('/login?needsVerification=1');
     },
     onError: (error: any) => {
       // Check if the error is about email already existing
