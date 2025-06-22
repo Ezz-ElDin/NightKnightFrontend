@@ -1,6 +1,9 @@
 import jsPDF from "jspdf";
 import { StoryDetails } from "@/lib/api";
 
+// Utility function to detect Arabic text
+const isArabic = (text: string) => /[\u0600-\u06FF]/.test(text);
+
 // Utility function to export a story to PDF
 export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { image_url?: string } }) {
   const doc = new jsPDF({
@@ -8,6 +11,7 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
     unit: 'pt',
     format: 'a4',
   });
+  
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
   const margin = 40;
@@ -15,49 +19,73 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
   const columnWidth = (pageWidth - 2 * margin) / 2;
   const columnHeight = pageHeight - 2 * margin;
 
+  // Check if the story contains Arabic text
+  const storyHasArabic = isArabic(story.title) || story.pages.some(page => isArabic(page.text));
+
   for (let i = 0; i < story.pages.length; i++) {
     if (i !== 0) {
       doc.addPage();
     }
 
-    // --- LEFT COLUMN: Left-Aligned Text ---
+    // Determine text direction for current page
+    const currentPageHasArabic = i === 0 ? isArabic(story.title) : isArabic(story.pages[i].text);
+    const textAlign = currentPageHasArabic ? "right" : "left";
+
+    // --- LEFT COLUMN: Text (with proper direction handling) ---
     if (i === 0) {
-      // First page: use big title style, left-aligned
+      // First page: use big title style
       const fontSize = 42;
       doc.setFont("helvetica", "bold");
       doc.setFontSize(fontSize);
       doc.setTextColor(51, 51, 51);
+      
       // Split title if it's too long
       const titleLines = doc.splitTextToSize(story.title, columnWidth - 24);
+      
       // Measure text block height
       const lineHeight = fontSize * 1.1;
       const blockHeight = titleLines.length * lineHeight;
-      // Left-align vertically centered in the left column
+      
+      // Position text based on direction
       const y = margin + (columnHeight - blockHeight) / 2 + fontSize;
+      const x = currentPageHasArabic ? margin + columnWidth - 12 : margin + 12;
+      
       doc.text(
         titleLines,
-        margin + 12,
+        x,
         y,
-        { maxWidth: columnWidth - 24, align: "left" }
+        { 
+          maxWidth: columnWidth - 24, 
+          align: textAlign,
+          dir: currentPageHasArabic ? "rtl" : "ltr"
+        }
       );
+      
       // Restore default style for next page
       doc.setFont("helvetica", "normal");
       doc.setFontSize(16);
       doc.setTextColor(0, 0, 0);
     } else {
-      // Other pages: text left-aligned vertically centered
+      // Other pages: text with proper direction
       doc.setFont("helvetica", "normal");
       doc.setFontSize(16);
       doc.setTextColor(0, 0, 0);
+      
       const textLines = doc.splitTextToSize(story.pages[i].text, columnWidth - 24);
       const lineHeight = 19;
       const blockHeight = textLines.length * lineHeight;
       const y = margin + (columnHeight - blockHeight) / 2 + 16;
+      const x = currentPageHasArabic ? margin + columnWidth - 12 : margin + 12;
+      
       doc.text(
         textLines,
-        margin + 12,
+        x,
         y,
-        { maxWidth: columnWidth - 24, align: "left" }
+        { 
+          maxWidth: columnWidth - 24, 
+          align: textAlign,
+          dir: currentPageHasArabic ? "rtl" : "ltr"
+        }
       );
     }
 
