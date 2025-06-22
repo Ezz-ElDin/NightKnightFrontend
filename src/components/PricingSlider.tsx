@@ -98,7 +98,7 @@ const PricingSlider = () => {
                   {currency}{currentPrice.toFixed(2)}
                 </div>
                 <p className="text-gray-600 text-lg">
-                  {currency}2.50 per story (+ 1 free bonus story)
+                  {currency}2.50 per story
                 </p>
               </div>
             </div>
