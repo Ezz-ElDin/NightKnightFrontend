@@ -56,8 +56,7 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
         y,
         { 
           maxWidth: columnWidth - 24, 
-          align: textAlign,
-          dir: currentPageHasArabic ? "rtl" : "ltr"
+          align: textAlign
         }
       );
       
@@ -83,8 +82,7 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
         y,
         { 
           maxWidth: columnWidth - 24, 
-          align: textAlign,
-          dir: currentPageHasArabic ? "rtl" : "ltr"
+          align: textAlign
         }
       );
     }
