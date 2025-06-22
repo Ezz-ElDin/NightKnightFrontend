@@ -4,41 +4,6 @@ import { StoryDetails } from "@/lib/api";
 // Utility function to detect Arabic text
 const isArabic = (text: string) => /[\u0600-\u06FF]/.test(text);
 
-// Utility function to load Google Font as base64 for jsPDF
-const loadArabicFont = async (): Promise<string> => {
-  try {
-    // Fetch the Cairo font from Google Fonts
-    const response = await fetch('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
-    const css = await response.text();
-    
-    // Extract the font URL from the CSS (this is a simplified approach)
-    // In production, you'd want to use a more robust font loading solution
-    const fontUrlMatch = css.match(/url\((https:\/\/[^)]+\.woff2?)\)/);
-    
-    if (fontUrlMatch) {
-      const fontResponse = await fetch(fontUrlMatch[1]);
-      const fontBuffer = await fontResponse.arrayBuffer();
-      
-      // Convert to base64
-      const base64Font = btoa(String.fromCharCode(...new Uint8Array(fontBuffer)));
-      return base64Font;
-    }
-    
-    return '';
-  } catch (error) {
-    console.warn('Failed to load Arabic font:', error);
-    return '';
-  }
-};
-
-// Utility function to process Arabic text for better PDF rendering
-const processArabicText = (text: string) => {
-  if (!isArabic(text)) return text;
-  
-  // Basic Arabic text processing - in production you'd want more sophisticated handling
-  return text;
-};
-
 // Utility function to export a story to PDF
 export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { image_url?: string } }) {
   const doc = new jsPDF({
@@ -46,21 +11,6 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
     unit: 'pt',
     format: 'a4',
   });
-  
-  // Try to load Arabic font
-  let arabicFontLoaded = false;
-  try {
-    const arabicFontBase64 = await loadArabicFont();
-    if (arabicFontBase64) {
-      doc.addFileToVFS('Cairo-Regular.ttf', arabicFontBase64);
-      doc.addFont('Cairo-Regular.ttf', 'Cairo', 'normal');
-      doc.addFileToVFS('Cairo-Bold.ttf', arabicFontBase64);
-      doc.addFont('Cairo-Bold.ttf', 'Cairo', 'bold');
-      arabicFontLoaded = true;
-    }
-  } catch (error) {
-    console.warn('Could not load Arabic font, using fallback:', error);
-  }
   
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
@@ -85,21 +35,16 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
       // First page: use big title style
       const fontSize = 42;
       
-      // Use Arabic font if available and needed, otherwise use default
-      if (currentPageHasArabic && arabicFontLoaded) {
-        doc.setFont("Cairo", "bold");
-      } else {
-        doc.setFont("helvetica", "bold");
-      }
-      
+      // Use default font for now - Arabic font will render with system fallback
+      doc.setFont("helvetica", "bold");
       doc.setFontSize(fontSize);
       doc.setTextColor(51, 51, 51);
       
-      // Process title text for Arabic
-      const processedTitle = processArabicText(story.title);
+      // Process title text - keep original for now to avoid processing issues
+      const titleText = story.title;
       
       // Split title if it's too long
-      const titleLines = doc.splitTextToSize(processedTitle, columnWidth - 24);
+      const titleLines = doc.splitTextToSize(titleText, columnWidth - 24);
       
       // Measure text block height
       const lineHeight = fontSize * 1.1;
@@ -134,20 +79,14 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
       doc.setTextColor(0, 0, 0);
     } else {
       // Other pages: text with proper direction
-      // Use Arabic font if available and needed, otherwise use default
-      if (currentPageHasArabic && arabicFontLoaded) {
-        doc.setFont("Cairo", "normal");
-      } else {
-        doc.setFont("helvetica", "normal");
-      }
-      
+      doc.setFont("helvetica", "normal");
       doc.setFontSize(16);
       doc.setTextColor(0, 0, 0);
       
-      // Process page text for Arabic
-      const processedText = processArabicText(story.pages[i].text);
+      // Use original text without processing to avoid hanging
+      const pageText = story.pages[i].text;
       
-      const textLines = doc.splitTextToSize(processedText, columnWidth - 24);
+      const textLines = doc.splitTextToSize(pageText, columnWidth - 24);
       const lineHeight = 19;
       const blockHeight = textLines.length * lineHeight;
       const y = margin + (columnHeight - blockHeight) / 2 + 16;
