@@ -44,12 +44,13 @@ const PricingSlider = () => {
 
   // Calculate price per story
   const calculatePrice = (stories: number) => {
-    const pricePerStory = currency === '£' ? 0.99 : 1.29;
+    const pricePerStory = currency === '£' ? 2.50 : 3.25;
     return stories * pricePerStory;
   };
 
   const currentPrice = calculatePrice(storyCount[0]);
-  const isPlural = storyCount[0] > 1;
+  const totalStories = storyCount[0] + 1; // Adding 1 free story
+  const isPlural = totalStories > 1;
 
   return (
     <section className="py-16 px-4" id="pricing">
@@ -65,12 +66,20 @@ const PricingSlider = () => {
           <div className="ghibli-card mb-8">
             <div className="text-center mb-8">
               <div className="mb-6">
-                <span className="text-6xl font-bold text-story-purple">
-                  {storyCount[0]}
-                </span>
-                <span className="text-2xl text-gray-600 ml-2">
-                  {isPlural ? 'stories' : 'story'}
-                </span>
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <span className="text-6xl font-bold text-story-purple">
+                    {storyCount[0]}
+                  </span>
+                  <span className="text-2xl text-gray-600">
+                    {storyCount[0] > 1 ? 'stories' : 'story'}
+                  </span>
+                  <span className="text-3xl font-bold text-story-green">+ 1 FREE</span>
+                </div>
+                <div className="bg-gradient-to-r from-story-yellow/20 to-story-green/20 rounded-full px-4 py-2 inline-block">
+                  <p className="text-lg font-semibold text-story-purple">
+                    Total: {totalStories} {isPlural ? 'stories' : 'story'}
+                  </p>
+                </div>
               </div>
               
               <div className="mb-8 max-w-md mx-auto">
@@ -88,8 +97,8 @@ const PricingSlider = () => {
                 <div className="text-5xl font-bold text-story-purple mb-2">
                   {currency}{currentPrice.toFixed(2)}
                 </div>
-                <p className="text-gray-600">
-                  {currency}{(currentPrice / storyCount[0]).toFixed(2)} per story
+                <p className="text-gray-600 text-lg">
+                  {currency}2.50 per story (+ 1 free bonus story)
                 </p>
               </div>
             </div>
@@ -129,7 +138,7 @@ const PricingSlider = () => {
                 <Button 
                   className="w-full h-12 rounded-xl button-bounce bg-story-purple text-white hover:bg-story-purple/90"
                 >
-                  Get {isPlural ? 'Stories' : 'Story'}
+                  Get {totalStories} {isPlural ? 'Stories' : 'Story'}
                 </Button>
               </Link>
             </div>
