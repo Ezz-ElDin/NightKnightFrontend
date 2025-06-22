@@ -66,20 +66,16 @@ const PricingSlider = () => {
           <div className="ghibli-card mb-8">
             <div className="text-center mb-8">
               <div className="mb-6">
-                <div className="flex items-center justify-center gap-3 mb-2">
+                <div className="flex items-center justify-center gap-2 mb-2">
                   <span className="text-6xl font-bold text-story-purple">
                     {storyCount[0]}
                   </span>
                   <span className="text-2xl text-gray-600">
                     {storyCount[0] > 1 ? 'stories' : 'story'}
                   </span>
-                  <div className="relative">
-                    <div className="absolute -inset-2 bg-gradient-to-r from-story-yellow via-story-green to-story-orange rounded-full blur-sm animate-pulse opacity-75"></div>
-                    <span className="relative bg-gradient-to-r from-story-yellow via-story-green to-story-orange bg-clip-text text-transparent text-4xl font-black animate-bounce-slow px-4 py-2 rounded-full shadow-lg">
-                      + 1 FREE
-                    </span>
-                    <div className="absolute top-0 right-0 w-3 h-3 bg-story-yellow rounded-full animate-ping"></div>
-                  </div>
+                  <span className="text-3xl font-bold text-story-green animate-pulse shadow-lg shadow-story-green/50 rounded-lg px-2 py-1">
+                    + 1 FREE
+                  </span>
                 </div>
                 <div className="bg-gradient-to-r from-story-yellow/20 to-story-green/20 rounded-full px-4 py-2 inline-block">
                   <p className="text-lg font-semibold text-story-purple">
