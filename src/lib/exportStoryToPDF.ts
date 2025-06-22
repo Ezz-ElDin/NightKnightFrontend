@@ -1,8 +1,19 @@
+
 import jsPDF from "jspdf";
 import { StoryDetails } from "@/lib/api";
 
 // Utility function to detect Arabic text
 const isArabic = (text: string) => /[\u0600-\u06FF]/.test(text);
+
+// Utility function to reverse Arabic text for better PDF rendering
+const processArabicText = (text: string) => {
+  if (!isArabic(text)) return text;
+  
+  // For Arabic text, we need to handle the text direction properly
+  // This is a basic approach - for production, you'd want a more sophisticated solution
+  const words = text.split(' ');
+  return words.reverse().join(' ');
+};
 
 // Utility function to export a story to PDF
 export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { image_url?: string } }) {
@@ -29,7 +40,6 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
 
     // Determine text direction for current page
     const currentPageHasArabic = i === 0 ? isArabic(story.title) : isArabic(story.pages[i].text);
-    const textAlign = currentPageHasArabic ? "right" : "left";
 
     // --- LEFT COLUMN: Text (with proper direction handling) ---
     if (i === 0) {
@@ -39,8 +49,11 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
       doc.setFontSize(fontSize);
       doc.setTextColor(51, 51, 51);
       
+      // Process title text for Arabic
+      const processedTitle = processArabicText(story.title);
+      
       // Split title if it's too long
-      const titleLines = doc.splitTextToSize(story.title, columnWidth - 24);
+      const titleLines = doc.splitTextToSize(processedTitle, columnWidth - 24);
       
       // Measure text block height
       const lineHeight = fontSize * 1.1;
@@ -48,7 +61,16 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
       
       // Position text based on direction
       const y = margin + (columnHeight - blockHeight) / 2 + fontSize;
-      const x = currentPageHasArabic ? margin + columnWidth - 12 : margin + 12;
+      let x: number;
+      let align: "left" | "right" | "center";
+      
+      if (currentPageHasArabic) {
+        x = margin + columnWidth - 12;
+        align = "right";
+      } else {
+        x = margin + 12;
+        align = "left";
+      }
       
       doc.text(
         titleLines,
@@ -56,7 +78,7 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
         y,
         { 
           maxWidth: columnWidth - 24, 
-          align: textAlign
+          align: align
         }
       );
       
@@ -70,11 +92,24 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
       doc.setFontSize(16);
       doc.setTextColor(0, 0, 0);
       
-      const textLines = doc.splitTextToSize(story.pages[i].text, columnWidth - 24);
+      // Process page text for Arabic
+      const processedText = processArabicText(story.pages[i].text);
+      
+      const textLines = doc.splitTextToSize(processedText, columnWidth - 24);
       const lineHeight = 19;
       const blockHeight = textLines.length * lineHeight;
       const y = margin + (columnHeight - blockHeight) / 2 + 16;
-      const x = currentPageHasArabic ? margin + columnWidth - 12 : margin + 12;
+      
+      let x: number;
+      let align: "left" | "right" | "center";
+      
+      if (currentPageHasArabic) {
+        x = margin + columnWidth - 12;
+        align = "right";
+      } else {
+        x = margin + 12;
+        align = "left";
+      }
       
       doc.text(
         textLines,
@@ -82,7 +117,7 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
         y,
         { 
           maxWidth: columnWidth - 24, 
-          align: textAlign
+          align: align
         }
       );
     }
