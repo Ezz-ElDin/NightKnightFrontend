@@ -1,8 +1,9 @@
 
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Star } from "lucide-react";
+import { Star, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import StoryBackground from "@/components/StoryBackground";
 import StoryGallery from "@/components/dashboard/StoryGallery";
 import PaginationNav from "@/components/dashboard/PaginationNav";
@@ -22,6 +23,9 @@ const Library = () => {
   // Determine if user used email/password login
   const loginMethod = localStorage.getItem('loginMethod');
   const shouldShowVerificationBanner = loginMethod === 'email';
+
+  // Simulated story credits - in a real app this would come from your backend
+  const storyCredits = 3; // This would come from user's account data
 
   // ==== React Query: list stories ====
   const queryClient = useQueryClient();
@@ -104,6 +108,25 @@ const Library = () => {
             Where imagination takes flight. Discover, create, and share magical stories with your loved ones!
           </p>
         </div>
+
+        {/* Story Credits Section */}
+        <Card className="mb-8 p-6 bg-gradient-to-r from-story-lightPurple/30 to-story-seafoam/30 border-2 border-story-lightPurple/50">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="text-center md:text-left">
+              <h3 className="text-2xl font-bold text-story-purple mb-2">Story Credits</h3>
+              <p className="text-lg text-gray-700">
+                You have <span className="font-bold text-story-purple text-xl">{storyCredits}</span> story credits remaining
+              </p>
+              <p className="text-sm text-gray-600 mt-1">Each story creation uses 1 credit</p>
+            </div>
+            <Link to="/account-settings?tab=credits">
+              <Button className="bg-story-purple hover:bg-story-purple/90 text-white gap-2 px-6 py-3 rounded-xl">
+                <CreditCard className="h-5 w-5" />
+                Buy Credits
+              </Button>
+            </Link>
+          </div>
+        </Card>
 
         <div className="mb-12">
           <div className="flex items-center justify-between mb-5">

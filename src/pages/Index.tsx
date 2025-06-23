@@ -30,7 +30,7 @@ const Index = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
-            <Link to="/login">
+            <Link to="/register">
               <Button className="h-14 px-8 text-xl rounded-2xl bg-story-purple hover:bg-story-purple/90 text-white button-bounce">
                 Start Your Adventure
               </Button>
