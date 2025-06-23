@@ -33,7 +33,7 @@ const StoryCardMenu: React.FC<StoryCardMenuProps> = ({
             onClick={(e) => {
               e.stopPropagation();
               onFavourite?.();
-              onClose();
+              onClose(e);
             }}
           >
             <Heart size={20} strokeWidth={2} fill={isFavourite ? "#f59e42" : "none"} color={isFavourite ? "#f59e42" : "#a093f4"} />
