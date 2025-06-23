@@ -1,11 +1,15 @@
 import jsPDF from "jspdf";
 import { StoryDetails } from "@/lib/api";
+import { initializeArabicFont, isArabicFontAvailable } from "./arabicFont";
 
 // Utility function to detect Arabic text
 const isArabic = (text: string) => /[\u0600-\u06FF]/.test(text);
 
 // Utility function to export a story to PDF
 export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { image_url?: string } }) {
+  // Initialize Arabic font registration
+  initializeArabicFont();
+  
   const doc = new jsPDF({
     orientation: 'landscape',
     unit: 'pt',
@@ -18,6 +22,8 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
   const watermark = "Created with love by NightKnight · https://nightknight.app";
   const columnWidth = (pageWidth - 2 * margin) / 2;
   const columnHeight = pageHeight - 2 * margin;
+  
+  const arabicFontAvailable = isArabicFontAvailable();
 
   for (let i = 0; i < story.pages.length; i++) {
     if (i !== 0) {
@@ -31,7 +37,19 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
     if (i === 0) {
       // First page: use big title style
       const fontSize = 42;
-      doc.setFont("helvetica", "bold");
+      
+      // Use Arabic font if available and text contains Arabic
+      if (currentPageHasArabic && arabicFontAvailable) {
+        try {
+          doc.setFont("Cairo-VariableFont_slnt,wght", "normal");
+        } catch (error) {
+          console.warn('Failed to set Arabic font, falling back to helvetica:', error);
+          doc.setFont("helvetica", "bold");
+        }
+      } else {
+        doc.setFont("helvetica", "bold");
+      }
+      
       doc.setFontSize(fontSize);
       doc.setTextColor(51, 51, 51);
       
@@ -71,7 +89,17 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
       doc.setTextColor(0, 0, 0);
     } else {
       // Other pages: text with proper direction
-      doc.setFont("helvetica", "normal");
+      if (currentPageHasArabic && arabicFontAvailable) {
+        try {
+          doc.setFont("Cairo-VariableFont_slnt,wght", "normal");
+        } catch (error) {
+          console.warn('Failed to set Arabic font, falling back to helvetica:', error);
+          doc.setFont("helvetica", "normal");
+        }
+      } else {
+        doc.setFont("helvetica", "normal");
+      }
+      
       doc.setFontSize(16);
       doc.setTextColor(0, 0, 0);
       
