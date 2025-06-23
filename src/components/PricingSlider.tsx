@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
@@ -49,6 +50,24 @@ const PricingSlider = () => {
   const calculatePrice = (stories: number) => {
     const pricePerStory = currency === '£' ? 2.50 : 3.25;
     return stories * pricePerStory;
+  };
+
+  const handleDirectCheckout = async () => {
+    try {
+      // This would be replaced with actual Stripe checkout integration
+      console.log(`Redirecting to checkout for ${storyCount[0]} stories`);
+      alert(`Redirecting to Stripe checkout for ${storyCount[0]} stories (${currency}${calculatePrice(storyCount[0]).toFixed(2)})`);
+      // TODO: Integrate with Stripe checkout
+      // const response = await supabase.functions.invoke('create-checkout', {
+      //   body: { creditCount: storyCount[0], currency: currencySymbol }
+      // });
+      // if (response.data?.url) {
+      //   window.open(response.data.url, '_blank');
+      // }
+    } catch (error) {
+      console.error('Checkout error:', error);
+      alert('There was an error processing your request. Please try again.');
+    }
   };
 
   const currentPrice = calculatePrice(storyCount[0]);
@@ -149,13 +168,12 @@ const PricingSlider = () => {
             
             <div className="text-center">
               {isLoggedIn ? (
-                <Link to="/account-settings?tab=credits">
-                  <Button 
-                    className="w-full h-12 rounded-xl button-bounce bg-story-purple text-white hover:bg-story-purple/90"
-                  >
-                    Get {totalStories} {isPlural ? 'Stories' : 'Story'}
-                  </Button>
-                </Link>
+                <Button 
+                  onClick={handleDirectCheckout}
+                  className="w-full h-12 rounded-xl button-bounce bg-story-purple text-white hover:bg-story-purple/90"
+                >
+                  Get {totalStories} {isPlural ? 'Stories' : 'Story'}
+                </Button>
               ) : (
                 <Link to="/register">
                   <Button 
