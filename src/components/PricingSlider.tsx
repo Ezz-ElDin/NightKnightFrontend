@@ -97,8 +97,16 @@ const PricingSlider = () => {
                 <div className="text-5xl font-bold text-story-purple mb-2">
                   {currency}{currentPrice.toFixed(2)}
                 </div>
-                <p className="text-gray-600 text-lg">
-                  {currency}2.50 per story
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <span className="text-gray-400 line-through text-lg">
+                    {currency}5.00 per story
+                  </span>
+                  <span className="bg-story-yellow text-story-orange px-2 py-1 rounded-full text-sm font-bold">
+                    LIMITED TIME
+                  </span>
+                </div>
+                <p className="text-story-green font-bold text-lg">
+                  Now only {currency}2.50 per story
                 </p>
               </div>
             </div>
