@@ -1,6 +1,7 @@
 
 import { Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
 
 const Pricing = () => {
@@ -28,7 +29,7 @@ const Pricing = () => {
       features: [
         "Unlimited stories",
         "Advanced customisation",
-        "PDF downloads",
+        { text: "PDF downloads", comingSoon: true },
         "Multiple child profiles",
         "Ad-free experience",
         "Premium story themes",
@@ -49,7 +50,7 @@ const Pricing = () => {
         "Unlimited stories",
         "Classroom management",
         "Educational themes",
-        "Bulk PDF downloads",
+        { text: "Bulk PDF downloads", comingSoon: true },
         "Shared story library",
         "Priority support",
         "All available languages"
@@ -111,9 +112,22 @@ const Pricing = () => {
                       <div className={`mr-2 mt-1 ${plan.highlightColor === 'text-white' ? 'text-white' : 'text-story-purple'}`}>
                         <Check className="h-4 w-4" />
                       </div>
-                      <span className={plan.highlightColor === 'text-white' ? 'text-white' : 'text-gray-700'}>
-                        {feature}
-                      </span>
+                      {typeof feature === 'string' ? (
+                        <span className={plan.highlightColor === 'text-white' ? 'text-white' : 'text-gray-700'}>
+                          {feature}
+                        </span>
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <span className={plan.highlightColor === 'text-white' ? 'text-white' : 'text-gray-700'}>
+                            {feature.text}
+                          </span>
+                          {feature.comingSoon && (
+                            <Badge variant="outline" className="bg-story-yellow/20 text-story-orange border-story-orange text-xs px-2 py-0.5">
+                              Coming Soon
+                            </Badge>
+                          )}
+                        </div>
+                      )}
                     </li>
                   ))}
                 </ul>

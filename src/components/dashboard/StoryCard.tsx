@@ -1,5 +1,7 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Heart, Delete, Download } from "lucide-react";
 
 // Helper to determine if string is in Arabic for RTL
@@ -154,20 +156,23 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, isFavourite, onClick, onFa
                 </li>
                 <li>
                   <button
-                    className="w-full px-5 py-3 flex items-center gap-3 text-green-700 font-semibold focus:outline-none text-base rounded-xl transition"
+                    className="w-full px-5 py-3 flex items-center gap-3 text-gray-400 font-semibold focus:outline-none text-base rounded-xl transition cursor-not-allowed"
                     tabIndex={0}
                     type="button"
-                    onClick={handleExportPDF}
-                    disabled={loadingPDF}
+                    onClick={(e) => e.stopPropagation()}
+                    disabled={true}
                     style={{
-                      color: "#159544", // Strong visible green
-                      whiteSpace: "nowrap", // Ensure one line
+                      color: "#9CA3AF",
+                      whiteSpace: "nowrap",
                     }}
                   >
                     <Download size={20} strokeWidth={2} />
-                    <span className="mt-0.5">
-                      {loadingPDF ? "Exporting..." : "Export"}
-                    </span>
+                    <div className="flex items-center gap-2 mt-0.5">
+                      <span>Export</span>
+                      <Badge variant="outline" className="bg-story-yellow/20 text-story-orange border-story-orange text-xs px-1.5 py-0.5">
+                        Coming Soon
+                      </Badge>
+                    </div>
                   </button>
                 </li>
                 <li>
