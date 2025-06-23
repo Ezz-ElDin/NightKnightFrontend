@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
@@ -9,6 +8,9 @@ const PricingSlider = () => {
   const [storyCount, setStoryCount] = useState([1]);
   const [currency, setCurrency] = useState('$');
   const [currencySymbol, setCurrencySymbol] = useState('USD');
+
+  // Check if user is logged in
+  const isLoggedIn = !!localStorage.getItem('authToken');
 
   // Detect user location for currency
   useEffect(() => {
@@ -146,13 +148,23 @@ const PricingSlider = () => {
             </div>
             
             <div className="text-center">
-              <Link to="/register">
-                <Button 
-                  className="w-full h-12 rounded-xl button-bounce bg-story-purple text-white hover:bg-story-purple/90"
-                >
-                  Get {totalStories} {isPlural ? 'Stories' : 'Story'}
-                </Button>
-              </Link>
+              {isLoggedIn ? (
+                <Link to="/account-settings?tab=credits">
+                  <Button 
+                    className="w-full h-12 rounded-xl button-bounce bg-story-purple text-white hover:bg-story-purple/90"
+                  >
+                    Get {totalStories} {isPlural ? 'Stories' : 'Story'}
+                  </Button>
+                </Link>
+              ) : (
+                <Link to="/register">
+                  <Button 
+                    className="w-full h-12 rounded-xl button-bounce bg-story-purple text-white hover:bg-story-purple/90"
+                  >
+                    Get {totalStories} {isPlural ? 'Stories' : 'Story'}
+                  </Button>
+                </Link>
+              )}
             </div>
           </div>
         </div>

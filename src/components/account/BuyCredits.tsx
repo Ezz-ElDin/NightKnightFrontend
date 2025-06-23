@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
@@ -7,24 +7,51 @@ import { Badge } from "@/components/ui/badge";
 import { Star, CreditCard } from "lucide-react";
 
 const BuyCredits = () => {
-  const [creditCount, setCreditCount] = useState([5]);
+  const [creditCount, setCreditCount] = useState([1]);
+  const [currency, setCurrency] = useState('$');
   
-  // Calculate price per credit with bulk discounts
+  // Detect user location for currency - same logic as PricingSlider
+  useEffect(() => {
+    const detectLocation = async () => {
+      try {
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const europeanTimezones = [
+          'Europe/London', 'Europe/Paris', 'Europe/Berlin', 'Europe/Madrid',
+          'Europe/Rome', 'Europe/Amsterdam', 'Europe/Vienna', 'Europe/Brussels',
+          'Europe/Copenhagen', 'Europe/Dublin', 'Europe/Helsinki', 'Europe/Lisbon',
+          'Europe/Luxembourg', 'Europe/Prague', 'Europe/Stockholm', 'Europe/Warsaw',
+          'Europe/Athens', 'Europe/Budapest', 'Europe/Bucharest', 'Europe/Sofia',
+          'Europe/Zagreb', 'Europe/Ljubljana', 'Europe/Bratislava', 'Europe/Tallinn',
+          'Europe/Riga', 'Europe/Vilnius', 'Europe/Malta', 'Europe/Nicosia'
+        ];
+        
+        if (europeanTimezones.some(tz => timezone.includes(tz.split('/')[1]))) {
+          setCurrency('£');
+        } else {
+          setCurrency('$');
+        }
+      } catch (error) {
+        setCurrency('$');
+      }
+    };
+
+    detectLocation();
+  }, []);
+  
+  // Calculate price per credit with limited time offer
   const calculatePrice = (credits: number) => {
-    const basePrice = 2.50; // £2.50 per credit
-    if (credits >= 20) return credits * 2.00; // 20% discount for 20+ credits
-    if (credits >= 10) return credits * 2.25; // 10% discount for 10+ credits
-    return credits * basePrice;
+    const pricePerCredit = currency === '£' ? 2.50 : 3.25;
+    return credits * pricePerCredit;
   };
 
   const currentPrice = calculatePrice(creditCount[0]);
-  const savings = (creditCount[0] * 2.50) - currentPrice;
+  const totalStories = creditCount[0] + 1; // Adding 1 free story
+  const isPlural = totalStories > 1;
 
   const handlePurchase = () => {
     // This would integrate with Stripe checkout
-    console.log(`Purchasing ${creditCount[0]} credits for £${currentPrice.toFixed(2)}`);
-    // Redirect to Stripe checkout would happen here
-    alert(`Redirecting to checkout for ${creditCount[0]} credits (£${currentPrice.toFixed(2)})`);
+    console.log(`Purchasing ${creditCount[0]} credits for ${currency}${currentPrice.toFixed(2)}`);
+    alert(`Redirecting to checkout for ${creditCount[0]} credits (${currency}${currentPrice.toFixed(2)})`);
   };
 
   return (
@@ -38,17 +65,17 @@ const BuyCredits = () => {
         <div className="text-center mb-8">
           <div className="mb-6">
             <div className="flex items-center justify-center gap-2 mb-2">
-              <Star className="h-8 w-8 text-story-yellow" fill="currentColor" />
               <span className="text-6xl font-bold text-story-purple">
                 {creditCount[0]}
               </span>
               <span className="text-2xl text-gray-600">
-                {creditCount[0] > 1 ? 'credits' : 'credit'}
+                {creditCount[0] > 1 ? 'stories' : 'story'}
               </span>
+              <span className="text-3xl font-bold text-story-green">+ 1 FREE</span>
             </div>
             <div className="bg-gradient-to-r from-story-yellow/20 to-story-green/20 rounded-full px-4 py-2 inline-block">
               <p className="text-lg font-semibold text-story-purple">
-                {creditCount[0]} {creditCount[0] > 1 ? 'stories' : 'story'} to create
+                Total: {totalStories} {isPlural ? 'stories' : 'story'}
               </p>
             </div>
           </div>
@@ -60,7 +87,7 @@ const BuyCredits = () => {
             <Slider
               value={creditCount}
               onValueChange={setCreditCount}
-              max={50}
+              max={10}
               min={1}
               step={1}
               className="w-full"
@@ -69,42 +96,53 @@ const BuyCredits = () => {
           
           <div className="mb-8">
             <div className="text-5xl font-bold text-story-purple mb-2">
-              £{currentPrice.toFixed(2)}
+              {currency}{currentPrice.toFixed(2)}
             </div>
             <div className="flex items-center justify-center gap-2 mb-2">
-              <span className="text-gray-400 text-lg">
-                £{(2.50 * creditCount[0]).toFixed(2)} regular price
+              <span className="text-gray-400 line-through text-lg">
+                {currency}5.00 per story
               </span>
-              {savings > 0 && (
-                <Badge className="bg-story-yellow text-story-orange">
-                  Save £{savings.toFixed(2)}
-                </Badge>
-              )}
+              <Badge className="bg-story-yellow text-story-orange">
+                LIMITED TIME
+              </Badge>
             </div>
             <p className="text-story-green font-bold text-lg">
-              £{(currentPrice / creditCount[0]).toFixed(2)} per credit
+              Now only {currency}{(currency === '£' ? 2.50 : 3.25).toFixed(2)} per story
             </p>
           </div>
         </div>
         
         <div className="mb-8">
-          <h4 className="text-xl font-bold mb-4 text-center">Bulk Discounts Available:</h4>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="text-center p-4 rounded-lg bg-story-lightPurple/20">
-              <div className="font-bold text-story-purple">1-9 Credits</div>
-              <div className="text-sm text-gray-600">£2.50 per credit</div>
-            </div>
-            <div className="text-center p-4 rounded-lg bg-story-seafoam/20">
-              <div className="font-bold text-story-purple">10-19 Credits</div>
-              <div className="text-sm text-gray-600">£2.25 per credit</div>
-              <Badge variant="outline" className="mt-1 text-xs">10% OFF</Badge>
-            </div>
-            <div className="text-center p-4 rounded-lg bg-story-yellow/20">
-              <div className="font-bold text-story-purple">20+ Credits</div>
-              <div className="text-sm text-gray-600">£2.00 per credit</div>
-              <Badge variant="outline" className="mt-1 text-xs">20% OFF</Badge>
-            </div>
-          </div>
+          <h4 className="text-xl font-bold mb-4 text-center">What's included:</h4>
+          <ul className="space-y-3">
+            <li className="flex items-center justify-center">
+              <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
+              <span>Multilingual stories</span>
+            </li>
+            <li className="flex items-center justify-center">
+              <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
+              <span>Lessons learned customisation</span>
+            </li>
+            <li className="flex items-center justify-center">
+              <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
+              <span>Characters customisation</span>
+            </li>
+            <li className="flex items-center justify-center">
+              <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
+              <span>Multiple illustration styles</span>
+            </li>
+            <li className="flex items-center justify-center">
+              <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
+              <span>Web reading experience</span>
+            </li>
+            <li className="flex items-center justify-center gap-2">
+              <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
+              <span>PDF download</span>
+              <Badge variant="outline" className="bg-story-yellow/20 text-story-orange border-story-orange text-xs px-2 py-0.5">
+                Coming Soon
+              </Badge>
+            </li>
+          </ul>
         </div>
         
         <div className="text-center">
@@ -113,7 +151,7 @@ const BuyCredits = () => {
             className="w-full h-12 rounded-xl button-bounce bg-story-purple text-white hover:bg-story-purple/90 gap-2"
           >
             <CreditCard className="h-5 w-5" />
-            Purchase {creditCount[0]} {creditCount[0] > 1 ? 'Credits' : 'Credit'}
+            Get {totalStories} {isPlural ? 'Stories' : 'Story'}
           </Button>
         </div>
       </Card>
