@@ -4,34 +4,6 @@ import { StoryDetails } from "@/lib/api";
 // Utility function to detect Arabic text
 const isArabic = (text: string) => /[\u0600-\u06FF]/.test(text);
 
-// Utility function to register custom Arabic font
-const registerArabicFont = (doc: jsPDF) => {
-  // Check if the font is available from your .js file
-  // Assuming your .js file exports a font object like: window.CairoFont
-  if (typeof window !== 'undefined' && (window as any).CairoFont) {
-    const fontData = (window as any).CairoFont;
-    
-    try {
-      // Register the font with jsPDF
-      doc.addFileToVFS('Cairo-Regular.ttf', fontData.normal || fontData);
-      doc.addFont('Cairo-Regular.ttf', 'Cairo', 'normal');
-      
-      // If you have bold variant
-      if (fontData.bold) {
-        doc.addFileToVFS('Cairo-Bold.ttf', fontData.bold);
-        doc.addFont('Cairo-Bold.ttf', 'Cairo', 'bold');
-      }
-      
-      return true;
-    } catch (error) {
-      console.warn('Failed to register Arabic font:', error);
-      return false;
-    }
-  }
-  
-  return false;
-};
-
 // Utility function to export a story to PDF
 export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { image_url?: string } }) {
   const doc = new jsPDF({
@@ -40,18 +12,12 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
     format: 'a4',
   });
   
-  // Register the custom Arabic font
-  const arabicFontAvailable = registerArabicFont(doc);
-  
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
   const margin = 40;
   const watermark = "Created with love by NightKnight · https://nightknight.app";
   const columnWidth = (pageWidth - 2 * margin) / 2;
   const columnHeight = pageHeight - 2 * margin;
-
-  // Check if the story contains Arabic text
-  const storyHasArabic = isArabic(story.title) || story.pages.some(page => isArabic(page.text));
 
   for (let i = 0; i < story.pages.length; i++) {
     if (i !== 0) {
@@ -65,21 +31,11 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
     if (i === 0) {
       // First page: use big title style
       const fontSize = 42;
-      
-      // Use Arabic font if available and text contains Arabic
-      if (currentPageHasArabic && arabicFontAvailable) {
-        doc.setFont("Cairo", "bold");
-      } else {
-        doc.setFont("helvetica", "bold");
-      }
-      
+      doc.setFont("helvetica", "bold");
       doc.setFontSize(fontSize);
       doc.setTextColor(51, 51, 51);
       
-      // Process title text - keep original for now to avoid processing issues
       const titleText = story.title;
-      
-      // Split title if it's too long
       const titleLines = doc.splitTextToSize(titleText, columnWidth - 24);
       
       // Measure text block height
@@ -115,18 +71,11 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
       doc.setTextColor(0, 0, 0);
     } else {
       // Other pages: text with proper direction
-      if (currentPageHasArabic && arabicFontAvailable) {
-        doc.setFont("Cairo", "normal");
-      } else {
-        doc.setFont("helvetica", "normal");
-      }
-      
+      doc.setFont("helvetica", "normal");
       doc.setFontSize(16);
       doc.setTextColor(0, 0, 0);
       
-      // Use original text without processing to avoid hanging
       const pageText = story.pages[i].text;
-      
       const textLines = doc.splitTextToSize(pageText, columnWidth - 24);
       const lineHeight = 19;
       const blockHeight = textLines.length * lineHeight;
