@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -163,7 +162,6 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, isFavourite, onClick, onFa
                     disabled={true}
                     style={{
                       color: "#9CA3AF",
-                      whiteSpace: "nowrap",
                     }}
                   >
                     <Download size={20} strokeWidth={2} />
