@@ -1,4 +1,6 @@
 
+import React from 'react';
+
 // Helper to determine if string is in Arabic for RTL
 export const isArabic = (text: string) => /[\u0600-\u06FF]/.test(text);
 
