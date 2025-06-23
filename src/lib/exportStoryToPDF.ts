@@ -8,8 +8,37 @@ initializeArabicFont();
 // Utility function to detect Arabic text
 const isArabic = (text: string) => /[\u0600-\u06FF]/.test(text);
 
+// Helper function to wait for font loading
+const waitForFontLoad = (timeout = 5000): Promise<void> => {
+  return new Promise((resolve) => {
+    const startTime = Date.now();
+    const checkFont = () => {
+      // Create a test jsPDF instance to check if font is loaded
+      const testDoc = new jsPDF();
+      try {
+        testDoc.setFont("Cairo-VariableFont_slnt,wght", "normal");
+        resolve();
+      } catch (error) {
+        if (Date.now() - startTime < timeout) {
+          setTimeout(checkFont, 100);
+        } else {
+          console.warn('Font loading timeout, proceeding without Arabic font');
+          resolve();
+        }
+      }
+    };
+    checkFont();
+  });
+};
+
 // Utility function to export a story to PDF
 export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { image_url?: string } }) {
+  // Wait for Arabic font to load if needed
+  const hasArabicContent = story.pages.some(page => isArabic(page.text)) || isArabic(story.title);
+  if (hasArabicContent) {
+    await waitForFontLoad();
+  }
+
   const doc = new jsPDF({
     orientation: 'landscape',
     unit: 'pt',
