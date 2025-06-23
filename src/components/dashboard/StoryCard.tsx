@@ -1,4 +1,5 @@
 
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -166,9 +167,9 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, isFavourite, onClick, onFa
                     }}
                   >
                     <Download size={20} strokeWidth={2} />
-                    <div className="flex items-center gap-2 mt-0.5">
+                    <div className="flex items-center gap-1.5 mt-0.5">
                       <span>Export</span>
-                      <Badge variant="outline" className="bg-green-100 text-green-700 border-green-300 text-xs px-1 py-0">
+                      <Badge variant="outline" className="bg-green-100 text-green-700 border-green-300 text-[10px] px-1 py-0 leading-tight whitespace-nowrap">
                         Coming Soon
                       </Badge>
                     </div>
@@ -215,3 +216,4 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, isFavourite, onClick, onFa
 };
 
 export default StoryCard;
+
