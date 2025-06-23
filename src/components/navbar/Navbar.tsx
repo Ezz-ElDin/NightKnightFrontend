@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import NavLogo from "./NavLogo";
 import LoggedInMenu from "./LoggedInMenu";
@@ -9,15 +9,31 @@ import MobileMenu from "./MobileMenu";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const location = useLocation();
   
-  // Determine authentication status by route prefix (updated to remove /a/ prefix)
-  const loggedInPrefixes = [
-    "/library",
-    "/create-story",
-    "/account-settings"
-  ];
-  const isLoggedIn = loggedInPrefixes.some(prefix => location.pathname.startsWith(prefix));
+  // Check authentication status based on token presence
+  useEffect(() => {
+    const checkAuthStatus = () => {
+      const token = localStorage.getItem('authToken');
+      setIsLoggedIn(!!token);
+    };
+    
+    checkAuthStatus();
+    
+    // Listen for auth changes
+    const handleStorageChange = () => {
+      checkAuthStatus();
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('user-info-updated', handleStorageChange);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('user-info-updated', handleStorageChange);
+    };
+  }, []);
   
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
