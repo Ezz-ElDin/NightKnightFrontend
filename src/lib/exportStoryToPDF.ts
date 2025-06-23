@@ -1,15 +1,15 @@
 import jsPDF from "jspdf";
 import { StoryDetails } from "@/lib/api";
-import { initializeArabicFont, isArabicFontAvailable } from "./arabicFont";
+import { initializeArabicFont, isArabicFontAvailable, preprocessArabicText } from "./arabicFont";
+
+// Initialize Arabic font registration globally at module load
+initializeArabicFont();
 
 // Utility function to detect Arabic text
 const isArabic = (text: string) => /[\u0600-\u06FF]/.test(text);
 
 // Utility function to export a story to PDF
 export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { image_url?: string } }) {
-  // Initialize Arabic font registration
-  initializeArabicFont();
-  
   const doc = new jsPDF({
     orientation: 'landscape',
     unit: 'pt',
@@ -53,7 +53,8 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
       doc.setFontSize(fontSize);
       doc.setTextColor(51, 51, 51);
       
-      const titleText = story.title;
+      // Preprocess Arabic text if needed
+      const titleText = currentPageHasArabic ? preprocessArabicText(story.title) : story.title;
       const titleLines = doc.splitTextToSize(titleText, columnWidth - 24);
       
       // Measure text block height
@@ -103,7 +104,8 @@ export async function exportStoryToPDF(story: StoryDetails & { cover_front?: { i
       doc.setFontSize(16);
       doc.setTextColor(0, 0, 0);
       
-      const pageText = story.pages[i].text;
+      // Preprocess Arabic text if needed
+      const pageText = currentPageHasArabic ? preprocessArabicText(story.pages[i].text) : story.pages[i].text;
       const textLines = doc.splitTextToSize(pageText, columnWidth - 24);
       const lineHeight = 19;
       const blockHeight = textLines.length * lineHeight;
