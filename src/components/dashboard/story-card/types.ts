@@ -16,7 +16,7 @@ export interface StoryCardProps {
 
 export interface StoryCardMenuProps {
   isOpen: boolean;
-  onClose: () => void;
+  onClose: (e: React.MouseEvent) => void;
   isFavourite?: boolean;
   onFavourite?: () => void;
   onExportPDF: (e: React.MouseEvent) => void;
