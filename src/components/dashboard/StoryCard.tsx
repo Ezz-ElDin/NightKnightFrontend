@@ -1,5 +1,3 @@
-
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -175,21 +173,6 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, isFavourite, onClick, onFa
                     </div>
                   </button>
                 </li>
-                <li>
-                  <button
-                    className="w-full px-5 py-3 flex items-center gap-3 text-red-700 font-semibold focus:outline-none text-base rounded-xl transition"
-                    tabIndex={0}
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onDelete?.();
-                      setMenuOpen(false);
-                    }}
-                  >
-                    <Delete size={20} />
-                    <span className="mt-0.5">Delete</span>
-                  </button>
-                </li>
               </ul>
             </div>
           )}
@@ -216,4 +199,3 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, isFavourite, onClick, onFa
 };
 
 export default StoryCard;
-
