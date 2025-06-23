@@ -10,7 +10,7 @@ import PaginationNav from "@/components/dashboard/PaginationNav";
 import EmailVerificationBanners from "@/components/dashboard/EmailVerificationBanners";
 import ConfirmDeleteDialog from "@/components/dashboard/ConfirmDeleteDialog";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { storiesApi, Story } from "@/lib/api";
+import { storiesApi, creditApi, Story } from "@/lib/api";
 
 const STORIES_PER_PAGE = 6;
 
@@ -24,8 +24,14 @@ const Library = () => {
   const loginMethod = localStorage.getItem('loginMethod');
   const shouldShowVerificationBanner = loginMethod === 'email';
 
-  // Simulated story credits - in a real app this would come from your backend
-  const storyCredits = 3; // This would come from user's account data
+  // ==== React Query: fetch story credits ====
+  const { data: creditData } = useQuery({
+    queryKey: ['credits'],
+    queryFn: creditApi.get,
+    refetchOnWindowFocus: false,
+  });
+
+  const storyCredits = creditData?.data?.remaining_credit || 0;
 
   // ==== React Query: list stories ====
   const queryClient = useQueryClient();

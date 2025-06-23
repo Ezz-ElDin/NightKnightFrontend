@@ -66,6 +66,16 @@ export interface UserData {
   last_name: string;
 }
 
+export interface CreditResponse {
+  success: boolean;
+  data: {
+    purchased_stories: number;
+    created_stories: number;
+    remaining_credit: number;
+  };
+  message: string;
+}
+
 export const authApi = {
   login: (data: LoginData) =>
     api.post<AuthResponse>('/api/auth/login/', data),
@@ -190,5 +200,12 @@ export const storiesApi = {
   },
   delete: async (id: number): Promise<void> => {
     await api.delete(`/api/stories/${id}/`);
+  },
+};
+
+export const creditApi = {
+  get: async (): Promise<CreditResponse> => {
+    const res = await api.get('/api/credit');
+    return res.data;
   },
 };
