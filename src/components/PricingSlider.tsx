@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
@@ -156,12 +155,9 @@ const PricingSlider = () => {
                   <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
                   <span>Web reading experience</span>
                 </li>
-                <li className="flex items-center justify-center gap-2">
+                <li className="flex items-center justify-center">
                   <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
                   <span>PDF download</span>
-                  <Badge variant="outline" className="bg-story-yellow/20 text-story-orange border-story-orange text-xs px-2 py-0.5">
-                    Coming Soon
-                  </Badge>
                 </li>
               </ul>
             </div>

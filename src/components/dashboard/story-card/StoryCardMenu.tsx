@@ -42,22 +42,18 @@ const StoryCardMenu: React.FC<StoryCardMenuProps> = ({
         </li>
         <li>
           <button
-            className="w-full px-5 py-3 flex items-center gap-3 text-gray-400 font-semibold focus:outline-none text-base rounded-xl transition cursor-not-allowed"
+            className="w-full px-5 py-3 flex items-center gap-3 text-story-purple font-semibold focus:outline-none text-base rounded-xl transition hover:bg-story-lightPurple/30"
             tabIndex={0}
             type="button"
-            onClick={(e) => e.stopPropagation()}
-            disabled={true}
-            style={{
-              color: "#9CA3AF",
+            onClick={(e) => {
+              e.stopPropagation();
+              onExportPDF?.();
+              onClose(e);
             }}
+            disabled={loadingPDF}
           >
             <Download size={20} strokeWidth={2} />
-            <div className="flex items-center gap-1.5 mt-0.5">
-              <span>Export</span>
-              <Badge variant="outline" className="bg-green-100 text-green-700 border-green-300 text-[10px] px-1 py-0 leading-tight whitespace-nowrap">
-                Coming Soon
-              </Badge>
-            </div>
+            <span className="mt-0.5">{loadingPDF ? "Exporting..." : "Export"}</span>
           </button>
         </li>
       </ul>
