@@ -41,6 +41,9 @@ const LoggedInMenu = ({ isMobile = false, onMobileMenuClose }: LoggedInMenuProps
       // Clear auth token from localStorage
       localStorage.removeItem('authToken');
       
+      // Dispatch event to notify navbar of auth state change
+      window.dispatchEvent(new Event('user-info-updated'));
+      
       // Show success message
       toast({
         title: "Logged out successfully",
@@ -69,6 +72,9 @@ const LoggedInMenu = ({ isMobile = false, onMobileMenuClose }: LoggedInMenuProps
       
       // Clear auth token even if logout request failed
       localStorage.removeItem('authToken');
+      
+      // Dispatch event to notify navbar of auth state change
+      window.dispatchEvent(new Event('user-info-updated'));
       
       toast({
         title: "Logged out successfully",
