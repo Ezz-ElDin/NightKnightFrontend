@@ -47,7 +47,7 @@ const StoryCardMenu: React.FC<StoryCardMenuProps> = ({
             type="button"
             onClick={(e) => {
               e.stopPropagation();
-              onExportPDF?.();
+              onExportPDF?.(e);
               onClose(e);
             }}
             disabled={loadingPDF}
