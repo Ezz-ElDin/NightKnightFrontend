@@ -205,7 +205,7 @@ export const storiesApi = {
 
 export const creditApi = {
   get: async (): Promise<CreditResponse> => {
-    const res = await api.get('/api/credit');
+    const res = await api.get('/api/user/credit/');
     return res.data;
   },
 };
