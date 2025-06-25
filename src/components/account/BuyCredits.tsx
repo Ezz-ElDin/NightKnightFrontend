@@ -1,14 +1,16 @@
-
 import React, { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
 import { Star, CreditCard } from "lucide-react";
+import { stripeApi } from "@/lib/api";
+import { toast } from "sonner";
 
 const BuyCredits = () => {
   const [creditCount, setCreditCount] = useState([1]);
   const [currency, setCurrency] = useState('$');
+  const [isProcessing, setIsProcessing] = useState(false);
   
   // Detect user location for currency - same logic as PricingSlider
   useEffect(() => {
@@ -48,10 +50,30 @@ const BuyCredits = () => {
   const totalStories = creditCount[0] + 1; // Adding 1 free story
   const isPlural = totalStories > 1;
 
-  const handlePurchase = () => {
-    // This would integrate with Stripe checkout
-    console.log(`Purchasing ${creditCount[0]} credits for ${currency}${currentPrice.toFixed(2)}`);
-    alert(`Redirecting to checkout for ${creditCount[0]} credits (${currency}${currentPrice.toFixed(2)})`);
+  const handlePurchase = async () => {
+    setIsProcessing(true);
+    try {
+      console.log(`Purchasing ${creditCount[0]} credits for ${currency}${currentPrice.toFixed(2)}`);
+      
+      const response = await stripeApi.createCheckout({
+        quantity: creditCount[0]
+      });
+
+      if (response.success && response.data.location) {
+        console.log('Redirecting to Stripe checkout:', response.data.location);
+        toast.success('Redirecting to checkout...');
+        
+        // Redirect to Stripe checkout
+        window.location.href = response.data.location;
+      } else {
+        throw new Error('Invalid response from checkout API');
+      }
+    } catch (error) {
+      console.error('Purchase error:', error);
+      toast.error('There was an error processing your request. Please try again.');
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -135,12 +157,9 @@ const BuyCredits = () => {
               <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
               <span>Web reading experience</span>
             </li>
-            <li className="flex items-center justify-center gap-2">
+            <li className="flex items-center justify-center">
               <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
               <span>PDF download</span>
-              <Badge variant="outline" className="bg-story-yellow/20 text-story-orange border-story-orange text-xs px-2 py-0.5">
-                Coming Soon
-              </Badge>
             </li>
           </ul>
         </div>
@@ -148,10 +167,11 @@ const BuyCredits = () => {
         <div className="text-center">
           <Button 
             onClick={handlePurchase}
+            disabled={isProcessing}
             className="w-full h-12 rounded-xl button-bounce bg-story-purple text-white hover:bg-story-purple/90 gap-2"
           >
             <CreditCard className="h-5 w-5" />
-            Get {totalStories} {isPlural ? 'Stories' : 'Story'}
+            {isProcessing ? 'Processing...' : `Get ${totalStories} ${isPlural ? 'Stories' : 'Story'}`}
           </Button>
         </div>
       </Card>

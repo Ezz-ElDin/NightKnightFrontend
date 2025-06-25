@@ -1,13 +1,17 @@
+
 import { useState, useEffect } from 'react';
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
+import { stripeApi } from '@/lib/api';
+import { toast } from 'sonner';
 
 const PricingSlider = () => {
   const [storyCount, setStoryCount] = useState([1]);
   const [currency, setCurrency] = useState('$');
   const [currencySymbol, setCurrencySymbol] = useState('USD');
+  const [isProcessing, setIsProcessing] = useState(false);
 
   // Check if user is logged in
   const isLoggedIn = !!localStorage.getItem('authToken');
@@ -52,20 +56,33 @@ const PricingSlider = () => {
   };
 
   const handleDirectCheckout = async () => {
+    if (!isLoggedIn) {
+      toast.error('Please log in to purchase stories');
+      return;
+    }
+
+    setIsProcessing(true);
     try {
-      // This would be replaced with actual Stripe checkout integration
-      console.log(`Redirecting to checkout for ${storyCount[0]} stories`);
-      alert(`Redirecting to Stripe checkout for ${storyCount[0]} stories (${currency}${calculatePrice(storyCount[0]).toFixed(2)})`);
-      // TODO: Integrate with Stripe checkout
-      // const response = await supabase.functions.invoke('create-checkout', {
-      //   body: { creditCount: storyCount[0], currency: currencySymbol }
-      // });
-      // if (response.data?.url) {
-      //   window.open(response.data.url, '_blank');
-      // }
+      console.log(`Creating checkout for ${storyCount[0]} stories`);
+      
+      const response = await stripeApi.createCheckout({
+        quantity: storyCount[0]
+      });
+
+      if (response.success && response.data.location) {
+        console.log('Redirecting to Stripe checkout:', response.data.location);
+        toast.success('Redirecting to checkout...');
+        
+        // Redirect to Stripe checkout
+        window.location.href = response.data.location;
+      } else {
+        throw new Error('Invalid response from checkout API');
+      }
     } catch (error) {
       console.error('Checkout error:', error);
-      alert('There was an error processing your request. Please try again.');
+      toast.error('There was an error processing your request. Please try again.');
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -166,9 +183,10 @@ const PricingSlider = () => {
               {isLoggedIn ? (
                 <Button 
                   onClick={handleDirectCheckout}
+                  disabled={isProcessing}
                   className="w-full h-12 rounded-xl button-bounce bg-story-purple text-white hover:bg-story-purple/90"
                 >
-                  Get {totalStories} {isPlural ? 'Stories' : 'Story'}
+                  {isProcessing ? 'Processing...' : `Get ${totalStories} ${isPlural ? 'Stories' : 'Story'}`}
                 </Button>
               ) : (
                 <Link to="/register">

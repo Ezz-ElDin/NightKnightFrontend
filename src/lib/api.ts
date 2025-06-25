@@ -76,6 +76,19 @@ export interface CreditResponse {
   message: string;
 }
 
+export interface StripeCheckoutRequest {
+  quantity: number;
+}
+
+export interface StripeCheckoutResponse {
+  success: boolean;
+  data: {
+    location: string;
+    amount_total: number;
+  };
+  message: string;
+}
+
 export const authApi = {
   login: (data: LoginData) =>
     api.post<AuthResponse>('/api/auth/login/', data),
@@ -206,6 +219,14 @@ export const storiesApi = {
 export const creditApi = {
   get: async (): Promise<CreditResponse> => {
     const res = await api.get('/api/user/credit/');
+    return res.data;
+  },
+};
+
+// Add new Stripe API
+export const stripeApi = {
+  createCheckout: async (data: StripeCheckoutRequest): Promise<StripeCheckoutResponse> => {
+    const res = await api.post<StripeCheckoutResponse>('/api/stripe/checkout', data);
     return res.data;
   },
 };
