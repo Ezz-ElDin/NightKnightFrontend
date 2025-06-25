@@ -226,7 +226,7 @@ export const creditApi = {
 // Add new Stripe API
 export const stripeApi = {
   createCheckout: async (data: StripeCheckoutRequest): Promise<StripeCheckoutResponse> => {
-    const res = await api.post<StripeCheckoutResponse>('/api/stripe/checkout', data);
+    const res = await api.post<StripeCheckoutResponse>('/api/stripe/checkout/', data);
     return res.data;
   },
 };
