@@ -33,7 +33,7 @@ function summarizeAppearance({
   appearanceTypeCustom: string;
   appearanceAccessory1: string;
   appearanceAccessory2: string;
-}) => {
+}) {
   // Choose custom or regular values
   const color = appearanceColor === "other" ? appearanceColorCustom : appearanceColor;
   const type = appearanceType === "other" ? appearanceTypeCustom : appearanceType;
