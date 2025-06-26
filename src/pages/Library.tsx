@@ -1,6 +1,5 @@
-
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Star, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -9,6 +8,7 @@ import StoryGallery from "@/components/dashboard/StoryGallery";
 import PaginationNav from "@/components/dashboard/PaginationNav";
 import EmailVerificationBanners from "@/components/dashboard/EmailVerificationBanners";
 import ConfirmDeleteDialog from "@/components/dashboard/ConfirmDeleteDialog";
+import SuccessBanner from "@/components/SuccessBanner";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { storiesApi, creditApi, Story } from "@/lib/api";
 
@@ -17,8 +17,27 @@ const STORIES_PER_PAGE = 6;
 const Library = () => {
   const [page, setPage] = useState(1);
   const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; storyId: null | number }>({ open: false, storyId: null });
-
+  const [showSuccessBanner, setShowSuccessBanner] = useState(false);
+  
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Check for successful payment
+  useEffect(() => {
+    const sessionId = searchParams.get('session_id');
+    if (sessionId) {
+      console.log('Payment successful with session_id:', sessionId);
+      setShowSuccessBanner(true);
+      
+      // Clean up the URL by removing the session_id parameter
+      const newSearchParams = new URLSearchParams(searchParams);
+      newSearchParams.delete('session_id');
+      setSearchParams(newSearchParams, { replace: true });
+      
+      // Refetch credits to update the UI with new credit count
+      queryClient.invalidateQueries({ queryKey: ['credits'] });
+    }
+  }, [searchParams, setSearchParams]);
 
   // Determine if user used email/password login
   const loginMethod = localStorage.getItem('loginMethod');
@@ -100,11 +119,18 @@ const Library = () => {
     navigate(`/library/stories/${storyId}`);
   };
 
+  const handleCloseBanner = () => {
+    setShowSuccessBanner(false);
+  };
+
   return (
     <StoryBackground>
       <div className="container max-w-6xl mx-auto px-2 z-10">
         {/* Email verification banners */}
         <EmailVerificationBanners shouldShow={shouldShowVerificationBanner} />
+
+        {/* Success banner for payment */}
+        {showSuccessBanner && <SuccessBanner onClose={handleCloseBanner} />}
 
         <div className="mb-8 mt-6">
           <h1 className="text-4xl md:text-5xl font-bold mb-3 text-story-purple text-center">
