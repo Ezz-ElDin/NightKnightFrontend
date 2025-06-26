@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { 
   Dialog, 
@@ -183,7 +182,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
       if (!newOpenState) resetCharacter();
       onOpenChange(newOpenState);
     }}>
-      <DialogContent className="fixed inset-0 z-50 w-full h-full max-w-none max-h-none m-0 rounded-none bg-gradient-to-b from-white to-primary/5 flex flex-col">
+      <DialogContent className="w-full h-full bg-gradient-to-b from-white to-primary/5 flex flex-col overflow-hidden">
         {/* Header with X button */}
         <DialogHeader className="flex-shrink-0 px-8 py-6 border-b border-primary/20">
           <div className="flex items-center justify-between">
