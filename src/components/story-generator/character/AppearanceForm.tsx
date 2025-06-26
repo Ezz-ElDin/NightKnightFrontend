@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -26,6 +25,8 @@ const COLOR_OPTIONS = [
 const CHARACTER_TYPE_OPTIONS = [
   { value: "girl", label: "girl", emoji: "👸" },
   { value: "boy", label: "boy", emoji: "👦" },
+  { value: "man", label: "man", emoji: "👨" },
+  { value: "woman", label: "woman", emoji: "👩" },
   { value: "dragon", label: "dragon", emoji: "🐉" },
   { value: "lion", label: "lion", emoji: "🦁" },
   { value: "puppy", label: "puppy", emoji: "🐶" },
