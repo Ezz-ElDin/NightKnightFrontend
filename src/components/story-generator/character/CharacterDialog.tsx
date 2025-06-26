@@ -3,12 +3,10 @@ import {
   Dialog, 
   DialogContent, 
   DialogHeader, 
-  DialogTitle,
-  DialogClose
+  DialogTitle
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
 import { Character } from "../constants";
 import { AppearanceForm } from "./AppearanceForm";
 import { RoleSelector } from "./RoleSelector";
@@ -183,18 +181,11 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
       onOpenChange(newOpenState);
     }}>
       <DialogContent className="w-full h-full bg-gradient-to-b from-white to-primary/5 flex flex-col overflow-hidden">
-        {/* Header with X button */}
+        {/* Header without X button */}
         <DialogHeader className="flex-shrink-0 px-8 py-6 border-b border-primary/20">
-          <div className="flex items-center justify-between">
-            <DialogTitle className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600">
-              {initialCharacter ? "Edit Magical Character" : "Create a Magical Character"}
-            </DialogTitle>
-            <DialogClose asChild>
-              <Button variant="ghost" size="icon" className="h-12 w-12 rounded-full hover:bg-gray-100">
-                <X className="h-8 w-8" />
-              </Button>
-            </DialogClose>
-          </div>
+          <DialogTitle className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600">
+            {initialCharacter ? "Edit Magical Character" : "Create a Magical Character"}
+          </DialogTitle>
         </DialogHeader>
 
         {/* Scrollable content */}
