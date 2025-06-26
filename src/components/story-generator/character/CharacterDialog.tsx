@@ -1,12 +1,15 @@
+
 import React, { useState, useEffect } from "react";
 import { 
   Dialog, 
   DialogContent, 
   DialogHeader, 
-  DialogTitle 
+  DialogTitle,
+  DialogClose
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
 import { Character } from "../constants";
 import { AppearanceForm } from "./AppearanceForm";
 import { RoleSelector } from "./RoleSelector";
@@ -30,7 +33,7 @@ function summarizeAppearance({
   appearanceTypeCustom: string;
   appearanceAccessory1: string;
   appearanceAccessory2: string;
-}) {
+}) => {
   // Choose custom or regular values
   const color = appearanceColor === "other" ? appearanceColorCustom : appearanceColor;
   const type = appearanceType === "other" ? appearanceTypeCustom : appearanceType;
@@ -108,11 +111,8 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
       setName(initialCharacter.name || "");
       setRole(initialCharacter.role || "Hero");
       setPersonality(initialCharacter.personality || []);
-      // Try to parse appearance to fill the fields if possible (or ignore if not parseable)
       setAppearanceFields({
         ...initialAppearanceFields,
-        // This is an area to improve: parsing the saved summary, or just keep their last appearance values as fields in the data model for editing.
-        // Fallback: keep them blank.
       });
     } else if (open && !initialCharacter) {
       setName("");
@@ -120,7 +120,6 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
       setPersonality([]);
       setAppearanceFields(initialAppearanceFields);
     }
-    // eslint-disable-next-line
   }, [open, initialCharacter]);
 
   const handleAppearanceField = (field: keyof AppearanceFields, value: string) => {
@@ -184,14 +183,24 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
       if (!newOpenState) resetCharacter();
       onOpenChange(newOpenState);
     }}>
-      <DialogContent className="sm:max-w-[700px] md:max-w-[800px] max-h-[90vh] touch-pan-y bg-gradient-to-b from-white to-primary/5 border-2 border-primary/30 rounded-xl shadow-xl">
-        <DialogHeader>
-          <DialogTitle className="text-2xl text-center font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600">
-            {initialCharacter ? "Edit Magical Character" : "Create a Magical Character"}
-          </DialogTitle>
+      <DialogContent className="fixed inset-0 z-50 w-full h-full max-w-none max-h-none m-0 rounded-none bg-gradient-to-b from-white to-primary/5 flex flex-col">
+        {/* Header with X button */}
+        <DialogHeader className="flex-shrink-0 px-8 py-6 border-b border-primary/20">
+          <div className="flex items-center justify-between">
+            <DialogTitle className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600">
+              {initialCharacter ? "Edit Magical Character" : "Create a Magical Character"}
+            </DialogTitle>
+            <DialogClose asChild>
+              <Button variant="ghost" size="icon" className="h-12 w-12 rounded-full hover:bg-gray-100">
+                <X className="h-8 w-8" />
+              </Button>
+            </DialogClose>
+          </div>
         </DialogHeader>
-        <ScrollArea className="h-[70vh] touch-pan-y">
-          <div className="space-y-5 py-4 px-1">
+
+        {/* Scrollable content */}
+        <ScrollArea className="flex-1 px-8 py-6">
+          <div className="max-w-4xl mx-auto space-y-8">
             {/* Role selection at the top */}
             <RoleSelector 
               selectedRole={role}
@@ -210,13 +219,18 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
             />
           </div>
         </ScrollArea>
-        <div className="flex justify-end pt-4 border-t">
-          <Button 
-            onClick={handleAddCharacter}
-            className="text-lg px-8 py-6 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 shadow-lg"
-          >
-            {initialCharacter ? "Save Changes" : "Add Character"} ✨
-          </Button>
+
+        {/* Footer with save button */}
+        <div className="flex-shrink-0 px-8 py-6 border-t border-primary/20 bg-white">
+          <div className="max-w-4xl mx-auto flex justify-end">
+            <Button 
+              onClick={handleAddCharacter}
+              disabled={!name}
+              className="text-xl px-12 py-8 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 shadow-lg rounded-xl"
+            >
+              {initialCharacter ? "Save Changes" : "Add Character"} ✨
+            </Button>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

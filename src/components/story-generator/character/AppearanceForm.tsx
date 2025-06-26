@@ -2,13 +2,7 @@
 import React from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
-} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
 const AGE_OPTIONS = [
   { value: "baby", label: "baby", emoji: "👶" },
@@ -18,7 +12,16 @@ const AGE_OPTIONS = [
   { value: "grown-up", label: "grown-up", emoji: "👩‍🚀" },
 ];
 
-const COLOR_OPTIONS = ["golden", "dark", "white", "red", "blue", "green", "brown", "other"];
+const COLOR_OPTIONS = [
+  { value: "golden", label: "golden", emoji: "🟡" },
+  { value: "dark", label: "dark", emoji: "⚫" },
+  { value: "white", label: "white", emoji: "⚪" },
+  { value: "red", label: "red", emoji: "🔴" },
+  { value: "blue", label: "blue", emoji: "🔵" },
+  { value: "green", label: "green", emoji: "🟢" },
+  { value: "brown", label: "brown", emoji: "🟤" },
+  { value: "other", label: "other", emoji: "🎨" }
+];
 
 const CHARACTER_TYPE_OPTIONS = [
   { value: "girl", label: "girl", emoji: "👸" },
@@ -72,112 +75,118 @@ const AppearanceForm: React.FC<AppearanceFormProps> = ({
   generatedAppearance,
 }) => {
   return (
-    <div className="space-y-4">
-      <Label className="text-lg">What does your character look like?</Label>
-      <div className="bg-primary/5 p-6 rounded-xl space-y-5 border border-primary/20">
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="age" className="text-lg">Age</Label>
-            <Select 
-              value={appearanceAge}
-              onValueChange={onAppearanceAgeChange}
-            >
-              <SelectTrigger id="age" className="bg-white text-lg p-5">
-                <SelectValue placeholder="Select age" />
-              </SelectTrigger>
-              <SelectContent className="max-h-[300px]">
-                {AGE_OPTIONS.map(age => (
-                  <SelectItem key={age.value} value={age.value} className="text-lg p-3">
-                    <div className="flex items-center">
-                      <span className="text-3xl mr-3">{age.emoji}</span>
-                      <span>{age.label}</span>
-                    </div>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="color" className="text-lg">Color</Label>
-            <Select 
-              value={appearanceColor}
-              onValueChange={onAppearanceColorChange}
-            >
-              <SelectTrigger id="color" className="bg-white text-lg p-5">
-                <SelectValue placeholder="Select color" />
-              </SelectTrigger>
-              <SelectContent className="max-h-[300px]">
-                {COLOR_OPTIONS.map(color => (
-                  <SelectItem key={color} value={color} className="text-lg p-3">
-                    {color}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {appearanceColor === "other" && (
-              <Input 
-                value={appearanceColorCustom}
-                onChange={(e) => onAppearanceColorCustomChange(e.target.value)}
-                placeholder="Type a color..."
-                className="mt-2 p-5 text-lg"
-              />
-            )}
+    <div className="space-y-8">
+      <Label className="text-2xl font-semibold">What does your character look like?</Label>
+      <div className="bg-primary/5 p-8 rounded-2xl space-y-8 border border-primary/20">
+        
+        {/* Age Selection */}
+        <div className="space-y-4">
+          <Label className="text-xl font-medium">Age</Label>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+            {AGE_OPTIONS.map(age => (
+              <Button
+                key={age.value}
+                variant={appearanceAge === age.value ? "default" : "outline"}
+                onClick={() => onAppearanceAgeChange(age.value)}
+                className={`h-20 p-4 flex flex-col items-center justify-center space-y-1 text-base font-medium transition-all duration-200 ${
+                  appearanceAge === age.value 
+                    ? "bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg scale-105" 
+                    : "hover:scale-105 hover:shadow-md border-2 border-gray-200 hover:border-purple-300"
+                }`}
+              >
+                <span className="text-2xl">{age.emoji}</span>
+                <span className="text-sm">{age.label}</span>
+              </Button>
+            ))}
           </div>
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="characterType" className="text-lg">Character Type</Label>
-          <Select 
-            value={appearanceType}
-            onValueChange={onAppearanceTypeChange}
-          >
-            <SelectTrigger id="characterType" className="bg-white text-lg p-5">
-              <SelectValue placeholder="Select type" />
-            </SelectTrigger>
-            <SelectContent className="max-h-[300px]">
-              {CHARACTER_TYPE_OPTIONS.map(type => (
-                <SelectItem key={type.value} value={type.value} className="text-lg p-3">
-                  <div className="flex items-center">
-                    <span className="text-3xl mr-3">{type.emoji}</span>
-                    <span>{type.label}</span>
-                  </div>
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+
+        {/* Color Selection */}
+        <div className="space-y-4">
+          <Label className="text-xl font-medium">Color</Label>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {COLOR_OPTIONS.map(color => (
+              <Button
+                key={color.value}
+                variant={appearanceColor === color.value ? "default" : "outline"}
+                onClick={() => onAppearanceColorChange(color.value)}
+                className={`h-20 p-4 flex flex-col items-center justify-center space-y-1 text-base font-medium transition-all duration-200 ${
+                  appearanceColor === color.value 
+                    ? "bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg scale-105" 
+                    : "hover:scale-105 hover:shadow-md border-2 border-gray-200 hover:border-purple-300"
+                }`}
+              >
+                <span className="text-2xl">{color.emoji}</span>
+                <span className="text-sm">{color.label}</span>
+              </Button>
+            ))}
+          </div>
+          {appearanceColor === "other" && (
+            <Input 
+              value={appearanceColorCustom}
+              onChange={(e) => onAppearanceColorCustomChange(e.target.value)}
+              placeholder="Type a color..."
+              className="mt-4 p-6 text-lg border-2 border-purple-200 focus:border-purple-400 rounded-xl"
+            />
+          )}
+        </div>
+
+        {/* Character Type Selection */}
+        <div className="space-y-4">
+          <Label className="text-xl font-medium">Character Type</Label>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+            {CHARACTER_TYPE_OPTIONS.map(type => (
+              <Button
+                key={type.value}
+                variant={appearanceType === type.value ? "default" : "outline"}
+                onClick={() => onAppearanceTypeChange(type.value)}
+                className={`h-20 p-4 flex flex-col items-center justify-center space-y-1 text-base font-medium transition-all duration-200 ${
+                  appearanceType === type.value 
+                    ? "bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg scale-105" 
+                    : "hover:scale-105 hover:shadow-md border-2 border-gray-200 hover:border-purple-300"
+                }`}
+              >
+                <span className="text-2xl">{type.emoji}</span>
+                <span className="text-sm">{type.label}</span>
+              </Button>
+            ))}
+          </div>
           {appearanceType === "other" && (
             <Input 
               value={appearanceTypeCustom}
               onChange={(e) => onAppearanceTypeCustomChange(e.target.value)}
               placeholder="Type a character type..."
-              className="mt-2 p-5 text-lg"
+              className="mt-4 p-6 text-lg border-2 border-purple-200 focus:border-purple-400 rounded-xl"
             />
           )}
         </div>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="accessory1" className="text-lg">Accessory 1</Label>
+
+        {/* Accessories */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-3">
+            <Label className="text-xl font-medium">Accessory 1</Label>
             <Input
-              id="accessory1"
               value={appearanceAccessory1}
               onChange={(e) => onAppearanceAccessory1Change(e.target.value)}
               placeholder="e.g., magic wand, robot arm"
-              className="p-5 text-lg"
+              className="p-6 text-lg border-2 border-purple-200 focus:border-purple-400 rounded-xl"
             />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="accessory2" className="text-lg">Accessory 2</Label>
+          <div className="space-y-3">
+            <Label className="text-xl font-medium">Accessory 2</Label>
             <Input
-              id="accessory2"
               value={appearanceAccessory2}
               onChange={(e) => onAppearanceAccessory2Change(e.target.value)}
               placeholder="e.g., cape, lab coat"
-              className="p-5 text-lg"
+              className="p-6 text-lg border-2 border-purple-200 focus:border-purple-400 rounded-xl"
             />
           </div>
         </div>
-        <div className="mt-4 p-5 bg-white rounded-xl border shadow-sm">
-          <p className="text-md text-muted-foreground mb-2">Preview:</p>
-          <p className="font-medium text-lg">{generatedAppearance}</p>
+
+        {/* Preview */}
+        <div className="mt-6 p-6 bg-white rounded-xl border-2 border-purple-200 shadow-sm">
+          <p className="text-lg text-muted-foreground mb-3 font-medium">Preview:</p>
+          <p className="font-semibold text-xl text-purple-700">{generatedAppearance}</p>
         </div>
       </div>
     </div>
