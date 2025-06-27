@@ -253,8 +253,7 @@ export const useStoryCreation = () => {
         tone: TONE_MAP[storyData.tone] || "",
         narrative_style: NARRATIVE_MAP[storyData.narrativeStyle] || "",
         illustration_style: ILLUSTRATION_MAP[storyData.illustrationStyle] || "",
-        // COMMENTED OUT: Let backend determine optimal page count
-        // number_of_pages: storyData.pages || 15,
+        number_of_pages: 3,
         characters: characterList,
       };
     } else if (mode === "magic") {
@@ -274,8 +273,7 @@ export const useStoryCreation = () => {
         tone: cardSettings.tone,
         narrative_style: cardSettings.narrative,
         illustration_style: ILLUSTRATION_MAP[storyData.illustrationStyle] || "",
-        // COMMENTED OUT: Let backend determine optimal page count
-        // number_of_pages: storyData.pages || 15,
+        number_of_pages: 3,
         characters: characterList,
       };
     }
