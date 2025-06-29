@@ -71,12 +71,10 @@ export const useStoryCreation = () => {
     genre: "",
     tone: "",
     narrativeStyle: "",
-    ageRange: "", // CHANGED: Start with empty string to force selection
+    ageRange: "",
     moral: "",
     characters: [],
-    // COMMENTED OUT: Let backend handle page count instead of frontend
-    // pages: 10,
-    language: "", // CHANGED: Start with empty string to force selection
+    language: "",
     illustrationStyle: "",
   });
   const { toast } = useToast();
@@ -110,8 +108,6 @@ export const useStoryCreation = () => {
     setStoryData((prev) => ({
       ...prev,
       ...data,
-      // COMMENTED OUT: Backend will handle page count
-      // pages: data.pages !== undefined ? data.pages : 10
     }));
   };
 
@@ -253,7 +249,7 @@ export const useStoryCreation = () => {
         tone: TONE_MAP[storyData.tone] || "",
         narrative_style: NARRATIVE_MAP[storyData.narrativeStyle] || "",
         illustration_style: ILLUSTRATION_MAP[storyData.illustrationStyle] || "",
-        number_of_pages: 3,
+        number_of_pages: "",
         characters: characterList,
       };
     } else if (mode === "magic") {
@@ -273,7 +269,7 @@ export const useStoryCreation = () => {
         tone: cardSettings.tone,
         narrative_style: cardSettings.narrative,
         illustration_style: ILLUSTRATION_MAP[storyData.illustrationStyle] || "",
-        number_of_pages: 3,
+        number_of_pages: "",
         characters: characterList,
       };
     }
