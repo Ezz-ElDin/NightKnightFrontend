@@ -52,14 +52,12 @@ const StoryCardMenu: React.FC<StoryCardMenuProps> = ({
             }}
           >
             <Download size={22} strokeWidth={2} />
-            <div className="flex flex-col items-start gap-1 flex-1">
-              <div className="flex items-center gap-2">
-                <span className="mt-0.5">Export PDF</span>
-                <Badge variant="secondary" className="bg-story-yellow text-story-orange text-xs font-bold">
-                  <Tag size={10} className="mr-1" />
-                  Coming Soon
-                </Badge>
-              </div>
+            <div className="flex items-center gap-2">
+              <span className="mt-0.5">Export PDF</span>
+              <Badge variant="secondary" className="bg-story-yellow text-story-orange text-xs font-bold px-2 py-0.5 flex items-center gap-1">
+                <Tag size={10} />
+                Coming Soon
+              </Badge>
             </div>
           </button>
         </li>
