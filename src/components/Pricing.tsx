@@ -1,7 +1,6 @@
 
 import { Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
 
 const Pricing = () => {
@@ -29,7 +28,7 @@ const Pricing = () => {
       features: [
         "Unlimited stories",
         "Advanced customisation",
-        { text: "PDF downloads", comingSoon: true },
+        { text: "PDF downloads", disabled: true },
         "Multiple child profiles",
         "Ad-free experience",
         "Premium story themes",
@@ -50,7 +49,7 @@ const Pricing = () => {
         "Unlimited stories",
         "Classroom management",
         "Educational themes",
-        { text: "Bulk PDF downloads", comingSoon: true },
+        { text: "Bulk PDF downloads", disabled: true },
         "Shared story library",
         "Priority support",
         "All available languages"
@@ -109,24 +108,17 @@ const Pricing = () => {
                 <ul className="space-y-3">
                   {plan.features.map((feature, i) => (
                     <li key={i} className="flex items-start">
-                      <div className={`mr-2 mt-1 ${plan.highlightColor === 'text-white' ? 'text-white' : 'text-story-purple'}`}>
-                        <Check className="h-4 w-4" />
+                      <div className={`mr-2 mt-1 ${plan.highlightColor === 'text-white' ? 'text-white' : 'text-story-purple'} ${typeof feature === 'object' && feature.disabled ? 'opacity-40' : ''}`}>
+                        <Check className="h-5 w-5" />
                       </div>
                       {typeof feature === 'string' ? (
-                        <span className={plan.highlightColor === 'text-white' ? 'text-white' : 'text-gray-700'}>
+                        <span className={`text-base ${plan.highlightColor === 'text-white' ? 'text-white' : 'text-gray-700'}`}>
                           {feature}
                         </span>
                       ) : (
-                        <div className="flex items-center gap-2">
-                          <span className={plan.highlightColor === 'text-white' ? 'text-white' : 'text-gray-700'}>
-                            {feature.text}
-                          </span>
-                          {feature.comingSoon && (
-                            <Badge variant="outline" className="bg-story-yellow/20 text-story-orange border-story-orange text-xs px-2 py-0.5">
-                              Coming Soon
-                            </Badge>
-                          )}
-                        </div>
+                        <span className={`text-base ${plan.highlightColor === 'text-white' ? 'text-white' : 'text-gray-700'} ${feature.disabled ? 'opacity-40 italic' : ''}`}>
+                          {feature.text}
+                        </span>
                       )}
                     </li>
                   ))}

@@ -1,6 +1,5 @@
 
 import { Heart, Download } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { StoryCardMenuProps } from "./types";
 
 const StoryCardMenu: React.FC<StoryCardMenuProps> = ({
@@ -15,7 +14,7 @@ const StoryCardMenu: React.FC<StoryCardMenuProps> = ({
 
   return (
     <div
-      className="absolute right-0 mt-2 w-44 bg-[#f4f0fc] border border-story-seafoam/40 rounded-2xl shadow-lg z-30 animate-in fade-in py-2"
+      className="absolute right-0 mt-2 w-52 bg-[#f4f0fc] border border-story-seafoam/40 rounded-2xl shadow-lg z-30 animate-in fade-in py-2"
       style={{ backgroundColor: "#f4f0fc" }}
       onClick={onClose}
     >
@@ -23,7 +22,7 @@ const StoryCardMenu: React.FC<StoryCardMenuProps> = ({
         <li>
           <button
             className={
-              "w-full px-5 py-3 flex items-center gap-3 font-medium text-base rounded-xl transition focus:outline-none " +
+              "w-full px-6 py-4 flex items-center gap-3 font-medium text-lg rounded-xl transition focus:outline-none " +
               (isFavourite
                 ? "text-amber-600"
                 : "text-story-purple")
@@ -36,30 +35,23 @@ const StoryCardMenu: React.FC<StoryCardMenuProps> = ({
               onClose(e);
             }}
           >
-            <Heart size={20} strokeWidth={2} fill={isFavourite ? "#f59e42" : "none"} color={isFavourite ? "#f59e42" : "#a093f4"} />
+            <Heart size={22} strokeWidth={2} fill={isFavourite ? "#f59e42" : "none"} color={isFavourite ? "#f59e42" : "#a093f4"} />
             <span className="mt-0.5">{isFavourite ? "Favourited" : "Favourite"}</span>
           </button>
         </li>
         <li>
           <button
-            className="w-full px-5 py-3 flex items-center justify-between text-story-purple/50 font-semibold focus:outline-none text-base rounded-xl transition cursor-not-allowed"
+            className="w-full px-6 py-4 flex items-center gap-3 text-gray-400 font-medium focus:outline-none text-lg rounded-xl transition cursor-not-allowed opacity-60"
             tabIndex={0}
             type="button"
             disabled={true}
             onClick={(e) => {
               e.stopPropagation();
             }}
+            title="PDF export feature is currently in development"
           >
-            <div className="flex items-center gap-3">
-              <Download size={20} strokeWidth={2} />
-              <span className="mt-0.5">Export</span>
-            </div>
-            <Badge 
-              variant="secondary" 
-              className="text-xs px-2 py-0.5 bg-gray-100 text-gray-600 border-none"
-            >
-              Coming Soon
-            </Badge>
+            <Download size={22} strokeWidth={2} />
+            <span className="mt-0.5 italic">Export PDF (in development)</span>
           </button>
         </li>
       </ul>
