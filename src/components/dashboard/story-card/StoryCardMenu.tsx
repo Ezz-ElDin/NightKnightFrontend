@@ -40,12 +40,6 @@ const StoryCardMenu: React.FC<StoryCardMenuProps> = ({
             <span className="mt-0.5">{isFavourite ? "Favourited" : "Favourite"}</span>
           </button>
         </li>
-        <li className="px-6 py-2">
-          <Badge variant="secondary" className="bg-story-yellow text-story-orange text-xs font-bold">
-            <Tag size={12} className="mr-1" />
-            Coming Soon
-          </Badge>
-        </li>
         <li>
           <button
             className="w-full px-6 py-4 flex items-center gap-3 text-story-purple font-medium focus:outline-none text-lg rounded-xl transition"
@@ -58,7 +52,15 @@ const StoryCardMenu: React.FC<StoryCardMenuProps> = ({
             }}
           >
             <Download size={22} strokeWidth={2} />
-            <span className="mt-0.5">Export PDF</span>
+            <div className="flex flex-col items-start gap-1 flex-1">
+              <div className="flex items-center gap-2">
+                <span className="mt-0.5">Export PDF</span>
+                <Badge variant="secondary" className="bg-story-yellow text-story-orange text-xs font-bold">
+                  <Tag size={10} className="mr-1" />
+                  Coming Soon
+                </Badge>
+              </div>
+            </div>
           </button>
         </li>
       </ul>
