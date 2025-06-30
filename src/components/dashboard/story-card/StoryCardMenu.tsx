@@ -56,7 +56,7 @@ const StoryCardMenu: React.FC<StoryCardMenuProps> = ({
             </div>
             <Badge 
               variant="secondary" 
-              className="text-xs px-2 py-0.5 bg-gray-100 text-gray-600 border-none"
+              className="text-[10px] px-1.5 py-0 bg-gray-100 text-gray-600 border-none h-4"
             >
               Coming Soon
             </Badge>
