@@ -4,6 +4,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Star, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import StoryBackground from "@/components/StoryBackground";
 import StoryGallery from "@/components/dashboard/StoryGallery";
 import PaginationNav from "@/components/dashboard/PaginationNav";
@@ -151,23 +152,31 @@ const Library = () => {
         <div className="mb-12">
           <div className="flex items-center justify-between mb-5">
             <h2 className="text-2xl md:text-3xl font-bold text-story-blue">My Stories</h2>
-            {hasCredits ? (
-              <Link to="/create-story">
-                <Button className="rounded-xl px-6 py-3 text-md bg-story-purple hover:bg-story-purple/90 text-white flex items-center gap-2 button-bounce">
-                  <Star className="mr-1 h-5 w-5" />
-                  <span>Create a Story</span>
-                </Button>
-              </Link>
-            ) : (
-              <Button 
-                disabled 
-                className="rounded-xl px-6 py-3 text-md bg-gray-300 text-gray-500 flex items-center gap-2 cursor-not-allowed"
-                title="You need credits to create a story"
-              >
-                <Star className="mr-1 h-5 w-5" />
-                <span>Create a Story</span>
-              </Button>
-            )}
+            <TooltipProvider>
+              {hasCredits ? (
+                <Link to="/create-story">
+                  <Button className="rounded-xl px-6 py-3 text-md bg-story-purple hover:bg-story-purple/90 text-white flex items-center gap-2 button-bounce">
+                    <Star className="mr-1 h-5 w-5" />
+                    <span>Create a Story</span>
+                  </Button>
+                </Link>
+              ) : (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button 
+                      disabled 
+                      className="rounded-xl px-6 py-3 text-md bg-gray-300 text-gray-500 flex items-center gap-2 cursor-not-allowed"
+                    >
+                      <Star className="mr-1 h-5 w-5" />
+                      <span>Create a Story</span>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>You need to buy credits to create a story</p>
+                  </TooltipContent>
+                </Tooltip>
+              )}
+            </TooltipProvider>
           </div>
           
           {isError && (
