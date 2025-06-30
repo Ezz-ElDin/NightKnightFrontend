@@ -108,7 +108,7 @@ const PricingSlider = () => {
         Get {storyCount + 1} Stories
       </Button>
       
-      <style jsx>{`
+      <style>{`
         .slider::-webkit-slider-thumb {
           appearance: none;
           height: 20px;
