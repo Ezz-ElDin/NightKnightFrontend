@@ -1,207 +1,136 @@
 
-import { useState, useEffect } from 'react';
-import { Slider } from '@/components/ui/slider';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Link } from 'react-router-dom';
-import { stripeApi } from '@/lib/api';
-import { toast } from 'sonner';
 
 const PricingSlider = () => {
-  const [storyCount, setStoryCount] = useState([1]);
-  const [currency, setCurrency] = useState('$');
-  const [currencySymbol, setCurrencySymbol] = useState('USD');
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [storyCount, setStoryCount] = useState(1);
+  
+  const basePrice = 5.00;
+  const discountedPrice = 2.50;
+  const totalPrice = storyCount * discountedPrice;
+  const savings = (storyCount * basePrice) - totalPrice;
 
-  // Check if user is logged in
-  const isLoggedIn = !!localStorage.getItem('authToken');
-
-  // Detect user location for currency
-  useEffect(() => {
-    const detectLocation = async () => {
-      try {
-        // Try to get user's timezone to determine location
-        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const europeanTimezones = [
-          'Europe/London', 'Europe/Paris', 'Europe/Berlin', 'Europe/Madrid',
-          'Europe/Rome', 'Europe/Amsterdam', 'Europe/Vienna', 'Europe/Brussels',
-          'Europe/Copenhagen', 'Europe/Dublin', 'Europe/Helsinki', 'Europe/Lisbon',
-          'Europe/Luxembourg', 'Europe/Prague', 'Europe/Stockholm', 'Europe/Warsaw',
-          'Europe/Athens', 'Europe/Budapest', 'Europe/Bucharest', 'Europe/Sofia',
-          'Europe/Zagreb', 'Europe/Ljubljana', 'Europe/Bratislava', 'Europe/Tallinn',
-          'Europe/Riga', 'Europe/Vilnius', 'Europe/Malta', 'Europe/Nicosia'
-        ];
-        
-        if (europeanTimezones.some(tz => timezone.includes(tz.split('/')[1]))) {
-          setCurrency('£');
-          setCurrencySymbol('GBP');
-        } else {
-          setCurrency('$');
-          setCurrencySymbol('USD');
-        }
-      } catch (error) {
-        // Default to USD if detection fails
-        setCurrency('$');
-        setCurrencySymbol('USD');
-      }
-    };
-
-    detectLocation();
-  }, []);
-
-  // Calculate price per story
-  const calculatePrice = (stories: number) => {
-    const pricePerStory = currency === '£' ? 2.50 : 3.25;
-    return stories * pricePerStory;
-  };
-
-  const handleDirectCheckout = async () => {
-    if (!isLoggedIn) {
-      toast.error('Please log in to purchase stories');
-      return;
-    }
-
-    setIsProcessing(true);
-    try {
-      console.log(`Creating checkout for ${storyCount[0]} stories`);
-      
-      const response = await stripeApi.createCheckout({
-        quantity: storyCount[0]
-      });
-
-      if (response.success && response.data.location) {
-        console.log('Redirecting to Stripe checkout:', response.data.location);
-        toast.success('Redirecting to checkout...');
-        
-        // Redirect to Stripe checkout
-        window.location.href = response.data.location;
-      } else {
-        throw new Error('Invalid response from checkout API');
-      }
-    } catch (error) {
-      console.error('Checkout error:', error);
-      toast.error('There was an error processing your request. Please try again.');
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  const currentPrice = calculatePrice(storyCount[0]);
-  const totalStories = storyCount[0] + 1; // Adding 1 free story
-  const isPlural = totalStories > 1;
+  const features = [
+    "Multilingual stories",
+    "Lessons learned customisation", 
+    "Characters customisation",
+    "Multiple illustration styles",
+    "Web reading experience",
+    { text: "PDF download", comingSoon: true }
+  ];
 
   return (
-    <section className="py-16 px-4" id="pricing">
-      <div className="container mx-auto">
-        <h2 className="text-4xl font-bold mb-4 text-center text-story-purple">
-          Choose Your Story Plan
-        </h2>
-        <p className="text-xl text-center mb-12 max-w-2xl mx-auto">
+    <div className="bg-white rounded-3xl p-8 shadow-lg max-w-md mx-auto">
+      <div className="text-center mb-6">
+        <h3 className="text-xl font-bold text-gray-800 mb-2">
           Slide to select how many stories you want
-        </p>
+        </h3>
+      </div>
+
+      <div className="mb-8">
+        <div className="text-center mb-4">
+          <span className="text-4xl font-bold text-story-purple">{storyCount}</span>
+          <span className="text-xl text-gray-600 ml-2">
+            story{storyCount > 1 ? 's' : ''} + 
+          </span>
+          <span className="text-xl font-bold text-green-500 ml-1">1 FREE</span>
+        </div>
         
-        <div className="max-w-lg mx-auto">
-          <div className="ghibli-card mb-8">
-            <div className="text-center mb-8">
-              <div className="mb-6">
-                <div className="flex items-center justify-center gap-2 mb-2">
-                  <span className="text-6xl font-bold text-story-purple">
-                    {storyCount[0]}
-                  </span>
-                  <span className="text-2xl text-gray-600">
-                    {storyCount[0] > 1 ? 'stories' : 'story'}
-                  </span>
-                  <span className="text-3xl font-bold text-story-green">+ 1 FREE</span>
-                </div>
-                <div className="bg-gradient-to-r from-story-yellow/20 to-story-green/20 rounded-full px-4 py-2 inline-block">
-                  <p className="text-lg font-semibold text-story-purple">
-                    Total: {totalStories} {isPlural ? 'stories' : 'story'}
-                  </p>
-                </div>
-              </div>
-              
-              <div className="mb-8 max-w-md mx-auto">
-                <Slider
-                  value={storyCount}
-                  onValueChange={setStoryCount}
-                  max={10}
-                  min={1}
-                  step={1}
-                  className="w-full"
-                />
-              </div>
-              
-              <div className="mb-8">
-                <div className="text-5xl font-bold text-story-purple mb-2">
-                  {currency}{currentPrice.toFixed(2)}
-                </div>
-                <div className="flex items-center justify-center gap-2 mb-2">
-                  <span className="text-gray-400 line-through text-lg">
-                    {currency}5.00 per story
-                  </span>
-                  <span className="bg-story-yellow text-story-orange px-2 py-1 rounded-full text-sm font-bold">
-                    LIMITED TIME
-                  </span>
-                </div>
-                <p className="text-story-green font-bold text-lg">
-                  Now only {currency}2.50 per story
-                </p>
-              </div>
-            </div>
-            
-            <div className="mb-8">
-              <h3 className="text-xl font-bold mb-4 text-center">What's included:</h3>
-              <ul className="space-y-3">
-                <li className="flex items-center justify-center">
-                  <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
-                  <span>Multilingual stories</span>
-                </li>
-                <li className="flex items-center justify-center">
-                  <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
-                  <span>Lessons learned customisation</span>
-                </li>
-                <li className="flex items-center justify-center">
-                  <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
-                  <span>Characters customisation</span>
-                </li>
-                <li className="flex items-center justify-center">
-                  <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
-                  <span>Multiple illustration styles</span>
-                </li>
-                <li className="flex items-center justify-center">
-                  <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
-                  <span>Web reading experience</span>
-                </li>
-                <li className="flex items-center justify-center">
-                  <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
-                  <span>PDF download</span>
-                </li>
-              </ul>
-            </div>
-            
-            <div className="text-center">
-              {isLoggedIn ? (
-                <Button 
-                  onClick={handleDirectCheckout}
-                  disabled={isProcessing}
-                  className="w-full h-12 rounded-xl button-bounce bg-story-purple text-white hover:bg-story-purple/90"
-                >
-                  {isProcessing ? 'Processing...' : `Get ${totalStories} ${isPlural ? 'Stories' : 'Story'}`}
-                </Button>
-              ) : (
-                <Link to="/register">
-                  <Button 
-                    className="w-full h-12 rounded-xl button-bounce bg-story-purple text-white hover:bg-story-purple/90"
-                  >
-                    Get {totalStories} {isPlural ? 'Stories' : 'Story'}
-                  </Button>
-                </Link>
-              )}
-            </div>
+        <div className="text-center mb-6">
+          <p className="text-lg font-semibold text-story-purple">
+            Total: {storyCount + 1} stories
+          </p>
+        </div>
+
+        <div className="relative mb-6">
+          <input
+            type="range"
+            min="1"
+            max="10"
+            value={storyCount}
+            onChange={(e) => setStoryCount(parseInt(e.target.value))}
+            className="w-full h-2 bg-story-seafoam rounded-lg appearance-none cursor-pointer slider"
+          />
+          <div className="flex justify-between text-xs text-gray-500 mt-1">
+            <span>1</span>
+            <span>10</span>
           </div>
         </div>
+
+        <div className="text-center mb-6">
+          <div className="text-4xl font-bold text-story-purple mb-2">
+            £{totalPrice.toFixed(2)}
+          </div>
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <span className="text-gray-400 line-through">
+              £{(storyCount * basePrice).toFixed(2)} per story
+            </span>
+            <Badge className="bg-story-yellow text-story-orange px-2 py-1 text-xs">
+              LIMITED TIME
+            </Badge>
+          </div>
+          <p className="text-green-600 font-semibold">
+            Now only £{discountedPrice.toFixed(2)} per story
+          </p>
+        </div>
       </div>
-    </section>
+
+      <div className="mb-8">
+        <h4 className="text-lg font-bold text-gray-800 mb-4 text-center">
+          What's included:
+        </h4>
+        <ul className="space-y-3">
+          {features.map((feature, index) => (
+            <li key={index} className="flex items-center">
+              <div className="w-2 h-2 bg-story-purple rounded-full mr-3 flex-shrink-0"></div>
+              {typeof feature === 'string' ? (
+                <span className="text-gray-700">{feature}</span>
+              ) : (
+                <div className="flex items-center gap-2 w-full">
+                  <span className="text-gray-700">{feature.text}</span>
+                  {feature.comingSoon && (
+                    <Badge 
+                      variant="outline" 
+                      className="text-[8px] px-1 py-0 bg-story-yellow/20 text-story-orange border-story-orange h-3 leading-none whitespace-nowrap ml-auto"
+                    >
+                      Coming Soon
+                    </Badge>
+                  )}
+                </div>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <Button className="w-full bg-story-purple hover:bg-story-purple/90 text-white py-3 rounded-xl text-lg font-semibold">
+        Get {storyCount + 1} Stories
+      </Button>
+      
+      <style jsx>{`
+        .slider::-webkit-slider-thumb {
+          appearance: none;
+          height: 20px;
+          width: 20px;
+          border-radius: 50%;
+          background: #a093f4;
+          cursor: pointer;
+          border: 2px solid white;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .slider::-moz-range-thumb {
+          height: 20px;
+          width: 20px;
+          border-radius: 50%;
+          background: #a093f4;
+          cursor: pointer;
+          border: 2px solid white;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+      `}</style>
+    </div>
   );
 };
 
