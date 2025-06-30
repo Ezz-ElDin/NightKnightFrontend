@@ -141,19 +141,18 @@ const Library = () => {
           </p>
         </div>
 
-        {/* Story Credits Section */}
-        <Card className="mb-8 p-6 bg-gradient-to-r from-story-lightPurple/30 to-story-seafoam/30 border-2 border-story-lightPurple/50">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="text-center md:text-left">
-              <h3 className="text-2xl font-bold text-story-purple mb-2">Story Credits</h3>
-              <p className="text-lg text-gray-700">
-                You have <span className="font-bold text-story-purple text-xl">{storyCredits}</span> story credits remaining
+        {/* Compact Story Credits Section */}
+        <Card className="mb-8 p-4 bg-gradient-to-r from-story-lightPurple/20 to-story-seafoam/20 border border-story-lightPurple/30">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="text-center sm:text-left">
+              <h3 className="text-lg font-bold text-story-purple mb-1">Story Credits</h3>
+              <p className="text-sm text-gray-700">
+                <span className="font-bold text-story-purple text-lg">{storyCredits}</span> credits remaining
               </p>
-              <p className="text-sm text-gray-600 mt-1">Each story creation uses 1 credit</p>
             </div>
             <Link to="/account-settings?tab=credits">
-              <Button className="bg-story-purple hover:bg-story-purple/90 text-white gap-2 px-6 py-3 rounded-xl">
-                <CreditCard className="h-5 w-5" />
+              <Button className="bg-story-purple hover:bg-story-purple/90 text-white gap-2 px-4 py-2 rounded-lg text-sm">
+                <CreditCard className="h-4 w-4" />
                 Buy Credits
               </Button>
             </Link>
@@ -164,10 +163,10 @@ const Library = () => {
           <div className="flex items-center justify-between mb-5">
             <h2 className="text-2xl md:text-3xl font-bold text-story-blue">My Stories</h2>
             <Link to="/create-story">
-              <Button className="relative overflow-hidden bg-gradient-to-r from-story-yellow to-story-orange hover:from-story-orange hover:to-story-yellow text-story-forest font-bold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 rounded-2xl px-8 py-4 text-lg border-2 border-story-yellow/50">
-                <div className="absolute inset-0 bg-white/20 rounded-2xl animate-pulse"></div>
+              <Button className="relative overflow-hidden bg-gradient-to-r from-story-purple to-story-lightPurple hover:from-story-lightPurple hover:to-story-purple text-white font-bold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 rounded-2xl px-8 py-4 text-lg border-2 border-story-purple/50">
+                <div className="absolute inset-0 bg-white/10 rounded-2xl animate-pulse"></div>
                 <div className="relative flex items-center gap-3">
-                  <Star className="h-6 w-6 text-story-forest animate-wiggle" />
+                  <Star className="h-6 w-6 text-white animate-wiggle" />
                   <span className="font-extrabold">✨ Create a Story ✨</span>
                 </div>
               </Button>
