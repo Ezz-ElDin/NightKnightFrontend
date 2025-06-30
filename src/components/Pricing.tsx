@@ -110,21 +110,21 @@ const Pricing = () => {
                   {plan.features.map((feature, i) => (
                     <li key={i} className="flex items-start">
                       <div className={`mr-2 mt-1 ${plan.highlightColor === 'text-white' ? 'text-white' : 'text-story-purple'}`}>
-                        <Check className="h-5 w-5" />
+                        <Check className="h-4 w-4" />
                       </div>
                       {typeof feature === 'string' ? (
-                        <span className={`text-lg ${plan.highlightColor === 'text-white' ? 'text-white' : 'text-gray-700'}`}>
+                        <span className={plan.highlightColor === 'text-white' ? 'text-white' : 'text-gray-700'}>
                           {feature}
                         </span>
                       ) : (
                         <div className="flex items-center gap-2">
-                          <span className={`text-lg ${plan.highlightColor === 'text-white' ? 'text-white' : 'text-gray-700'}`}>
+                          <span className={plan.highlightColor === 'text-white' ? 'text-white' : 'text-gray-700'}>
                             {feature.text}
                           </span>
                           {feature.comingSoon && (
                             <Badge 
                               variant="outline" 
-                              className="text-xs px-2 py-1 bg-story-yellow/20 text-story-orange border-story-orange h-5 whitespace-nowrap"
+                              className="text-[10px] px-1.5 py-0 bg-story-yellow/20 text-story-orange border-story-orange h-4"
                             >
                               Coming Soon
                             </Badge>
