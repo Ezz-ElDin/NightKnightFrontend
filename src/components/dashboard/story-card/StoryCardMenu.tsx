@@ -1,6 +1,5 @@
 
-import { Heart, Download } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Heart } from "lucide-react";
 import { StoryCardMenuProps } from "./types";
 
 const StoryCardMenu: React.FC<StoryCardMenuProps> = ({
@@ -8,8 +7,6 @@ const StoryCardMenu: React.FC<StoryCardMenuProps> = ({
   onClose,
   isFavourite,
   onFavourite,
-  onExportPDF,
-  loadingPDF
 }) => {
   if (!isOpen) return null;
 
@@ -38,26 +35,6 @@ const StoryCardMenu: React.FC<StoryCardMenuProps> = ({
           >
             <Heart size={22} strokeWidth={2} fill={isFavourite ? "#f59e42" : "none"} color={isFavourite ? "#f59e42" : "#a093f4"} />
             <span className="mt-0.5">{isFavourite ? "Favourited" : "Favourite"}</span>
-          </button>
-        </li>
-        <li>
-          <button
-            className="w-full px-6 py-4 flex items-center gap-3 text-story-purple font-medium focus:outline-none text-lg rounded-xl transition"
-            tabIndex={0}
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              onExportPDF(e);
-              onClose(e);
-            }}
-          >
-            <Download size={22} strokeWidth={2} />
-            <div className="flex items-center gap-2">
-              <span className="mt-0.5 whitespace-nowrap">Export PDF</span>
-              <Badge variant="secondary" className="bg-story-yellow text-story-orange text-[10px] font-semibold px-2 py-0.5">
-                Coming Soon
-              </Badge>
-            </div>
           </button>
         </li>
       </ul>

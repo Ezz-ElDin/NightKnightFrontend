@@ -1,30 +1,25 @@
-
-export interface Story {
-  id: number;
-  title: string;
-  coverUrl: string;
-  createdAt: string;
+export interface StoryCardMenuProps {
+  isOpen: boolean;
+  onClose: (e: React.MouseEvent) => void;
+  isFavourite: boolean;
+  onFavourite?: () => void;
 }
 
 export interface StoryCardProps {
-  story: Story;
-  isFavourite?: boolean;
+  story: {
+    id: number;
+    title: string;
+    coverUrl?: string;
+    createdAt: string;
+  };
+  isFavourite: boolean;
   onClick?: () => void;
   onFavourite?: () => void;
   onDelete?: () => void;
 }
 
-export interface StoryCardMenuProps {
-  isOpen: boolean;
-  onClose: (e: React.MouseEvent) => void;
-  isFavourite?: boolean;
-  onFavourite?: () => void;
-  onExportPDF: (e: React.MouseEvent) => void;
-  loadingPDF: boolean;
-}
-
 export interface StoryCardImageProps {
-  coverUrl: string;
+  coverUrl?: string;
   title: string;
   onMenuToggle: (e: React.MouseEvent) => void;
   children?: React.ReactNode;

@@ -1,8 +1,5 @@
 
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { storiesApi, StoryDetails } from "@/lib/api";
-import { exportStoryToPDF } from "@/lib/exportStoryToPDF";
 import { StoryCardProps } from "./types";
 import StoryCardImage from "./StoryCardImage";
 import StoryCardMenu from "./StoryCardMenu";
@@ -10,16 +7,6 @@ import StoryCardContent from "./StoryCardContent";
 
 const StoryCard: React.FC<StoryCardProps> = ({ story, isFavourite, onClick, onFavourite, onDelete }) => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [loadingPDF, setLoadingPDF] = useState(false);
-
-  // Fetch the full story details for export (only on demand)
-  const { data: storyDetails, refetch: refetchDetails } = useQuery<StoryDetails>(
-    {
-      queryKey: ["story-export", story.id],
-      queryFn: () => storiesApi.get(story.id),
-      enabled: false,
-    }
-  );
 
   const handleMenuButtonClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -29,22 +16,6 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, isFavourite, onClick, onFa
   const handleMenuClose = (e: React.MouseEvent) => {
     e.stopPropagation();
     setMenuOpen(false);
-  };
-
-  const handleExportPDF = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setMenuOpen(false);
-    setLoadingPDF(true);
-    // Refetch in case not loaded
-    let details = storyDetails;
-    if (!details) {
-      const { data } = await refetchDetails();
-      details = data;
-    }
-    if (details) {
-      await exportStoryToPDF(details);
-    }
-    setLoadingPDF(false);
   };
 
   return (
@@ -66,8 +37,6 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, isFavourite, onClick, onFa
           onClose={handleMenuClose}
           isFavourite={isFavourite}
           onFavourite={onFavourite}
-          onExportPDF={handleExportPDF}
-          loadingPDF={loadingPDF}
         />
       </StoryCardImage>
       

@@ -2,8 +2,6 @@
 import { useState, useEffect } from 'react';
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { stripeApi } from '@/lib/api';
 import { toast } from 'sonner';
@@ -172,14 +170,6 @@ const PricingSlider = () => {
                 <li className="flex items-center justify-center">
                   <div className="w-2 h-2 bg-story-purple rounded-full mr-3"></div>
                   <span>Web reading experience</span>
-                </li>
-                <li className="flex items-center justify-center gap-2">
-                  <div className="w-2 h-2 bg-story-purple rounded-full"></div>
-                  <span>PDF download</span>
-                  <Badge variant="secondary" className="bg-story-yellow text-story-orange text-xs font-bold">
-                    <Tag size={10} className="mr-1" />
-                    Coming Soon
-                  </Badge>
                 </li>
               </ul>
             </div>
