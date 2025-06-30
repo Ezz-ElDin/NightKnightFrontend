@@ -1,5 +1,5 @@
 
-import { Heart, Download, Tag } from "lucide-react";
+import { Heart, Download } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { StoryCardMenuProps } from "./types";
 
@@ -54,8 +54,7 @@ const StoryCardMenu: React.FC<StoryCardMenuProps> = ({
             <Download size={22} strokeWidth={2} />
             <div className="flex items-center gap-2">
               <span className="mt-0.5 whitespace-nowrap">Export PDF</span>
-              <Badge variant="secondary" className="bg-story-yellow text-story-orange text-xs font-bold px-2 py-0.5 flex items-center gap-1">
-                <Tag size={10} />
+              <Badge variant="secondary" className="bg-story-yellow text-story-orange text-[10px] font-semibold px-2 py-0.5">
                 Coming Soon
               </Badge>
             </div>
