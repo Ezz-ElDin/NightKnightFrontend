@@ -10,7 +10,6 @@ import StoryText from "@/components/story-viewer/StoryText";
 import StoryNavigation from "@/components/story-viewer/StoryNavigation";
 import { exportStoryToPDF } from "@/lib/exportStoryToPDF";
 import { Download } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 
 const isArabic = (text: string) => /[\u0600-\u06FF]/.test(text);
 
@@ -63,9 +62,11 @@ const StoryViewer = () => {
 
   const goBack = () => navigate("/library");
 
-  // Handle export to PDF - disabled for now
+  // Handle export to PDF
   const handleExportPDF = async () => {
-    // Disabled - coming soon
+    if (data) {
+      await exportStoryToPDF(data);
+    }
   };
 
   if (isLoading) {
@@ -179,23 +180,15 @@ const StoryViewer = () => {
           />
           {/* Swap buttons: Export at right-6, Fullscreen at right-24 */}
           <div className="absolute bottom-6 right-6 z-40">
-            <div className="relative">
-              <Button
-                size="icon"
-                variant="secondary"
-                className="rounded-full shadow border border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed"
-                disabled
-                aria-label="Export story to PDF - Coming Soon"
-              >
-                <Download className="h-6 w-6" />
-              </Button>
-              <Badge 
-                variant="secondary" 
-                className="absolute -top-2 -right-2 text-xs px-2 py-0.5 bg-gray-100 text-gray-500 border border-gray-200"
-              >
-                Coming Soon
-              </Badge>
-            </div>
+            <Button
+              size="icon"
+              variant="secondary"
+              className="rounded-full shadow border border-green-100 bg-green-50 text-green-700 transition-transform duration-200 hover:scale-105 hover:border-green-300 hover:bg-green-100 focus-visible:ring-2 focus-visible:ring-green-400"
+              onClick={handleExportPDF}
+              aria-label="Export story to PDF"
+            >
+              <Download className="h-6 w-6" />
+            </Button>
           </div>
           <div className="absolute bottom-6 right-24 z-40">
             <Button
