@@ -15,8 +15,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
-import { authApi } from "@/lib/api";
+import { authApi, creditApi } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 
 interface LoggedInMenuProps {
@@ -33,6 +34,15 @@ const LoggedInMenu = ({ isMobile = false, onMobileMenuClose }: LoggedInMenuProps
       onMobileMenuClose();
     }
   };
+
+  const { data: creditData } = useQuery({
+    queryKey: ['credits'],
+    queryFn: creditApi.get,
+    refetchOnWindowFocus: false,
+  });
+
+  const storyCredits = creditData?.data?.remaining_credit || 0;
+  const hasCredits = storyCredits > 0;
 
   const handleLogout = async () => {
     try {
@@ -112,10 +122,26 @@ const LoggedInMenu = ({ isMobile = false, onMobileMenuClose }: LoggedInMenuProps
           <Home className="h-4 w-4" />
           Library
         </Link>
-        <Link to="/create-story" className="px-3 py-2 rounded-xl hover:bg-story-lightPurple/50 text-story-purple font-medium flex items-center gap-2" onClick={handleClick}>
-          <BookOpen className="h-4 w-4" />
-          Create Story
-        </Link>
+        <TooltipProvider delayDuration={0}>
+          {hasCredits ? (
+            <Link to="/create-story" className="px-3 py-2 rounded-xl hover:bg-story-lightPurple/50 text-story-purple font-medium flex items-center gap-2" onClick={handleClick}>
+              <BookOpen className="h-4 w-4" />
+              Create Story
+            </Link>
+          ) : (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="px-3 py-2 rounded-xl text-gray-400 font-medium flex items-center gap-2 cursor-not-allowed">
+                  <BookOpen className="h-4 w-4" />
+                  Create Story
+                </span>
+              </TooltipTrigger>
+              <TooltipContent side="bottom" className="bg-gray-800 text-white px-3 py-2 rounded-md text-sm">
+                <p>You need to buy credits to create a story</p>
+              </TooltipContent>
+            </Tooltip>
+          )}
+        </TooltipProvider>
         <Link to="/account-settings" className="px-3 py-2 rounded-xl hover:bg-story-lightPurple/50 text-story-purple font-medium flex items-center gap-2" onClick={handleClick}>
           <Settings className="h-4 w-4" />
           Account Settings
@@ -141,10 +167,26 @@ const LoggedInMenu = ({ isMobile = false, onMobileMenuClose }: LoggedInMenuProps
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <Link to="/create-story" className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-story-lightPurple/50 hover:text-story-purple focus:bg-story-lightPurple/50 focus:text-story-purple focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-story-lightPurple/50 data-[state=open]:bg-story-lightPurple/50 text-story-purple">
-            <BookOpen className="mr-1.5 h-4 w-4" />
-            Create Story
-          </Link>
+          <TooltipProvider delayDuration={0}>
+            {hasCredits ? (
+              <Link to="/create-story" className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-story-lightPurple/50 hover:text-story-purple focus:bg-story-lightPurple/50 focus:text-story-purple focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-story-lightPurple/50 data-[state=open]:bg-story-lightPurple/50 text-story-purple">
+                <BookOpen className="mr-1.5 h-4 w-4" />
+                Create Story
+              </Link>
+            ) : (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium text-gray-400 cursor-not-allowed">
+                    <BookOpen className="mr-1.5 h-4 w-4" />
+                    Create Story
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="bg-gray-800 text-white px-3 py-2 rounded-md text-sm">
+                  <p>You need to buy credits to create a story</p>
+                </TooltipContent>
+              </Tooltip>
+            )}
+          </TooltipProvider>
         </NavigationMenuItem>
         
         <NavigationMenuItem>
