@@ -1,5 +1,6 @@
 
-import { Heart, Download } from "lucide-react";
+import { Heart, Download, Tag } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { StoryCardMenuProps } from "./types";
 
 const StoryCardMenu: React.FC<StoryCardMenuProps> = ({
@@ -39,19 +40,25 @@ const StoryCardMenu: React.FC<StoryCardMenuProps> = ({
             <span className="mt-0.5">{isFavourite ? "Favourited" : "Favourite"}</span>
           </button>
         </li>
+        <li className="px-6 py-2">
+          <Badge variant="secondary" className="bg-story-yellow text-story-orange text-xs font-bold">
+            <Tag size={12} className="mr-1" />
+            Coming Soon
+          </Badge>
+        </li>
         <li>
           <button
-            className="w-full px-6 py-4 flex items-center gap-3 text-gray-400 font-medium focus:outline-none text-lg rounded-xl transition cursor-not-allowed opacity-60"
+            className="w-full px-6 py-4 flex items-center gap-3 text-story-purple font-medium focus:outline-none text-lg rounded-xl transition"
             tabIndex={0}
             type="button"
-            disabled={true}
             onClick={(e) => {
               e.stopPropagation();
+              onExportPDF(e);
+              onClose(e);
             }}
-            title="PDF export feature is currently in development"
           >
             <Download size={22} strokeWidth={2} />
-            <span className="mt-0.5 italic">Export PDF (in development)</span>
+            <span className="mt-0.5">Export PDF</span>
           </button>
         </li>
       </ul>
