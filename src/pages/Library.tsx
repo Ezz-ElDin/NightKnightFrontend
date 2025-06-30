@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Star, CreditCard } from "lucide-react";
@@ -22,28 +23,23 @@ const Library = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // Check for successful payment
   useEffect(() => {
     const sessionId = searchParams.get('session_id');
     if (sessionId) {
       console.log('Payment successful with session_id:', sessionId);
       setShowSuccessBanner(true);
       
-      // Clean up the URL by removing the session_id parameter
       const newSearchParams = new URLSearchParams(searchParams);
       newSearchParams.delete('session_id');
       setSearchParams(newSearchParams, { replace: true });
       
-      // Refetch credits to update the UI with new credit count
       queryClient.invalidateQueries({ queryKey: ['credits'] });
     }
   }, [searchParams, setSearchParams]);
 
-  // Determine if user used email/password login
   const loginMethod = localStorage.getItem('loginMethod');
   const shouldShowVerificationBanner = loginMethod === 'email';
 
-  // ==== React Query: fetch story credits ====
   const { data: creditData } = useQuery({
     queryKey: ['credits'],
     queryFn: creditApi.get,
@@ -52,7 +48,6 @@ const Library = () => {
 
   const storyCredits = creditData?.data?.remaining_credit || 0;
 
-  // ==== React Query: list stories ====
   const queryClient = useQueryClient();
   const {
     data: allStories = [],
@@ -64,13 +59,10 @@ const Library = () => {
     refetchOnWindowFocus: false,
   });
 
-  // Filter stories to only show completed ones
   const stories = allStories.filter((story: Story & { status?: string }) => {
-    // If status is not provided, assume it's completed (backward compatibility)
     return !story.status || story.status === 'completed';
   });
 
-  // ==== React Query: toggle favourite ====
   const favMutation = useMutation({
     mutationFn: async (input: { id: number; isFav: boolean }) => {
       if (input.isFav) {
@@ -84,7 +76,6 @@ const Library = () => {
     },
   });
 
-  // ==== React Query: delete story ====
   const deleteMutation = useMutation({
     mutationFn: async (id: number) => {
       await storiesApi.delete(id);
@@ -95,7 +86,6 @@ const Library = () => {
     },
   });
 
-  // Segregation
   const allFavouriteStories = stories.filter((s) => s.is_favourite);
   const allNonFavouriteStories = stories.filter((s) => !s.is_favourite);
   const totalPages = Math.ceil(allNonFavouriteStories.length / STORIES_PER_PAGE);
@@ -108,7 +98,6 @@ const Library = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Handlers
   const toggleFavourite = (id: number, isFav: boolean) => {
     favMutation.mutate({ id, isFav });
   };
@@ -126,10 +115,8 @@ const Library = () => {
   return (
     <StoryBackground>
       <div className="container max-w-6xl mx-auto px-2 z-10">
-        {/* Email verification banners */}
         <EmailVerificationBanners shouldShow={shouldShowVerificationBanner} />
 
-        {/* Success banner for payment */}
         {showSuccessBanner && <SuccessBanner onClose={handleCloseBanner} />}
 
         <div className="mb-8 mt-6">
@@ -141,19 +128,18 @@ const Library = () => {
           </p>
         </div>
 
-        {/* Story Credits Section */}
-        <Card className="mb-8 p-6 bg-gradient-to-r from-story-lightPurple/30 to-story-seafoam/30 border-2 border-story-lightPurple/50">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="text-center md:text-left">
-              <h3 className="text-2xl font-bold text-story-purple mb-2">Story Credits</h3>
-              <p className="text-lg text-gray-700">
-                You have <span className="font-bold text-story-purple text-xl">{storyCredits}</span> story credits remaining
+        {/* Compact Story Credits Section */}
+        <Card className="mb-8 p-4 bg-gradient-to-r from-story-lightPurple/20 to-story-seafoam/20 border border-story-lightPurple/30">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-lg font-bold text-story-purple mb-1">Story Credits</h3>
+              <p className="text-sm text-gray-600">
+                <span className="font-bold text-story-purple">{storyCredits}</span> credits remaining
               </p>
-              <p className="text-sm text-gray-600 mt-1">Each story creation uses 1 credit</p>
             </div>
             <Link to="/account-settings?tab=credits">
-              <Button className="bg-story-purple hover:bg-story-purple/90 text-white gap-2 px-6 py-3 rounded-xl">
-                <CreditCard className="h-5 w-5" />
+              <Button className="bg-story-purple hover:bg-story-purple/90 text-white gap-2 px-4 py-2 rounded-full">
+                <CreditCard className="h-4 w-4" />
                 Buy Credits
               </Button>
             </Link>
@@ -170,11 +156,11 @@ const Library = () => {
               </Button>
             </Link>
           </div>
-          {/* Error state */}
+          
           {isError && (
             <div className="text-center text-red-500 py-12">Failed to load your stories. Please try again.</div>
           )}
-          {/* Favourite stories section */}
+          
           <StoryGallery
             stories={allFavouriteStories}
             isLoading={isLoading}
@@ -183,7 +169,7 @@ const Library = () => {
             onFavourite={toggleFavourite}
             onDelete={(id) => setDeleteDialog({ open: true, storyId: id })}
           />
-          {/* Gallery for non-favourites */}
+          
           <StoryGallery
             stories={pagedStories}
             isLoading={isLoading}
@@ -192,11 +178,11 @@ const Library = () => {
             onFavourite={toggleFavourite}
             onDelete={(id) => setDeleteDialog({ open: true, storyId: id })}
           />
-          {/* Pagination for non-favourites */}
+          
           <PaginationNav totalPages={totalPages} page={page} goToPage={goToPage} />
         </div>
       </div>
-      {/* Delete confirmation dialog */}
+      
       <ConfirmDeleteDialog
         open={deleteDialog.open}
         onCancel={() => setDeleteDialog({ open: false, storyId: null })}
