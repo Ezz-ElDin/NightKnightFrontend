@@ -69,7 +69,7 @@ const StoryNavigation: React.FC<StoryNavigationProps> = ({
         variant={isFullscreen ? "secondary" : "outline"}
         size="icon"
         aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
-        className="rounded-full shadow border"
+        className="rounded-full shadow border transition-transform duration-200 hover:scale-105"
       >
         <Fullscreen className="h-6 w-6" />
       </Button>
