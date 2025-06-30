@@ -164,9 +164,12 @@ const Library = () => {
           <div className="flex items-center justify-between mb-5">
             <h2 className="text-2xl md:text-3xl font-bold text-story-blue">My Stories</h2>
             <Link to="/create-story">
-              <Button className="rounded-xl px-6 py-3 text-md bg-story-purple hover:bg-story-purple/90 text-white flex items-center gap-2 button-bounce">
-                <Star className="mr-1 h-5 w-5" />
-                <span>Create a Story</span>
+              <Button className="relative overflow-hidden bg-gradient-to-r from-story-yellow to-story-orange hover:from-story-orange hover:to-story-yellow text-story-forest font-bold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 rounded-2xl px-8 py-4 text-lg border-2 border-story-yellow/50">
+                <div className="absolute inset-0 bg-white/20 rounded-2xl animate-pulse"></div>
+                <div className="relative flex items-center gap-3">
+                  <Star className="h-6 w-6 text-story-forest animate-wiggle" />
+                  <span className="font-extrabold">✨ Create a Story ✨</span>
+                </div>
               </Button>
             </Link>
           </div>
