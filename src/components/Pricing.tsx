@@ -122,10 +122,7 @@ const Pricing = () => {
                             {feature.text}
                           </span>
                           {feature.comingSoon && (
-                            <Badge 
-                              variant="outline" 
-                              className="text-[10px] px-1.5 py-0 bg-story-yellow/20 text-story-orange border-story-orange h-4"
-                            >
+                            <Badge variant="outline" className="bg-story-yellow/20 text-story-orange border-story-orange text-xs px-2 py-0.5">
                               Coming Soon
                             </Badge>
                           )}
