@@ -41,7 +41,15 @@ const StoryCardMenu: React.FC<StoryCardMenuProps> = ({
           </button>
         </li>
         <li>
-          <div className="w-full px-5 py-3 flex items-center gap-3 text-gray-400 font-semibold text-base rounded-xl cursor-not-allowed">
+          <button
+            className="w-full px-5 py-3 flex items-center gap-3 text-gray-400 font-semibold focus:outline-none text-base rounded-xl cursor-not-allowed"
+            tabIndex={0}
+            type="button"
+            disabled
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
             <Download size={20} strokeWidth={2} />
             <span className="mt-0.5 flex items-center gap-2">
               Export
@@ -49,7 +57,7 @@ const StoryCardMenu: React.FC<StoryCardMenuProps> = ({
                 Coming Soon
               </Badge>
             </span>
-          </div>
+          </button>
         </li>
       </ul>
     </div>
