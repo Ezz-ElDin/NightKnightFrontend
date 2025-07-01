@@ -24,6 +24,9 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
     loading,
   } = useAuthForm({ initialMode });
 
+  // Comment out email/password registration - uncomment to restore
+  const showEmailPasswordForm = mode === 'login'; // || mode === 'register';
+
   return (
     <div className="w-full max-w-2xl mx-auto">
       <div className="card-kiddy">
@@ -39,6 +42,31 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
           {mode === 'login' ? 'Welcome Back!' : 'Join the Fun!'}
         </h2>
         
+        {showEmailPasswordForm && (
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <AuthFormFields
+              mode={mode}
+              email={email}
+              setEmail={setEmail}
+              password={password}
+              setPassword={setPassword}
+              confirmPassword={confirmPassword}
+              setConfirmPassword={setConfirmPassword}
+              name={name}
+              setName={setName}
+              loading={loading}
+            />
+            
+            <div className="relative flex py-3 items-center">
+              <div className="flex-grow border-t border-gray-200"></div>
+              <span className="flex-shrink mx-4 text-gray-400">or</span>
+              <div className="flex-grow border-t border-gray-200"></div>
+            </div>
+          </form>
+        )}
+
+        {/* Comment out email/password registration form above - uncomment to restore */}
+        {/* 
         <form onSubmit={handleSubmit} className="space-y-4">
           <AuthFormFields
             mode={mode}
@@ -58,9 +86,10 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
             <span className="flex-shrink mx-4 text-gray-400">or</span>
             <div className="flex-grow border-t border-gray-200"></div>
           </div>
-
-          <AuthFormGoogleSection loading={loading} />
         </form>
+        */}
+
+        <AuthFormGoogleSection loading={loading} />
         
         <div className="mt-6 text-center">
           <p className="text-muted-foreground">
