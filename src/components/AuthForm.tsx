@@ -24,8 +24,8 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
     loading,
   } = useAuthForm({ initialMode });
 
-  // Comment out email/password registration - uncomment to restore
-  const showEmailPasswordForm = mode === 'login'; // || mode === 'register';
+  // Comment out email/password registration AND login - uncomment to restore
+  const showEmailPasswordForm = false; // mode === 'login' || mode === 'register';
 
   return (
     <div className="w-full max-w-2xl mx-auto">
@@ -65,7 +65,7 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
           </form>
         )}
 
-        {/* Comment out email/password registration form above - uncomment to restore */}
+        {/* Comment out email/password registration AND login form above - uncomment to restore */}
         {/* 
         <form onSubmit={handleSubmit} className="space-y-4">
           <AuthFormFields
