@@ -120,20 +120,6 @@ const StoryViewer = () => {
       )}
       style={{ minHeight: "100vh" }}
     >
-      {/* Export Button - Only visible for British English and French */}
-      {canExport && (
-        <div className="fixed top-20 right-4 z-40">
-          <Button
-            onClick={handleExport}
-            className="bg-story-orange hover:bg-story-orange/90 text-white shadow-lg"
-            size="sm"
-          >
-            <Download className="h-4 w-4 mr-2" />
-            Export
-          </Button>
-        </div>
-      )}
-
       <div
         ref={containerRef}
         className={clsx(
@@ -198,9 +184,11 @@ const StoryViewer = () => {
             onPrevPage={() => setPage(Math.max(0, page - 1))}
             onNextPage={() => setPage(Math.min(numPages - 1, page + 1))}
             onToggleFullscreen={handleToggleFullscreen}
+            onExport={handleExport}
             isFullscreen={isFullscreen}
             canPrev={page > 0}
             canNext={page < numPages - 1}
+            canExport={canExport}
             page={page}
             numPages={numPages}
           />

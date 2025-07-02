@@ -1,16 +1,18 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, Fullscreen } from "lucide-react";
+import { ArrowLeft, ArrowRight, Fullscreen, Download } from "lucide-react";
 
 interface StoryNavigationProps {
   onBack: () => void;
   onPrevPage: () => void;
   onNextPage: () => void;
   onToggleFullscreen: () => void;
+  onExport: () => void;
   isFullscreen: boolean;
   canPrev: boolean;
   canNext: boolean;
+  canExport: boolean;
   page: number;
   numPages: number;
 }
@@ -20,9 +22,11 @@ const StoryNavigation: React.FC<StoryNavigationProps> = ({
   onPrevPage,
   onNextPage,
   onToggleFullscreen,
+  onExport,
   isFullscreen,
   canPrev,
   canNext,
+  canExport,
   page,
   numPages,
 }) => (
@@ -62,8 +66,19 @@ const StoryNavigation: React.FC<StoryNavigationProps> = ({
       </Button>
     </div>
     
-    {/* Fullscreen Button */}
-    <div className="absolute bottom-6 right-6">
+    {/* Action Buttons - Export and Fullscreen */}
+    <div className="absolute bottom-6 right-6 flex gap-3">
+      {canExport && (
+        <Button
+          onClick={onExport}
+          variant="outline"
+          size="icon"
+          aria-label="Export story"
+          className="rounded-full shadow border transition-transform duration-200 hover:scale-105 bg-story-orange hover:bg-story-orange/90 border-story-orange text-white"
+        >
+          <Download className="h-6 w-6" />
+        </Button>
+      )}
       <Button
         onClick={onToggleFullscreen}
         variant={isFullscreen ? "secondary" : "outline"}
