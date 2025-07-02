@@ -74,50 +74,44 @@ const DesktopStoryViewer: React.FC<DesktopStoryViewerProps> = ({
         }}
       >
         {/* Book Content */}
-        <div
-          className={clsx(
-            `
-            flex
-            flex-col
-            md:flex-row
-            w-full
-            md:divide-x
-            divide-y
-            md:divide-y-0
-            divide-gray-200
-            flex-1
-            `
-          )}
-        >
-          {/* Left Side - Story Page Title/Text - 45% */}
-          <div className="md:w-[45%] flex-none">
-            {isEndPage ? (
-              <EndPage rtl={rtl} />
-            ) : (
+        {isEndPage ? (
+          <div className="flex-1">
+            <EndPage rtl={rtl} />
+          </div>
+        ) : (
+          <div
+            className={clsx(
+              `
+              flex
+              flex-col
+              md:flex-row
+              w-full
+              md:divide-x
+              divide-y
+              md:divide-y-0
+              divide-gray-200
+              flex-1
+              `
+            )}
+          >
+            {/* Left Side - Story Page Title/Text - 45% */}
+            <div className="md:w-[45%] flex-none">
               <StoryText
                 title={story.title}
                 text={currentPage?.text || ""}
                 page={page}
                 rtl={rtl}
               />
-            )}
-          </div>
-          {/* Right Side - Visual - 55% */}
-          <div className="md:w-[55%] flex-none">
-            {isEndPage ? (
-              <div className="w-full h-full bg-gradient-to-br from-purple-100 via-pink-50 to-yellow-100 flex items-center justify-center">
-                <div className="text-8xl md:text-9xl opacity-20">
-                  📚
-                </div>
-              </div>
-            ) : (
+            </div>
+            {/* Right Side - Visual - 55% */}
+            <div className="md:w-[55%] flex-none">
               <StoryVisual
                 coverUrl={currentPage?.image_url || ""}
                 title={story.title}
               />
-            )}
+            </div>
           </div>
-        </div>
+        )}
         {/* Footer - Navigation & Fullscreen Controls */}
         <div className="relative">
           <StoryNavigation

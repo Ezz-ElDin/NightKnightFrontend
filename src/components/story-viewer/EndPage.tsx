@@ -15,13 +15,12 @@ const EndPage: React.FC<EndPageProps> = ({ rtl }) => {
       )}
       dir={rtl ? "rtl" : "ltr"}
     >
-      <div className="text-center">
-        <h2 className="font-ghibli text-4xl md:text-6xl font-bold text-primary mb-6 animate-fade-in">
-          The End
-        </h2>
-        <div className="text-2xl md:text-3xl text-muted-foreground">
-          ✨
-        </div>
+      <div className="w-full h-full flex justify-center items-center">
+        <img
+          src="/the-end-story-page.png"
+          alt="The End"
+          className="max-w-full max-h-full object-contain"
+        />
       </div>
     </div>
   );

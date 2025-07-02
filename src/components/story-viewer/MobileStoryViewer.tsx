@@ -1,3 +1,4 @@
+
 import React, { useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -124,35 +125,31 @@ const MobileStoryViewer = () => {
           <div className="bg-white rounded-2xl shadow-lg overflow-hidden min-h-[calc(100vh-3rem)]">
             {/* Story Content */}
             <div className="flex-1 flex flex-col">
-              {/* Text Section - Top */}
-              <div className="w-full">
-                {isEndPage ? (
+              {isEndPage ? (
+                <div className="w-full min-h-[calc(100vh-8rem)]">
                   <EndPage rtl={rtl} />
-                ) : (
-                  <StoryText
-                    title={story.title}
-                    text={currentPage?.text || ""}
-                    page={page}
-                    rtl={rtl}
-                  />
-                )}
-              </div>
-              
-              {/* Visual Section - Bottom */}
-              <div className="w-full">
-                {isEndPage ? (
-                  <div className="w-full h-64 bg-gradient-to-br from-purple-100 via-pink-50 to-yellow-100 flex items-center justify-center">
-                    <div className="text-6xl opacity-30">
-                      📚
-                    </div>
+                </div>
+              ) : (
+                <>
+                  {/* Text Section - Top */}
+                  <div className="w-full">
+                    <StoryText
+                      title={story.title}
+                      text={currentPage?.text || ""}
+                      page={page}
+                      rtl={rtl}
+                    />
                   </div>
-                ) : (
-                  <StoryVisual
-                    coverUrl={currentPage?.image_url || ""}
-                    title={story.title}
-                  />
-                )}
-              </div>
+                  
+                  {/* Visual Section - Bottom */}
+                  <div className="w-full">
+                    <StoryVisual
+                      coverUrl={currentPage?.image_url || ""}
+                      title={story.title}
+                    />
+                  </div>
+                </>
+              )}
             </div>
 
             {/* Mobile Navigation Bar */}
