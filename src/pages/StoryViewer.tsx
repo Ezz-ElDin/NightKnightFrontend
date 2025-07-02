@@ -1,9 +1,7 @@
-
 import React, { useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { storiesApi, StoryDetails } from "@/lib/api";
-import { ExportService } from "@/lib/exportService";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Download } from "lucide-react";
 import clsx from "clsx";
@@ -11,7 +9,6 @@ import StoryVisual from "@/components/story-viewer/StoryVisual";
 import StoryText from "@/components/story-viewer/StoryText";
 import StoryNavigation from "@/components/story-viewer/StoryNavigation";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { useToast } from "@/hooks/use-toast";
 
 const isArabic = (text: string) => /[\u0600-\u06FF]/.test(text);
 
@@ -22,8 +19,6 @@ const StoryViewer = () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [page, setPage] = useState(0);
   const [showComingSoonDialog, setShowComingSoonDialog] = useState(false);
-  const [isExporting, setIsExporting] = useState(false);
-  const { toast } = useToast();
 
   // Fetch story data via react-query
   const { data, isLoading, isError } = useQuery({
@@ -32,43 +27,29 @@ const StoryViewer = () => {
     enabled: !!storyId // Don't fetch if param missing
   });
 
-  // Check if export should be enabled - now supports all non-Arabic languages
+  // Check if export should be enabled based on language
   const canExport = useMemo(() => {
     if (!data?.language) return false;
-    return ExportService.isSupportedLanguage(data.language);
+    return data.language === 'british_english' || data.language === 'french' || data.language === 'egyptian_arabic';
   }, [data?.language]);
 
   // Export functionality
   const handleExport = async () => {
     if (!data) return;
     
-    // Show coming soon dialog for Arabic stories
     if (data.language === 'egyptian_arabic') {
       setShowComingSoonDialog(true);
       return;
     }
     
-    // Start export process for supported languages
-    setIsExporting(true);
-    
     try {
-      console.log('Exporting story to PDF:', data.story_title);
-      await ExportService.exportToPDF(data);
-      
-      toast({
-        title: "Export Successful! 🎉",
-        description: `"${data.story_title}" has been downloaded as PDF.`,
-      });
-      
+      console.log('Exporting story:', data.story_title);
+      // TODO: Implement actual export functionality (PDF generation, etc.)
+      // For now, just log the action
+      alert(`Exporting "${data.story_title}" - Feature coming soon!`);
     } catch (error) {
       console.error('Export failed:', error);
-      toast({
-        title: "Export Failed",
-        description: "Something went wrong. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsExporting(false);
+      alert('Export failed. Please try again.');
     }
   };
 
@@ -88,6 +69,7 @@ const StoryViewer = () => {
     return () => document.removeEventListener("fullscreenchange", cb);
   }, []);
 
+  // --- Keyboard navigation (arrow keys) ---
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") {
@@ -100,8 +82,9 @@ const StoryViewer = () => {
     };
 
     window.addEventListener("keydown", handleKeyDown);
+
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [data, page]);
+  }, [data, page]);  // Add 'page' to dependencies to always have latest
 
   const goBack = () => navigate("/library");
 
@@ -133,6 +116,7 @@ const StoryViewer = () => {
   const story: StoryDetails = data;
   const numPages = story.pages.length;
   const currentPage = story.pages[page];
+  // Use RTL if title or page text is arabic
   const rtl = currentPage && (isArabic(story.title) || isArabic(currentPage.text));
 
   return (
@@ -212,7 +196,6 @@ const StoryViewer = () => {
               canPrev={page > 0}
               canNext={page < numPages - 1}
               canExport={canExport}
-              isExporting={isExporting}
               page={page}
               numPages={numPages}
             />
