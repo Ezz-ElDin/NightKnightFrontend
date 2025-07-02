@@ -14,7 +14,7 @@ const MobileMenu = ({ isOpen, isLoggedIn, onClose }: MobileMenuProps) => {
   if (!isOpen) return null;
 
   return (
-    <div className="md:hidden absolute top-full left-0 right-0 bg-white/98 backdrop-blur-sm border-b border-story-lightPurple/30 shadow-lg animate-in slide-in-from-top duration-300 z-40">
+    <div className="md:hidden absolute top-full left-0 right-0 bg-white border-b border-story-lightPurple/30 shadow-lg animate-in slide-in-from-top duration-300 z-40">
       <ScrollArea className="max-h-[80vh] px-4 py-4">
         <div className="flex flex-col space-y-3">
           {isLoggedIn ? (
