@@ -5,46 +5,30 @@ import { useQuery } from "@tanstack/react-query";
 import { storiesApi, StoryDetails } from "@/lib/api";
 import { exportService } from "@/lib/exportService";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Download } from "lucide-react";
+import { ArrowLeft, ArrowRight, Download, Loader2 } from "lucide-react";
 import clsx from "clsx";
-import StoryVisual from "@/components/story-viewer/StoryVisual";
 import StoryText from "@/components/story-viewer/StoryText";
-import StoryNavigation from "@/components/story-viewer/StoryNavigation";
-import MobileStoryViewer from "@/components/story-viewer/MobileStoryViewer";
+import StoryVisual from "@/components/story-viewer/StoryVisual";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 
 const isArabic = (text: string) => /[\u0600-\u06FF]/.test(text);
 
-const StoryViewer = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
+const MobileStoryViewer = () => {
   const navigate = useNavigate();
   const { storyId } = useParams<{ storyId?: string }>();
-  const [isFullscreen, setIsFullscreen] = useState(false);
   const [page, setPage] = useState(0);
   const [showComingSoonDialog, setShowComingSoonDialog] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const { toast } = useToast();
-
-  // Listen for window resize to detect mobile
-  React.useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   // Fetch story data via react-query
   const { data, isLoading, isError } = useQuery({
     queryKey: ['story', storyId],
     queryFn: () => storiesApi.get(storyId!),
-    enabled: !!storyId // Don't fetch if param missing
+    enabled: !!storyId
   });
 
-  // Always show export button for all languages
   const canExport = true;
 
   // Export functionality
@@ -76,23 +60,7 @@ const StoryViewer = () => {
     }
   };
 
-  // Fullscreen management
-  const handleToggleFullscreen = () => {
-    if (!document.fullscreenElement && containerRef.current) {
-      containerRef.current.requestFullscreen?.();
-      setIsFullscreen(true);
-    } else {
-      document.exitFullscreen?.();
-      setIsFullscreen(false);
-    }
-  };
-  React.useEffect(() => {
-    const cb = () => setIsFullscreen(!!document.fullscreenElement);
-    document.addEventListener("fullscreenchange", cb);
-    return () => document.removeEventListener("fullscreenchange", cb);
-  }, []);
-
-  // --- Keyboard navigation (arrow keys) ---
+  // Keyboard navigation
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") {
@@ -105,16 +73,10 @@ const StoryViewer = () => {
     };
 
     window.addEventListener("keydown", handleKeyDown);
-
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [data, page]);
 
   const goBack = () => navigate("/library");
-
-  // Render mobile version if on mobile
-  if (isMobile) {
-    return <MobileStoryViewer />;
-  }
 
   if (isLoading) {
     return (
@@ -144,91 +106,89 @@ const StoryViewer = () => {
   const story: StoryDetails = data;
   const numPages = story.pages.length;
   const currentPage = story.pages[page];
-  // Use RTL if title or page text is arabic
   const rtl = currentPage && (isArabic(story.title) || isArabic(currentPage.text));
 
   return (
     <>
-      <div 
-        className={clsx(
-          "w-full min-h-screen flex flex-col items-center justify-center px-1 py-4 bg-white"
-        )}
-        style={{ minHeight: "100vh" }}
-      >
-        <div
-          ref={containerRef}
-          className={clsx(
-            `
-            relative
-            w-full
-            max-w-5xl
-            mx-auto
-            bg-white
-            rounded-3xl
-            shadow-2xl
-            p-0
-            overflow-hidden
-            flex
-            flex-col
-            border
-            border-solid
-            border-gray-200
-            duration-200
-            transition-all
-            animate-fade-in
-            `,
-            isFullscreen ? "max-w-none w-screen min-h-screen h-screen !rounded-none" : "min-h-[70vh]"
-          )}
-          style={{
-            boxShadow: "0 10px 40px 2px rgba(80,60,120,0.13)",
-          }}
-        >
-          {/* Book Content */}
-          <div
-            className={clsx(
-              `
-              flex
-              flex-col
-              md:flex-row
-              w-full
-              md:divide-x
-              divide-y
-              md:divide-y-0
-              divide-gray-200
-              flex-1
-              `
-            )}
-          >
-            {/* Left Side - Story Page Title/Text */}
+      <div className="w-full min-h-screen flex flex-col bg-white">
+        {/* Story Content */}
+        <div className="flex-1 flex flex-col">
+          {/* Text Section - Top */}
+          <div className="w-full">
             <StoryText
               title={story.title}
               text={currentPage?.text || ""}
               page={page}
               rtl={rtl}
             />
-            {/* Right Side - Visual */}
+          </div>
+          
+          {/* Visual Section - Bottom */}
+          <div className="w-full">
             <StoryVisual
               coverUrl={currentPage?.image_url || ""}
               title={story.title}
             />
           </div>
-          {/* Footer - Navigation & Fullscreen Controls */}
-          <div className="relative">
-            <StoryNavigation
-              onBack={goBack}
-              onPrevPage={() => setPage(Math.max(0, page - 1))}
-              onNextPage={() => setPage(Math.min(numPages - 1, page + 1))}
-              onToggleFullscreen={handleToggleFullscreen}
-              onExport={handleExport}
-              isFullscreen={isFullscreen}
-              canPrev={page > 0}
-              canNext={page < numPages - 1}
-              canExport={canExport}
-              isExporting={isExporting}
-              page={page}
-              numPages={numPages}
-            />
+        </div>
+
+        {/* Mobile Navigation Bar */}
+        <div className="flex items-center justify-between px-4 py-4 bg-white border-t border-gray-100">
+          {/* Back Button - Left */}
+          <Button
+            onClick={goBack}
+            variant="outline"
+            className="flex items-center gap-2"
+            aria-label="Back to library"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back
+          </Button>
+          
+          {/* Navigation Arrows - Center */}
+          <div className="flex items-center gap-4">
+            <Button
+              onClick={() => setPage(Math.max(0, page - 1))}
+              variant="outline"
+              size="icon"
+              disabled={page === 0}
+              aria-label="Previous Page"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+            
+            <span className="text-sm font-medium text-muted-foreground">
+              {page + 1} / {numPages}
+            </span>
+            
+            <Button
+              onClick={() => setPage(Math.min(numPages - 1, page + 1))}
+              variant="outline"
+              size="icon"
+              disabled={page >= numPages - 1}
+              aria-label="Next Page"
+            >
+              <ArrowRight className="h-4 w-4" />
+            </Button>
           </div>
+          
+          {/* Export Button - Right */}
+          {canExport && (
+            <Button
+              onClick={handleExport}
+              variant="outline"
+              size="icon"
+              aria-label="Export story"
+              disabled={isExporting}
+              className="bg-story-green hover:bg-story-green/90 border-story-green text-white"
+            >
+              {isExporting ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Download className="h-4 w-4" />
+              )}
+            </Button>
+          )}
         </div>
       </div>
 
@@ -259,4 +219,4 @@ const StoryViewer = () => {
   );
 };
 
-export default StoryViewer;
+export default MobileStoryViewer;
