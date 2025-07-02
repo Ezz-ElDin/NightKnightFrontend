@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Star, CreditCard } from "lucide-react";
@@ -10,7 +11,6 @@ import PaginationNav from "@/components/dashboard/PaginationNav";
 import EmailVerificationBanners from "@/components/dashboard/EmailVerificationBanners";
 import ConfirmDeleteDialog from "@/components/dashboard/ConfirmDeleteDialog";
 import SuccessBanner from "@/components/SuccessBanner";
-import StoryGenerationBanner from "@/components/dashboard/StoryGenerationBanner";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { storiesApi, creditApi, Story } from "@/lib/api";
 
@@ -20,10 +20,6 @@ const Library = () => {
   const [page, setPage] = useState(1);
   const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; storyId: null | number }>({ open: false, storyId: null });
   const [showSuccessBanner, setShowSuccessBanner] = useState(false);
-  const [storyGenerationResult, setStoryGenerationResult] = useState<{
-    status: 'success' | 'failed';
-    storyId: string;
-  } | null>(null);
   
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -39,25 +35,6 @@ const Library = () => {
       setSearchParams(newSearchParams, { replace: true });
       
       queryClient.invalidateQueries({ queryKey: ['credits'] });
-    }
-
-    // Check for story generation result
-    const generationResult = localStorage.getItem('storyGenerationResult');
-    if (generationResult) {
-      try {
-        const result = JSON.parse(generationResult);
-        // Show banner only if the result is recent (within 5 minutes)
-        if (Date.now() - result.timestamp < 5 * 60 * 1000) {
-          setStoryGenerationResult({
-            status: result.status,
-            storyId: result.storyId
-          });
-        }
-        localStorage.removeItem('storyGenerationResult');
-      } catch (error) {
-        console.error('Error parsing story generation result:', error);
-        localStorage.removeItem('storyGenerationResult');
-      }
     }
   }, [searchParams, setSearchParams]);
 
@@ -84,10 +61,7 @@ const Library = () => {
   });
 
   const stories = allStories.filter((story: Story & { status?: string }) => {
-    // Only show completed stories that have proper cover images
-    const isCompleted = !story.status || story.status === 'completed';
-    const hasValidCover = story.coverUrl && story.coverUrl.trim() !== '';
-    return isCompleted && hasValidCover;
+    return !story.status || story.status === 'completed';
   });
 
   const favMutation = useMutation({
@@ -139,10 +113,6 @@ const Library = () => {
     setShowSuccessBanner(false);
   };
 
-  const handleCloseGenerationBanner = () => {
-    setStoryGenerationResult(null);
-  };
-
   const hasCredits = storyCredits > 0;
 
   return (
@@ -151,14 +121,6 @@ const Library = () => {
         <EmailVerificationBanners shouldShow={shouldShowVerificationBanner} />
 
         {showSuccessBanner && <SuccessBanner onClose={handleCloseBanner} />}
-        
-        {storyGenerationResult && (
-          <StoryGenerationBanner
-            status={storyGenerationResult.status}
-            storyId={storyGenerationResult.storyId}
-            onClose={handleCloseGenerationBanner}
-          />
-        )}
 
         {/* Mobile-optimized header */}
         <div className="mb-6 md:mb-8 mt-4 md:mt-6">
