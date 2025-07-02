@@ -1,10 +1,11 @@
+
 import React, { useState, useEffect } from "react";
 import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle
-} from "@/components/ui/dialog";
+  FullScreenDialog, 
+  FullScreenDialogContent, 
+  FullScreenDialogHeader, 
+  FullScreenDialogTitle
+} from "@/components/ui/full-screen-dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Character } from "../constants";
@@ -176,17 +177,17 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
   };
 
   return (
-    <Dialog open={open} onOpenChange={(newOpenState) => {
+    <FullScreenDialog open={open} onOpenChange={(newOpenState) => {
       if (!newOpenState) resetCharacter();
       onOpenChange(newOpenState);
     }}>
-      <DialogContent className="w-full h-full bg-gradient-to-b from-white to-primary/5 flex flex-col overflow-hidden">
-        {/* Header without X button */}
-        <DialogHeader className="flex-shrink-0 px-8 py-6 border-b border-primary/20">
-          <DialogTitle className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600">
+      <FullScreenDialogContent className="bg-gradient-to-b from-white to-primary/5 flex flex-col overflow-hidden">
+        {/* Header */}
+        <FullScreenDialogHeader className="flex-shrink-0 px-8 py-6 border-b border-primary/20">
+          <FullScreenDialogTitle className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600">
             {initialCharacter ? "Edit Magical Character" : "Create a Magical Character"}
-          </DialogTitle>
-        </DialogHeader>
+          </FullScreenDialogTitle>
+        </FullScreenDialogHeader>
 
         {/* Scrollable content */}
         <ScrollArea className="flex-1 px-8 py-6">
@@ -222,8 +223,8 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
             </Button>
           </div>
         </div>
-      </DialogContent>
-    </Dialog>
+      </FullScreenDialogContent>
+    </FullScreenDialog>
   );
 };
 
