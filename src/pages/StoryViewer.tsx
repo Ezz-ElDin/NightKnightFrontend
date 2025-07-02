@@ -31,11 +31,8 @@ const StoryViewer = () => {
     enabled: !!storyId // Don't fetch if param missing
   });
 
-  // Check if export should be enabled based on language
-  const canExport = useMemo(() => {
-    if (!data?.language) return false;
-    return data.language !== 'egyptian_arabic';
-  }, [data?.language]);
+  // Always show export button for all languages
+  const canExport = true;
 
   // Export functionality
   const handleExport = async () => {
