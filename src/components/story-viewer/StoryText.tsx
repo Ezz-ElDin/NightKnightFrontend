@@ -13,20 +13,20 @@ const StoryText: React.FC<StoryTextProps> = ({ title, text, page, rtl }) => {
   return (
     <div
       className={clsx(
-        "w-full flex flex-col px-6 md:px-8 py-6 md:py-8 gap-0",
+        "flex-1 flex flex-col min-h-[340px] px-8 md:px-10 py-8 md:py-10 gap-0",
         rtl ? "rtl text-right" : "ltr text-left",
         page === 0
-          ? "justify-center items-center text-center"
+          ? "justify-center items-center"
           : "justify-start items-start"
       )}
       dir={rtl ? "rtl" : "ltr"}
     >
       {page === 0 ? (
-        <h3 className="font-ghibli text-2xl md:text-3xl lg:text-4xl font-bold mb-0 w-full leading-tight">
+        <h3 className="font-ghibli text-[2.6rem] md:text-5xl font-bold mb-0 w-full text-center leading-tight">
           {title}
         </h3>
       ) : (
-        <p className="text-base md:text-lg lg:text-xl mt-0 leading-relaxed" style={{ wordBreak: "break-word" }}>
+        <p className="text-lg md:text-xl mt-0" style={{ wordBreak: "break-word" }}>
           {text}
         </p>
       )}

@@ -1,13 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, Fullscreen, Download, Loader2, MoreVertical } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { ArrowLeft, ArrowRight, Fullscreen, Download, Loader2 } from "lucide-react";
 
 interface StoryNavigationProps {
   onBack: () => void;
@@ -38,74 +32,70 @@ const StoryNavigation: React.FC<StoryNavigationProps> = ({
   page,
   numPages,
 }) => (
-  <div className="flex w-full items-center justify-between px-4 py-4 bg-white border-t border-gray-100 relative min-h-[64px]">
-    {/* Back Button - Left */}
+  <div className="flex w-full items-center justify-between px-6 py-5 bg-white border-t border-gray-100 relative min-h-[72px]">
+    {/* Back Button */}
     <Button
       onClick={onBack}
       variant="outline"
-      className="font-semibold px-3 py-2 flex gap-2 items-center text-sm"
+      className="font-semibold px-4 flex gap-2 items-center"
       aria-label="Back to library"
     >
-      <ArrowLeft className="h-4 w-4" />
-      <span className="hidden sm:inline">Library</span>
+      <ArrowLeft className="h-5 w-5 mr-2" /> Back to Library
     </Button>
     
-    {/* Centered Navigation Arrows */}
-    <div className="flex flex-row items-center gap-4 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+    {/* Centered Arrows for Page Navigation */}
+    <div className="flex flex-row items-center gap-5 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
       <Button
         onClick={onPrevPage}
         variant="outline"
         aria-label="Previous Page"
+        className="px-4"
         disabled={!canPrev}
         size="icon"
-        className="h-9 w-9"
       >
-        <ArrowLeft className="h-5 w-5" />
+        <ArrowLeft className="h-6 w-6" />
       </Button>
-      <span className="text-muted-foreground font-semibold text-base select-none px-2">
-        {page + 1}
-      </span>
+      <span className="text-muted-foreground font-semibold text-lg select-none">{page + 1}</span>
       <Button
         onClick={onNextPage}
         variant="outline"
         aria-label="Next Page"
+        className="px-4"
         disabled={!canNext}
         size="icon"
-        className="h-9 w-9"
       >
-        <ArrowRight className="h-5 w-5" />
+        <ArrowRight className="h-6 w-6" />
       </Button>
     </div>
     
-    {/* Three-dot Menu - Right */}
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+    {/* Action Buttons - Export and Fullscreen */}
+    <div className="absolute bottom-6 right-6 flex gap-3">
+      {canExport && (
         <Button
+          onClick={onExport}
           variant="outline"
           size="icon"
-          className="h-9 w-9"
-          aria-label="More options"
+          aria-label="Export story"
+          disabled={isExporting}
+          className="rounded-full shadow border transition-transform duration-200 hover:scale-105 bg-story-green hover:bg-story-green/90 border-story-green text-white"
         >
-          <MoreVertical className="h-4 w-4" />
+          {isExporting ? (
+            <Loader2 className="h-6 w-6 animate-spin" />
+          ) : (
+            <Download className="h-6 w-6" />
+          )}
         </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48">
-        {canExport && (
-          <DropdownMenuItem onClick={onExport} disabled={isExporting}>
-            {isExporting ? (
-              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-            ) : (
-              <Download className="h-4 w-4 mr-2" />
-            )}
-            Export Story
-          </DropdownMenuItem>
-        )}
-        <DropdownMenuItem onClick={onToggleFullscreen} className="hidden sm:flex">
-          <Fullscreen className="h-4 w-4 mr-2" />
-          {isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+      )}
+      <Button
+        onClick={onToggleFullscreen}
+        variant={isFullscreen ? "secondary" : "outline"}
+        size="icon"
+        aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+        className="rounded-full shadow border transition-transform duration-200 hover:scale-105"
+      >
+        <Fullscreen className="h-6 w-6" />
+      </Button>
+    </div>
   </div>
 );
 
