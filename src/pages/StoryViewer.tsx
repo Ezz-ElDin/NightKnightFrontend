@@ -206,7 +206,7 @@ const StoryViewer = () => {
 
       {/* Coming Soon Dialog */}
       <Dialog open={showComingSoonDialog} onOpenChange={setShowComingSoonDialog}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md mx-auto">
           <div className="flex flex-col items-center justify-center p-6 text-center">
             <div className="w-16 h-16 bg-gradient-to-br from-story-green to-story-blue rounded-full flex items-center justify-center mb-4 animate-bounce">
               <Download className="h-8 w-8 text-white" />
