@@ -1,16 +1,6 @@
 
 import jsPDF from 'jspdf';
-
-interface StoryPage {
-  text: string;
-  image_url: string;
-}
-
-interface StoryDetails {
-  title: string;
-  cover_front: string;
-  pages: StoryPage[];
-}
+import { StoryDetails } from '@/lib/api';
 
 class StoryExportService {
   private readonly PAGE_WIDTH = 297; // A4 landscape width in mm
@@ -45,10 +35,11 @@ class StoryExportService {
     
     doc.text(titleLines, this.MARGIN, titleY);
     
-    // Right section - Cover image
-    if (story.cover_front) {
+    // Right section - Cover image (use first page image as cover)
+    const coverImage = story.pages[0]?.image_url;
+    if (coverImage) {
       try {
-        const image = await this.loadImage(story.cover_front);
+        const image = await this.loadImage(coverImage);
         this.fitImageToRightSection(doc, image, this.MARGIN * 2 + this.SECTION_WIDTH, this.MARGIN);
       } catch (error) {
         console.error('Failed to load cover image:', error);
@@ -56,7 +47,7 @@ class StoryExportService {
     }
   }
 
-  private async createStoryPage(doc: jsPDF, page: StoryPage, pageNumber: number): Promise<void> {
+  private async createStoryPage(doc: jsPDF, page: any, pageNumber: number): Promise<void> {
     // Left section - Text
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(14);
