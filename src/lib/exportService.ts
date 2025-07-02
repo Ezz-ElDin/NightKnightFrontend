@@ -11,10 +11,10 @@ class StoryExportService {
   async exportStoryToPDF(story: StoryDetails): Promise<void> {
     const doc = new jsPDF('landscape', 'mm', 'a4');
     
-    // First page (cover)
-    await this.createFirstPage(doc, story);
+    // First page (cover) - no footer
+    await this.createCoverPage(doc, story);
     
-    // Story pages
+    // Story pages - start from page 2
     for (let i = 0; i < story.pages.length; i++) {
       doc.addPage();
       await this.createStoryPage(doc, story.pages[i], i + 2);
@@ -24,8 +24,8 @@ class StoryExportService {
     doc.save(`${story.title}.pdf`);
   }
 
-  private async createFirstPage(doc: jsPDF, story: StoryDetails): Promise<void> {
-    // Left section - Title
+  private async createCoverPage(doc: jsPDF, story: StoryDetails): Promise<void> {
+    // Left section - Title (bold, large)
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(24);
     
@@ -35,7 +35,7 @@ class StoryExportService {
     
     doc.text(titleLines, this.MARGIN, titleY);
     
-    // Right section - Cover image (use first page image as cover)
+    // Right section - Cover image (use first page image)
     const coverImage = story.pages[0]?.image_url;
     if (coverImage) {
       try {
@@ -45,10 +45,12 @@ class StoryExportService {
         console.error('Failed to load cover image:', error);
       }
     }
+    
+    // NO FOOTER on cover page
   }
 
   private async createStoryPage(doc: jsPDF, page: any, pageNumber: number): Promise<void> {
-    // Left section - Text
+    // Left section - Text (normal font)
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(14);
     
@@ -72,7 +74,7 @@ class StoryExportService {
       }
     }
     
-    // Footer (not on first page)
+    // Footer (only on story pages, not cover)
     this.addFooter(doc);
   }
 
