@@ -1,3 +1,4 @@
+
 import React, { useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -141,10 +142,12 @@ const MobileStoryViewer = () => {
               {/* Visual Section - Bottom */}
               <div className="w-full">
                 {isEndPage ? (
-                  <div className="w-full h-64 bg-gradient-to-br from-purple-100 via-pink-50 to-yellow-100 flex items-center justify-center">
-                    <div className="text-6xl opacity-30">
-                      📚
-                    </div>
+                  <div className="w-full h-64 flex items-center justify-center p-6">
+                    <img 
+                      src="/lovable-uploads/c008a6c2-43db-4e1a-97e0-3763110b1d6c.png" 
+                      alt="The End" 
+                      className="w-full h-full object-contain"
+                    />
                   </div>
                 ) : (
                   <StoryVisual

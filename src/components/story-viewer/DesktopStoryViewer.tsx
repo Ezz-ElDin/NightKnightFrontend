@@ -105,10 +105,12 @@ const DesktopStoryViewer: React.FC<DesktopStoryViewerProps> = ({
           {/* Right Side - Visual - 55% */}
           <div className="md:w-[55%] flex-none">
             {isEndPage ? (
-              <div className="w-full h-full bg-gradient-to-br from-purple-100 via-pink-50 to-yellow-100 flex items-center justify-center">
-                <div className="text-8xl md:text-9xl opacity-20">
-                  📚
-                </div>
+              <div className="w-full h-full flex items-center justify-center p-8">
+                <img 
+                  src="/lovable-uploads/c008a6c2-43db-4e1a-97e0-3763110b1d6c.png" 
+                  alt="The End" 
+                  className="w-full h-full object-contain"
+                />
               </div>
             ) : (
               <StoryVisual
