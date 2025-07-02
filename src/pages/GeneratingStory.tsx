@@ -1,11 +1,11 @@
-
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { storiesApi } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
-import { Sparkles, Wand2, BookOpen, Palette, Camera } from "lucide-react";
+import { Sparkles, Wand2, BookOpen, Palette, Camera, Home } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
 
 const GeneratingStory = () => {
   const { storyId } = useParams<{ storyId: string }>();
@@ -96,9 +96,15 @@ const GeneratingStory = () => {
     return () => clearInterval(interval);
   }, [currentStage.messages.length]);
 
-  // Handle status changes
+  // Handle status changes - Modified to store success/failure info in localStorage
   useEffect(() => {
     if (statusData?.status === 'completed') {
+      // Store success info in localStorage for banner display
+      localStorage.setItem('storyGenerationResult', JSON.stringify({
+        status: 'success',
+        storyId: storyId,
+        timestamp: Date.now()
+      }));
       navigate(`/library/stories/${storyId}`);
     } else if (statusData?.status === 'failed') {
       // Increment failed attempts counter
@@ -106,12 +112,19 @@ const GeneratingStory = () => {
       
       // Only show error after 3 failed attempts (60+ seconds)
       if (failedAttempts >= 2) { // 0, 1, 2 = 3 attempts
+        // Store failure info in localStorage for banner display
+        localStorage.setItem('storyGenerationResult', JSON.stringify({
+          status: 'failed',
+          storyId: storyId,
+          timestamp: Date.now()
+        }));
+        
         toast({
           title: "Story generation failed 😬",
           description: "Something went wrong while creating your story. Please try again.",
           variant: "destructive",
         });
-        navigate("/create-story");
+        navigate("/library");
       }
     } else {
       // Reset failed attempts if we get a non-failed status
@@ -127,18 +140,34 @@ const GeneratingStory = () => {
         description: "Unable to check story generation progress. Please try again.",
         variant: "destructive",
       });
-      navigate("/create-story");
+      navigate("/library");
     }
   }, [isError, navigate, toast]);
 
+  const handleGoHome = () => {
+    navigate("/library");
+  };
+
   if (!storyId) {
-    navigate("/create-story");
+    navigate("/library");
     return null;
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-50 to-blue-100 flex items-center justify-center px-4">
       <div className="max-w-md w-full text-center space-y-8">
+        {/* Home Button */}
+        <div className="flex justify-start mb-4">
+          <Button
+            onClick={handleGoHome}
+            variant="outline"
+            className="flex items-center gap-2 bg-white/70 backdrop-blur-sm border-purple-200 hover:bg-white/90"
+          >
+            <Home className="h-4 w-4" />
+            Home
+          </Button>
+        </div>
+
         {/* Animated Icons */}
         <div className="relative">
           <div className="flex justify-center space-x-4 mb-8">
