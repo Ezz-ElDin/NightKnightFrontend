@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { storiesApi, StoryDetails } from "@/lib/api";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Download } from "lucide-react";
 import clsx from "clsx";
 import StoryVisual from "@/components/story-viewer/StoryVisual";
 import StoryText from "@/components/story-viewer/StoryText";
@@ -25,6 +25,27 @@ const StoryViewer = () => {
     queryFn: () => storiesApi.get(storyId!),
     enabled: !!storyId // Don't fetch if param missing
   });
+
+  // Check if export should be enabled based on language
+  const canExport = useMemo(() => {
+    if (!data?.language) return false;
+    return data.language === 'british_english' || data.language === 'french';
+  }, [data?.language]);
+
+  // Export functionality
+  const handleExport = async () => {
+    if (!data) return;
+    
+    try {
+      console.log('Exporting story:', data.story_title);
+      // TODO: Implement actual export functionality (PDF generation, etc.)
+      // For now, just log the action
+      alert(`Exporting "${data.story_title}" - Feature coming soon!`);
+    } catch (error) {
+      console.error('Export failed:', error);
+      alert('Export failed. Please try again.');
+    }
+  };
 
   // Fullscreen management
   const handleToggleFullscreen = () => {
@@ -99,6 +120,20 @@ const StoryViewer = () => {
       )}
       style={{ minHeight: "100vh" }}
     >
+      {/* Export Button - Only visible for British English and French */}
+      {canExport && (
+        <div className="fixed top-20 right-4 z-40">
+          <Button
+            onClick={handleExport}
+            className="bg-story-orange hover:bg-story-orange/90 text-white shadow-lg"
+            size="sm"
+          >
+            <Download className="h-4 w-4 mr-2" />
+            Export
+          </Button>
+        </div>
+      )}
+
       <div
         ref={containerRef}
         className={clsx(
