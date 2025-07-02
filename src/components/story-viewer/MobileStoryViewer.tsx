@@ -1,4 +1,3 @@
-
 import React, { useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -80,25 +79,33 @@ const MobileStoryViewer = () => {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh]">
-        <h1 className="text-3xl font-bold text-primary mb-2">Loading Story...</h1>
-        <p className="text-lg text-muted-foreground mb-6">
-          Hold tight, preparing your adventure.
-        </p>
+      <div className="min-h-screen bg-gray-50 px-4 py-8">
+        <div className="max-w-md mx-auto">
+          <div className="flex flex-col items-center justify-center min-h-[60vh]">
+            <h1 className="text-3xl font-bold text-primary mb-2">Loading Story...</h1>
+            <p className="text-lg text-muted-foreground mb-6">
+              Hold tight, preparing your adventure.
+            </p>
+          </div>
+        </div>
       </div>
     );
   }
 
   if (isError || !data) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh]">
-        <h1 className="text-3xl font-bold text-primary mb-2">Story Not Found</h1>
-        <p className="text-lg text-muted-foreground mb-6">
-          Sorry, we couldn't find that story.
-        </p>
-        <Button onClick={goBack} variant="outline">
-          Back to Dashboard
-        </Button>
+      <div className="min-h-screen bg-gray-50 px-4 py-8">
+        <div className="max-w-md mx-auto">
+          <div className="flex flex-col items-center justify-center min-h-[60vh]">
+            <h1 className="text-3xl font-bold text-primary mb-2">Story Not Found</h1>
+            <p className="text-lg text-muted-foreground mb-6">
+              Sorry, we couldn't find that story.
+            </p>
+            <Button onClick={goBack} variant="outline">
+              Back to Dashboard
+            </Button>
+          </div>
+        </div>
       </div>
     );
   }
@@ -110,85 +117,89 @@ const MobileStoryViewer = () => {
 
   return (
     <>
-      <div className="w-full min-h-screen flex flex-col bg-white">
-        {/* Story Content */}
-        <div className="flex-1 flex flex-col">
-          {/* Text Section - Top */}
-          <div className="w-full">
-            <StoryText
-              title={story.title}
-              text={currentPage?.text || ""}
-              page={page}
-              rtl={rtl}
-            />
-          </div>
-          
-          {/* Visual Section - Bottom */}
-          <div className="w-full">
-            <StoryVisual
-              coverUrl={currentPage?.image_url || ""}
-              title={story.title}
-            />
-          </div>
-        </div>
+      <div className="min-h-screen bg-gray-50 px-4 py-6">
+        <div className="max-w-md mx-auto">
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden min-h-[calc(100vh-3rem)]">
+            {/* Story Content */}
+            <div className="flex-1 flex flex-col">
+              {/* Text Section - Top */}
+              <div className="w-full">
+                <StoryText
+                  title={story.title}
+                  text={currentPage?.text || ""}
+                  page={page}
+                  rtl={rtl}
+                />
+              </div>
+              
+              {/* Visual Section - Bottom */}
+              <div className="w-full">
+                <StoryVisual
+                  coverUrl={currentPage?.image_url || ""}
+                  title={story.title}
+                />
+              </div>
+            </div>
 
-        {/* Mobile Navigation Bar */}
-        <div className="flex items-center justify-between px-4 py-4 bg-white border-t border-gray-100">
-          {/* Back Button - Left */}
-          <Button
-            onClick={goBack}
-            variant="outline"
-            className="flex items-center gap-2"
-            aria-label="Back to library"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Back
-          </Button>
-          
-          {/* Navigation Arrows - Center */}
-          <div className="flex items-center gap-4">
-            <Button
-              onClick={() => setPage(Math.max(0, page - 1))}
-              variant="outline"
-              size="icon"
-              disabled={page === 0}
-              aria-label="Previous Page"
-            >
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-            
-            <span className="text-sm font-medium text-muted-foreground">
-              {page + 1} / {numPages}
-            </span>
-            
-            <Button
-              onClick={() => setPage(Math.min(numPages - 1, page + 1))}
-              variant="outline"
-              size="icon"
-              disabled={page >= numPages - 1}
-              aria-label="Next Page"
-            >
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          </div>
-          
-          {/* Export Button - Right */}
-          {canExport && (
-            <Button
-              onClick={handleExport}
-              variant="outline"
-              size="icon"
-              aria-label="Export story"
-              disabled={isExporting}
-              className="bg-story-green hover:bg-story-green/90 border-story-green text-white"
-            >
-              {isExporting ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <Download className="h-4 w-4" />
+            {/* Mobile Navigation Bar */}
+            <div className="flex items-center justify-between px-4 py-4 bg-white border-t border-gray-100">
+              {/* Back Button - Left */}
+              <Button
+                onClick={goBack}
+                variant="outline"
+                className="flex items-center gap-2"
+                aria-label="Back to library"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Back
+              </Button>
+              
+              {/* Navigation Arrows - Center */}
+              <div className="flex items-center gap-4">
+                <Button
+                  onClick={() => setPage(Math.max(0, page - 1))}
+                  variant="outline"
+                  size="icon"
+                  disabled={page === 0}
+                  aria-label="Previous Page"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                </Button>
+                
+                <span className="text-sm font-medium text-muted-foreground">
+                  {page + 1} / {numPages}
+                </span>
+                
+                <Button
+                  onClick={() => setPage(Math.min(numPages - 1, page + 1))}
+                  variant="outline"
+                  size="icon"
+                  disabled={page >= numPages - 1}
+                  aria-label="Next Page"
+                >
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </div>
+              
+              {/* Export Button - Right */}
+              {canExport && (
+                <Button
+                  onClick={handleExport}
+                  variant="outline"
+                  size="icon"
+                  aria-label="Export story"
+                  disabled={isExporting}
+                  className="bg-story-green hover:bg-story-green/90 border-story-green text-white"
+                >
+                  {isExporting ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Download className="h-4 w-4" />
+                  )}
+                </Button>
               )}
-            </Button>
-          )}
+            </div>
+          </div>
         </div>
       </div>
 
