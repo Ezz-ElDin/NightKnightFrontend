@@ -1,3 +1,4 @@
+
 import React, { useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -165,20 +166,24 @@ const StoryViewer = () => {
             boxShadow: "0 10px 40px 2px rgba(80,60,120,0.13)",
           }}
         >
-          {/* Book Content - Now Stacked Vertically */}
-          <div className="flex flex-col w-full flex-1">
-            {/* Image at Top */}
-            <StoryVisual
-              coverUrl={currentPage?.image_url || ""}
-              title={story.title}
-            />
-            {/* Text Below Image */}
-            <StoryText
-              title={story.title}
-              text={currentPage?.text || ""}
-              page={page}
-              rtl={rtl}
-            />
+          {/* Book Content - Side by side on wide screens, stacked on mobile */}
+          <div className="flex flex-col lg:flex-row w-full flex-1">
+            {/* Text Section - Left on wide screens, top on mobile */}
+            <div className="flex-1 lg:order-1 order-2">
+              <StoryText
+                title={story.title}
+                text={currentPage?.text || ""}
+                page={page}
+                rtl={rtl}
+              />
+            </div>
+            {/* Visual Section - Right on wide screens, top on mobile */}
+            <div className="flex-1 lg:order-2 order-1">
+              <StoryVisual
+                coverUrl={currentPage?.image_url || ""}
+                title={story.title}
+              />
+            </div>
           </div>
           {/* Footer - Navigation & Fullscreen Controls */}
           <div className="relative">
