@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, Fullscreen, Download } from "lucide-react";
+import { ArrowLeft, ArrowRight, Fullscreen, Download, Loader2 } from "lucide-react";
 
 interface StoryNavigationProps {
   onBack: () => void;
@@ -13,6 +13,7 @@ interface StoryNavigationProps {
   canPrev: boolean;
   canNext: boolean;
   canExport: boolean;
+  isExporting?: boolean;
   page: number;
   numPages: number;
 }
@@ -27,6 +28,7 @@ const StoryNavigation: React.FC<StoryNavigationProps> = ({
   canPrev,
   canNext,
   canExport,
+  isExporting = false,
   page,
   numPages,
 }) => (
@@ -74,9 +76,14 @@ const StoryNavigation: React.FC<StoryNavigationProps> = ({
           variant="outline"
           size="icon"
           aria-label="Export story"
+          disabled={isExporting}
           className="rounded-full shadow border transition-transform duration-200 hover:scale-105 bg-story-green hover:bg-story-green/90 border-story-green text-white"
         >
-          <Download className="h-6 w-6" />
+          {isExporting ? (
+            <Loader2 className="h-6 w-6 animate-spin" />
+          ) : (
+            <Download className="h-6 w-6" />
+          )}
         </Button>
       )}
       <Button

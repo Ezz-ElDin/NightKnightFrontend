@@ -2,6 +2,7 @@ import React, { useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { storiesApi, StoryDetails } from "@/lib/api";
+import { exportService } from "@/lib/exportService";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Download } from "lucide-react";
 import clsx from "clsx";
@@ -9,6 +10,7 @@ import StoryVisual from "@/components/story-viewer/StoryVisual";
 import StoryText from "@/components/story-viewer/StoryText";
 import StoryNavigation from "@/components/story-viewer/StoryNavigation";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { useToast } from "@/hooks/use-toast";
 
 const isArabic = (text: string) => /[\u0600-\u06FF]/.test(text);
 
@@ -19,6 +21,8 @@ const StoryViewer = () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [page, setPage] = useState(0);
   const [showComingSoonDialog, setShowComingSoonDialog] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
+  const { toast } = useToast();
 
   // Fetch story data via react-query
   const { data, isLoading, isError } = useQuery({
@@ -30,7 +34,7 @@ const StoryViewer = () => {
   // Check if export should be enabled based on language
   const canExport = useMemo(() => {
     if (!data?.language) return false;
-    return data.language === 'british_english' || data.language === 'french' || data.language === 'egyptian_arabic';
+    return data.language !== 'egyptian_arabic';
   }, [data?.language]);
 
   // Export functionality
@@ -42,14 +46,23 @@ const StoryViewer = () => {
       return;
     }
     
+    setIsExporting(true);
     try {
       console.log('Exporting story:', data.story_title);
-      // TODO: Implement actual export functionality (PDF generation, etc.)
-      // For now, just log the action
-      alert(`Exporting "${data.story_title}" - Feature coming soon!`);
+      await exportService.exportStoryToPDF(data);
+      toast({
+        title: "Success!",
+        description: "Story exported successfully!",
+      });
     } catch (error) {
       console.error('Export failed:', error);
-      alert('Export failed. Please try again.');
+      toast({
+        title: "Export Failed",
+        description: "Please try again later.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsExporting(false);
     }
   };
 
@@ -84,7 +97,7 @@ const StoryViewer = () => {
     window.addEventListener("keydown", handleKeyDown);
 
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [data, page]);  // Add 'page' to dependencies to always have latest
+  }, [data, page]);
 
   const goBack = () => navigate("/library");
 
@@ -196,6 +209,7 @@ const StoryViewer = () => {
               canPrev={page > 0}
               canNext={page < numPages - 1}
               canExport={canExport}
+              isExporting={isExporting}
               page={page}
               numPages={numPages}
             />
