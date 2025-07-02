@@ -117,58 +117,60 @@ const Library = () => {
 
   return (
     <StoryBackground>
-      <div className="container max-w-6xl mx-auto px-2 z-10">
+      <div className="container max-w-6xl mx-auto px-3 md:px-4 z-10">
         <EmailVerificationBanners shouldShow={shouldShowVerificationBanner} />
 
         {showSuccessBanner && <SuccessBanner onClose={handleCloseBanner} />}
 
-        <div className="mb-8 mt-6">
-          <h1 className="text-4xl md:text-5xl font-bold mb-3 text-story-purple text-center">
+        {/* Mobile-optimized header */}
+        <div className="mb-6 md:mb-8 mt-4 md:mt-6">
+          <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-2 md:mb-3 text-story-purple text-center px-2">
             Welcome to NightKnight!
           </h1>
-          <p className="text-lg mb-9 text-center text-primary/90 max-w-2xl mx-auto">
+          <p className="text-sm md:text-lg mb-6 md:mb-9 text-center text-primary/90 max-w-2xl mx-auto px-4">
             Where imagination takes flight. Discover, create, and share magical stories with your loved ones!
           </p>
         </div>
 
-        {/* Compact Story Credits Section */}
-        <Card className="mb-8 p-4 bg-gradient-to-r from-story-lightPurple/20 to-story-seafoam/20 border border-story-lightPurple/30">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-lg font-bold text-story-purple mb-1">Story Credits</h3>
-              <p className="text-sm text-gray-600">
-                <span className="font-bold text-story-purple">{storyCredits}</span> credits remaining
+        {/* Mobile-optimized Story Credits Section */}
+        <Card className="mb-6 md:mb-8 p-3 md:p-4 bg-gradient-to-r from-story-lightPurple/20 to-story-seafoam/20 border border-story-lightPurple/30">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
+            <div className="flex-1">
+              <h3 className="text-base md:text-lg font-bold text-story-purple mb-1">Story Credits</h3>
+              <p className="text-xs md:text-sm text-gray-600">
+                <span className="font-bold text-story-purple text-sm md:text-base">{storyCredits}</span> credits remaining
               </p>
             </div>
-            <Link to="/account-settings?tab=credits">
-              <Button className="bg-story-purple hover:bg-story-purple/90 text-white gap-2 px-4 py-2 rounded-full">
-                <CreditCard className="h-4 w-4" />
+            <Link to="/account-settings?tab=credits" className="w-full sm:w-auto">
+              <Button className="w-full sm:w-auto bg-story-purple hover:bg-story-purple/90 text-white gap-2 px-3 md:px-4 py-2 rounded-full text-sm">
+                <CreditCard className="h-3 w-3 md:h-4 md:w-4" />
                 Buy Credits
               </Button>
             </Link>
           </div>
         </Card>
 
-        <div className="mb-12">
-          <div className="flex items-center justify-between mb-5">
-            <h2 className="text-2xl md:text-3xl font-bold text-story-blue">My Stories</h2>
+        {/* Mobile-optimized Stories Section */}
+        <div className="mb-8 md:mb-12">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 md:mb-5 gap-3 sm:gap-0">
+            <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-story-blue">My Stories</h2>
             <TooltipProvider delayDuration={0}>
               {hasCredits ? (
-                <Link to="/create-story">
-                  <Button className="rounded-xl px-6 py-3 text-md bg-story-purple hover:bg-story-purple/90 text-white flex items-center gap-2 button-bounce">
-                    <Star className="mr-1 h-5 w-5" />
+                <Link to="/create-story" className="w-full sm:w-auto">
+                  <Button className="w-full sm:w-auto rounded-xl px-4 md:px-6 py-2 md:py-3 text-sm md:text-md bg-story-purple hover:bg-story-purple/90 text-white flex items-center justify-center gap-2 button-bounce">
+                    <Star className="h-4 w-4 md:h-5 md:w-5" />
                     <span>Create a Story</span>
                   </Button>
                 </Link>
               ) : (
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <span className="inline-block">
+                    <span className="inline-block w-full sm:w-auto">
                       <Button 
                         disabled 
-                        className="rounded-xl px-6 py-3 text-md bg-gray-300 text-gray-500 flex items-center gap-2 cursor-not-allowed"
+                        className="w-full sm:w-auto rounded-xl px-4 md:px-6 py-2 md:py-3 text-sm md:text-md bg-gray-300 text-gray-500 flex items-center justify-center gap-2 cursor-not-allowed"
                       >
-                        <Star className="mr-1 h-5 w-5" />
+                        <Star className="h-4 w-4 md:h-5 md:w-5" />
                         <span>Create a Story</span>
                       </Button>
                     </span>
@@ -182,7 +184,7 @@ const Library = () => {
           </div>
           
           {isError && (
-            <div className="text-center text-red-500 py-12">Failed to load your stories. Please try again.</div>
+            <div className="text-center text-red-500 py-8 md:py-12 text-sm md:text-base">Failed to load your stories. Please try again.</div>
           )}
           
           <StoryGallery

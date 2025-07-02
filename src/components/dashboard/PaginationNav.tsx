@@ -11,13 +11,13 @@ interface PaginationNavProps {
 const PaginationNav = ({ totalPages, page, goToPage }: PaginationNavProps) => {
   if (totalPages <= 1) return null;
   return (
-    <div className="flex justify-center mt-6">
+    <div className="flex justify-center mt-4 md:mt-6 px-2">
       <Pagination>
-        <PaginationContent>
+        <PaginationContent className="gap-1 md:gap-2">
           <PaginationItem>
             <PaginationPrevious
               onClick={() => goToPage(Math.max(1, page - 1))}
-              className={page === 1 ? "pointer-events-none opacity-40" : ""}
+              className={`${page === 1 ? "pointer-events-none opacity-40" : ""} text-xs md:text-sm px-2 md:px-3 py-1 md:py-2`}
             />
           </PaginationItem>
           {[...Array(totalPages)].map((_, idx) => (
@@ -25,7 +25,7 @@ const PaginationNav = ({ totalPages, page, goToPage }: PaginationNavProps) => {
               <Button
                 size="sm"
                 variant={page === idx + 1 ? "default" : "outline"}
-                className="rounded-full w-10 h-10 flex items-center justify-center"
+                className="rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center text-xs md:text-sm"
                 onClick={() => goToPage(idx + 1)}
               >
                 {idx + 1}
@@ -35,7 +35,7 @@ const PaginationNav = ({ totalPages, page, goToPage }: PaginationNavProps) => {
           <PaginationItem>
             <PaginationNext
               onClick={() => goToPage(Math.min(totalPages, page + 1))}
-              className={page === totalPages ? "pointer-events-none opacity-40" : ""}
+              className={`${page === totalPages ? "pointer-events-none opacity-40" : ""} text-xs md:text-sm px-2 md:px-3 py-1 md:py-2`}
             />
           </PaginationItem>
         </PaginationContent>
