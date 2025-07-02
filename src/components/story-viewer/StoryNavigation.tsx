@@ -89,7 +89,12 @@ const StoryNavigation: React.FC<StoryNavigationProps> = ({
           <MoreVertical className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48">
+      <DropdownMenuContent 
+        align="end" 
+        className="w-48 bg-white border border-gray-200 shadow-lg"
+        style={{ zIndex: 9999 }}
+        sideOffset={8}
+      >
         {canExport && (
           <DropdownMenuItem onClick={onExport} disabled={isExporting}>
             {isExporting ? (
