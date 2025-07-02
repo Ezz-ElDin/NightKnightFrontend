@@ -11,13 +11,13 @@ class StoryExportService {
   async exportStoryToPDF(story: StoryDetails): Promise<void> {
     const doc = new jsPDF('landscape', 'mm', 'a4');
     
-    // First page (cover) - no footer
+    // First page (cover) - no footer, uses first story page image
     await this.createCoverPage(doc, story);
     
-    // Story pages - start from page 2
-    for (let i = 0; i < story.pages.length; i++) {
+    // Story pages - start from the SECOND story page (index 1) since first is used as cover
+    for (let i = 1; i < story.pages.length; i++) {
       doc.addPage();
-      await this.createStoryPage(doc, story.pages[i], i + 2);
+      await this.createStoryPage(doc, story.pages[i], i + 1);
     }
     
     // Download the PDF
@@ -109,11 +109,11 @@ class StoryExportService {
     let width, height;
     
     if (imgRatio > maxRatio) {
-      // Image is wider, fit to width
+      // Image is wider, fit to width and fill as much height as possible
       width = maxWidth;
       height = maxWidth / imgRatio;
     } else {
-      // Image is taller, fit to height
+      // Image is taller, fit to height and fill as much width as possible
       height = maxHeight;
       width = maxHeight * imgRatio;
     }
