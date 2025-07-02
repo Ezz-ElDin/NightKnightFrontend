@@ -100,7 +100,7 @@ const StoryNavigation: React.FC<StoryNavigationProps> = ({
             Export Story
           </DropdownMenuItem>
         )}
-        <DropdownMenuItem onClick={onToggleFullscreen}>
+        <DropdownMenuItem onClick={onToggleFullscreen} className="hidden sm:flex">
           <Fullscreen className="h-4 w-4 mr-2" />
           {isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
         </DropdownMenuItem>
