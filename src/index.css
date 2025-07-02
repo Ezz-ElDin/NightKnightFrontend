@@ -102,31 +102,46 @@
   .bg-ghibli-gradient {
     background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(212,220,255,0.9) 100%);
   }
+
+  /* Mobile-first responsive utilities */
+  .touch-friendly {
+    min-height: 44px; /* Minimum touch target size */
+    min-width: 44px;
+  }
+
+  /* Responsive text sizing */
+  .text-responsive {
+    @apply text-sm md:text-base lg:text-lg;
+  }
+
+  .text-responsive-large {
+    @apply text-base md:text-lg lg:text-xl;
+  }
 }
 
 @layer components {
   .button-bounce {
-    @apply transition-transform active:scale-95;
+    @apply transition-transform active:scale-95 touch-friendly;
   }
   
   .card-kiddy {
-    @apply bg-white/90 rounded-3xl shadow-md border border-story-lightPurple p-6 backdrop-blur-sm;
+    @apply bg-white/90 rounded-2xl md:rounded-3xl shadow-md border border-story-lightPurple p-4 md:p-6 backdrop-blur-sm;
   }
   
   .input-kiddy {
-    @apply bg-white/90 border border-story-lightPurple rounded-xl px-4 py-3 focus:border-story-purple focus:ring-2 focus:ring-story-purple/30 transition-all;
+    @apply bg-white/90 border border-story-lightPurple rounded-xl px-3 md:px-4 py-2 md:py-3 focus:border-story-purple focus:ring-2 focus:ring-story-purple/30 transition-all text-sm md:text-base touch-friendly;
   }
 
   .ghibli-card {
-    @apply bg-white/80 backdrop-blur-sm rounded-3xl shadow-md border border-story-seafoam/50 p-6;
+    @apply bg-white/80 backdrop-blur-sm rounded-2xl md:rounded-3xl shadow-md border border-story-seafoam/50 p-4 md:p-6;
   }
 
   .ghibli-btn {
-    @apply bg-story-teal text-white rounded-full shadow-md hover:bg-story-teal/90 transition-all;
+    @apply bg-story-teal text-white rounded-full shadow-md hover:bg-story-teal/90 transition-all touch-friendly px-4 py-2 text-sm md:text-base;
   }
 
   .ghibli-btn-outline {
-    @apply bg-white/80 backdrop-blur-sm border border-story-teal text-story-teal rounded-full shadow-sm hover:bg-story-teal/10 transition-all;
+    @apply bg-white/80 backdrop-blur-sm border border-story-teal text-story-teal rounded-full shadow-sm hover:bg-story-teal/10 transition-all touch-friendly px-4 py-2 text-sm md:text-base;
   }
 
   .dust-sprite {
@@ -148,6 +163,21 @@
   .brand-unicorn-thumb:hover {
     transform: scale(1.1);
     box-shadow: 0 6px 12px rgba(126, 105, 171, 0.4);
+  }
+
+  /* Mobile-specific styles */
+  @media (max-width: 768px) {
+    .mobile-full-width {
+      @apply w-full;
+    }
+    
+    .mobile-stack {
+      @apply flex-col space-y-2 space-x-0;
+    }
+    
+    .mobile-center {
+      @apply text-center justify-center items-center;
+    }
   }
 }
 
@@ -195,4 +225,23 @@
 
 .animate-fade-out {
   animation: fade-out 0.3s ease-in forwards;
+}
+
+/* Responsive improvements for better mobile experience */
+@media (max-width: 640px) {
+  .container {
+    @apply px-3;
+  }
+  
+  h1 {
+    @apply text-3xl;
+  }
+  
+  h2 {
+    @apply text-2xl;
+  }
+  
+  h3 {
+    @apply text-xl;
+  }
 }

@@ -11,32 +11,32 @@ import Footer from "@/components/Footer";
 const Index = () => {
   return <div className="overflow-auto">
       <StoryBackground>
-        <div className="container max-w-6xl mx-auto text-center z-10">
-          <div className="mb-8 flex justify-center">
+        <div className="container max-w-6xl mx-auto text-center z-10 px-4">
+          <div className="mb-6 md:mb-8 flex justify-center">
             <div className="relative">
-              <Book className="h-28 w-28 text-story-purple animate-wiggle" />
-              <Star className="absolute -top-4 -right-4 h-12 w-12 text-story-yellow animate-bounce-slow" fill="currentColor" />
+              <Book className="h-20 w-20 md:h-28 md:w-28 text-story-purple animate-wiggle" />
+              <Star className="absolute -top-3 -right-3 md:-top-4 md:-right-4 h-10 w-10 md:h-12 md:w-12 text-story-yellow animate-bounce-slow" fill="currentColor" />
             </div>
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 text-story-purple">NightKnight</h1>
+          <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6 text-story-purple">NightKnight</h1>
           
-          <h2 className="text-3xl md:text-4xl font-semibold mb-8 text-story-blue">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold mb-6 md:mb-8 text-story-blue px-4">
             Magical Bedtime Stories for Children
           </h2>
           
-          <p className="text-xl md:text-2xl mb-12 max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl lg:text-2xl mb-8 md:mb-12 max-w-3xl mx-auto px-4">
             Create personalised bedtime adventures that will spark your child's imagination and lead to sweet dreams!
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
+          <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center mb-12 md:mb-16 px-4">
             <Link to="/register">
-              <Button className="h-14 px-8 text-xl rounded-2xl bg-story-purple hover:bg-story-purple/90 text-white button-bounce">
+              <Button className="w-full sm:w-auto h-12 md:h-14 px-6 md:px-8 text-lg md:text-xl rounded-2xl bg-story-purple hover:bg-story-purple/90 text-white button-bounce">
                 Start Your Adventure
               </Button>
             </Link>
             <Link to="/register">
-              <Button variant="outline" className="h-14 px-8 text-xl rounded-2xl border-2 border-story-blue text-story-blue bg-white hover:bg-story-blue/10 button-bounce">
+              <Button variant="outline" className="w-full sm:w-auto h-12 md:h-14 px-6 md:px-8 text-lg md:text-xl rounded-2xl border-2 border-story-blue text-story-blue bg-white hover:bg-story-blue/10 button-bounce">
                 Sign Up for Free
               </Button>
             </Link>
@@ -48,37 +48,37 @@ const Index = () => {
       <StorySamples />
       
       {/* Features section moved after story samples */}
-      <section className="py-16 px-4 bg-gradient-to-b from-story-lightPurple/30 to-white">
+      <section className="py-12 md:py-16 px-4 bg-gradient-to-b from-story-lightPurple/30 to-white">
         <div className="container mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
             <div className="card-kiddy">
               <div className="mb-4 flex justify-center">
                 <div className="bg-story-lightPurple p-3 rounded-full">
-                  <MessageCircle className="h-8 w-8 text-story-purple" />
+                  <MessageCircle className="h-6 w-6 md:h-8 md:w-8 text-story-purple" />
                 </div>
               </div>
-              <h3 className="text-xl font-bold mb-2">Engaging Experience</h3>
-              <p>Create meaningful connections as you and your child craft stories together!</p>
+              <h3 className="text-lg md:text-xl font-bold mb-2">Engaging Experience</h3>
+              <p className="text-sm md:text-base">Create meaningful connections as you and your child craft stories together!</p>
             </div>
             
             <div className="card-kiddy">
               <div className="mb-4 flex justify-center">
                 <div className="bg-story-yellow p-3 rounded-full">
-                  <Book className="h-8 w-8 text-story-orange" />
+                  <Book className="h-6 w-6 md:h-8 md:w-8 text-story-orange" />
                 </div>
               </div>
-              <h3 className="text-xl font-bold mb-2">Endless Imagination</h3>
-              <p>Take control of story content with characters and themes your child loves!</p>
+              <h3 className="text-lg md:text-xl font-bold mb-2">Endless Imagination</h3>
+              <p className="text-sm md:text-base">Take control of story content with characters and themes your child loves!</p>
             </div>
             
             <div className="card-kiddy">
               <div className="mb-4 flex justify-center">
                 <div className="bg-story-pink p-3 rounded-full">
-                  <Globe className="h-8 w-8 text-story-purple" />
+                  <Globe className="h-6 w-6 md:h-8 md:w-8 text-story-purple" />
                 </div>
               </div>
-              <h3 className="text-xl font-bold mb-2">Multiple Languages</h3>
-              <p>Stories in different languages make bedtime both fun and educational!</p>
+              <h3 className="text-lg md:text-xl font-bold mb-2">Multiple Languages</h3>
+              <p className="text-sm md:text-base">Stories in different languages make bedtime both fun and educational!</p>
             </div>
           </div>
         </div>

@@ -33,90 +33,92 @@ const CreateStory = () => {
   } = useStoryCreation();
 
   return (
-    <TooltipProvider>
-      <StoryCreationLayout
-        title="Create Your Story"
-        currentStep={currentStep}
-        steps={steps}
-      >
-        <div className="story-step-content min-h-[400px]">
-          {currentStep === 1 && (
-            <StoryStartStepWrapper
-              mode={mode}
-              setMode={(v: "magic" | "creative") => {
-                setMode(v);
-                setCurrentStep(1);
-              }}
-              language={storyData.language}
-              setLanguage={(v: string) => updateStoryData({ language: v })}
-              ageRange={storyData.ageRange}
-              setAgeRange={(v: string) => updateStoryData({ ageRange: v })}
-              storyData={storyData}
-              updateStoryData={updateStoryData}
-            />
-          )}
-
-          {/* Magic Mode */}
-          {mode === "magic" && currentStep === 2 && (
-            <MagicModeCardsStep
-              magicSelected={magicSelected}
-              setMagicSelected={setMagicSelected}
-              setStoryData={setStoryData}
-            />
-          )}
-          {mode === "magic" && currentStep === 3 && (
-            <IllustrationStepWrapper
-              illustrationStyle={storyData.illustrationStyle}
-              setIllustrationStyle={(value: string) => updateStoryData({ illustrationStyle: value })}
-            />
-          )}
-          {mode === "magic" && currentStep === 4 && (
-            <CharacterStep storyData={storyData} updateStoryData={updateStoryData} />
-          )}
-          {mode === "magic" && currentStep === 5 && (
-            <StorySummaryStep
-              storyData={storyData}
-              handleGenerateStory={handleGenerateStory}
-              mode="magic"
-            />
-          )}
-
-          {/* Creative Mode */}
-          {mode === "creative" && currentStep === 2 && (
-            <ThemeStep storyData={storyData} updateStoryData={updateStoryData} />
-          )}
-          {mode === "creative" && currentStep === 3 && (
-            <ToneStep storyData={storyData} updateStoryData={updateStoryData} />
-          )}
-          {mode === "creative" && currentStep === 4 && (
-            <StyleStep storyData={storyData} updateStoryData={updateStoryData} />
-          )}
-          {mode === "creative" && currentStep === 5 && (
-            <IllustrationStepWrapper
-              illustrationStyle={storyData.illustrationStyle}
-              setIllustrationStyle={(value: string) => updateStoryData({ illustrationStyle: value })}
-            />
-          )}
-          {mode === "creative" && currentStep === 6 && (
-            <CharacterStep storyData={storyData} updateStoryData={updateStoryData} />
-          )}
-          {mode === "creative" && currentStep === 7 && (
-            <StorySummaryStep
-              storyData={storyData}
-              handleGenerateStory={handleGenerateStory}
-              mode="creative"
-            />
-          )}
-        </div>
-
-        <StoryNavigationButtons
+    <div className="min-h-screen bg-gradient-to-b from-story-lightPurple/20 to-white">
+      <TooltipProvider>
+        <StoryCreationLayout
+          title="Create Your Story"
           currentStep={currentStep}
-          totalSteps={steps.length}
-          onNext={handleNext}
-          onBack={handleBack}
-        />
-      </StoryCreationLayout>
-    </TooltipProvider>
+          steps={steps}
+        >
+          <div className="story-step-content min-h-[300px] md:min-h-[400px]">
+            {currentStep === 1 && (
+              <StoryStartStepWrapper
+                mode={mode}
+                setMode={(v: "magic" | "creative") => {
+                  setMode(v);
+                  setCurrentStep(1);
+                }}
+                language={storyData.language}
+                setLanguage={(v: string) => updateStoryData({ language: v })}
+                ageRange={storyData.ageRange}
+                setAgeRange={(v: string) => updateStoryData({ ageRange: v })}
+                storyData={storyData}
+                updateStoryData={updateStoryData}
+              />
+            )}
+
+            {/* Magic Mode */}
+            {mode === "magic" && currentStep === 2 && (
+              <MagicModeCardsStep
+                magicSelected={magicSelected}
+                setMagicSelected={setMagicSelected}
+                setStoryData={setStoryData}
+              />
+            )}
+            {mode === "magic" && currentStep === 3 && (
+              <IllustrationStepWrapper
+                illustrationStyle={storyData.illustrationStyle}
+                setIllustrationStyle={(value: string) => updateStoryData({ illustrationStyle: value })}
+              />
+            )}
+            {mode === "magic" && currentStep === 4 && (
+              <CharacterStep storyData={storyData} updateStoryData={updateStoryData} />
+            )}
+            {mode === "magic" && currentStep === 5 && (
+              <StorySummaryStep
+                storyData={storyData}
+                handleGenerateStory={handleGenerateStory}
+                mode="magic"
+              />
+            )}
+
+            {/* Creative Mode */}
+            {mode === "creative" && currentStep === 2 && (
+              <ThemeStep storyData={storyData} updateStoryData={updateStoryData} />
+            )}
+            {mode === "creative" && currentStep === 3 && (
+              <ToneStep storyData={storyData} updateStoryData={updateStoryData} />
+            )}
+            {mode === "creative" && currentStep === 4 && (
+              <StyleStep storyData={storyData} updateStoryData={updateStoryData} />
+            )}
+            {mode === "creative" && currentStep === 5 && (
+              <IllustrationStepWrapper
+                illustrationStyle={storyData.illustrationStyle}
+                setIllustrationStyle={(value: string) => updateStoryData({ illustrationStyle: value })}
+              />
+            )}
+            {mode === "creative" && currentStep === 6 && (
+              <CharacterStep storyData={storyData} updateStoryData={updateStoryData} />
+            )}
+            {mode === "creative" && currentStep === 7 && (
+              <StorySummaryStep
+                storyData={storyData}
+                handleGenerateStory={handleGenerateStory}
+                mode="creative"
+              />
+            )}
+          </div>
+
+          <StoryNavigationButtons
+            currentStep={currentStep}
+            totalSteps={steps.length}
+            onNext={handleNext}
+            onBack={handleBack}
+          />
+        </StoryCreationLayout>
+      </TooltipProvider>
+    </div>
   );
 };
 

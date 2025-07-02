@@ -18,16 +18,16 @@ const StoryCreationLayout: React.FC<StoryCreationLayoutProps> = ({
   children 
 }) => {
   return (
-    <div className="container mx-auto py-4 px-2 max-w-4xl">
-      <h1 className="text-4xl font-bold text-center mb-6 text-primary flex items-center justify-center gap-3">
-        <Sparkles className="h-8 w-8 text-yellow-400" />
-        {title}
-        <Sparkles className="h-8 w-8 text-yellow-400" />
+    <div className="container mx-auto py-2 md:py-4 px-2 md:px-4 max-w-4xl">
+      <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-4 md:mb-6 text-primary flex items-center justify-center gap-2 md:gap-3 px-4">
+        <Sparkles className="h-6 w-6 md:h-8 md:w-8 text-yellow-400" />
+        <span className="text-center">{title}</span>
+        <Sparkles className="h-6 w-6 md:h-8 md:w-8 text-yellow-400" />
       </h1>
       
       <StepIndicator steps={steps} currentStep={currentStep} />
       
-      <Card className="mt-6 p-4 md:p-6 shadow-lg border-2 border-primary/20 rounded-2xl bg-white/80 backdrop-blur-sm">
+      <Card className="mt-4 md:mt-6 p-3 md:p-4 lg:p-6 shadow-lg border-2 border-primary/20 rounded-2xl bg-white/80 backdrop-blur-sm">
         {children}
       </Card>
     </div>
