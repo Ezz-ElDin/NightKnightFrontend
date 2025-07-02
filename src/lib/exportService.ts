@@ -1,4 +1,3 @@
-
 import jsPDF from 'jspdf';
 import { StoryDetails } from '@/lib/api';
 
@@ -25,12 +24,12 @@ class StoryExportService {
   }
 
   private async createCoverPage(doc: jsPDF, story: StoryDetails): Promise<void> {
-    // Left section - Title (bold, large)
+    // Left section - Title (matching StoryText component: text-[2.6rem] md:text-5xl font-bold)
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(24);
+    doc.setFontSize(42); // Equivalent to text-5xl (48px) converted to points for PDF
     
     const titleLines = doc.splitTextToSize(story.title, this.SECTION_WIDTH);
-    const titleHeight = titleLines.length * 8;
+    const titleHeight = titleLines.length * 12; // Increased line height for large text
     const titleY = (this.PAGE_HEIGHT - titleHeight) / 2;
     
     doc.text(titleLines, this.MARGIN, titleY);
@@ -50,14 +49,14 @@ class StoryExportService {
   }
 
   private async createStoryPage(doc: jsPDF, page: any, pageNumber: number): Promise<void> {
-    // Left section - Text (normal font)
+    // Left section - Text (matching StoryText component: text-lg md:text-xl normal font)
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(14);
+    doc.setFontSize(16); // Equivalent to text-xl (20px) converted to points for PDF
     
     const textLines = doc.splitTextToSize(page.text, this.SECTION_WIDTH);
-    const lineHeight = 6; // Child-friendly line spacing
+    const lineHeight = 8; // Increased line height to match web spacing (leading-relaxed equivalent)
     
-    let yPosition = this.MARGIN + 10;
+    let yPosition = this.MARGIN + 20; // Start a bit lower to match web layout
     textLines.forEach((line: string) => {
       if (yPosition > this.PAGE_HEIGHT - 40) return; // Stop if near bottom
       doc.text(line, this.MARGIN, yPosition);
@@ -80,7 +79,7 @@ class StoryExportService {
 
   private addFooter(doc: jsPDF): void {
     doc.setFont('helvetica', 'italic');
-    doc.setFontSize(10);
+    doc.setFontSize(8); // Smaller footer text
     
     const footerText = 'Created with love by NightKnight · https://nightknight.app';
     const textWidth = doc.getTextWidth(footerText);
