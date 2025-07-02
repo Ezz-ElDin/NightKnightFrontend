@@ -127,12 +127,7 @@ const MobileStoryViewer = () => {
             <div className="flex-1 flex flex-col">
               {isEndPage ? (
                 <div className="w-full min-h-[calc(100vh-8rem)] flex flex-col">
-                  {/* Top - Blank area */}
-                  <div className="w-full flex-1 bg-white">
-                    {/* Empty top area */}
-                  </div>
-                  
-                  {/* Bottom - Image */}
+                  {/* Top - Image */}
                   <div className="w-full">
                     <div className="w-full h-64 bg-[#fafafd] flex items-center justify-center p-0 m-0">
                       <div
@@ -155,6 +150,11 @@ const MobileStoryViewer = () => {
                         />
                       </div>
                     </div>
+                  </div>
+                  
+                  {/* Bottom - Blank area */}
+                  <div className="w-full flex-1 bg-white">
+                    {/* Empty bottom area */}
                   </div>
                 </div>
               ) : (
