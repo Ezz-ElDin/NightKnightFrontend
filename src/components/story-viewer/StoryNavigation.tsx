@@ -74,7 +74,7 @@ const StoryNavigation: React.FC<StoryNavigationProps> = ({
           variant="outline"
           size="icon"
           aria-label="Export story"
-          className="rounded-full shadow border transition-transform duration-200 hover:scale-105 bg-story-orange hover:bg-story-orange/90 border-story-orange text-white"
+          className="rounded-full shadow border transition-transform duration-200 hover:scale-105 bg-story-green hover:bg-story-green/90 border-story-green text-white"
         >
           <Download className="h-6 w-6" />
         </Button>
