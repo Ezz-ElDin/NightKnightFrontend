@@ -199,18 +199,22 @@ const StoryViewer = () => {
               `
             )}
           >
-            {/* Left Side - Story Page Title/Text */}
-            <StoryText
-              title={story.title}
-              text={currentPage?.text || ""}
-              page={page}
-              rtl={rtl}
-            />
-            {/* Right Side - Visual */}
-            <StoryVisual
-              coverUrl={currentPage?.image_url || ""}
-              title={story.title}
-            />
+            {/* Left Side - Story Page Title/Text - 40% */}
+            <div className="md:w-2/5 flex-none">
+              <StoryText
+                title={story.title}
+                text={currentPage?.text || ""}
+                page={page}
+                rtl={rtl}
+              />
+            </div>
+            {/* Right Side - Visual - 60% */}
+            <div className="md:w-3/5 flex-none">
+              <StoryVisual
+                coverUrl={currentPage?.image_url || ""}
+                title={story.title}
+              />
+            </div>
           </div>
           {/* Footer - Navigation & Fullscreen Controls */}
           <div className="relative">
