@@ -1,4 +1,3 @@
-
 import React, { useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -127,9 +126,9 @@ const MobileStoryViewer = () => {
             <div className="flex-1 flex flex-col">
               {isEndPage ? (
                 <div className="w-full min-h-[calc(100vh-8rem)] flex flex-col">
-                  {/* Top - Image */}
-                  <div className="w-full">
-                    <div className="w-full h-64 bg-[#fafafd] flex items-center justify-center p-0 m-0">
+                  {/* Full height image */}
+                  <div className="w-full flex-1">
+                    <div className="w-full h-full bg-[#fafafd] flex items-center justify-center p-0 m-0">
                       <div
                         className="relative w-full h-full flex items-center justify-center"
                         style={{
@@ -150,11 +149,6 @@ const MobileStoryViewer = () => {
                         />
                       </div>
                     </div>
-                  </div>
-                  
-                  {/* Bottom - Blank area */}
-                  <div className="w-full flex-1 bg-white">
-                    {/* Empty bottom area */}
                   </div>
                 </div>
               ) : (
