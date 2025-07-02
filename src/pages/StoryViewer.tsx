@@ -1,4 +1,3 @@
-
 import React, { useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -206,25 +205,21 @@ const StoryViewer = () => {
 
       {/* Coming Soon Dialog */}
       <Dialog open={showComingSoonDialog} onOpenChange={setShowComingSoonDialog}>
-        <DialogContent className="sm:max-w-md mx-auto">
-          <div className="flex flex-col items-center justify-center p-6 text-center">
-            <div className="w-16 h-16 bg-gradient-to-br from-story-green to-story-blue rounded-full flex items-center justify-center mb-4 animate-bounce">
-              <Download className="h-8 w-8 text-white" />
+        <DialogContent className="sm:max-w-lg max-w-sm mx-auto rounded-2xl">
+          <div className="flex flex-col items-center justify-center p-4 text-center">
+            <div className="w-12 h-12 bg-gradient-to-br from-story-green to-story-blue rounded-full flex items-center justify-center mb-3 animate-bounce">
+              <Download className="h-6 w-6 text-white" />
             </div>
-            <h3 className="text-2xl font-bold text-gray-800 mb-2">
+            <h3 className="text-xl font-bold text-gray-800 mb-2">
               🎉 Export Feature Coming Soon!
             </h3>
-            <p className="text-gray-600 mb-4">
+            <p className="text-gray-600 mb-4 text-sm">
               We're working hard to bring you the export feature for Arabic stories. 
               Stay tuned for this exciting update!
             </p>
-            <div className="flex items-center gap-2 text-sm text-story-green">
-              <span className="w-2 h-2 bg-story-green rounded-full animate-pulse"></span>
-              <span>Feature in development</span>
-            </div>
             <Button 
               onClick={() => setShowComingSoonDialog(false)}
-              className="mt-6 bg-gradient-to-r from-story-green to-story-blue hover:from-story-green/90 hover:to-story-blue/90 text-white px-6"
+              className="bg-gradient-to-r from-story-green to-story-blue hover:from-story-green/90 hover:to-story-blue/90 text-white px-4 py-2 text-sm"
             >
               Got it! ✨
             </Button>
