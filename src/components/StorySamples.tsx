@@ -41,7 +41,7 @@ const StorySamples = () => {
       excerpt: "En el patio trasero de Sophie había una pequeña puerta que conducía a un jardín encantado. Flores hermosas florecían en todos los colores, mariposas con alas brillantes revoloteaban, y pequeñas hadas cuidaban de las plantas mágicas...",
       theme: "Magia",
       language: "Español",
-      imageUrl: "/lovable-uploads/50b16f1b-821e-49cb-9ffe-e81ed060abfd.png",
+      imageUrl: "/images/magic-garden.png",
       icon: <FlowerIcon className="h-5 w-5 text-story-orange" />
     }
   ];
