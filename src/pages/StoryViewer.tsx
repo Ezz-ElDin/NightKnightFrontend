@@ -199,8 +199,8 @@ const StoryViewer = () => {
               `
             )}
           >
-            {/* Left Side - Story Page Title/Text - 40% */}
-            <div className="md:w-2/5 flex-none">
+            {/* Left Side - Story Page Title/Text - 45% */}
+            <div className="md:w-[45%] flex-none">
               <StoryText
                 title={story.title}
                 text={currentPage?.text || ""}
@@ -208,8 +208,8 @@ const StoryViewer = () => {
                 rtl={rtl}
               />
             </div>
-            {/* Right Side - Visual - 60% */}
-            <div className="md:w-3/5 flex-none">
+            {/* Right Side - Visual - 55% */}
+            <div className="md:w-[55%] flex-none">
               <StoryVisual
                 coverUrl={currentPage?.image_url || ""}
                 title={story.title}
