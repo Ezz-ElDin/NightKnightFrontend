@@ -1,3 +1,4 @@
+
 import jsPDF from 'jspdf';
 import { StoryDetails } from '@/lib/api';
 
@@ -61,14 +62,16 @@ class StoryExportService {
     const textLines = doc.splitTextToSize(page.text, this.SECTION_WIDTH);
     const lineHeight = 8; // Increased line height to match web spacing (leading-relaxed equivalent)
     
-    let yPosition = this.MARGIN + 20; // Start a bit lower to match web layout
+    // Calculate vertical center to align with image
+    const textHeight = textLines.length * lineHeight;
+    const availableHeight = this.PAGE_HEIGHT - 2 * this.MARGIN;
+    let yPosition = this.MARGIN + (availableHeight - textHeight) / 2;
+    
     textLines.forEach((line: string) => {
       if (yPosition > this.PAGE_HEIGHT - 40) return; // Stop if near bottom
       
-      // Center align the text within the left section
-      const lineWidth = doc.getTextWidth(line);
-      const xPosition = this.MARGIN + (this.SECTION_WIDTH - lineWidth) / 2;
-      doc.text(line, xPosition, yPosition);
+      // Left align the text within the left section
+      doc.text(line, this.MARGIN, yPosition);
       yPosition += lineHeight;
     });
     
