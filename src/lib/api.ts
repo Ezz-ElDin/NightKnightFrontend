@@ -142,6 +142,8 @@ export interface StoryDetails {
   id: number;
   title: string;
   createdAt: string;
+  language: string;
+  story_title: string;
   pages: StoryPage[];
 }
 
@@ -175,7 +177,9 @@ const normalizeStory = (raw: any): Story => ({
 const normalizeStoryDetails = (raw: any): StoryDetails => ({
   id: raw.id,
   title: raw.story_title,
+  story_title: raw.story_title,
   createdAt: raw.created_at,
+  language: raw.language,
   pages: Array.isArray(raw.pages)
     ? raw.pages.map((p: any) => ({
         page: p.page,
