@@ -32,7 +32,12 @@ class StoryExportService {
     const titleHeight = titleLines.length * 12; // Increased line height for large text
     const titleY = (this.PAGE_HEIGHT - titleHeight) / 2;
     
-    doc.text(titleLines, this.MARGIN, titleY);
+    // Center align the title within the left section
+    titleLines.forEach((line: string, index: number) => {
+      const lineWidth = doc.getTextWidth(line);
+      const xPosition = this.MARGIN + (this.SECTION_WIDTH - lineWidth) / 2;
+      doc.text(line, xPosition, titleY + (index * 12));
+    });
     
     // Right section - Cover image (use first page image)
     const coverImage = story.pages[0]?.image_url;
@@ -59,7 +64,11 @@ class StoryExportService {
     let yPosition = this.MARGIN + 20; // Start a bit lower to match web layout
     textLines.forEach((line: string) => {
       if (yPosition > this.PAGE_HEIGHT - 40) return; // Stop if near bottom
-      doc.text(line, this.MARGIN, yPosition);
+      
+      // Center align the text within the left section
+      const lineWidth = doc.getTextWidth(line);
+      const xPosition = this.MARGIN + (this.SECTION_WIDTH - lineWidth) / 2;
+      doc.text(line, xPosition, yPosition);
       yPosition += lineHeight;
     });
     
@@ -80,12 +89,16 @@ class StoryExportService {
   private addFooter(doc: jsPDF): void {
     doc.setFont('helvetica', 'italic');
     doc.setFontSize(8); // Smaller footer text
+    doc.setTextColor(128, 128, 128); // Grey color (RGB: 128, 128, 128)
     
     const footerText = 'Created with love by NightKnight · https://nightknight.app';
     const textWidth = doc.getTextWidth(footerText);
     const xPosition = (this.PAGE_WIDTH - textWidth) / 2;
     
     doc.text(footerText, xPosition, this.PAGE_HEIGHT - 10);
+    
+    // Reset text color to black for subsequent text
+    doc.setTextColor(0, 0, 0);
   }
 
   private loadImage(url: string): Promise<HTMLImageElement> {
