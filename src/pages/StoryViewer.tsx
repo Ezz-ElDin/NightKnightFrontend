@@ -11,6 +11,7 @@ import StoryVisual from "@/components/story-viewer/StoryVisual";
 import StoryText from "@/components/story-viewer/StoryText";
 import StoryNavigation from "@/components/story-viewer/StoryNavigation";
 import MobileStoryViewer from "@/components/story-viewer/MobileStoryViewer";
+import EndPage from "@/components/story-viewer/EndPage";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 
@@ -142,8 +143,9 @@ const StoryViewer = () => {
   }
 
   const story: StoryDetails = data;
-  const numPages = story.pages.length;
-  const currentPage = story.pages[page];
+  const numPages = story.pages.length + 1; // Add 1 for the "The End" page
+  const currentPage = page < story.pages.length ? story.pages[page] : null;
+  const isEndPage = page === story.pages.length;
   // Use RTL if title or page text is arabic
   const rtl = currentPage && (isArabic(story.title) || isArabic(currentPage.text));
 
@@ -201,19 +203,31 @@ const StoryViewer = () => {
           >
             {/* Left Side - Story Page Title/Text - 45% */}
             <div className="md:w-[45%] flex-none">
-              <StoryText
-                title={story.title}
-                text={currentPage?.text || ""}
-                page={page}
-                rtl={rtl}
-              />
+              {isEndPage ? (
+                <EndPage rtl={rtl} />
+              ) : (
+                <StoryText
+                  title={story.title}
+                  text={currentPage?.text || ""}
+                  page={page}
+                  rtl={rtl}
+                />
+              )}
             </div>
             {/* Right Side - Visual - 55% */}
             <div className="md:w-[55%] flex-none">
-              <StoryVisual
-                coverUrl={currentPage?.image_url || ""}
-                title={story.title}
-              />
+              {isEndPage ? (
+                <div className="w-full h-full bg-gradient-to-br from-purple-100 via-pink-50 to-yellow-100 flex items-center justify-center">
+                  <div className="text-8xl md:text-9xl opacity-20">
+                    📚
+                  </div>
+                </div>
+              ) : (
+                <StoryVisual
+                  coverUrl={currentPage?.image_url || ""}
+                  title={story.title}
+                />
+              )}
             </div>
           </div>
           {/* Footer - Navigation & Fullscreen Controls */}

@@ -8,6 +8,7 @@ import { ArrowLeft, ArrowRight, Download, Loader2 } from "lucide-react";
 import clsx from "clsx";
 import StoryText from "@/components/story-viewer/StoryText";
 import StoryVisual from "@/components/story-viewer/StoryVisual";
+import EndPage from "@/components/story-viewer/EndPage";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 
@@ -111,8 +112,9 @@ const MobileStoryViewer = () => {
   }
 
   const story: StoryDetails = data;
-  const numPages = story.pages.length;
-  const currentPage = story.pages[page];
+  const numPages = story.pages.length + 1; // Add 1 for the "The End" page
+  const currentPage = page < story.pages.length ? story.pages[page] : null;
+  const isEndPage = page === story.pages.length;
   const rtl = currentPage && (isArabic(story.title) || isArabic(currentPage.text));
 
   return (
@@ -124,20 +126,32 @@ const MobileStoryViewer = () => {
             <div className="flex-1 flex flex-col">
               {/* Text Section - Top */}
               <div className="w-full">
-                <StoryText
-                  title={story.title}
-                  text={currentPage?.text || ""}
-                  page={page}
-                  rtl={rtl}
-                />
+                {isEndPage ? (
+                  <EndPage rtl={rtl} />
+                ) : (
+                  <StoryText
+                    title={story.title}
+                    text={currentPage?.text || ""}
+                    page={page}
+                    rtl={rtl}
+                  />
+                )}
               </div>
               
               {/* Visual Section - Bottom */}
               <div className="w-full">
-                <StoryVisual
-                  coverUrl={currentPage?.image_url || ""}
-                  title={story.title}
-                />
+                {isEndPage ? (
+                  <div className="w-full h-64 bg-gradient-to-br from-purple-100 via-pink-50 to-yellow-100 flex items-center justify-center">
+                    <div className="text-6xl opacity-30">
+                      📚
+                    </div>
+                  </div>
+                ) : (
+                  <StoryVisual
+                    coverUrl={currentPage?.image_url || ""}
+                    title={story.title}
+                  />
+                )}
               </div>
             </div>
 
