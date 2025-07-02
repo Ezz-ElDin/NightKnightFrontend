@@ -165,33 +165,19 @@ const StoryViewer = () => {
             boxShadow: "0 10px 40px 2px rgba(80,60,120,0.13)",
           }}
         >
-          {/* Book Content */}
-          <div
-            className={clsx(
-              `
-              flex
-              flex-col
-              md:flex-row
-              w-full
-              md:divide-x
-              divide-y
-              md:divide-y-0
-              divide-gray-200
-              flex-1
-              `
-            )}
-          >
-            {/* Left Side - Story Page Title/Text */}
+          {/* Book Content - Now Stacked Vertically */}
+          <div className="flex flex-col w-full flex-1">
+            {/* Image at Top */}
+            <StoryVisual
+              coverUrl={currentPage?.image_url || ""}
+              title={story.title}
+            />
+            {/* Text Below Image */}
             <StoryText
               title={story.title}
               text={currentPage?.text || ""}
               page={page}
               rtl={rtl}
-            />
-            {/* Right Side - Visual */}
-            <StoryVisual
-              coverUrl={currentPage?.image_url || ""}
-              title={story.title}
             />
           </div>
           {/* Footer - Navigation & Fullscreen Controls */}
