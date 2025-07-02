@@ -75,9 +75,7 @@ const DesktopStoryViewer: React.FC<DesktopStoryViewerProps> = ({
       >
         {/* Book Content */}
         {isEndPage ? (
-          <div className="flex-1">
-            <EndPage rtl={rtl} />
-          </div>
+          <EndPage rtl={rtl} />
         ) : (
           <div
             className={clsx(

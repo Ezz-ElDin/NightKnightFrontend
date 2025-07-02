@@ -126,8 +126,36 @@ const MobileStoryViewer = () => {
             {/* Story Content */}
             <div className="flex-1 flex flex-col">
               {isEndPage ? (
-                <div className="w-full min-h-[calc(100vh-8rem)]">
-                  <EndPage rtl={rtl} />
+                <div className="w-full min-h-[calc(100vh-8rem)] flex flex-col">
+                  {/* Top - Blank area */}
+                  <div className="w-full flex-1 bg-white">
+                    {/* Empty top area */}
+                  </div>
+                  
+                  {/* Bottom - Image */}
+                  <div className="w-full">
+                    <div className="w-full h-64 bg-[#fafafd] flex items-center justify-center p-0 m-0">
+                      <div
+                        className="relative w-full h-full flex items-center justify-center"
+                        style={{
+                          background: "#e8eafd",
+                          borderRadius: "0",
+                          overflow: "hidden",
+                          boxShadow: "0 4px 32px 3px rgba(100,100,115,0.10)",
+                        }}
+                      >
+                        <img
+                          src="/the-end-story-page.png"
+                          alt="The End"
+                          className="w-full h-full object-cover"
+                          style={{
+                            objectFit: "cover",
+                            borderRadius: "0",
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               ) : (
                 <>
