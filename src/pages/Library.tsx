@@ -84,8 +84,10 @@ const Library = () => {
   });
 
   const stories = allStories.filter((story: Story & { status?: string }) => {
-    // Only show completed stories in the library
-    return !story.status || story.status === 'completed';
+    // Only show completed stories that have proper cover images
+    const isCompleted = !story.status || story.status === 'completed';
+    const hasValidCover = story.coverUrl && story.coverUrl.trim() !== '';
+    return isCompleted && hasValidCover;
   });
 
   const favMutation = useMutation({
