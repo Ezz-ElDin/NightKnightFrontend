@@ -9,6 +9,7 @@ import clsx from "clsx";
 import StoryVisual from "@/components/story-viewer/StoryVisual";
 import StoryText from "@/components/story-viewer/StoryText";
 import StoryNavigation from "@/components/story-viewer/StoryNavigation";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 const isArabic = (text: string) => /[\u0600-\u06FF]/.test(text);
 
@@ -18,6 +19,7 @@ const StoryViewer = () => {
   const { storyId } = useParams<{ storyId?: string }>();
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [page, setPage] = useState(0);
+  const [showComingSoonDialog, setShowComingSoonDialog] = useState(false);
 
   // Fetch story data via react-query
   const { data, isLoading, isError } = useQuery({
@@ -29,12 +31,17 @@ const StoryViewer = () => {
   // Check if export should be enabled based on language
   const canExport = useMemo(() => {
     if (!data?.language) return false;
-    return data.language === 'british_english' || data.language === 'french';
+    return data.language === 'british_english' || data.language === 'french' || data.language === 'egyptian_arabic';
   }, [data?.language]);
 
   // Export functionality
   const handleExport = async () => {
     if (!data) return;
+    
+    if (data.language === 'egyptian_arabic') {
+      setShowComingSoonDialog(true);
+      return;
+    }
     
     try {
       console.log('Exporting story:', data.story_title);
@@ -114,87 +121,117 @@ const StoryViewer = () => {
   const rtl = currentPage && (isArabic(story.title) || isArabic(currentPage.text));
 
   return (
-    <div 
-      className={clsx(
-        "w-full min-h-screen flex flex-col items-center justify-center px-1 py-4 bg-white"
-      )}
-      style={{ minHeight: "100vh" }}
-    >
-      <div
-        ref={containerRef}
+    <>
+      <div 
         className={clsx(
-          `
-          relative
-          w-full
-          max-w-5xl
-          mx-auto
-          bg-white
-          rounded-3xl
-          shadow-2xl
-          p-0
-          overflow-hidden
-          flex
-          flex-col
-          border
-          border-solid
-          border-gray-200
-          duration-200
-          transition-all
-          animate-fade-in
-          `,
-          isFullscreen ? "max-w-none w-screen min-h-screen h-screen !rounded-none" : "min-h-[70vh]"
+          "w-full min-h-screen flex flex-col items-center justify-center px-1 py-4 bg-white"
         )}
-        style={{
-          boxShadow: "0 10px 40px 2px rgba(80,60,120,0.13)",
-        }}
+        style={{ minHeight: "100vh" }}
       >
-        {/* Book Content */}
         <div
+          ref={containerRef}
           className={clsx(
             `
+            relative
+            w-full
+            max-w-5xl
+            mx-auto
+            bg-white
+            rounded-3xl
+            shadow-2xl
+            p-0
+            overflow-hidden
             flex
             flex-col
-            md:flex-row
-            w-full
-            md:divide-x
-            divide-y
-            md:divide-y-0
-            divide-gray-200
-            flex-1
-            `
+            border
+            border-solid
+            border-gray-200
+            duration-200
+            transition-all
+            animate-fade-in
+            `,
+            isFullscreen ? "max-w-none w-screen min-h-screen h-screen !rounded-none" : "min-h-[70vh]"
           )}
+          style={{
+            boxShadow: "0 10px 40px 2px rgba(80,60,120,0.13)",
+          }}
         >
-          {/* Left Side - Story Page Title/Text */}
-          <StoryText
-            title={story.title}
-            text={currentPage?.text || ""}
-            page={page}
-            rtl={rtl}
-          />
-          {/* Right Side - Visual */}
-          <StoryVisual
-            coverUrl={currentPage?.image_url || ""}
-            title={story.title}
-          />
-        </div>
-        {/* Footer - Navigation & Fullscreen Controls */}
-        <div className="relative">
-          <StoryNavigation
-            onBack={goBack}
-            onPrevPage={() => setPage(Math.max(0, page - 1))}
-            onNextPage={() => setPage(Math.min(numPages - 1, page + 1))}
-            onToggleFullscreen={handleToggleFullscreen}
-            onExport={handleExport}
-            isFullscreen={isFullscreen}
-            canPrev={page > 0}
-            canNext={page < numPages - 1}
-            canExport={canExport}
-            page={page}
-            numPages={numPages}
-          />
+          {/* Book Content */}
+          <div
+            className={clsx(
+              `
+              flex
+              flex-col
+              md:flex-row
+              w-full
+              md:divide-x
+              divide-y
+              md:divide-y-0
+              divide-gray-200
+              flex-1
+              `
+            )}
+          >
+            {/* Left Side - Story Page Title/Text */}
+            <StoryText
+              title={story.title}
+              text={currentPage?.text || ""}
+              page={page}
+              rtl={rtl}
+            />
+            {/* Right Side - Visual */}
+            <StoryVisual
+              coverUrl={currentPage?.image_url || ""}
+              title={story.title}
+            />
+          </div>
+          {/* Footer - Navigation & Fullscreen Controls */}
+          <div className="relative">
+            <StoryNavigation
+              onBack={goBack}
+              onPrevPage={() => setPage(Math.max(0, page - 1))}
+              onNextPage={() => setPage(Math.min(numPages - 1, page + 1))}
+              onToggleFullscreen={handleToggleFullscreen}
+              onExport={handleExport}
+              isFullscreen={isFullscreen}
+              canPrev={page > 0}
+              canNext={page < numPages - 1}
+              canExport={canExport}
+              page={page}
+              numPages={numPages}
+            />
+          </div>
         </div>
       </div>
-    </div>
+
+      {/* Coming Soon Dialog */}
+      <Dialog open={showComingSoonDialog} onOpenChange={setShowComingSoonDialog}>
+        <DialogContent className="sm:max-w-md">
+          <div className="flex flex-col items-center justify-center p-6 text-center">
+            <div className="w-16 h-16 bg-gradient-to-br from-story-green to-story-blue rounded-full flex items-center justify-center mb-4 animate-bounce">
+              <Download className="h-8 w-8 text-white" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-800 mb-2">
+              🎉 Export Feature Coming Soon!
+            </h3>
+            <p className="text-gray-600 mb-4">
+              We're working hard to bring you the export feature for Arabic stories. 
+              Stay tuned for this exciting update!
+            </p>
+            <div className="flex items-center gap-2 text-sm text-story-green">
+              <span className="w-2 h-2 bg-story-green rounded-full animate-pulse"></span>
+              <span>Feature in development</span>
+            </div>
+            <Button 
+              onClick={() => setShowComingSoonDialog(false)}
+              className="mt-6 bg-gradient-to-r from-story-green to-story-blue hover:from-story-green/90 hover:to-story-blue/90 text-white px-6"
+            >
+              Got it! ✨
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 
