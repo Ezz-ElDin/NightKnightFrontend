@@ -7,6 +7,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuPortal,
 } from "@/components/ui/dropdown-menu";
 
 interface StoryNavigationProps {
@@ -89,27 +90,29 @@ const StoryNavigation: React.FC<StoryNavigationProps> = ({
           <MoreVertical className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent 
-        align="end" 
-        className="w-48 bg-white border border-gray-200 shadow-lg"
-        style={{ zIndex: 9999 }}
-        sideOffset={8}
-      >
-        {canExport && (
-          <DropdownMenuItem onClick={onExport} disabled={isExporting}>
-            {isExporting ? (
-              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-            ) : (
-              <Download className="h-4 w-4 mr-2" />
-            )}
-            Export Story
+      <DropdownMenuPortal>
+        <DropdownMenuContent 
+          align="end" 
+          className="w-48 bg-white border border-gray-200 shadow-lg"
+          style={{ zIndex: 999999 }}
+          sideOffset={8}
+        >
+          {canExport && (
+            <DropdownMenuItem onClick={onExport} disabled={isExporting}>
+              {isExporting ? (
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              ) : (
+                <Download className="h-4 w-4 mr-2" />
+              )}
+              Export Story
+            </DropdownMenuItem>
+          )}
+          <DropdownMenuItem onClick={onToggleFullscreen}>
+            <Fullscreen className="h-4 w-4 mr-2" />
+            {isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
           </DropdownMenuItem>
-        )}
-        <DropdownMenuItem onClick={onToggleFullscreen}>
-          <Fullscreen className="h-4 w-4 mr-2" />
-          {isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
-        </DropdownMenuItem>
-      </DropdownMenuContent>
+        </DropdownMenuContent>
+      </DropdownMenuPortal>
     </DropdownMenu>
   </div>
 );
