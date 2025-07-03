@@ -69,8 +69,8 @@ export const useStoryViewer = () => {
       if (e.key === "ArrowLeft") {
         setPage(prev => Math.max(0, prev - 1));
       } else if (e.key === "ArrowRight") {
-        if (data && page < (data.pages.length - 1)) {
-          setPage(prev => Math.min(data.pages.length - 1, prev + 1));
+        if (data && page < data.pages.length) {
+          setPage(prev => Math.min(data.pages.length, prev + 1));
         }
       }
     };
