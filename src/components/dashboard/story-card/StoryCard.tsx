@@ -1,21 +1,14 @@
 
 import { useState } from "react";
+import { Heart } from "lucide-react";
 import { StoryCardProps } from "./types";
 import StoryCardImage from "./StoryCardImage";
-import StoryCardMenu from "./StoryCardMenu";
 import StoryCardContent from "./StoryCardContent";
 
 const StoryCard: React.FC<StoryCardProps> = ({ story, isFavourite, onClick, onFavourite, onDelete }) => {
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  const handleMenuButtonClick = (e: React.MouseEvent) => {
+  const handleFavoriteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setMenuOpen((v) => !v);
-  };
-
-  const handleMenuClose = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setMenuOpen(false);
+    onFavourite?.();
   };
 
   return (
@@ -30,14 +23,21 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, isFavourite, onClick, onFa
       <StoryCardImage
         coverUrl={story.coverUrl}
         title={story.title}
-        onMenuToggle={handleMenuButtonClick}
+        onMenuToggle={() => {}} // Not needed anymore
       >
-        <StoryCardMenu
-          isOpen={menuOpen}
-          onClose={handleMenuClose}
-          isFavourite={isFavourite}
-          onFavourite={onFavourite}
-        />
+        {/* Heart icon positioned in top-right corner */}
+        <button
+          className="absolute top-3 right-3 p-2 rounded-full bg-white/80 hover:bg-white transition-colors z-20"
+          onClick={handleFavoriteClick}
+          aria-label={isFavourite ? "Remove from favorites" : "Add to favorites"}
+        >
+          <Heart 
+            size={20} 
+            strokeWidth={2} 
+            fill={isFavourite ? "#f59e42" : "none"} 
+            color={isFavourite ? "#f59e42" : "#a093f4"} 
+          />
+        </button>
       </StoryCardImage>
       
       <StoryCardContent
