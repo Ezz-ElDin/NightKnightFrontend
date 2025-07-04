@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, Download, Loader2, Fullscreen } from "lucide-react";
@@ -35,7 +34,7 @@ const DesktopStoryViewer = ({
   handleExport,
   goBack
 }: DesktopStoryViewerProps) => {
-  const { isFullscreen, toggleFullscreen } = useFullscreen();
+  const { isFullscreen, handleToggleFullscreen } = useFullscreen();
 
   // Touch navigation handlers
   const handleLeftTap = () => {
@@ -155,7 +154,7 @@ const DesktopStoryViewer = ({
                 </Button>
               )}
               <Button
-                onClick={toggleFullscreen}
+                onClick={handleToggleFullscreen}
                 variant="outline"
                 className="flex items-center gap-2"
                 aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}

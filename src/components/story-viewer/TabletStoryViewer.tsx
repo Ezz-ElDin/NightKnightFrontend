@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, Download, Loader2, Fullscreen } from "lucide-react";
@@ -37,7 +36,7 @@ const TabletStoryViewer = ({
   goBack,
   isPortrait
 }: TabletStoryViewerProps) => {
-  const { isFullscreen, toggleFullscreen } = useFullscreen();
+  const { isFullscreen, handleToggleFullscreen } = useFullscreen();
 
   // Touch navigation handlers
   const handleLeftTap = () => {
@@ -160,7 +159,7 @@ const TabletStoryViewer = ({
                 </Button>
               )}
               <Button
-                onClick={toggleFullscreen}
+                onClick={handleToggleFullscreen}
                 variant="outline"
                 size="icon"
                 aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
