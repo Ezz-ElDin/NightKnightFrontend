@@ -55,10 +55,10 @@ const DesktopStoryViewer = ({
   return (
     <div 
       ref={containerRef} 
-      className={`${isFullscreen ? 'fixed inset-0 w-screen h-screen z-50 bg-black' : 'min-h-screen bg-gray-50 py-8'}`}
+      className={`${isFullscreen ? 'fixed inset-0 w-screen h-screen z-50 bg-black' : 'h-[92vh] bg-gray-50 py-4'}`}
     >
       <div className={`${isFullscreen ? 'w-full h-full' : 'max-w-6xl mx-auto px-4 h-full'}`}>
-        <div className={`${isFullscreen ? 'w-full h-full bg-white' : 'bg-white rounded-2xl shadow-lg min-h-[calc(100vh-4rem)]'} overflow-hidden flex flex-col relative`}>
+        <div className={`${isFullscreen ? 'w-full h-full bg-white' : 'bg-white rounded-2xl shadow-lg h-full'} overflow-hidden flex flex-col relative`}>
           {/* Touch Navigation Zones for touchscreen laptops */}
           <div 
             className="absolute left-0 top-0 w-1/3 h-full z-10 cursor-pointer"
@@ -80,7 +80,7 @@ const DesktopStoryViewer = ({
             ) : (
               <div className={`flex flex-1 min-h-0 ${isHorizontalLayout ? 'flex-row' : 'flex-col'}`}>
                 {/* Text Section */}
-                <div className={`${isHorizontalLayout ? 'w-[45%] flex-none' : 'flex-none h-[45%]'} flex items-center justify-center p-8`}>
+                <div className={`${isHorizontalLayout ? 'w-[45%] flex-none' : 'flex-none h-[40%]'} flex items-center justify-center p-8`}>
                   <StoryText
                     title={story.title}
                     text={currentPage?.text || ""}
@@ -101,7 +101,7 @@ const DesktopStoryViewer = ({
           </div>
 
           {/* Desktop Navigation Bar */}
-          <div className="flex-none flex items-center justify-between px-6 py-4 border-t border-gray-100 relative z-20 bg-white">
+          <div className="flex-none flex items-center justify-between px-6 py-3 border-t border-gray-100 relative z-20 bg-white">
             {/* Back Button - Left */}
             <Button
               onClick={goBack}

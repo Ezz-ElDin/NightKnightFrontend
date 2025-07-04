@@ -61,7 +61,7 @@ const MobileStoryViewer = ({
   return (
     <div 
       ref={containerRef} 
-      className={`${isFullscreen ? 'fixed inset-0 w-screen h-screen z-50 bg-black' : 'h-screen bg-gray-50 px-4 py-4'}`}
+      className={`${isFullscreen ? 'fixed inset-0 w-screen h-screen z-50 bg-black' : 'h-[85vh] bg-gray-50 px-4 py-2'}`}
     >
       <div className={`${isFullscreen ? 'w-full h-full' : 'max-w-5xl mx-auto h-full'} flex flex-col`}>
         <div className={`${isFullscreen ? 'w-full h-full bg-white' : 'bg-white rounded-2xl shadow-lg'} overflow-hidden flex-1 flex flex-col relative`}>
@@ -106,7 +106,7 @@ const MobileStoryViewer = ({
             ) : (
               <div className={`flex flex-1 min-h-0 ${isHorizontalLayout ? 'flex-row' : 'flex-col'}`}>
                 {/* Text Section */}
-                <div className={`${isHorizontalLayout ? 'w-[45%] flex-none p-6' : 'flex-none h-[45%]'} flex items-center justify-center`}>
+                <div className={`${isHorizontalLayout ? 'w-[45%] flex-none p-6' : 'flex-none h-[40%]'} flex items-center justify-center`}>
                   <StoryText
                     title={story.title}
                     text={currentPage?.text || ""}
@@ -127,7 +127,7 @@ const MobileStoryViewer = ({
           </div>
 
           {/* Mobile Navigation Bar */}
-          <div className={`flex-none flex items-center justify-between px-4 py-3 border-t border-gray-100 relative z-20 bg-white`}>
+          <div className={`flex-none flex items-center justify-between px-4 py-2 border-t border-gray-100 relative z-20 bg-white`}>
             {/* Back Button - Left (Icon only) */}
             <Button
               onClick={goBack}

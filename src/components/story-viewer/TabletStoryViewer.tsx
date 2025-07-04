@@ -57,7 +57,7 @@ const TabletStoryViewer = ({
   return (
     <div 
       ref={containerRef} 
-      className={`${isFullscreen ? 'fixed inset-0 w-screen h-screen z-50 bg-black' : 'h-screen bg-gray-50 px-4 py-4'}`}
+      className={`${isFullscreen ? 'fixed inset-0 w-screen h-screen z-50 bg-black' : 'h-[90vh] bg-gray-50 px-4 py-3'}`}
     >
       <div className={`${isFullscreen ? 'w-full h-full' : 'max-w-4xl mx-auto h-full'} flex flex-col`}>
         <div className={`${isFullscreen ? 'w-full h-full bg-white' : 'bg-white rounded-2xl shadow-lg'} overflow-hidden flex-1 flex flex-col relative`}>
@@ -82,7 +82,7 @@ const TabletStoryViewer = ({
             ) : (
               <div className={`flex flex-1 min-h-0 ${isHorizontalLayout ? 'flex-row' : 'flex-col'}`}>
                 {/* Text Section */}
-                <div className={`${isHorizontalLayout ? 'w-[45%] flex-none' : 'flex-none h-[45%]'} flex items-center justify-center p-6`}>
+                <div className={`${isHorizontalLayout ? 'w-[45%] flex-none' : 'flex-none h-[40%]'} flex items-center justify-center p-6`}>
                   <StoryText
                     title={story.title}
                     text={currentPage?.text || ""}
@@ -103,7 +103,7 @@ const TabletStoryViewer = ({
           </div>
 
           {/* Navigation Bar */}
-          <div className="flex-none flex items-center justify-between px-4 py-3 border-t border-gray-100 relative z-20 bg-white">
+          <div className="flex-none flex items-center justify-between px-4 py-2 border-t border-gray-100 relative z-20 bg-white">
             {/* Back Button */}
             <Button
               onClick={goBack}
