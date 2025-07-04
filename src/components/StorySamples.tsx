@@ -18,7 +18,8 @@ const StorySamples = () => {
       theme: "Adventure",
       language: "English",
       imageUrl: "/images/dragon-treasure.png",
-      icon: <BookOpen className="h-5 w-5 text-story-orange" />
+      icon: <BookOpen className="h-5 w-5 text-story-orange" />,
+      isRTL: false
     },
     {
       title: "Les Chatons de la Lune",
@@ -26,15 +27,17 @@ const StorySamples = () => {
       theme: "Fantaisie",
       language: "Français",
       imageUrl: "/images/moon-kittens.png",
-      icon: <Sparkles className="h-5 w-5 text-story-orange" />
+      icon: <Sparkles className="h-5 w-5 text-story-orange" />,
+      isRTL: false
     },
     {
-      title: "Kapitän Leos Weltraumreise",
-      excerpt: "Kapitän Leo und sein treuer Roboterfreund Beep bereiteten sich auf ihr bisher größtes Abenteuer vor. Sie bestiegen ihr Raumschiff, um die Sterne zu erforschen und neue Planeten jenseits unserer Galaxie zu entdecken...",
-      theme: "Weltraum",
-      language: "Deutsch",
+      title: "مغامرة القائد ليو في الفضاء",
+      excerpt: "القائد ليو وصاحبه الروبوت اللطيف بيب كانوا مستعدين لأعظم مغامرة في حياتهم! ركبوا سفينتهم الفضائية الجديدة، ومستنيين اللحظة اللي هيطيروا فيها وسط النجوم ويكتشفوا عوالم ما حدش شافها قبل كده...",
+      theme: "مغامرات الفضاء",
+      language: "عربي",
       imageUrl: "/images/space-journey.png",
-      icon: <Rocket className="h-5 w-5 text-story-orange" />
+      icon: <Rocket className="h-5 w-5 text-story-orange" />,
+      isRTL: true
     },
     {
       title: "El Jardín Mágico",
@@ -42,7 +45,8 @@ const StorySamples = () => {
       theme: "Magia",
       language: "Español",
       imageUrl: "/images/magic-garden.png",
-      icon: <FlowerIcon className="h-5 w-5 text-story-orange" />
+      icon: <FlowerIcon className="h-5 w-5 text-story-orange" />,
+      isRTL: false
     }
   ];
 
@@ -64,7 +68,7 @@ const StorySamples = () => {
                   <Card className="overflow-hidden border-none shadow-xl rounded-3xl">
                     <div className="flex flex-col md:flex-row">
                       {/* Left side - Text content (book page) */}
-                      <div className="w-full md:w-1/2 bg-gradient-to-br from-white to-story-peach p-6 md:p-8 border-r border-story-lightPurple/50 relative">
+                      <div className={`w-full md:w-1/2 bg-gradient-to-br from-white to-story-peach p-6 md:p-8 border-r border-story-lightPurple/50 relative ${story.isRTL ? 'rtl' : ''}`} dir={story.isRTL ? 'rtl' : 'ltr'}>
                         <div className="absolute top-0 right-0 w-20 h-20 bg-story-lightPurple/20 rounded-bl-3xl"></div>
                         <div className="mb-6 flex items-center justify-between">
                           <h3 className="text-2xl font-bold text-story-purple">{story.title}</h3>
@@ -83,7 +87,7 @@ const StorySamples = () => {
                             <Star className="h-5 w-5 fill-current" />
                             <Star className="h-5 w-5 fill-current" />
                           </div>
-                          <div className="ml-auto flex gap-2">
+                          <div className={`${story.isRTL ? 'mr-auto' : 'ml-auto'} flex gap-2`}>
                             <span className="px-3 py-1 bg-story-green text-green-700 rounded-full text-xs font-semibold">
                               {story.theme}
                             </span>
