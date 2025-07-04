@@ -82,7 +82,7 @@ const StorySamples = () => {
                         
                         <p className="text-lg mb-6 leading-relaxed">{story.excerpt}</p>
                         
-                        <div className="flex items-center mt-auto">
+                        <div className={`flex items-center mt-auto ${story.isRTL ? 'flex-row-reverse' : ''}`}>
                           <div className="flex text-amber-400">
                             <Star className="h-5 w-5 fill-current" />
                             <Star className="h-5 w-5 fill-current" />
@@ -90,7 +90,7 @@ const StorySamples = () => {
                             <Star className="h-5 w-5 fill-current" />
                             <Star className="h-5 w-5 fill-current" />
                           </div>
-                          <div className="ml-auto flex gap-2">
+                          <div className={`flex gap-2 ${story.isRTL ? 'mr-auto' : 'ml-auto'}`}>
                             <span className="px-3 py-1 bg-story-green text-green-700 rounded-full text-xs font-semibold">
                               {story.theme}
                             </span>
