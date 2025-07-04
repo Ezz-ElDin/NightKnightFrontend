@@ -107,9 +107,28 @@ class StoryExportService {
   private loadImage(url: string): Promise<HTMLImageElement> {
     return new Promise((resolve, reject) => {
       const img = new Image();
-      img.crossOrigin = 'anonymous';
-      img.onload = () => resolve(img);
-      img.onerror = reject;
+      
+      // Remove crossOrigin to avoid CORS issues
+      // img.crossOrigin = 'anonymous';
+      
+      img.onload = () => {
+        console.log('Image loaded successfully:', url);
+        resolve(img);
+      };
+      
+      img.onerror = (error) => {
+        console.error('Failed to load image:', url, error);
+        reject(error);
+      };
+      
+      // Add a timeout to prevent hanging
+      setTimeout(() => {
+        if (!img.complete) {
+          console.error('Image loading timeout:', url);
+          reject(new Error('Image loading timeout'));
+        }
+      }, 10000); // 10 second timeout
+      
       img.src = url;
     });
   }
@@ -137,6 +156,7 @@ class StoryExportService {
     const finalX = x + (maxWidth - width) / 2;
     const finalY = y + (maxHeight - height) / 2;
     
+    console.log('Adding image to PDF:', { width, height, finalX, finalY });
     doc.addImage(image, 'JPEG', finalX, finalY, width, height);
   }
 }
