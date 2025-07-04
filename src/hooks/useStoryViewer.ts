@@ -5,7 +5,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { storiesApi } from '@/lib/api';
 import { exportService } from '@/lib/exportService';
 import { useToast } from '@/hooks/use-toast';
-import { useResponsiveLayout } from '@/hooks/useResponsiveLayout';
 
 const isArabic = (text: string) => /[\u0600-\u06FF]/.test(text);
 
@@ -15,10 +14,18 @@ export const useStoryViewer = () => {
   const [page, setPage] = useState(0);
   const [showComingSoonDialog, setShowComingSoonDialog] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const { toast } = useToast();
-  
-  // Use the new responsive layout hook
-  const deviceInfo = useResponsiveLayout();
+
+  // Listen for window resize to detect mobile
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Fetch story data via react-query
   const { data, isLoading, isError } = useQuery({
@@ -89,7 +96,7 @@ export const useStoryViewer = () => {
     showComingSoonDialog,
     setShowComingSoonDialog,
     isExporting,
-    deviceInfo,
+    isMobile,
     
     // Data
     story,

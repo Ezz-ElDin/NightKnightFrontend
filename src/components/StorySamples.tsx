@@ -29,13 +29,12 @@ const StorySamples = () => {
       icon: <Sparkles className="h-5 w-5 text-story-orange" />
     },
     {
-      title: "مغامرة القائد ليو في الفضاء",
-      excerpt: "القائد ليو وصاحبه الروبوت اللطيف بيب كانوا مستعدين لأعظم مغامرة في حياتهم! ركبوا سفينتهم الفضائية الجديدة، ومستنيين اللحظة اللي هيطيروا فيها وسط النجوم ويكتشفوا عوالم ما حدش شافها قبل كده...",
-      theme: "مغامرات الفضاء",
-      language: "عربي",
+      title: "Kapitän Leos Weltraumreise",
+      excerpt: "Kapitän Leo und sein treuer Roboterfreund Beep bereiteten sich auf ihr bisher größtes Abenteuer vor. Sie bestiegen ihr Raumschiff, um die Sterne zu erforschen und neue Planeten jenseits unserer Galaxie zu entdecken...",
+      theme: "Weltraum",
+      language: "Deutsch",
       imageUrl: "/images/space-journey.png",
-      icon: <Rocket className="h-5 w-5 text-story-orange" />,
-      isRTL: true
+      icon: <Rocket className="h-5 w-5 text-story-orange" />
     },
     {
       title: "El Jardín Mágico",
@@ -74,15 +73,7 @@ const StorySamples = () => {
                           </div>
                         </div>
                         
-                        <p 
-                          className="text-lg mb-6 leading-relaxed"
-                          style={{ 
-                            direction: story.isRTL ? 'rtl' : 'ltr',
-                            textAlign: story.isRTL ? 'right' : 'left'
-                          }}
-                        >
-                          {story.excerpt}
-                        </p>
+                        <p className="text-lg mb-6 leading-relaxed">{story.excerpt}</p>
                         
                         <div className="flex items-center mt-auto">
                           <div className="flex text-amber-400">

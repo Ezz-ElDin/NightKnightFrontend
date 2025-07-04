@@ -3,7 +3,6 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import MobileStoryViewer from "@/components/story-viewer/MobileStoryViewer";
 import DesktopStoryViewer from "@/components/story-viewer/DesktopStoryViewer";
-import TabletStoryViewer from "@/components/story-viewer/TabletStoryViewer";
 import ComingSoonDialog from "@/components/story-viewer/ComingSoonDialog";
 import { useStoryViewer } from "@/hooks/useStoryViewer";
 
@@ -15,7 +14,7 @@ const StoryViewer = () => {
     showComingSoonDialog,
     setShowComingSoonDialog,
     isExporting,
-    deviceInfo,
+    isMobile,
     
     // Data
     story,
@@ -31,6 +30,11 @@ const StoryViewer = () => {
     handleExport,
     goBack
   } = useStoryViewer();
+
+  // Render mobile version if on mobile
+  if (isMobile) {
+    return <MobileStoryViewer />;
+  }
 
   if (isLoading) {
     return (
@@ -57,62 +61,6 @@ const StoryViewer = () => {
     );
   }
 
-  // Render appropriate viewer based on device type
-  if (deviceInfo.deviceType === 'mobile') {
-    return (
-      <>
-        <MobileStoryViewer
-          story={story}
-          page={page}
-          setPage={setPage}
-          numPages={numPages}
-          currentPage={currentPage}
-          isEndPage={isEndPage}
-          rtl={rtl}
-          canExport={canExport}
-          isExporting={isExporting}
-          handleExport={handleExport}
-          goBack={goBack}
-          isPortrait={deviceInfo.isPortrait}
-          showComingSoonDialog={showComingSoonDialog}
-          setShowComingSoonDialog={setShowComingSoonDialog}
-        />
-
-        <ComingSoonDialog
-          open={showComingSoonDialog}
-          onOpenChange={setShowComingSoonDialog}
-        />
-      </>
-    );
-  }
-
-  if (deviceInfo.deviceType === 'tablet') {
-    return (
-      <>
-        <TabletStoryViewer
-          story={story}
-          page={page}
-          setPage={setPage}
-          numPages={numPages}
-          currentPage={currentPage}
-          isEndPage={isEndPage}
-          rtl={rtl}
-          canExport={canExport}
-          isExporting={isExporting}
-          handleExport={handleExport}
-          goBack={goBack}
-          isPortrait={deviceInfo.isPortrait}
-        />
-
-        <ComingSoonDialog
-          open={showComingSoonDialog}
-          onOpenChange={setShowComingSoonDialog}
-        />
-      </>
-    );
-  }
-
-  // Desktop viewer
   return (
     <>
       <DesktopStoryViewer
