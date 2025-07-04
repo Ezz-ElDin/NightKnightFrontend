@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Star, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -20,6 +20,7 @@ const Library = () => {
   const [page, setPage] = useState(1);
   const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; storyId: null | number }>({ open: false, storyId: null });
   const [showSuccessBanner, setShowSuccessBanner] = useState(false);
+  const recentStoriesRef = useRef<HTMLDivElement>(null);
   
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -96,7 +97,9 @@ const Library = () => {
   );
   const goToPage = (p: number) => {
     setPage(p);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (recentStoriesRef.current) {
+      recentStoriesRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   const toggleFavourite = (id: number, isFav: boolean) => {
@@ -196,14 +199,16 @@ const Library = () => {
             onDelete={(id) => setDeleteDialog({ open: true, storyId: id })}
           />
           
-          <StoryGallery
-            stories={pagedStories}
-            isLoading={isLoading}
-            showFavourites={false}
-            onStoryClick={handleStoryClick}
-            onFavourite={toggleFavourite}
-            onDelete={(id) => setDeleteDialog({ open: true, storyId: id })}
-          />
+          <div ref={recentStoriesRef}>
+            <StoryGallery
+              stories={pagedStories}
+              isLoading={isLoading}
+              showFavourites={false}
+              onStoryClick={handleStoryClick}
+              onFavourite={toggleFavourite}
+              onDelete={(id) => setDeleteDialog({ open: true, storyId: id })}
+            />
+          </div>
           
           <PaginationNav totalPages={totalPages} page={page} goToPage={goToPage} />
         </div>
