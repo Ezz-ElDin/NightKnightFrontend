@@ -1,13 +1,11 @@
 
-import React from 'react';
-import { Button } from '@/components/ui/button';
-import clsx from 'clsx';
-import StoryVisual from './StoryVisual';
-import StoryText from './StoryText';
-import StoryNavigation from './StoryNavigation';
-import EndPage from './EndPage';
-import { useFullscreen } from '@/hooks/useFullscreen';
-import { StoryDetails } from '@/lib/api';
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft, ArrowRight, Download, Loader2 } from "lucide-react";
+import StoryText from "@/components/story-viewer/StoryText";
+import StoryVisual from "@/components/story-viewer/StoryVisual";
+import EndPage from "@/components/story-viewer/EndPage";
+import { StoryDetails } from "@/lib/api";
 
 interface DesktopStoryViewerProps {
   story: StoryDetails;
@@ -23,7 +21,7 @@ interface DesktopStoryViewerProps {
   goBack: () => void;
 }
 
-const DesktopStoryViewer: React.FC<DesktopStoryViewerProps> = ({
+const DesktopStoryViewer = ({
   story,
   page,
   setPage,
@@ -35,97 +33,124 @@ const DesktopStoryViewer: React.FC<DesktopStoryViewerProps> = ({
   isExporting,
   handleExport,
   goBack
-}) => {
-  const { isFullscreen, containerRef, handleToggleFullscreen } = useFullscreen();
+}: DesktopStoryViewerProps) => {
+  // Touch navigation handlers
+  const handleLeftTap = () => {
+    setPage(Math.max(0, page - 1));
+  };
+
+  const handleRightTap = () => {
+    if (page < story.pages.length) {
+      setPage(Math.min(story.pages.length, page + 1));
+    }
+  };
 
   return (
-    <div 
-      className={clsx(
-        "w-full min-h-screen flex flex-col items-center justify-center px-1 py-4 bg-white"
-      )}
-      style={{ minHeight: "100vh" }}
-    >
-      <div
-        ref={containerRef}
-        className={clsx(
-          `
-          relative
-          w-full
-          max-w-5xl
-          mx-auto
-          bg-white
-          rounded-3xl
-          shadow-2xl
-          p-0
-          overflow-hidden
-          flex
-          flex-col
-          border
-          border-solid
-          border-gray-200
-          duration-200
-          transition-all
-          animate-fade-in
-          `,
-          isFullscreen ? "max-w-none w-screen min-h-screen h-screen !rounded-none" : "min-h-[70vh]"
-        )}
-        style={{
-          boxShadow: "0 10px 40px 2px rgba(80,60,120,0.13)",
-        }}
-      >
-        {/* Book Content */}
-        {isEndPage ? (
-          <EndPage rtl={rtl} />
-        ) : (
-          <div
-            className={clsx(
-              `
-              flex
-              flex-col
-              md:flex-row
-              w-full
-              md:divide-x
-              divide-y
-              md:divide-y-0
-              divide-gray-200
-              flex-1
-              `
-            )}
-          >
-            {/* Left Side - Story Page Title/Text - 45% */}
-            <div className="md:w-[45%] flex-none">
-              <StoryText
-                title={story.title}
-                text={currentPage?.text || ""}
-                page={page}
-                rtl={rtl}
-              />
-            </div>
-            {/* Right Side - Visual - 55% */}
-            <div className="md:w-[55%] flex-none">
-              <StoryVisual
-                coverUrl={currentPage?.image_url || ""}
-                title={story.title}
-              />
-            </div>
-          </div>
-        )}
-        {/* Footer - Navigation & Fullscreen Controls */}
-        <div className="relative">
-          <StoryNavigation
-            onBack={goBack}
-            onPrevPage={() => setPage(Math.max(0, page - 1))}
-            onNextPage={() => setPage(Math.min(numPages - 1, page + 1))}
-            onToggleFullscreen={handleToggleFullscreen}
-            onExport={handleExport}
-            isFullscreen={isFullscreen}
-            canPrev={page > 0}
-            canNext={page < numPages - 1}
-            canExport={canExport}
-            isExporting={isExporting}
-            page={page}
-            numPages={numPages}
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="bg-white rounded-2xl shadow-lg overflow-hidden min-h-[calc(100vh-4rem)] relative">
+          {/* Touch Navigation Zones */}
+          <div 
+            className="absolute left-0 top-0 w-1/3 h-full z-10 cursor-pointer"
+            onClick={handleLeftTap}
+            aria-label="Previous page"
           />
+          <div 
+            className="absolute right-0 top-0 w-1/3 h-full z-10 cursor-pointer"
+            onClick={handleRightTap}
+            aria-label="Next page"
+          />
+
+          {/* Story Content */}
+          <div className="flex-1 flex flex-col">
+            {isEndPage ? (
+              <div className="w-full min-h-[calc(100vh-8rem)] flex flex-col">
+                <EndPage />
+              </div>
+            ) : (
+              <div className="flex flex-1 min-h-[calc(100vh-8rem)]">
+                {/* Text Section - Left Side */}
+                <div className="w-1/2 flex items-center justify-center p-8">
+                  <StoryText
+                    title={story.title}
+                    text={currentPage?.text || ""}
+                    page={page}
+                    rtl={rtl}
+                  />
+                </div>
+                
+                {/* Visual Section - Right Side */}
+                <div className="w-1/2 flex items-center justify-center p-8">
+                  <StoryVisual
+                    coverUrl={currentPage?.image_url || ""}
+                    title={story.title}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Desktop Navigation Bar */}
+          <div className="flex items-center justify-between px-6 py-4 bg-white border-t border-gray-100 relative z-20">
+            {/* Back Button - Left */}
+            <Button
+              onClick={goBack}
+              variant="outline"
+              className="flex items-center gap-2"
+              aria-label="Back to library"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back to Library
+            </Button>
+            
+            {/* Navigation Arrows - Center */}
+            <div className="flex items-center gap-6">
+              <Button
+                onClick={handleLeftTap}
+                variant="outline"
+                size="lg"
+                disabled={page === 0}
+                aria-label="Previous Page"
+                className="flex items-center gap-2"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Previous
+              </Button>
+              
+              <span className="text-lg font-medium text-muted-foreground px-4">
+                {page + 1} / {numPages}
+              </span>
+              
+              <Button
+                onClick={handleRightTap}
+                variant="outline"
+                size="lg"
+                disabled={page >= numPages - 1}
+                aria-label="Next Page"
+                className="flex items-center gap-2"
+              >
+                Next
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+            </div>
+            
+            {/* Export Button - Right */}
+            {canExport && (
+              <Button
+                onClick={handleExport}
+                variant="outline"
+                disabled={isExporting}
+                className="bg-story-green hover:bg-story-green/90 border-story-green text-white flex items-center gap-2"
+              >
+                {isExporting ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Download className="h-4 w-4" />
+                )}
+                Export
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     </div>
