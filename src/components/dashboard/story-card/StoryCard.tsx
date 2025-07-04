@@ -25,9 +25,9 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, isFavourite, onClick, onFa
         title={story.title}
         onMenuToggle={() => {}} // Not needed anymore
       >
-        {/* Heart icon positioned in top-right corner */}
+        {/* Heart icon positioned in bottom-right corner */}
         <button
-          className="absolute top-3 right-3 p-2 rounded-full bg-white/80 hover:bg-white transition-colors z-20"
+          className="absolute bottom-3 right-3 p-2 rounded-full bg-white/80 hover:bg-white transition-colors z-20"
           onClick={handleFavoriteClick}
           aria-label={isFavourite ? "Remove from favorites" : "Add to favorites"}
         >
