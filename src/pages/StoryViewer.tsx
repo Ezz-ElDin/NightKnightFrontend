@@ -1,16 +1,13 @@
 
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import MobileStoryViewer from "@/components/story-viewer/MobileStoryViewer";
 import DesktopStoryViewer from "@/components/story-viewer/DesktopStoryViewer";
 import TabletStoryViewer from "@/components/story-viewer/TabletStoryViewer";
-import FullscreenStoryViewer from "@/components/story-viewer/FullscreenStoryViewer";
 import ComingSoonDialog from "@/components/story-viewer/ComingSoonDialog";
 import { useStoryViewer } from "@/hooks/useStoryViewer";
 
 const StoryViewer = () => {
-  const [isFullscreen, setIsFullscreen] = useState(false);
-  
   const {
     // State
     page,
@@ -34,14 +31,6 @@ const StoryViewer = () => {
     handleExport,
     goBack
   } = useStoryViewer();
-
-  const handleToggleFullscreen = () => {
-    setIsFullscreen(!isFullscreen);
-  };
-
-  const handleExitFullscreen = () => {
-    setIsFullscreen(false);
-  };
 
   if (isLoading) {
     return (
@@ -68,22 +57,6 @@ const StoryViewer = () => {
     );
   }
 
-  // Render fullscreen viewer if in fullscreen mode
-  if (isFullscreen) {
-    return (
-      <FullscreenStoryViewer
-        story={story}
-        page={page}
-        setPage={setPage}
-        numPages={numPages}
-        currentPage={currentPage}
-        isEndPage={isEndPage}
-        rtl={rtl}
-        onExitFullscreen={handleExitFullscreen}
-      />
-    );
-  }
-
   // Render appropriate viewer based on device type
   if (deviceInfo.deviceType === 'mobile') {
     return (
@@ -103,7 +76,6 @@ const StoryViewer = () => {
           isPortrait={deviceInfo.isPortrait}
           showComingSoonDialog={showComingSoonDialog}
           setShowComingSoonDialog={setShowComingSoonDialog}
-          onToggleFullscreen={handleToggleFullscreen}
         />
 
         <ComingSoonDialog
@@ -130,7 +102,6 @@ const StoryViewer = () => {
           handleExport={handleExport}
           goBack={goBack}
           isPortrait={deviceInfo.isPortrait}
-          onToggleFullscreen={handleToggleFullscreen}
         />
 
         <ComingSoonDialog
@@ -156,7 +127,6 @@ const StoryViewer = () => {
         isExporting={isExporting}
         handleExport={handleExport}
         goBack={goBack}
-        onToggleFullscreen={handleToggleFullscreen}
       />
 
       <ComingSoonDialog

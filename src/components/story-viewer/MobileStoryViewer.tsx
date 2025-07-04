@@ -6,6 +6,7 @@ import StoryText from "@/components/story-viewer/StoryText";
 import StoryVisual from "@/components/story-viewer/StoryVisual";
 import EndPage from "@/components/story-viewer/EndPage";
 import { StoryDetails } from "@/lib/api";
+import { useFullscreen } from "@/hooks/useFullscreen";
 import { useResponsiveLayout } from "@/hooks/useResponsiveLayout";
 
 interface MobileStoryViewerProps {
@@ -23,7 +24,6 @@ interface MobileStoryViewerProps {
   isPortrait: boolean;
   showComingSoonDialog: boolean;
   setShowComingSoonDialog: (show: boolean) => void;
-  onToggleFullscreen: () => void;
 }
 
 const MobileStoryViewer = ({
@@ -40,9 +40,9 @@ const MobileStoryViewer = ({
   goBack,
   isPortrait,
   showComingSoonDialog,
-  setShowComingSoonDialog,
-  onToggleFullscreen
+  setShowComingSoonDialog
 }: MobileStoryViewerProps) => {
+  const { isFullscreen, containerRef, handleToggleFullscreen } = useFullscreen();
   const { layoutType } = useResponsiveLayout();
 
   // Touch navigation handlers
@@ -59,7 +59,7 @@ const MobileStoryViewer = ({
   const isHorizontalLayout = layoutType === 'horizontal';
 
   return (
-    <div className="h-screen bg-gray-50 px-4 py-4">
+    <div ref={containerRef} className="h-screen bg-gray-50 px-4 py-4">
       <div className="max-w-5xl mx-auto h-full flex flex-col">
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden flex-1 flex flex-col relative">
           {/* Touch Navigation Zones */}
@@ -180,10 +180,10 @@ const MobileStoryViewer = ({
                 </Button>
               )}
               <Button
-                onClick={onToggleFullscreen}
+                onClick={handleToggleFullscreen}
                 variant="outline"
                 size="icon"
-                aria-label="Enter fullscreen"
+                aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
               >
                 <Fullscreen className="h-4 w-4" />
               </Button>

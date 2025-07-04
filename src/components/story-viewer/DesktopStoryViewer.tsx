@@ -6,6 +6,7 @@ import StoryText from "@/components/story-viewer/StoryText";
 import StoryVisual from "@/components/story-viewer/StoryVisual";
 import EndPage from "@/components/story-viewer/EndPage";
 import { StoryDetails } from "@/lib/api";
+import { useFullscreen } from "@/hooks/useFullscreen";
 import { useResponsiveLayout } from "@/hooks/useResponsiveLayout";
 
 interface DesktopStoryViewerProps {
@@ -20,7 +21,6 @@ interface DesktopStoryViewerProps {
   isExporting: boolean;
   handleExport: () => void;
   goBack: () => void;
-  onToggleFullscreen: () => void;
 }
 
 const DesktopStoryViewer = ({
@@ -34,9 +34,9 @@ const DesktopStoryViewer = ({
   canExport,
   isExporting,
   handleExport,
-  goBack,
-  onToggleFullscreen
+  goBack
 }: DesktopStoryViewerProps) => {
+  const { isFullscreen, containerRef, handleToggleFullscreen } = useFullscreen();
   const { layoutType } = useResponsiveLayout();
 
   // Touch navigation handlers
@@ -53,7 +53,7 @@ const DesktopStoryViewer = ({
   const isHorizontalLayout = layoutType === 'horizontal';
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div ref={containerRef} className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-6xl mx-auto px-4 h-full">
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden min-h-[calc(100vh-4rem)] flex flex-col relative">
           {/* Touch Navigation Zones for touchscreen laptops */}
@@ -159,13 +159,13 @@ const DesktopStoryViewer = ({
                 </Button>
               )}
               <Button
-                onClick={onToggleFullscreen}
+                onClick={handleToggleFullscreen}
                 variant="outline"
                 className="flex items-center gap-2"
-                aria-label="Enter fullscreen"
+                aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
               >
                 <Fullscreen className="h-4 w-4" />
-                Fullscreen
+                {isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
               </Button>
             </div>
           </div>
