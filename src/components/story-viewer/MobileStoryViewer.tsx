@@ -127,21 +127,13 @@ const MobileStoryViewer = ({
           </div>
 
           {/* Mobile Navigation Bar */}
-          <div className={`flex-none flex items-center justify-between px-4 py-3 border-t border-gray-100 relative z-20 ${
-            isFullscreen 
-              ? 'bg-black/50 backdrop-blur-md border-white/10' 
-              : 'bg-white'
-          }`}>
+          <div className={`flex-none flex items-center justify-between px-4 py-3 border-t border-gray-100 relative z-20 bg-white`}>
             {/* Back Button - Left (Icon only) */}
             <Button
               onClick={goBack}
               variant="outline"
               size="icon"
               aria-label="Back to library"
-              className={isFullscreen 
-                ? 'bg-white/20 border-white/30 text-white hover:bg-white/30 backdrop-blur-sm' 
-                : ''
-              }
             >
               <ArrowLeft className="h-4 w-4" />
             </Button>
@@ -154,15 +146,11 @@ const MobileStoryViewer = ({
                 size="icon"
                 disabled={page === 0}
                 aria-label="Previous Page"
-                className={isFullscreen 
-                  ? 'bg-white/20 border-white/30 text-white hover:bg-white/30 backdrop-blur-sm disabled:opacity-50 disabled:text-white/50 disabled:bg-white/10' 
-                  : ''
-                }
               >
                 <ArrowLeft className="h-4 w-4" />
               </Button>
               
-              <span className={`text-sm font-medium ${isFullscreen ? 'text-white' : 'text-muted-foreground'}`}>
+              <span className="text-sm font-medium text-muted-foreground">
                 {page + 1} / {numPages}
               </span>
               
@@ -172,10 +160,6 @@ const MobileStoryViewer = ({
                 size="icon"
                 disabled={page >= numPages - 1}
                 aria-label="Next Page"
-                className={isFullscreen 
-                  ? 'bg-white/20 border-white/30 text-white hover:bg-white/30 backdrop-blur-sm disabled:opacity-50 disabled:text-white/50 disabled:bg-white/10' 
-                  : ''
-                }
               >
                 <ArrowRight className="h-4 w-4" />
               </Button>
@@ -189,10 +173,7 @@ const MobileStoryViewer = ({
                   variant="outline"
                   size="icon"
                   disabled={isExporting}
-                  className={isFullscreen 
-                    ? 'bg-green-600/90 hover:bg-green-700/90 border-green-600/80 text-white backdrop-blur-sm' 
-                    : 'bg-story-green hover:bg-story-green/90 border-story-green text-white'
-                  }
+                  className="bg-story-green hover:bg-story-green/90 border-story-green text-white"
                 >
                   {isExporting ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -206,10 +187,6 @@ const MobileStoryViewer = ({
                 variant="outline"
                 size="icon"
                 aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
-                className={isFullscreen 
-                  ? 'bg-white/20 border-white/30 text-white hover:bg-white/30 backdrop-blur-sm' 
-                  : ''
-                }
               >
                 <Fullscreen className="h-4 w-4" />
               </Button>
