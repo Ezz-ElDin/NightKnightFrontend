@@ -6,7 +6,6 @@ import StoryText from "@/components/story-viewer/StoryText";
 import StoryVisual from "@/components/story-viewer/StoryVisual";
 import EndPage from "@/components/story-viewer/EndPage";
 import { StoryDetails } from "@/lib/api";
-import { useFullscreen } from "@/hooks/useFullscreen";
 import { useResponsiveLayout } from "@/hooks/useResponsiveLayout";
 
 interface TabletStoryViewerProps {
@@ -22,6 +21,7 @@ interface TabletStoryViewerProps {
   handleExport: () => void;
   goBack: () => void;
   isPortrait: boolean;
+  onToggleFullscreen: () => void;
 }
 
 const TabletStoryViewer = ({
@@ -36,9 +36,9 @@ const TabletStoryViewer = ({
   isExporting,
   handleExport,
   goBack,
-  isPortrait
+  isPortrait,
+  onToggleFullscreen
 }: TabletStoryViewerProps) => {
-  const { isFullscreen, containerRef, handleToggleFullscreen } = useFullscreen();
   const { layoutType } = useResponsiveLayout();
 
   // Touch navigation handlers
@@ -55,7 +55,7 @@ const TabletStoryViewer = ({
   const isHorizontalLayout = layoutType === 'horizontal';
 
   return (
-    <div ref={containerRef} className="h-screen bg-gray-50 px-4 py-4">
+    <div className="h-screen bg-gray-50 px-4 py-4">
       <div className="max-w-4xl mx-auto h-full flex flex-col">
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden flex-1 flex flex-col relative">
           {/* Touch Navigation Zones */}
@@ -156,10 +156,10 @@ const TabletStoryViewer = ({
                 </Button>
               )}
               <Button
-                onClick={handleToggleFullscreen}
+                onClick={onToggleFullscreen}
                 variant="outline"
                 size="icon"
-                aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+                aria-label="Enter fullscreen"
               >
                 <Fullscreen className="h-4 w-4" />
               </Button>
