@@ -32,7 +32,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter future={{ v7_startTransition: true }}>
+      <BrowserRouter>
         {/* Show the main Navbar on all pages except the waiting list pages and specific excluded routes */}
         <Routes>
           <Route path="/waiting-list" element={null} />
