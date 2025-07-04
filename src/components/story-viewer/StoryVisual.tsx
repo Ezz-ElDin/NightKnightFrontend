@@ -8,13 +8,13 @@ interface StoryVisualProps {
 }
 
 const StoryVisual: React.FC<StoryVisualProps> = ({ coverUrl, title }) => (
-  <div className="w-full h-full bg-[#fafafd] flex items-center justify-center p-0 m-0">
+  <div className="w-full h-full bg-white flex items-center justify-center p-0 m-0">
     <div
       className={clsx(
         "relative w-full h-full flex items-center justify-center"
       )}
       style={{
-        background: "#e8eafd",
+        background: "white",
         borderRadius: "0",
         overflow: "hidden",
         boxShadow: "0 4px 32px 3px rgba(100,100,115,0.10)",
