@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, Download, Loader2, Fullscreen } from "lucide-react";
@@ -6,6 +7,7 @@ import StoryVisual from "@/components/story-viewer/StoryVisual";
 import EndPage from "@/components/story-viewer/EndPage";
 import { StoryDetails } from "@/lib/api";
 import { useFullscreen } from "@/hooks/useFullscreen";
+import { useResponsiveLayout } from "@/hooks/useResponsiveLayout";
 
 interface TabletStoryViewerProps {
   story: StoryDetails;
@@ -36,7 +38,8 @@ const TabletStoryViewer = ({
   goBack,
   isPortrait
 }: TabletStoryViewerProps) => {
-  const { isFullscreen, handleToggleFullscreen } = useFullscreen();
+  const { isFullscreen, containerRef, handleToggleFullscreen } = useFullscreen();
+  const { layoutType } = useResponsiveLayout();
 
   // Touch navigation handlers
   const handleLeftTap = () => {
@@ -49,18 +52,12 @@ const TabletStoryViewer = ({
     }
   };
 
-  const containerClass = isPortrait 
-    ? "min-h-screen bg-gray-50 px-4 py-4" 
-    : "h-screen bg-gray-50 px-6 py-4";
-
-  const cardClass = isPortrait
-    ? "bg-white rounded-2xl shadow-lg overflow-hidden h-[calc(100vh-2rem)] relative"
-    : "bg-white rounded-2xl shadow-lg overflow-hidden h-[calc(100vh-2rem)] relative";
+  const isHorizontalLayout = layoutType === 'horizontal';
 
   return (
-    <div className={containerClass}>
-      <div className="max-w-4xl mx-auto h-full">
-        <div className={cardClass}>
+    <div ref={containerRef} className="h-screen bg-gray-50 px-4 py-4">
+      <div className="max-w-4xl mx-auto h-full flex flex-col">
+        <div className="bg-white rounded-2xl shadow-lg overflow-hidden flex-1 flex flex-col relative">
           {/* Touch Navigation Zones */}
           <div 
             className="absolute left-0 top-0 w-1/3 h-full z-10 cursor-pointer"
@@ -74,15 +71,15 @@ const TabletStoryViewer = ({
           />
 
           {/* Story Content */}
-          <div className="flex-1 flex flex-col h-full">
+          <div className="flex-1 flex flex-col min-h-0">
             {isEndPage ? (
-              <div className="w-full flex-1">
+              <div className="flex-1 flex items-center justify-center">
                 <EndPage rtl={rtl} />
               </div>
             ) : (
-              <div className={`flex flex-1 ${isPortrait ? 'flex-col' : 'flex-row'}`}>
+              <div className={`flex flex-1 min-h-0 ${isHorizontalLayout ? 'flex-row' : 'flex-col'}`}>
                 {/* Text Section */}
-                <div className={`${isPortrait ? 'flex-none h-[45%]' : 'flex-none w-[45%]'} flex items-center justify-center`}>
+                <div className={`${isHorizontalLayout ? 'w-[45%] flex-none' : 'flex-none h-[45%]'} flex items-center justify-center p-6`}>
                   <StoryText
                     title={story.title}
                     text={currentPage?.text || ""}
@@ -92,7 +89,7 @@ const TabletStoryViewer = ({
                 </div>
                 
                 {/* Visual Section */}
-                <div className={`${isPortrait ? 'flex-1' : 'flex-1'} flex items-center justify-center`}>
+                <div className={`${isHorizontalLayout ? 'flex-1' : 'flex-1'} flex items-center justify-center p-0`}>
                   <StoryVisual
                     coverUrl={currentPage?.image_url || ""}
                     title={story.title}
@@ -103,7 +100,7 @@ const TabletStoryViewer = ({
           </div>
 
           {/* Navigation Bar */}
-          <div className="flex items-center justify-between px-4 py-3 bg-white border-t border-gray-100 relative z-20 flex-none">
+          <div className="flex-none flex items-center justify-between px-4 py-3 bg-white border-t border-gray-100 relative z-20">
             {/* Back Button */}
             <Button
               onClick={goBack}

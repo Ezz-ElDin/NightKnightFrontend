@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, Download, Loader2, Fullscreen } from "lucide-react";
@@ -6,6 +7,7 @@ import StoryVisual from "@/components/story-viewer/StoryVisual";
 import EndPage from "@/components/story-viewer/EndPage";
 import { StoryDetails } from "@/lib/api";
 import { useFullscreen } from "@/hooks/useFullscreen";
+import { useResponsiveLayout } from "@/hooks/useResponsiveLayout";
 
 interface DesktopStoryViewerProps {
   story: StoryDetails;
@@ -34,7 +36,8 @@ const DesktopStoryViewer = ({
   handleExport,
   goBack
 }: DesktopStoryViewerProps) => {
-  const { isFullscreen, handleToggleFullscreen } = useFullscreen();
+  const { isFullscreen, containerRef, handleToggleFullscreen } = useFullscreen();
+  const { layoutType } = useResponsiveLayout();
 
   // Touch navigation handlers
   const handleLeftTap = () => {
@@ -47,10 +50,12 @@ const DesktopStoryViewer = ({
     }
   };
 
+  const isHorizontalLayout = layoutType === 'horizontal';
+
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="bg-white rounded-2xl shadow-lg overflow-hidden min-h-[calc(100vh-4rem)] relative">
+    <div ref={containerRef} className="min-h-screen bg-gray-50 py-8">
+      <div className="max-w-6xl mx-auto px-4 h-full">
+        <div className="bg-white rounded-2xl shadow-lg overflow-hidden min-h-[calc(100vh-4rem)] flex flex-col relative">
           {/* Touch Navigation Zones for touchscreen laptops */}
           <div 
             className="absolute left-0 top-0 w-1/3 h-full z-10 cursor-pointer"
@@ -64,15 +69,15 @@ const DesktopStoryViewer = ({
           />
 
           {/* Story Content */}
-          <div className="flex-1 flex flex-col">
+          <div className="flex-1 flex flex-col min-h-0">
             {isEndPage ? (
-              <div className="w-full min-h-[calc(100vh-8rem)] flex flex-col">
+              <div className="flex-1 flex items-center justify-center p-8">
                 <EndPage rtl={rtl} />
               </div>
             ) : (
-              <div className="flex flex-1 min-h-[calc(100vh-8rem)]">
-                {/* Text Section - Left Side (45%) */}
-                <div className="flex-none w-[45%] flex items-center justify-center p-8">
+              <div className={`flex flex-1 min-h-0 ${isHorizontalLayout ? 'flex-row' : 'flex-col'}`}>
+                {/* Text Section */}
+                <div className={`${isHorizontalLayout ? 'w-[45%] flex-none' : 'flex-none h-[45%]'} flex items-center justify-center p-8`}>
                   <StoryText
                     title={story.title}
                     text={currentPage?.text || ""}
@@ -81,8 +86,8 @@ const DesktopStoryViewer = ({
                   />
                 </div>
                 
-                {/* Visual Section - Right Side (55%) */}
-                <div className="flex-1 flex items-center justify-center p-0">
+                {/* Visual Section */}
+                <div className={`${isHorizontalLayout ? 'flex-1' : 'flex-1'} flex items-center justify-center p-0`}>
                   <StoryVisual
                     coverUrl={currentPage?.image_url || ""}
                     title={story.title}
@@ -93,7 +98,7 @@ const DesktopStoryViewer = ({
           </div>
 
           {/* Desktop Navigation Bar */}
-          <div className="flex items-center justify-between px-6 py-4 bg-white border-t border-gray-100 relative z-20">
+          <div className="flex-none flex items-center justify-between px-6 py-4 bg-white border-t border-gray-100 relative z-20">
             {/* Back Button - Left */}
             <Button
               onClick={goBack}
