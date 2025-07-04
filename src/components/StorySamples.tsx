@@ -90,7 +90,7 @@ const StorySamples = () => {
                             <Star className="h-5 w-5 fill-current" />
                             <Star className="h-5 w-5 fill-current" />
                           </div>
-                          <div className={`flex gap-2 ${story.isRTL ? 'mr-auto' : 'ml-auto'}`}>
+                          <div className={`flex gap-2 ${story.isRTL ? 'mr-auto flex-row-reverse' : 'ml-auto'}`}>
                             <span className="px-3 py-1 bg-story-green text-green-700 rounded-full text-xs font-semibold">
                               {story.theme}
                             </span>
