@@ -1,3 +1,4 @@
+
 import React, { useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -30,6 +31,17 @@ const MobileStoryViewer = () => {
   });
 
   const canExport = true;
+
+  // Touch navigation handlers
+  const handleLeftTap = () => {
+    setPage(prev => Math.max(0, prev - 1));
+  };
+
+  const handleRightTap = () => {
+    if (data && page < data.pages.length) {
+      setPage(prev => Math.min(data.pages.length, prev + 1));
+    }
+  };
 
   // Export functionality
   const handleExport = async () => {
@@ -121,7 +133,19 @@ const MobileStoryViewer = () => {
     <>
       <div className="min-h-screen bg-gray-50 px-4 py-6">
         <div className="max-w-md mx-auto">
-          <div className="bg-white rounded-2xl shadow-lg overflow-hidden min-h-[calc(100vh-3rem)]">
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden min-h-[calc(100vh-3rem)] relative">
+            {/* Touch Navigation Zones */}
+            <div 
+              className="absolute left-0 top-0 w-1/3 h-full z-10 cursor-pointer"
+              onClick={handleLeftTap}
+              aria-label="Previous page"
+            />
+            <div 
+              className="absolute right-0 top-0 w-1/3 h-full z-10 cursor-pointer"
+              onClick={handleRightTap}
+              aria-label="Next page"
+            />
+
             {/* Story Content */}
             <div className="flex-1 flex flex-col">
               {isEndPage ? (
@@ -175,7 +199,7 @@ const MobileStoryViewer = () => {
             </div>
 
             {/* Mobile Navigation Bar */}
-            <div className="flex items-center justify-between px-4 py-4 bg-white border-t border-gray-100">
+            <div className="flex items-center justify-between px-4 py-4 bg-white border-t border-gray-100 relative z-20">
               {/* Back Button - Left */}
               <Button
                 onClick={goBack}
@@ -190,7 +214,7 @@ const MobileStoryViewer = () => {
               {/* Navigation Arrows - Center */}
               <div className="flex items-center gap-4">
                 <Button
-                  onClick={() => setPage(Math.max(0, page - 1))}
+                  onClick={handleLeftTap}
                   variant="outline"
                   size="icon"
                   disabled={page === 0}
@@ -204,7 +228,7 @@ const MobileStoryViewer = () => {
                 </span>
                 
                 <Button
-                  onClick={() => setPage(Math.min(numPages - 1, page + 1))}
+                  onClick={handleRightTap}
                   variant="outline"
                   size="icon"
                   disabled={page >= numPages - 1}
