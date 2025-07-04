@@ -24,26 +24,26 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, isFavourite, onClick, onFa
         coverUrl={story.coverUrl}
         title={story.title}
         onMenuToggle={() => {}} // Not needed anymore
-      >
-        {/* Heart icon positioned in bottom-right corner */}
-        <button
-          className="absolute bottom-3 right-3 p-2 rounded-full bg-white/80 hover:bg-white transition-colors z-20"
-          onClick={handleFavoriteClick}
-          aria-label={isFavourite ? "Remove from favorites" : "Add to favorites"}
-        >
-          <Heart 
-            size={20} 
-            strokeWidth={2} 
-            fill={isFavourite ? "#f59e42" : "none"} 
-            color={isFavourite ? "#f59e42" : "#a093f4"} 
-          />
-        </button>
-      </StoryCardImage>
+      />
       
       <StoryCardContent
         title={story.title}
         createdAt={story.createdAt}
       />
+
+      {/* Heart icon positioned in bottom-right corner of the card, opposite to timestamp */}
+      <button
+        className="absolute bottom-4 right-4 p-2 rounded-full bg-white/80 hover:bg-white transition-colors z-20 shadow-sm"
+        onClick={handleFavoriteClick}
+        aria-label={isFavourite ? "Remove from favorites" : "Add to favorites"}
+      >
+        <Heart 
+          size={20} 
+          strokeWidth={2} 
+          fill={isFavourite ? "#f59e42" : "none"} 
+          color={isFavourite ? "#f59e42" : "#a093f4"} 
+        />
+      </button>
     </div>
   );
 };

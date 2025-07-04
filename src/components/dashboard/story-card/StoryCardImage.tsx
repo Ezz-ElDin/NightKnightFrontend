@@ -16,7 +16,6 @@ const StoryCardImage: React.FC<StoryCardImageProps> = ({
           className="w-full h-full object-cover"
         />
       )}
-      {children}
     </div>
   );
 };
