@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, Download, Loader2, Fullscreen } from "lucide-react";
 import StoryText from "@/components/story-viewer/StoryText";
@@ -40,6 +40,7 @@ const TabletStoryViewer = ({
 }: TabletStoryViewerProps) => {
   const { isFullscreen, containerRef, handleToggleFullscreen } = useFullscreen();
   const { layoutType } = useResponsiveLayout();
+  const [showNavigation, setShowNavigation] = useState(false);
 
   // Touch navigation handlers
   const handleLeftTap = () => {
@@ -58,6 +59,8 @@ const TabletStoryViewer = ({
     <div 
       ref={containerRef} 
       className={`${isFullscreen ? 'fixed inset-0 w-screen h-screen z-50 bg-black' : 'h-screen bg-gray-50 px-4 py-4'}`}
+      onMouseEnter={() => isFullscreen && setShowNavigation(true)}
+      onMouseLeave={() => isFullscreen && setShowNavigation(false)}
     >
       <div className={`${isFullscreen ? 'w-full h-full' : 'max-w-4xl mx-auto h-full'} flex flex-col`}>
         <div className={`${isFullscreen ? 'w-full h-full bg-white' : 'bg-white rounded-2xl shadow-lg'} overflow-hidden flex-1 flex flex-col relative`}>
@@ -103,10 +106,8 @@ const TabletStoryViewer = ({
           </div>
 
           {/* Navigation Bar */}
-          <div className={`flex-none flex items-center justify-between px-4 py-3 border-t border-gray-100 relative z-20 ${
-            isFullscreen 
-              ? 'bg-black/50 backdrop-blur-md border-white/10' 
-              : 'bg-white'
+          <div className={`flex-none flex items-center justify-between px-4 py-3 border-t border-gray-100 relative z-20 bg-white transition-opacity duration-300 ${
+            isFullscreen && !showNavigation ? 'opacity-0' : 'opacity-100'
           }`}>
             {/* Back Button */}
             <Button
@@ -114,10 +115,6 @@ const TabletStoryViewer = ({
               variant="outline"
               size="icon"
               aria-label="Back to library"
-              className={isFullscreen 
-                ? 'bg-white/20 border-white/30 text-white hover:bg-white/30 backdrop-blur-sm' 
-                : ''
-              }
             >
               <ArrowLeft className="h-4 w-4" />
             </Button>
@@ -130,15 +127,11 @@ const TabletStoryViewer = ({
                 size="icon"
                 disabled={page === 0}
                 aria-label="Previous Page"
-                className={isFullscreen 
-                  ? 'bg-white/20 border-white/30 text-white hover:bg-white/30 backdrop-blur-sm disabled:opacity-50 disabled:text-white/50 disabled:bg-white/10' 
-                  : ''
-                }
               >
                 <ArrowLeft className="h-4 w-4" />
               </Button>
               
-              <span className={`text-sm font-medium ${isFullscreen ? 'text-white' : 'text-muted-foreground'}`}>
+              <span className="text-sm font-medium text-muted-foreground">
                 {page + 1} / {numPages}
               </span>
               
@@ -148,10 +141,6 @@ const TabletStoryViewer = ({
                 size="icon"
                 disabled={page >= numPages - 1}
                 aria-label="Next Page"
-                className={isFullscreen 
-                  ? 'bg-white/20 border-white/30 text-white hover:bg-white/30 backdrop-blur-sm disabled:opacity-50 disabled:text-white/50 disabled:bg-white/10' 
-                  : ''
-                }
               >
                 <ArrowRight className="h-4 w-4" />
               </Button>
@@ -165,10 +154,7 @@ const TabletStoryViewer = ({
                   variant="outline"
                   size="icon"
                   disabled={isExporting}
-                  className={isFullscreen 
-                    ? 'bg-green-600/90 hover:bg-green-700/90 border-green-600/80 text-white backdrop-blur-sm' 
-                    : 'bg-story-green hover:bg-story-green/90 border-story-green text-white'
-                  }
+                  className="bg-story-green hover:bg-story-green/90 border-story-green text-white"
                 >
                   {isExporting ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -182,10 +168,6 @@ const TabletStoryViewer = ({
                 variant="outline"
                 size="icon"
                 aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
-                className={isFullscreen 
-                  ? 'bg-white/20 border-white/30 text-white hover:bg-white/30 backdrop-blur-sm' 
-                  : ''
-                }
               >
                 <Fullscreen className="h-4 w-4" />
               </Button>
