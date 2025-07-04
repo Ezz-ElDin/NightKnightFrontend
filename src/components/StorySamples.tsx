@@ -29,10 +29,10 @@ const StorySamples = () => {
       icon: <Sparkles className="h-5 w-5 text-story-orange" />
     },
     {
-      title: "Kapitän Leos Weltraumreise",
-      excerpt: "Kapitän Leo und sein treuer Roboterfreund Beep bereiteten sich auf ihr bisher größtes Abenteuer vor. Sie bestiegen ihr Raumschiff, um die Sterne zu erforschen und neue Planeten jenseits unserer Galaxie zu entdecken...",
-      theme: "Weltraum",
-      language: "Deutsch",
+      title: "مغامرة القائد ليو في الفضاء",
+      excerpt: "لقائد ليو وصاحبه الروبوت اللطيف بيب كانوا مستعدين لأعظم مغامرة في حياتهم! ركبوا سفينتهم الفضائية الجديدة، ومستنيين اللحظة اللي هيطيروا فيها وسط النجوم ويكتشفوا عوالم ما حدش شافها قبل كده....",
+      theme: "مغامرات الفضاء",
+      language: "عربي",
       imageUrl: "/images/space-journey.png",
       icon: <Rocket className="h-5 w-5 text-story-orange" />
     },
