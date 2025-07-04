@@ -53,9 +53,12 @@ const DesktopStoryViewer = ({
   const isHorizontalLayout = layoutType === 'horizontal';
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-6xl mx-auto px-4 h-full">
-        <div className="bg-white rounded-2xl shadow-lg overflow-hidden min-h-[calc(100vh-4rem)] flex flex-col relative">
+    <div 
+      ref={containerRef} 
+      className={`${isFullscreen ? 'fixed inset-0 w-screen h-screen z-50 bg-black' : 'min-h-screen bg-gray-50 py-8'}`}
+    >
+      <div className={`${isFullscreen ? 'w-full h-full' : 'max-w-6xl mx-auto px-4 h-full'}`}>
+        <div className={`${isFullscreen ? 'w-full h-full bg-white' : 'bg-white rounded-2xl shadow-lg min-h-[calc(100vh-4rem)]'} overflow-hidden flex flex-col relative`}>
           {/* Touch Navigation Zones for touchscreen laptops */}
           <div 
             className="absolute left-0 top-0 w-1/3 h-full z-10 cursor-pointer"
@@ -98,12 +101,12 @@ const DesktopStoryViewer = ({
           </div>
 
           {/* Desktop Navigation Bar */}
-          <div className="flex-none flex items-center justify-between px-6 py-4 bg-white border-t border-gray-100 relative z-20">
+          <div className={`flex-none flex items-center justify-between px-6 py-4 bg-white border-t border-gray-100 relative z-20 ${isFullscreen ? 'bg-black/80 backdrop-blur-sm text-white border-gray-600' : ''}`}>
             {/* Back Button - Left */}
             <Button
               onClick={goBack}
               variant="outline"
-              className="flex items-center gap-2"
+              className={`flex items-center gap-2 ${isFullscreen ? 'bg-white/10 hover:bg-white/20 border-white/20 text-white' : ''}`}
               aria-label="Back to library"
             >
               <ArrowLeft className="h-4 w-4" />
@@ -118,13 +121,13 @@ const DesktopStoryViewer = ({
                 size="lg"
                 disabled={page === 0}
                 aria-label="Previous Page"
-                className="flex items-center gap-2"
+                className={`flex items-center gap-2 ${isFullscreen ? 'bg-white/10 hover:bg-white/20 border-white/20 text-white disabled:opacity-50' : ''}`}
               >
                 <ArrowLeft className="h-4 w-4" />
                 Previous
               </Button>
               
-              <span className="text-lg font-medium text-muted-foreground px-4">
+              <span className={`text-lg font-medium px-4 ${isFullscreen ? 'text-white' : 'text-muted-foreground'}`}>
                 {page + 1} / {numPages}
               </span>
               
@@ -134,7 +137,7 @@ const DesktopStoryViewer = ({
                 size="lg"
                 disabled={page >= numPages - 1}
                 aria-label="Next Page"
-                className="flex items-center gap-2"
+                className={`flex items-center gap-2 ${isFullscreen ? 'bg-white/10 hover:bg-white/20 border-white/20 text-white disabled:opacity-50' : ''}`}
               >
                 Next
                 <ArrowRight className="h-4 w-4" />
@@ -148,7 +151,7 @@ const DesktopStoryViewer = ({
                   onClick={handleExport}
                   variant="outline"
                   disabled={isExporting}
-                  className="bg-story-green hover:bg-story-green/90 border-story-green text-white flex items-center gap-2"
+                  className={`flex items-center gap-2 ${isFullscreen ? 'bg-green-600/80 hover:bg-green-600/90 border-green-600 text-white' : 'bg-story-green hover:bg-story-green/90 border-story-green text-white'}`}
                 >
                   {isExporting ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -161,7 +164,7 @@ const DesktopStoryViewer = ({
               <Button
                 onClick={handleToggleFullscreen}
                 variant="outline"
-                className="flex items-center gap-2"
+                className={`flex items-center gap-2 ${isFullscreen ? 'bg-white/10 hover:bg-white/20 border-white/20 text-white' : ''}`}
                 aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
               >
                 <Fullscreen className="h-4 w-4" />

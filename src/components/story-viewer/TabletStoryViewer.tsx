@@ -55,9 +55,12 @@ const TabletStoryViewer = ({
   const isHorizontalLayout = layoutType === 'horizontal';
 
   return (
-    <div ref={containerRef} className="h-screen bg-gray-50 px-4 py-4">
-      <div className="max-w-4xl mx-auto h-full flex flex-col">
-        <div className="bg-white rounded-2xl shadow-lg overflow-hidden flex-1 flex flex-col relative">
+    <div 
+      ref={containerRef} 
+      className={`${isFullscreen ? 'fixed inset-0 w-screen h-screen z-50 bg-black' : 'h-screen bg-gray-50 px-4 py-4'}`}
+    >
+      <div className={`${isFullscreen ? 'w-full h-full' : 'max-w-4xl mx-auto h-full'} flex flex-col`}>
+        <div className={`${isFullscreen ? 'w-full h-full bg-white' : 'bg-white rounded-2xl shadow-lg'} overflow-hidden flex-1 flex flex-col relative`}>
           {/* Touch Navigation Zones */}
           <div 
             className="absolute left-0 top-0 w-1/3 h-full z-10 cursor-pointer"
@@ -100,13 +103,14 @@ const TabletStoryViewer = ({
           </div>
 
           {/* Navigation Bar */}
-          <div className="flex-none flex items-center justify-between px-4 py-3 bg-white border-t border-gray-100 relative z-20">
+          <div className={`flex-none flex items-center justify-between px-4 py-3 bg-white border-t border-gray-100 relative z-20 ${isFullscreen ? 'bg-black/80 backdrop-blur-sm text-white border-gray-600' : ''}`}>
             {/* Back Button */}
             <Button
               onClick={goBack}
               variant="outline"
               size="icon"
               aria-label="Back to library"
+              className={isFullscreen ? 'bg-white/10 hover:bg-white/20 border-white/20 text-white' : ''}
             >
               <ArrowLeft className="h-4 w-4" />
             </Button>
@@ -119,11 +123,12 @@ const TabletStoryViewer = ({
                 size="icon"
                 disabled={page === 0}
                 aria-label="Previous Page"
+                className={isFullscreen ? 'bg-white/10 hover:bg-white/20 border-white/20 text-white disabled:opacity-50' : ''}
               >
                 <ArrowLeft className="h-4 w-4" />
               </Button>
               
-              <span className="text-sm font-medium text-muted-foreground">
+              <span className={`text-sm font-medium ${isFullscreen ? 'text-white' : 'text-muted-foreground'}`}>
                 {page + 1} / {numPages}
               </span>
               
@@ -133,6 +138,7 @@ const TabletStoryViewer = ({
                 size="icon"
                 disabled={page >= numPages - 1}
                 aria-label="Next Page"
+                className={isFullscreen ? 'bg-white/10 hover:bg-white/20 border-white/20 text-white disabled:opacity-50' : ''}
               >
                 <ArrowRight className="h-4 w-4" />
               </Button>
@@ -146,7 +152,7 @@ const TabletStoryViewer = ({
                   variant="outline"
                   size="icon"
                   disabled={isExporting}
-                  className="bg-story-green hover:bg-story-green/90 border-story-green text-white"
+                  className={isFullscreen ? 'bg-green-600/80 hover:bg-green-600/90 border-green-600 text-white' : 'bg-story-green hover:bg-story-green/90 border-story-green text-white'}
                 >
                   {isExporting ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -160,6 +166,7 @@ const TabletStoryViewer = ({
                 variant="outline"
                 size="icon"
                 aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+                className={isFullscreen ? 'bg-white/10 hover:bg-white/20 border-white/20 text-white' : ''}
               >
                 <Fullscreen className="h-4 w-4" />
               </Button>
