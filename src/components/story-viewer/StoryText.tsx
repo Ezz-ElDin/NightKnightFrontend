@@ -26,7 +26,7 @@ const StoryText: React.FC<StoryTextProps> = ({ title, text, page, rtl }) => {
           {title}
         </h3>
       ) : (
-        <p className="text-lg md:text-xl mt-0" style={{ wordBreak: "break-word" }}>
+        <p className="text-lg md:text-xl mt-0 leading-relaxed" style={{ wordBreak: "break-word", lineHeight: "1.8" }}>
           {text}
         </p>
       )}
