@@ -8,10 +8,10 @@ export const useFullscreen = () => {
   const handleToggleFullscreen = async () => {
     try {
       if (!document.fullscreenElement) {
-        // Enter fullscreen with immersive options
+        // Enter fullscreen
         if (containerRef.current) {
           if (containerRef.current.requestFullscreen) {
-            await containerRef.current.requestFullscreen({ navigationUI: "hide" });
+            await containerRef.current.requestFullscreen();
           } else if ((containerRef.current as any).webkitRequestFullscreen) {
             await (containerRef.current as any).webkitRequestFullscreen();
           } else if ((containerRef.current as any).msRequestFullscreen) {
@@ -35,58 +35,7 @@ export const useFullscreen = () => {
 
   useEffect(() => {
     const handleFullscreenChange = () => {
-      const isCurrentlyFullscreen = !!document.fullscreenElement;
-      setIsFullscreen(isCurrentlyFullscreen);
-      
-      // Add/remove immersive fullscreen styles
-      if (isCurrentlyFullscreen && containerRef.current) {
-        containerRef.current.style.width = '100vw';
-        containerRef.current.style.height = '100vh';
-        containerRef.current.style.position = 'fixed';
-        containerRef.current.style.top = '0';
-        containerRef.current.style.left = '0';
-        containerRef.current.style.zIndex = '9999';
-        containerRef.current.style.background = '#f9fafb';
-        // Hide cursor after inactivity
-        let cursorTimeout: NodeJS.Timeout;
-        const hideCursor = () => {
-          if (containerRef.current) {
-            containerRef.current.style.cursor = 'none';
-          }
-        };
-        const showCursor = () => {
-          if (containerRef.current) {
-            containerRef.current.style.cursor = 'default';
-          }
-          clearTimeout(cursorTimeout);
-          cursorTimeout = setTimeout(hideCursor, 3000);
-        };
-        
-        containerRef.current.addEventListener('mousemove', showCursor);
-        containerRef.current.addEventListener('mousedown', showCursor);
-        cursorTimeout = setTimeout(hideCursor, 3000);
-        
-        // Store cleanup function
-        (containerRef.current as any)._fullscreenCleanup = () => {
-          containerRef.current?.removeEventListener('mousemove', showCursor);
-          containerRef.current?.removeEventListener('mousedown', showCursor);
-          clearTimeout(cursorTimeout);
-        };
-      } else if (containerRef.current) {
-        // Clean up fullscreen styles
-        if ((containerRef.current as any)._fullscreenCleanup) {
-          (containerRef.current as any)._fullscreenCleanup();
-          delete (containerRef.current as any)._fullscreenCleanup;
-        }
-        containerRef.current.style.width = '';
-        containerRef.current.style.height = '';
-        containerRef.current.style.position = '';
-        containerRef.current.style.top = '';
-        containerRef.current.style.left = '';
-        containerRef.current.style.zIndex = '';
-        containerRef.current.style.background = '';
-        containerRef.current.style.cursor = '';
-      }
+      setIsFullscreen(!!document.fullscreenElement);
     };
 
     // Add listeners for different browsers

@@ -55,10 +55,7 @@ const TabletStoryViewer = ({
   const isHorizontalLayout = layoutType === 'horizontal';
 
   return (
-    <div 
-      ref={containerRef} 
-      className={`${isFullscreen ? 'w-screen h-screen fixed inset-0 z-[9999]' : 'h-screen'} bg-gray-50 px-4 py-4`}
-    >
+    <div ref={containerRef} className="h-screen bg-gray-50 px-4 py-4">
       <div className="max-w-4xl mx-auto h-full flex flex-col">
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden flex-1 flex flex-col relative">
           {/* Touch Navigation Zones */}
@@ -102,8 +99,8 @@ const TabletStoryViewer = ({
             )}
           </div>
 
-          {/* Navigation Bar - Fade in fullscreen */}
-          <div className={`flex-none flex items-center justify-between px-4 py-3 bg-white border-t border-gray-100 relative z-20 transition-opacity duration-300 ${isFullscreen ? 'opacity-0 hover:opacity-100' : 'opacity-100'}`}>
+          {/* Navigation Bar */}
+          <div className="flex-none flex items-center justify-between px-4 py-3 bg-white border-t border-gray-100 relative z-20">
             {/* Back Button */}
             <Button
               onClick={goBack}
