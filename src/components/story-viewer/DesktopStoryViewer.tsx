@@ -101,12 +101,16 @@ const DesktopStoryViewer = ({
           </div>
 
           {/* Desktop Navigation Bar */}
-          <div className={`flex-none flex items-center justify-between px-6 py-4 bg-white border-t border-gray-100 relative z-20 ${isFullscreen ? 'bg-black/80 backdrop-blur-sm text-white border-gray-600' : ''}`}>
+          <div className={`flex-none flex items-center justify-between px-6 py-4 border-t border-gray-100 relative z-20 ${
+            isFullscreen 
+              ? 'bg-black/90 backdrop-blur-sm text-white border-gray-600' 
+              : 'bg-white'
+          }`}>
             {/* Back Button - Left */}
             <Button
               onClick={goBack}
               variant="outline"
-              className={`flex items-center gap-2 ${isFullscreen ? 'bg-white/10 hover:bg-white/20 border-white/20 text-white' : ''}`}
+              className={`flex items-center gap-2 ${isFullscreen ? 'border-white/30 text-white hover:bg-white/10' : ''}`}
               aria-label="Back to library"
             >
               <ArrowLeft className="h-4 w-4" />
@@ -121,7 +125,7 @@ const DesktopStoryViewer = ({
                 size="lg"
                 disabled={page === 0}
                 aria-label="Previous Page"
-                className={`flex items-center gap-2 ${isFullscreen ? 'bg-white/10 hover:bg-white/20 border-white/20 text-white disabled:opacity-50' : ''}`}
+                className={`flex items-center gap-2 ${isFullscreen ? 'border-white/30 text-white hover:bg-white/10 disabled:opacity-50 disabled:text-white/50' : ''}`}
               >
                 <ArrowLeft className="h-4 w-4" />
                 Previous
@@ -137,7 +141,7 @@ const DesktopStoryViewer = ({
                 size="lg"
                 disabled={page >= numPages - 1}
                 aria-label="Next Page"
-                className={`flex items-center gap-2 ${isFullscreen ? 'bg-white/10 hover:bg-white/20 border-white/20 text-white disabled:opacity-50' : ''}`}
+                className={`flex items-center gap-2 ${isFullscreen ? 'border-white/30 text-white hover:bg-white/10 disabled:opacity-50 disabled:text-white/50' : ''}`}
               >
                 Next
                 <ArrowRight className="h-4 w-4" />
@@ -151,7 +155,10 @@ const DesktopStoryViewer = ({
                   onClick={handleExport}
                   variant="outline"
                   disabled={isExporting}
-                  className={`flex items-center gap-2 ${isFullscreen ? 'bg-green-600/80 hover:bg-green-600/90 border-green-600 text-white' : 'bg-story-green hover:bg-story-green/90 border-story-green text-white'}`}
+                  className={`flex items-center gap-2 ${isFullscreen 
+                    ? 'bg-green-600 hover:bg-green-700 border-green-600 text-white' 
+                    : 'bg-story-green hover:bg-story-green/90 border-story-green text-white'
+                  }`}
                 >
                   {isExporting ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -164,7 +171,7 @@ const DesktopStoryViewer = ({
               <Button
                 onClick={handleToggleFullscreen}
                 variant="outline"
-                className={`flex items-center gap-2 ${isFullscreen ? 'bg-white/10 hover:bg-white/20 border-white/20 text-white' : ''}`}
+                className={`flex items-center gap-2 ${isFullscreen ? 'border-white/30 text-white hover:bg-white/10' : ''}`}
                 aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
               >
                 <Fullscreen className="h-4 w-4" />
