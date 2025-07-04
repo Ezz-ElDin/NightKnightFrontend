@@ -53,7 +53,10 @@ const DesktopStoryViewer = ({
   const isHorizontalLayout = layoutType === 'horizontal';
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-gray-50 py-8">
+    <div 
+      ref={containerRef} 
+      className={`${isFullscreen ? 'w-screen h-screen fixed inset-0 z-[9999]' : 'min-h-screen'} bg-gray-50 py-8`}
+    >
       <div className="max-w-6xl mx-auto px-4 h-full">
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden min-h-[calc(100vh-4rem)] flex flex-col relative">
           {/* Touch Navigation Zones for touchscreen laptops */}
@@ -97,8 +100,8 @@ const DesktopStoryViewer = ({
             )}
           </div>
 
-          {/* Desktop Navigation Bar */}
-          <div className="flex-none flex items-center justify-between px-6 py-4 bg-white border-t border-gray-100 relative z-20">
+          {/* Desktop Navigation Bar - Enhanced for fullscreen */}
+          <div className={`flex-none flex items-center justify-between px-6 py-4 bg-white border-t border-gray-100 relative z-20 transition-opacity duration-300 ${isFullscreen ? 'opacity-0 hover:opacity-100' : 'opacity-100'}`}>
             {/* Back Button - Left */}
             <Button
               onClick={goBack}
