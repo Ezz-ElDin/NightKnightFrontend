@@ -44,8 +44,10 @@ class StoryExportService {
     const coverImage = story.pages[0]?.image_url;
     if (coverImage) {
       try {
-        const image = await this.loadImage(coverImage);
-        this.fitImageToRightSection(doc, image, this.MARGIN * 2 + this.SECTION_WIDTH, this.MARGIN);
+        const imageDataUrl = await this.loadImageAsDataUrl(coverImage);
+        if (imageDataUrl) {
+          this.addImageToPDF(doc, imageDataUrl, this.MARGIN * 2 + this.SECTION_WIDTH, this.MARGIN);
+        }
       } catch (error) {
         console.error('Failed to load cover image:', error);
       }
@@ -78,8 +80,10 @@ class StoryExportService {
     // Right section - Image
     if (page.image_url) {
       try {
-        const image = await this.loadImage(page.image_url);
-        this.fitImageToRightSection(doc, image, this.MARGIN * 2 + this.SECTION_WIDTH, this.MARGIN);
+        const imageDataUrl = await this.loadImageAsDataUrl(page.image_url);
+        if (imageDataUrl) {
+          this.addImageToPDF(doc, imageDataUrl, this.MARGIN * 2 + this.SECTION_WIDTH, this.MARGIN);
+        }
       } catch (error) {
         console.error('Failed to load page image:', error);
       }
@@ -104,21 +108,64 @@ class StoryExportService {
     doc.setTextColor(0, 0, 0);
   }
 
+  private async loadImageAsDataUrl(url: string): Promise<string | null> {
+    try {
+      console.log('Loading image:', url);
+      
+      // First, try to load the image normally
+      const img = await this.loadImage(url);
+      
+      // Create a canvas to convert image to data URL
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      
+      if (!ctx) {
+        throw new Error('Could not get canvas context');
+      }
+      
+      // Set canvas dimensions to match image
+      canvas.width = img.naturalWidth || img.width;
+      canvas.height = img.naturalHeight || img.height;
+      
+      // Draw image to canvas
+      ctx.drawImage(img, 0, 0);
+      
+      // Convert to data URL
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+      console.log('Successfully converted image to data URL');
+      
+      return dataUrl;
+    } catch (error) {
+      console.error('Failed to load image as data URL:', url, error);
+      return null;
+    }
+  }
+
   private loadImage(url: string): Promise<HTMLImageElement> {
     return new Promise((resolve, reject) => {
       const img = new Image();
       
-      // Remove crossOrigin to avoid CORS issues
-      // img.crossOrigin = 'anonymous';
+      // Try with crossOrigin first, then without if it fails
+      img.crossOrigin = 'anonymous';
       
       img.onload = () => {
         console.log('Image loaded successfully:', url);
         resolve(img);
       };
       
-      img.onerror = (error) => {
-        console.error('Failed to load image:', url, error);
-        reject(error);
+      img.onerror = () => {
+        console.log('Retrying image load without crossOrigin:', url);
+        // Retry without crossOrigin
+        const img2 = new Image();
+        img2.onload = () => {
+          console.log('Image loaded successfully (no CORS):', url);
+          resolve(img2);
+        };
+        img2.onerror = (error) => {
+          console.error('Failed to load image:', url, error);
+          reject(error);
+        };
+        img2.src = url;
       };
       
       // Add a timeout to prevent hanging
@@ -127,37 +174,45 @@ class StoryExportService {
           console.error('Image loading timeout:', url);
           reject(new Error('Image loading timeout'));
         }
-      }, 10000); // 10 second timeout
+      }, 15000); // 15 second timeout
       
       img.src = url;
     });
   }
 
-  private fitImageToRightSection(doc: jsPDF, image: HTMLImageElement, x: number, y: number): void {
+  private addImageToPDF(doc: jsPDF, imageDataUrl: string, x: number, y: number): void {
     const maxWidth = this.SECTION_WIDTH;
     const maxHeight = this.PAGE_HEIGHT - 2 * this.MARGIN;
     
-    const imgRatio = image.width / image.height;
-    const maxRatio = maxWidth / maxHeight;
-    
-    let width, height;
-    
-    if (imgRatio > maxRatio) {
-      // Image is wider, fit to width and fill as much height as possible
-      width = maxWidth;
-      height = maxWidth / imgRatio;
-    } else {
-      // Image is taller, fit to height and fill as much width as possible
-      height = maxHeight;
-      width = maxHeight * imgRatio;
+    try {
+      // Get image dimensions from data URL
+      const img = new Image();
+      img.src = imageDataUrl;
+      
+      const imgRatio = img.width / img.height;
+      const maxRatio = maxWidth / maxHeight;
+      
+      let width, height;
+      
+      if (imgRatio > maxRatio) {
+        // Image is wider, fit to width
+        width = maxWidth;
+        height = maxWidth / imgRatio;
+      } else {
+        // Image is taller, fit to height
+        height = maxHeight;
+        width = maxHeight * imgRatio;
+      }
+      
+      // Center the image in the right section
+      const finalX = x + (maxWidth - width) / 2;
+      const finalY = y + (maxHeight - height) / 2;
+      
+      console.log('Adding image to PDF:', { width, height, finalX, finalY });
+      doc.addImage(imageDataUrl, 'JPEG', finalX, finalY, width, height);
+    } catch (error) {
+      console.error('Failed to add image to PDF:', error);
     }
-    
-    // Center the image in the right section
-    const finalX = x + (maxWidth - width) / 2;
-    const finalY = y + (maxHeight - height) / 2;
-    
-    console.log('Adding image to PDF:', { width, height, finalX, finalY });
-    doc.addImage(image, 'JPEG', finalX, finalY, width, height);
   }
 }
 
