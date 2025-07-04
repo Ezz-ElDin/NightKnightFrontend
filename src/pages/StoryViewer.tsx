@@ -15,6 +15,7 @@ const StoryViewer = () => {
     setShowComingSoonDialog,
     isExporting,
     isMobile,
+    isIPadPortrait,
     
     // Data
     story,
@@ -31,8 +32,8 @@ const StoryViewer = () => {
     goBack
   } = useStoryViewer();
 
-  // Render mobile version if on mobile
-  if (isMobile) {
+  // Render mobile version if on mobile or iPad in portrait orientation
+  if (isMobile || isIPadPortrait) {
     return <MobileStoryViewer />;
   }
 

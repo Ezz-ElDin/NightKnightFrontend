@@ -8,6 +8,10 @@ import { useToast } from '@/hooks/use-toast';
 
 const isArabic = (text: string) => /[\u0600-\u06FF]/.test(text);
 
+const isIPad = () => {
+  return /iPad|Macintosh/.test(navigator.userAgent) && 'ontouchend' in document;
+};
+
 export const useStoryViewer = () => {
   const navigate = useNavigate();
   const { storyId } = useParams<{ storyId?: string }>();
@@ -15,14 +19,23 @@ export const useStoryViewer = () => {
   const [showComingSoonDialog, setShowComingSoonDialog] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isIPadPortrait, setIsIPadPortrait] = useState(false);
   const { toast } = useToast();
 
-  // Listen for window resize to detect mobile
+  // Listen for window resize to detect mobile and iPad orientation
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      const mobile = width < 768;
+      const iPad = isIPad();
+      const iPadPortrait = iPad && height > width;
+      
+      setIsMobile(mobile);
+      setIsIPadPortrait(iPadPortrait);
     };
 
+    handleResize(); // Check initial state
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -97,6 +110,7 @@ export const useStoryViewer = () => {
     setShowComingSoonDialog,
     isExporting,
     isMobile,
+    isIPadPortrait,
     
     // Data
     story,
