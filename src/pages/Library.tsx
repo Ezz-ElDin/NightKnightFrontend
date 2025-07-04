@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Star, CreditCard } from "lucide-react";
@@ -94,9 +93,14 @@ const Library = () => {
     (page - 1) * STORIES_PER_PAGE,
     page * STORIES_PER_PAGE
   );
+  
   const goToPage = (p: number) => {
     setPage(p);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Scroll to Recent Stories section instead of top
+    const recentStoriesElement = document.querySelector('[data-section="recent-stories"]');
+    if (recentStoriesElement) {
+      recentStoriesElement.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   const toggleFavourite = (id: number, isFav: boolean) => {
@@ -196,14 +200,16 @@ const Library = () => {
             onDelete={(id) => setDeleteDialog({ open: true, storyId: id })}
           />
           
-          <StoryGallery
-            stories={pagedStories}
-            isLoading={isLoading}
-            showFavourites={false}
-            onStoryClick={handleStoryClick}
-            onFavourite={toggleFavourite}
-            onDelete={(id) => setDeleteDialog({ open: true, storyId: id })}
-          />
+          <div data-section="recent-stories">
+            <StoryGallery
+              stories={pagedStories}
+              isLoading={isLoading}
+              showFavourites={false}
+              onStoryClick={handleStoryClick}
+              onFavourite={toggleFavourite}
+              onDelete={(id) => setDeleteDialog({ open: true, storyId: id })}
+            />
+          </div>
           
           <PaginationNav totalPages={totalPages} page={page} goToPage={goToPage} />
         </div>
