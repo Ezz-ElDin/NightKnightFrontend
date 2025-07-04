@@ -58,7 +58,7 @@ const StoryViewer = () => {
   }
 
   // Render appropriate viewer based on device type
-  if (deviceInfo.isMobile) {
+  if (deviceInfo.deviceType === 'mobile') {
     return (
       <>
         <MobileStoryViewer
@@ -86,7 +86,7 @@ const StoryViewer = () => {
     );
   }
 
-  if (deviceInfo.isTablet) {
+  if (deviceInfo.deviceType === 'tablet') {
     return (
       <>
         <TabletStoryViewer
