@@ -1,6 +1,5 @@
-
 import StoryCard from "./StoryCard";
-import { BookOpen } from "lucide-react";
+import { BookOpen, Heart } from "lucide-react";
 
 interface Story {
   id: number;
@@ -39,8 +38,9 @@ const StoryGallery = ({
     <div>
       {showFavourites ? (
         <div className="mb-6 md:mb-9">
-          <h3 className="text-lg md:text-xl font-semibold text-amber-600 mb-2 md:mb-3 px-1">
-            ★ Favourite Stories
+          <h3 className="text-lg md:text-xl font-semibold text-amber-600 mb-2 md:mb-3 flex items-center gap-2 px-1">
+            <Heart className="h-5 w-5 md:h-6 md:w-6 text-amber-600" fill="currentColor" aria-hidden="true" />
+            Favourite Stories
           </h3>
         </div>
       ) : (

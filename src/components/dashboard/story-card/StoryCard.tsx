@@ -39,8 +39,8 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, isFavourite, onClick, onFa
       >
         <Heart
           className="w-5 h-5 transition-colors"
-          fill={isFavourite ? "#ef4444" : "transparent"}
-          stroke={isFavourite ? "#ef4444" : "#6b7280"}
+          fill={isFavourite ? "#d97706" : "transparent"}
+          stroke={isFavourite ? "#d97706" : "#6b7280"}
         />
       </button>
     </div>
