@@ -23,9 +23,9 @@ const StoryVisual: React.FC<StoryVisualProps> = ({ coverUrl, title }) => (
       <img
         src={coverUrl}
         alt={"Illustration for " + title}
-        className="w-full h-full object-cover"
+        className="w-full h-full"
         style={{
-          objectFit: "cover",
+          objectFit: "contain",
           borderRadius: "0",
         }}
       />
