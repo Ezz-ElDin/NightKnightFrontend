@@ -8,7 +8,7 @@ import EndPage from "@/components/story-viewer/EndPage";
 import { StoryDetails } from "@/lib/api";
 import { useFullscreen } from "@/hooks/useFullscreen";
 
-interface DesktopStoryViewerProps {
+interface TabletStoryViewerProps {
   story: StoryDetails;
   page: number;
   setPage: (page: number) => void;
@@ -20,9 +20,10 @@ interface DesktopStoryViewerProps {
   isExporting: boolean;
   handleExport: () => void;
   goBack: () => void;
+  isPortrait: boolean;
 }
 
-const DesktopStoryViewer = ({
+const TabletStoryViewer = ({
   story,
   page,
   setPage,
@@ -33,8 +34,9 @@ const DesktopStoryViewer = ({
   canExport,
   isExporting,
   handleExport,
-  goBack
-}: DesktopStoryViewerProps) => {
+  goBack,
+  isPortrait
+}: TabletStoryViewerProps) => {
   const { isFullscreen, toggleFullscreen } = useFullscreen();
 
   // Touch navigation handlers
@@ -48,11 +50,19 @@ const DesktopStoryViewer = ({
     }
   };
 
+  const containerClass = isPortrait 
+    ? "min-h-screen bg-gray-50 px-4 py-4" 
+    : "h-screen bg-gray-50 px-6 py-4";
+
+  const cardClass = isPortrait
+    ? "bg-white rounded-2xl shadow-lg overflow-hidden h-[calc(100vh-2rem)] relative"
+    : "bg-white rounded-2xl shadow-lg overflow-hidden h-[calc(100vh-2rem)] relative";
+
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="bg-white rounded-2xl shadow-lg overflow-hidden min-h-[calc(100vh-4rem)] relative">
-          {/* Touch Navigation Zones for touchscreen laptops */}
+    <div className={containerClass}>
+      <div className="max-w-4xl mx-auto h-full">
+        <div className={cardClass}>
+          {/* Touch Navigation Zones */}
           <div 
             className="absolute left-0 top-0 w-1/3 h-full z-10 cursor-pointer"
             onClick={handleLeftTap}
@@ -65,15 +75,15 @@ const DesktopStoryViewer = ({
           />
 
           {/* Story Content */}
-          <div className="flex-1 flex flex-col">
+          <div className="flex-1 flex flex-col h-full">
             {isEndPage ? (
-              <div className="w-full min-h-[calc(100vh-8rem)] flex flex-col">
+              <div className="w-full flex-1">
                 <EndPage rtl={rtl} />
               </div>
             ) : (
-              <div className="flex flex-1 min-h-[calc(100vh-8rem)]">
-                {/* Text Section - Left Side (45%) */}
-                <div className="flex-none w-[45%] flex items-center justify-center p-8">
+              <div className={`flex flex-1 ${isPortrait ? 'flex-col' : 'flex-row'}`}>
+                {/* Text Section */}
+                <div className={`${isPortrait ? 'flex-none h-[45%]' : 'flex-none w-[45%]'} flex items-center justify-center`}>
                   <StoryText
                     title={story.title}
                     text={currentPage?.text || ""}
@@ -82,8 +92,8 @@ const DesktopStoryViewer = ({
                   />
                 </div>
                 
-                {/* Visual Section - Right Side (55%) */}
-                <div className="flex-1 flex items-center justify-center p-0">
+                {/* Visual Section */}
+                <div className={`${isPortrait ? 'flex-1' : 'flex-1'} flex items-center justify-center`}>
                   <StoryVisual
                     coverUrl={currentPage?.image_url || ""}
                     title={story.title}
@@ -93,75 +103,69 @@ const DesktopStoryViewer = ({
             )}
           </div>
 
-          {/* Desktop Navigation Bar */}
-          <div className="flex items-center justify-between px-6 py-4 bg-white border-t border-gray-100 relative z-20">
-            {/* Back Button - Left */}
+          {/* Navigation Bar */}
+          <div className="flex items-center justify-between px-4 py-3 bg-white border-t border-gray-100 relative z-20 flex-none">
+            {/* Back Button */}
             <Button
               onClick={goBack}
               variant="outline"
-              className="flex items-center gap-2"
+              size="icon"
               aria-label="Back to library"
             >
               <ArrowLeft className="h-4 w-4" />
-              Back to Library
             </Button>
             
-            {/* Navigation Arrows - Center */}
-            <div className="flex items-center gap-6">
+            {/* Center Navigation */}
+            <div className="flex items-center gap-4">
               <Button
                 onClick={handleLeftTap}
                 variant="outline"
-                size="lg"
+                size="icon"
                 disabled={page === 0}
                 aria-label="Previous Page"
-                className="flex items-center gap-2"
               >
                 <ArrowLeft className="h-4 w-4" />
-                Previous
               </Button>
               
-              <span className="text-lg font-medium text-muted-foreground px-4">
+              <span className="text-sm font-medium text-muted-foreground">
                 {page + 1} / {numPages}
               </span>
               
               <Button
                 onClick={handleRightTap}
                 variant="outline"
-                size="lg"
+                size="icon"
                 disabled={page >= numPages - 1}
                 aria-label="Next Page"
-                className="flex items-center gap-2"
               >
-                Next
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </div>
             
-            {/* Action Buttons - Right */}
-            <div className="flex items-center gap-3">
+            {/* Right Actions */}
+            <div className="flex items-center gap-2">
               {canExport && (
                 <Button
                   onClick={handleExport}
                   variant="outline"
+                  size="icon"
                   disabled={isExporting}
-                  className="bg-story-green hover:bg-story-green/90 border-story-green text-white flex items-center gap-2"
+                  className="bg-story-green hover:bg-story-green/90 border-story-green text-white"
                 >
                   {isExporting ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
                     <Download className="h-4 w-4" />
                   )}
-                  Export
                 </Button>
               )}
               <Button
                 onClick={toggleFullscreen}
                 variant="outline"
-                className="flex items-center gap-2"
+                size="icon"
                 aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
               >
                 <Fullscreen className="h-4 w-4" />
-                {isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
               </Button>
             </div>
           </div>
@@ -171,4 +175,4 @@ const DesktopStoryViewer = ({
   );
 };
 
-export default DesktopStoryViewer;
+export default TabletStoryViewer;

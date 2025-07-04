@@ -8,8 +8,29 @@ import { useToast } from '@/hooks/use-toast';
 
 const isArabic = (text: string) => /[\u0600-\u06FF]/.test(text);
 
-const isIPad = () => {
-  return /iPad|Macintosh/.test(navigator.userAgent) && 'ontouchend' in document;
+const getDeviceType = () => {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  const userAgent = navigator.userAgent;
+  
+  // Check if it's a tablet
+  const isTablet = /iPad|Android(?!.*Mobile)|Tablet/.test(userAgent) || 
+                   (width >= 768 && width < 1024);
+  
+  // Check if it's mobile
+  const isMobile = width < 768 && !isTablet;
+  
+  // Check orientation
+  const isPortrait = height > width;
+  const isLandscape = width > height;
+  
+  return {
+    isMobile,
+    isTablet,
+    isDesktop: !isMobile && !isTablet,
+    isPortrait,
+    isLandscape
+  };
 };
 
 export const useStoryViewer = () => {
@@ -18,21 +39,13 @@ export const useStoryViewer = () => {
   const [page, setPage] = useState(0);
   const [showComingSoonDialog, setShowComingSoonDialog] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const [isIPadPortrait, setIsIPadPortrait] = useState(false);
+  const [deviceInfo, setDeviceInfo] = useState(getDeviceType());
   const { toast } = useToast();
 
-  // Listen for window resize to detect mobile and iPad orientation
+  // Listen for window resize to detect device type and orientation changes
   useEffect(() => {
     const handleResize = () => {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      const mobile = width < 768;
-      const iPad = isIPad();
-      const iPadPortrait = iPad && height > width;
-      
-      setIsMobile(mobile);
-      setIsIPadPortrait(iPadPortrait);
+      setDeviceInfo(getDeviceType());
     };
 
     handleResize(); // Check initial state
@@ -109,8 +122,7 @@ export const useStoryViewer = () => {
     showComingSoonDialog,
     setShowComingSoonDialog,
     isExporting,
-    isMobile,
-    isIPadPortrait,
+    deviceInfo,
     
     // Data
     story,

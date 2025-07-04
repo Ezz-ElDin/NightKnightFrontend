@@ -1,136 +1,62 @@
 
-import React, { useMemo, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { storiesApi, StoryDetails } from "@/lib/api";
-import { exportService } from "@/lib/exportService";
+import React from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, Download, Loader2 } from "lucide-react";
-import clsx from "clsx";
+import { ArrowLeft, ArrowRight, Download, Loader2, Fullscreen } from "lucide-react";
 import StoryText from "@/components/story-viewer/StoryText";
 import StoryVisual from "@/components/story-viewer/StoryVisual";
 import EndPage from "@/components/story-viewer/EndPage";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { useToast } from "@/hooks/use-toast";
+import { StoryDetails } from "@/lib/api";
+import { useFullscreen } from "@/hooks/useFullscreen";
 
-const isArabic = (text: string) => /[\u0600-\u06FF]/.test(text);
+interface MobileStoryViewerProps {
+  story: StoryDetails;
+  page: number;
+  setPage: (page: number) => void;
+  numPages: number;
+  currentPage: any;
+  isEndPage: boolean;
+  rtl: boolean;
+  canExport: boolean;
+  isExporting: boolean;
+  handleExport: () => void;
+  goBack: () => void;
+  isPortrait: boolean;
+  showComingSoonDialog: boolean;
+  setShowComingSoonDialog: (show: boolean) => void;
+}
 
-const MobileStoryViewer = () => {
-  const navigate = useNavigate();
-  const { storyId } = useParams<{ storyId?: string }>();
-  const [page, setPage] = useState(0);
-  const [showComingSoonDialog, setShowComingSoonDialog] = useState(false);
-  const [isExporting, setIsExporting] = useState(false);
-  const { toast } = useToast();
-
-  // Fetch story data via react-query
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['story', storyId],
-    queryFn: () => storiesApi.get(storyId!),
-    enabled: !!storyId
-  });
-
-  const canExport = true;
+const MobileStoryViewer = ({
+  story,
+  page,
+  setPage,
+  numPages,
+  currentPage,
+  isEndPage,
+  rtl,
+  canExport,
+  isExporting,
+  handleExport,
+  goBack,
+  isPortrait,
+  showComingSoonDialog,
+  setShowComingSoonDialog
+}: MobileStoryViewerProps) => {
+  const { isFullscreen, toggleFullscreen } = useFullscreen();
 
   // Touch navigation handlers
   const handleLeftTap = () => {
-    setPage(prev => Math.max(0, prev - 1));
+    setPage(Math.max(0, page - 1));
   };
 
   const handleRightTap = () => {
-    if (data && page < data.pages.length) {
-      setPage(prev => Math.min(data.pages.length, prev + 1));
+    if (page < story.pages.length) {
+      setPage(Math.min(story.pages.length, page + 1));
     }
   };
 
-  // Export functionality
-  const handleExport = async () => {
-    if (!data) return;
-    
-    if (data.language === 'egyptian_arabic') {
-      setShowComingSoonDialog(true);
-      return;
-    }
-    
-    setIsExporting(true);
-    try {
-      console.log('Exporting story:', data.story_title);
-      await exportService.exportStoryToPDF(data);
-      toast({
-        title: "Success!",
-        description: "Story exported successfully!",
-      });
-    } catch (error) {
-      console.error('Export failed:', error);
-      toast({
-        title: "Export Failed",
-        description: "Please try again later.",
-        variant: "destructive"
-      });
-    } finally {
-      setIsExporting(false);
-    }
-  };
-
-  // Keyboard navigation
-  React.useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") {
-        setPage(prev => Math.max(0, prev - 1));
-      } else if (e.key === "ArrowRight") {
-        if (data && page < data.pages.length) {
-          setPage(prev => Math.min(data.pages.length, prev + 1));
-        }
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [data, page]);
-
-  const goBack = () => navigate("/library");
-
-  if (isLoading) {
+  if (isPortrait) {
+    // Portrait Mode
     return (
-      <div className="min-h-screen bg-gray-50 px-4 py-8">
-        <div className="max-w-md mx-auto">
-          <div className="flex flex-col items-center justify-center min-h-[60vh]">
-            <h1 className="text-3xl font-bold text-primary mb-2">Loading Story...</h1>
-            <p className="text-lg text-muted-foreground mb-6">
-              Hold tight, preparing your adventure.
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (isError || !data) {
-    return (
-      <div className="min-h-screen bg-gray-50 px-4 py-8">
-        <div className="max-w-md mx-auto">
-          <div className="flex flex-col items-center justify-center min-h-[60vh]">
-            <h1 className="text-3xl font-bold text-primary mb-2">Story Not Found</h1>
-            <p className="text-lg text-muted-foreground mb-6">
-              Sorry, we couldn't find that story.
-            </p>
-            <Button onClick={goBack} variant="outline">
-              Back to Dashboard
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  const story: StoryDetails = data;
-  const numPages = story.pages.length + 1; // Add 1 for the "The End" page
-  const currentPage = page < story.pages.length ? story.pages[page] : null;
-  const isEndPage = page === story.pages.length;
-  const rtl = currentPage && (isArabic(story.title) || isArabic(currentPage.text));
-
-  return (
-    <>
       <div className="min-h-screen bg-gray-50 px-4 py-6">
         <div className="max-w-md mx-auto">
           <div className="bg-white rounded-2xl shadow-lg overflow-hidden min-h-[calc(100vh-3rem)] relative">
@@ -150,7 +76,6 @@ const MobileStoryViewer = () => {
             <div className="flex-1 flex flex-col">
               {isEndPage ? (
                 <div className="w-full min-h-[calc(100vh-8rem)] flex flex-col">
-                  {/* Full height image */}
                   <div className="w-full flex-1">
                     <div className="w-full h-full bg-[#fafafd] flex items-center justify-center p-0 m-0">
                       <div
@@ -177,8 +102,8 @@ const MobileStoryViewer = () => {
                 </div>
               ) : (
                 <>
-                  {/* Text Section - Top */}
-                  <div className="w-full">
+                  {/* Text Section - Top (45%) */}
+                  <div className="flex-none h-[45%]">
                     <StoryText
                       title={story.title}
                       text={currentPage?.text || ""}
@@ -187,8 +112,8 @@ const MobileStoryViewer = () => {
                     />
                   </div>
                   
-                  {/* Visual Section - Bottom */}
-                  <div className="w-full">
+                  {/* Visual Section - Bottom (55%) */}
+                  <div className="flex-1">
                     <StoryVisual
                       coverUrl={currentPage?.image_url || ""}
                       title={story.title}
@@ -200,15 +125,14 @@ const MobileStoryViewer = () => {
 
             {/* Mobile Navigation Bar */}
             <div className="flex items-center justify-between px-4 py-4 bg-white border-t border-gray-100 relative z-20">
-              {/* Back Button - Left */}
+              {/* Back Button - Left (Icon only) */}
               <Button
                 onClick={goBack}
                 variant="outline"
-                className="flex items-center gap-2"
+                size="icon"
                 aria-label="Back to library"
               >
                 <ArrowLeft className="h-4 w-4" />
-                Back
               </Button>
               
               {/* Navigation Arrows - Center */}
@@ -238,7 +162,7 @@ const MobileStoryViewer = () => {
                 </Button>
               </div>
               
-              {/* Export Button - Right */}
+              {/* Export Button - Right (Icon only) */}
               {canExport && (
                 <Button
                   onClick={handleExport}
@@ -259,32 +183,125 @@ const MobileStoryViewer = () => {
           </div>
         </div>
       </div>
+    );
+  } else {
+    // Landscape Mode - Fits entire screen
+    return (
+      <div className="h-screen bg-gray-50 px-4 py-4">
+        <div className="max-w-5xl mx-auto h-full">
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden h-full relative">
+            {/* Touch Navigation Zones */}
+            <div 
+              className="absolute left-0 top-0 w-1/3 h-full z-10 cursor-pointer"
+              onClick={handleLeftTap}
+              aria-label="Previous page"
+            />
+            <div 
+              className="absolute right-0 top-0 w-1/3 h-full z-10 cursor-pointer"
+              onClick={handleRightTap}
+              aria-label="Next page"
+            />
 
-      {/* Coming Soon Dialog */}
-      <Dialog open={showComingSoonDialog} onOpenChange={setShowComingSoonDialog}>
-        <DialogContent className="sm:max-w-lg max-w-sm mx-auto rounded-2xl">
-          <div className="flex flex-col items-center justify-center p-4 text-center">
-            <div className="w-12 h-12 bg-gradient-to-br from-story-green to-story-blue rounded-full flex items-center justify-center mb-3 animate-bounce">
-              <Download className="h-6 w-6 text-white" />
+            {/* Story Content */}
+            <div className="flex flex-col h-full">
+              {isEndPage ? (
+                <div className="flex-1">
+                  <EndPage rtl={rtl} />
+                </div>
+              ) : (
+                <div className="flex flex-1">
+                  {/* Text Section - Left (45%) */}
+                  <div className="flex-none w-[45%] flex items-center justify-center p-6">
+                    <StoryText
+                      title={story.title}
+                      text={currentPage?.text || ""}
+                      page={page}
+                      rtl={rtl}
+                    />
+                  </div>
+                  
+                  {/* Visual Section - Right (55%) */}
+                  <div className="flex-1 flex items-center justify-center p-0">
+                    <StoryVisual
+                      coverUrl={currentPage?.image_url || ""}
+                      title={story.title}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Mobile Landscape Navigation Bar */}
+              <div className="flex items-center justify-between px-4 py-3 bg-white border-t border-gray-100 relative z-20 flex-none">
+                {/* Back Button - Left (Icon only) */}
+                <Button
+                  onClick={goBack}
+                  variant="outline"
+                  size="icon"
+                  aria-label="Back to library"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                </Button>
+                
+                {/* Navigation Arrows - Center */}
+                <div className="flex items-center gap-4">
+                  <Button
+                    onClick={handleLeftTap}
+                    variant="outline"
+                    size="icon"
+                    disabled={page === 0}
+                    aria-label="Previous Page"
+                  >
+                    <ArrowLeft className="h-4 w-4" />
+                  </Button>
+                  
+                  <span className="text-sm font-medium text-muted-foreground">
+                    {page + 1} / {numPages}
+                  </span>
+                  
+                  <Button
+                    onClick={handleRightTap}
+                    variant="outline"
+                    size="icon"
+                    disabled={page >= numPages - 1}
+                    aria-label="Next Page"
+                  >
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </div>
+                
+                {/* Right Actions */}
+                <div className="flex items-center gap-2">
+                  {canExport && (
+                    <Button
+                      onClick={handleExport}
+                      variant="outline"
+                      size="icon"
+                      disabled={isExporting}
+                      className="bg-story-green hover:bg-story-green/90 border-story-green text-white"
+                    >
+                      {isExporting ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <Download className="h-4 w-4" />
+                      )}
+                    </Button>
+                  )}
+                  <Button
+                    onClick={toggleFullscreen}
+                    variant="outline"
+                    size="icon"
+                    aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+                  >
+                    <Fullscreen className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
             </div>
-            <h3 className="text-xl font-bold text-gray-800 mb-2">
-              🎉 Export Feature Coming Soon!
-            </h3>
-            <p className="text-gray-600 mb-4 text-sm">
-              We're working hard to bring you the export feature for Arabic stories. 
-              Stay tuned for this exciting update!
-            </p>
-            <Button 
-              onClick={() => setShowComingSoonDialog(false)}
-              className="bg-gradient-to-r from-story-green to-story-blue hover:from-story-green/90 hover:to-story-blue/90 text-white px-4 py-2 text-sm"
-            >
-              Got it! ✨
-            </Button>
           </div>
-        </DialogContent>
-      </Dialog>
-    </>
-  );
+        </div>
+      </div>
+    );
+  }
 };
 
 export default MobileStoryViewer;

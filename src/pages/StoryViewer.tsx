@@ -3,6 +3,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import MobileStoryViewer from "@/components/story-viewer/MobileStoryViewer";
 import DesktopStoryViewer from "@/components/story-viewer/DesktopStoryViewer";
+import TabletStoryViewer from "@/components/story-viewer/TabletStoryViewer";
 import ComingSoonDialog from "@/components/story-viewer/ComingSoonDialog";
 import { useStoryViewer } from "@/hooks/useStoryViewer";
 
@@ -14,8 +15,7 @@ const StoryViewer = () => {
     showComingSoonDialog,
     setShowComingSoonDialog,
     isExporting,
-    isMobile,
-    isIPadPortrait,
+    deviceInfo,
     
     // Data
     story,
@@ -31,11 +31,6 @@ const StoryViewer = () => {
     handleExport,
     goBack
   } = useStoryViewer();
-
-  // Render mobile version if on mobile or iPad in portrait orientation
-  if (isMobile || isIPadPortrait) {
-    return <MobileStoryViewer />;
-  }
 
   if (isLoading) {
     return (
@@ -62,6 +57,62 @@ const StoryViewer = () => {
     );
   }
 
+  // Render appropriate viewer based on device type
+  if (deviceInfo.isMobile) {
+    return (
+      <>
+        <MobileStoryViewer
+          story={story}
+          page={page}
+          setPage={setPage}
+          numPages={numPages}
+          currentPage={currentPage}
+          isEndPage={isEndPage}
+          rtl={rtl}
+          canExport={canExport}
+          isExporting={isExporting}
+          handleExport={handleExport}
+          goBack={goBack}
+          isPortrait={deviceInfo.isPortrait}
+          showComingSoonDialog={showComingSoonDialog}
+          setShowComingSoonDialog={setShowComingSoonDialog}
+        />
+
+        <ComingSoonDialog
+          open={showComingSoonDialog}
+          onOpenChange={setShowComingSoonDialog}
+        />
+      </>
+    );
+  }
+
+  if (deviceInfo.isTablet) {
+    return (
+      <>
+        <TabletStoryViewer
+          story={story}
+          page={page}
+          setPage={setPage}
+          numPages={numPages}
+          currentPage={currentPage}
+          isEndPage={isEndPage}
+          rtl={rtl}
+          canExport={canExport}
+          isExporting={isExporting}
+          handleExport={handleExport}
+          goBack={goBack}
+          isPortrait={deviceInfo.isPortrait}
+        />
+
+        <ComingSoonDialog
+          open={showComingSoonDialog}
+          onOpenChange={setShowComingSoonDialog}
+        />
+      </>
+    );
+  }
+
+  // Desktop viewer
   return (
     <>
       <DesktopStoryViewer
