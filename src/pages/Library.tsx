@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Star, CreditCard } from "lucide-react";
@@ -95,14 +96,7 @@ const Library = () => {
   );
   const goToPage = (p: number) => {
     setPage(p);
-    // Scroll to the stories section (favourite stories title)
-    const storiesSection = document.querySelector('h2[data-stories-section="true"]');
-    if (storiesSection) {
-      storiesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } else {
-      // Fallback to top if element not found
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const toggleFavourite = (id: number, isFav: boolean) => {
@@ -159,12 +153,7 @@ const Library = () => {
         {/* Mobile-optimized Stories Section */}
         <div className="mb-8 md:mb-12">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 md:mb-5 gap-3 sm:gap-0">
-            <h2 
-              className="text-xl md:text-2xl lg:text-3xl font-bold text-story-blue" 
-              data-stories-section="true"
-            >
-              My Stories
-            </h2>
+            <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-story-blue">My Stories</h2>
             <TooltipProvider delayDuration={0}>
               {hasCredits ? (
                 <Link to="/create-story" className="w-full sm:w-auto">
