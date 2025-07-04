@@ -1,9 +1,3 @@
-export interface StoryCardMenuProps {
-  isOpen: boolean;
-  onClose: (e: React.MouseEvent) => void;
-  isFavourite: boolean;
-  onFavourite?: () => void;
-}
 
 export interface StoryCardProps {
   story: {
@@ -21,8 +15,6 @@ export interface StoryCardProps {
 export interface StoryCardImageProps {
   coverUrl?: string;
   title: string;
-  onMenuToggle: (e: React.MouseEvent) => void;
-  children?: React.ReactNode;
 }
 
 export interface StoryCardContentProps {
