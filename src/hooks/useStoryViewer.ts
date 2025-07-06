@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -86,7 +87,7 @@ export const useStoryViewer = () => {
   const currentPage = story && page < story.pages.length ? story.pages[page] : null;
   const isEndPage = story && page === story.pages.length;
   const rtl = currentPage && story && (isArabic(story.title) || isArabic(currentPage.text));
-  const canExport = true;
+  const canExport = false;
 
   return {
     // State
