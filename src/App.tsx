@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -19,6 +18,7 @@ import AuthCallback from "./pages/AuthCallback";
 import WaitingList from "./pages/WaitingList";
 import RequireAuth from "./components/RequireAuth";
 import Library from "./pages/Library";
+import Email from "./pages/Email";
 
 // Create a new QueryClient instance
 const queryClient = new QueryClient();
@@ -39,6 +39,7 @@ const App = () => (
           <Route path="/generating-story/*" element={null} />
           <Route path="/reset-password" element={null} />
           <Route path="/forgot-password" element={null} />
+          <Route path="/email" element={null} />
           <Route path="*" element={<Navbar />} />
         </Routes>
         
@@ -52,6 +53,9 @@ const App = () => (
               {/* Password reset and forgot password routes (unprotected) */}
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
+              
+              {/* Email template route */}
+              <Route path="/email" element={<Email />} />
               
               {/* Protected routes without /a/ prefix */}
               <Route path="/library" element={
@@ -94,6 +98,9 @@ const App = () => (
               {/* Password reset and forgot password routes (unprotected) */}
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
+              
+              {/* Email template route */}
+              <Route path="/email" element={<Email />} />
               
               {/* Protected routes without /a/ prefix */}
               <Route path="/library" element={
