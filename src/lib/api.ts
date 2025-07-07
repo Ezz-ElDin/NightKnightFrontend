@@ -78,7 +78,7 @@ export interface CreditResponse {
 
 export interface StripeCheckoutRequest {
   quantity: number;
-  price_id: string;
+  price: string;
 }
 
 export interface StripeCheckoutResponse {

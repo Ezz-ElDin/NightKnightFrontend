@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -58,7 +57,7 @@ const BuyCredits = () => {
       
       const response = await stripeApi.createCheckout({
         quantity: creditCount[0],
-        price_id: 'price_1RiCwQLd6fD08lwAL13JCnup'
+        price: 'price_1RiCwQLd6fD08lwAL13JCnup'
       });
 
       if (response.success && response.data.location) {

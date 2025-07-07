@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
@@ -66,7 +65,7 @@ const PricingSlider = () => {
       
       const response = await stripeApi.createCheckout({
         quantity: storyCount[0],
-        price_id: 'price_1RiCwQLd6fD08lwAL13JCnup'
+        price: 'price_1RiCwQLd6fD08lwAL13JCnup'
       });
 
       if (response.success && response.data.location) {
