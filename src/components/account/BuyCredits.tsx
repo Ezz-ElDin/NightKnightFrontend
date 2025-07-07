@@ -43,7 +43,7 @@ const BuyCredits = () => {
   
   // Calculate price per credit
   const calculatePrice = (credits: number) => {
-    const pricePerCredit = currency === '£' ? 4.99 : 6.49;
+    const pricePerCredit = currency === '£' ? 4.99 : 6.99;
     return credits * pricePerCredit;
   };
 
@@ -117,7 +117,7 @@ const BuyCredits = () => {
               {currency}{currentPrice.toFixed(2)}
             </div>
             <p className="text-story-green font-bold text-lg">
-              {currency}{(currency === '£' ? 4.99 : 6.49).toFixed(2)} per story
+              {currency}{(currency === '£' ? 4.99 : 6.99).toFixed(2)} per story
             </p>
           </div>
         </div>

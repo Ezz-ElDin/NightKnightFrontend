@@ -50,7 +50,7 @@ const PricingSlider = () => {
 
   // Calculate price per story
   const calculatePrice = (stories: number) => {
-    const pricePerStory = currency === '£' ? 4.99 : 6.49;
+    const pricePerStory = currency === '£' ? 4.99 : 6.99;
     return stories * pricePerStory;
   };
 
@@ -130,7 +130,7 @@ const PricingSlider = () => {
                   {currency}{currentPrice.toFixed(2)}
                 </div>
                 <p className="text-story-green font-bold text-lg">
-                  {currency}{(currency === '£' ? 4.99 : 6.49).toFixed(2)} per story
+                  {currency}{(currency === '£' ? 4.99 : 6.99).toFixed(2)} per story
                 </p>
               </div>
             </div>
