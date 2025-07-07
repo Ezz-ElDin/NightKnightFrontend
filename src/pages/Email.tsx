@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Sparkles, Heart, BookOpen, Gift } from 'lucide-react';
+import { Sparkles, Heart, BookOpen, Gift, Star, Palette, Globe, Users } from 'lucide-react';
 import EmailStoryViewer from '@/components/email/EmailStoryViewer';
 
 const Email = () => {
@@ -120,28 +120,62 @@ const Email = () => {
                 </p>
               </div>
               
-              <div className="bg-story-yellow/20 rounded-2xl p-6 mb-8">
-                <div className="flex items-center justify-center gap-2 mb-3">
-                  <Heart className="w-5 h-5 text-story-purple" fill="currentColor" />
-                  <h3 className="text-xl font-bold text-story-purple">What Makes NightKnight Special?</h3>
-                  <Heart className="w-5 h-5 text-story-purple" fill="currentColor" />
+              {/* Redesigned Features Section */}
+              <div className="bg-gradient-to-br from-story-purple/10 via-story-blue/10 to-story-seafoam/10 rounded-3xl p-8 mb-8 border border-story-purple/20">
+                <div className="flex items-center justify-center gap-3 mb-6">
+                  <Star className="w-6 h-6 text-story-purple" fill="currentColor" />
+                  <h3 className="text-2xl font-bold text-story-purple font-ghibli">What Makes NightKnight Special?</h3>
+                  <Star className="w-6 h-6 text-story-purple" fill="currentColor" />
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-story-purple rounded-full"></div>
-                    <span>Personalized characters & themes</span>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 border border-story-purple/10">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="w-10 h-10 bg-story-purple/20 rounded-full flex items-center justify-center">
+                        <Users className="w-5 h-5 text-story-purple" />
+                      </div>
+                      <span className="font-semibold text-story-purple">Personalized Characters</span>
+                    </div>
+                    <p className="text-sm text-gray-600 pl-13">Create unique characters with custom names, appearances, and personalities</p>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-story-purple rounded-full"></div>
-                    <span>Beautiful AI-generated illustrations</span>
+                  
+                  <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 border border-story-blue/10">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="w-10 h-10 bg-story-blue/20 rounded-full flex items-center justify-center">
+                        <Palette className="w-5 h-5 text-story-blue" />
+                      </div>
+                      <span className="font-semibold text-story-blue">Beautiful Illustrations</span>
+                    </div>
+                    <p className="text-sm text-gray-600 pl-13">AI-generated artwork that brings every story to life with stunning visuals</p>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-story-purple rounded-full"></div>
-                    <span>Multiple languages supported</span>
+                  
+                  <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 border border-story-green/10">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="w-10 h-10 bg-story-green/20 rounded-full flex items-center justify-center">
+                        <Globe className="w-5 h-5 text-story-green" />
+                      </div>
+                      <span className="font-semibold text-story-green">Multiple Languages</span>
+                    </div>
+                    <p className="text-sm text-gray-600 pl-13">Stories available in various languages to share magic worldwide</p>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-story-purple rounded-full"></div>
-                    <span>Valuable life lessons woven in</span>
+                  
+                  <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 border border-story-teal/10">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="w-10 h-10 bg-story-teal/20 rounded-full flex items-center justify-center">
+                        <Heart className="w-5 h-5 text-story-teal" fill="currentColor" />
+                      </div>
+                      <span className="font-semibold text-story-teal">Life Lessons</span>
+                    </div>
+                    <p className="text-sm text-gray-600 pl-13">Meaningful stories that teach valuable lessons and positive values</p>
+                  </div>
+                </div>
+                
+                {/* Decorative elements */}
+                <div className="flex justify-center mt-6">
+                  <div className="flex gap-2">
+                    <div className="w-3 h-3 bg-story-purple/40 rounded-full animate-bounce-slow"></div>
+                    <div className="w-3 h-3 bg-story-blue/40 rounded-full animate-bounce-slow" style={{animationDelay: '0.2s'}}></div>
+                    <div className="w-3 h-3 bg-story-seafoam/40 rounded-full animate-bounce-slow" style={{animationDelay: '0.4s'}}></div>
                   </div>
                 </div>
               </div>
