@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -11,6 +9,27 @@ const Email = () => {
   const sampleStories = [
     {
       id: 1,
+      title: "The Dragon's Treasure",
+      coverUrl: "/images/dragon-treasure.png",
+      excerpt: "A young knight learns that the greatest treasure isn't gold or jewels, but the friendship of a lonely dragon who just wanted someone to talk to.",
+      theme: "Friendship",
+      pages: [
+        {
+          text: "A young knight learns that the greatest treasure isn't gold or jewels, but the friendship of a lonely dragon who just wanted someone to talk to.",
+          imageUrl: "/images/dragon-treasure.png"
+        },
+        {
+          text: "Sir Oliver climbs the mountain expecting to find gold, but instead discovers that Draco the dragon is just lonely and loves to read stories.",
+          imageUrl: "/images/dragon-treasure.png"
+        },
+        {
+          text: "From that day forward, Oliver visits Draco every week to share stories and tea, proving that the best treasures are the friends we make.",
+          imageUrl: "/images/dragon-treasure.png"
+        }
+      ]
+    },
+    {
+      id: 2,
       title: "The Magical Forest Adventure",
       coverUrl: "/images/magic-garden.png",
       excerpt: "Join Luna as she discovers a hidden world of talking animals and magical creatures in the enchanted forest behind her grandmother's house.",
@@ -31,44 +50,23 @@ const Email = () => {
       ]
     },
     {
-      id: 2,
-      title: "The Moon Kittens",
-      coverUrl: "/images/moon-kittens.png",
-      excerpt: "When the moon is full, special kittens with silver fur come down to Earth to help children have the most wonderful dreams.",
-      theme: "Fantasy",
-      pages: [
-        {
-          text: "When the moon is full, special kittens with silver fur come down to Earth to help children have the most wonderful dreams.",
-          imageUrl: "/images/moon-kittens.png"
-        },
-        {
-          text: "Little Stella discovers these magical kittens in her garden, their fur shimmering like starlight in the moonbeams.",
-          imageUrl: "/images/moon-kittens.png"
-        },
-        {
-          text: "The moon kittens teach Stella that dreams are the seeds of tomorrow's adventures, and every child's imagination is precious.",
-          imageUrl: "/images/moon-kittens.png"
-        }
-      ]
-    },
-    {
       id: 3,
-      title: "The Dragon's Treasure",
-      coverUrl: "/images/dragon-treasure.png",
-      excerpt: "A young knight learns that the greatest treasure isn't gold or jewels, but the friendship of a lonely dragon who just wanted someone to talk to.",
-      theme: "Friendship",
+      title: "مغامرة القائد ليو في الفضاء",
+      coverUrl: "/images/space-journey.png",
+      excerpt: "القائد ليو وصديقه الروبوت بيب يستعدان لأعظم مغامرة لهما حتى الآن. يصعدان إلى مركبتهما الفضائية لاستكشاف النجوم...",
+      theme: "مغامرة",
       pages: [
         {
-          text: "A young knight learns that the greatest treasure isn't gold or jewels, but the friendship of a lonely dragon who just wanted someone to talk to.",
-          imageUrl: "/images/dragon-treasure.png"
+          text: "القائد ليو وصديقه الروبوت بيب يستعدان لأعظم مغامرة لهما حتى الآن. يصعدان إلى مركبتهما الفضائية لاستكشاف النجوم...",
+          imageUrl: "/images/space-journey.png"
         },
         {
-          text: "Sir Oliver climbs the mountain expecting to find gold, but instead discovers that Draco the dragon is just lonely and loves to read stories.",
-          imageUrl: "/images/dragon-treasure.png"
+          text: "في الفضاء الواسع، يكتشف ليو وبيب كوكباً جديداً مليئاً بالمخلوقات الودودة والألوان الجميلة.",
+          imageUrl: "/images/space-journey.png"
         },
         {
-          text: "From that day forward, Oliver visits Draco every week to share stories and tea, proving that the best treasures are the friends we make.",
-          imageUrl: "/images/dragon-treasure.png"
+          text: "يتعلم ليو أن أعظم الاكتشافات تحدث عندما نكون شجعاناً ونساعد الآخرين، حتى لو كانوا مختلفين عنا.",
+          imageUrl: "/images/space-journey.png"
         }
       ]
     }
@@ -232,4 +230,3 @@ const Email = () => {
 };
 
 export default Email;
-
