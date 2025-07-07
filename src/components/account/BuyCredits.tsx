@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -40,14 +41,14 @@ const BuyCredits = () => {
     detectLocation();
   }, []);
   
-  // Calculate price per credit with limited time offer
+  // Calculate price per credit
   const calculatePrice = (credits: number) => {
-    const pricePerCredit = currency === '£' ? 2.50 : 3.25;
+    const pricePerCredit = currency === '£' ? 4.99 : 6.49;
     return credits * pricePerCredit;
   };
 
   const currentPrice = calculatePrice(creditCount[0]);
-  const totalStories = creditCount[0] + 1; // Adding 1 free story
+  const totalStories = creditCount[0];
   const isPlural = totalStories > 1;
 
   const handlePurchase = async () => {
@@ -93,7 +94,6 @@ const BuyCredits = () => {
               <span className="text-2xl text-gray-600">
                 {creditCount[0] > 1 ? 'stories' : 'story'}
               </span>
-              <span className="text-3xl font-bold text-story-green">+ 1 FREE</span>
             </div>
             <div className="bg-gradient-to-r from-story-yellow/20 to-story-green/20 rounded-full px-4 py-2 inline-block">
               <p className="text-lg font-semibold text-story-purple">
@@ -120,16 +120,8 @@ const BuyCredits = () => {
             <div className="text-5xl font-bold text-story-purple mb-2">
               {currency}{currentPrice.toFixed(2)}
             </div>
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <span className="text-gray-400 line-through text-lg">
-                {currency}5.00 per story
-              </span>
-              <Badge className="bg-story-yellow text-story-orange">
-                LIMITED TIME
-              </Badge>
-            </div>
             <p className="text-story-green font-bold text-lg">
-              Now only {currency}{(currency === '£' ? 2.50 : 3.25).toFixed(2)} per story
+              {currency}{(currency === '£' ? 4.99 : 6.49).toFixed(2)} per story
             </p>
           </div>
         </div>
