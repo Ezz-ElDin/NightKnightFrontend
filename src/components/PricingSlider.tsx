@@ -65,7 +65,8 @@ const PricingSlider = () => {
       console.log(`Creating checkout for ${storyCount[0]} stories`);
       
       const response = await stripeApi.createCheckout({
-        quantity: storyCount[0]
+        quantity: storyCount[0],
+        price_id: 'price_1RiCwQLd6fD08lwAL13JCnup'
       });
 
       if (response.success && response.data.location) {

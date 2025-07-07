@@ -57,7 +57,8 @@ const BuyCredits = () => {
       console.log(`Purchasing ${creditCount[0]} credits for ${currency}${currentPrice.toFixed(2)}`);
       
       const response = await stripeApi.createCheckout({
-        quantity: creditCount[0]
+        quantity: creditCount[0],
+        price_id: 'price_1RiCwQLd6fD08lwAL13JCnup'
       });
 
       if (response.success && response.data.location) {
