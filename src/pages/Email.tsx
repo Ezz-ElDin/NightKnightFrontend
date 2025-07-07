@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -220,7 +221,7 @@ const Email = () => {
               <div className="flex items-center justify-center gap-4 mt-4 text-xs text-gray-500">
                 <span>www.nightknight.app</span>
                 <span>•</span>
-                <span>hello@nightknight.app</span>
+                <span>fairy@nightknight.app</span>
               </div>
             </div>
           </div>
@@ -231,3 +232,4 @@ const Email = () => {
 };
 
 export default Email;
+
