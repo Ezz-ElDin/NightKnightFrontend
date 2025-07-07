@@ -84,7 +84,7 @@ const Email = () => {
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center relative">
                 <Book className="w-6 h-6 text-story-teal" />
-                <Sword className="absolute -top-1 -right-1 w-3 h-3 text-story-purple" />
+                <Sword className="absolute top-0 right-0 w-3 h-3 text-story-purple" />
               </div>
               <h1 className="text-3xl font-bold text-white font-ghibli">NightKnight</h1>
             </div>
