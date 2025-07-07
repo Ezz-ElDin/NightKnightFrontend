@@ -1,81 +1,60 @@
-
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Sparkles, Heart, BookOpen, Gift, Star, Palette, Globe, Users } from 'lucide-react';
 import EmailStoryViewer from '@/components/email/EmailStoryViewer';
-
 const Email = () => {
   // Sample story data for the email template with multiple pages
-  const sampleStories = [
-    {
-      id: 1,
-      title: "The Magical Forest Adventure",
-      coverUrl: "/images/magic-garden.png",
-      excerpt: "Join Luna as she discovers a hidden world of talking animals and magical creatures in the enchanted forest behind her grandmother's house.",
-      theme: "Adventure",
-      pages: [
-        {
-          text: "Join Luna as she discovers a hidden world of talking animals and magical creatures in the enchanted forest behind her grandmother's house.",
-          imageUrl: "/images/magic-garden.png"
-        },
-        {
-          text: "Deep in the forest, Luna meets Oliver the wise owl who tells her about the ancient magic that protects all woodland creatures.",
-          imageUrl: "/images/magic-garden.png"
-        },
-        {
-          text: "Together with her new friends, Luna learns that the greatest adventures happen when we help others and believe in ourselves.",
-          imageUrl: "/images/magic-garden.png"
-        }
-      ]
-    },
-    {
-      id: 2,
-      title: "The Moon Kittens",
-      coverUrl: "/images/moon-kittens.png",
-      excerpt: "When the moon is full, special kittens with silver fur come down to Earth to help children have the most wonderful dreams.",
-      theme: "Fantasy",
-      pages: [
-        {
-          text: "When the moon is full, special kittens with silver fur come down to Earth to help children have the most wonderful dreams.",
-          imageUrl: "/images/moon-kittens.png"
-        },
-        {
-          text: "Little Stella discovers these magical kittens in her garden, their fur shimmering like starlight in the moonbeams.",
-          imageUrl: "/images/moon-kittens.png"
-        },
-        {
-          text: "The moon kittens teach Stella that dreams are the seeds of tomorrow's adventures, and every child's imagination is precious.",
-          imageUrl: "/images/moon-kittens.png"
-        }
-      ]
-    },
-    {
-      id: 3,
-      title: "The Dragon's Treasure",
-      coverUrl: "/images/dragon-treasure.png",
-      excerpt: "A young knight learns that the greatest treasure isn't gold or jewels, but the friendship of a lonely dragon who just wanted someone to talk to.",
-      theme: "Friendship",
-      pages: [
-        {
-          text: "A young knight learns that the greatest treasure isn't gold or jewels, but the friendship of a lonely dragon who just wanted someone to talk to.",
-          imageUrl: "/images/dragon-treasure.png"
-        },
-        {
-          text: "Sir Oliver climbs the mountain expecting to find gold, but instead discovers that Draco the dragon is just lonely and loves to read stories.",
-          imageUrl: "/images/dragon-treasure.png"
-        },
-        {
-          text: "From that day forward, Oliver visits Draco every week to share stories and tea, proving that the best treasures are the friends we make.",
-          imageUrl: "/images/dragon-treasure.png"
-        }
-      ]
-    }
-  ];
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-story-lightPurple via-story-yellow/30 to-story-seafoam/50">
+  const sampleStories = [{
+    id: 1,
+    title: "The Magical Forest Adventure",
+    coverUrl: "/images/magic-garden.png",
+    excerpt: "Join Luna as she discovers a hidden world of talking animals and magical creatures in the enchanted forest behind her grandmother's house.",
+    theme: "Adventure",
+    pages: [{
+      text: "Join Luna as she discovers a hidden world of talking animals and magical creatures in the enchanted forest behind her grandmother's house.",
+      imageUrl: "/images/magic-garden.png"
+    }, {
+      text: "Deep in the forest, Luna meets Oliver the wise owl who tells her about the ancient magic that protects all woodland creatures.",
+      imageUrl: "/images/magic-garden.png"
+    }, {
+      text: "Together with her new friends, Luna learns that the greatest adventures happen when we help others and believe in ourselves.",
+      imageUrl: "/images/magic-garden.png"
+    }]
+  }, {
+    id: 2,
+    title: "The Moon Kittens",
+    coverUrl: "/images/moon-kittens.png",
+    excerpt: "When the moon is full, special kittens with silver fur come down to Earth to help children have the most wonderful dreams.",
+    theme: "Fantasy",
+    pages: [{
+      text: "When the moon is full, special kittens with silver fur come down to Earth to help children have the most wonderful dreams.",
+      imageUrl: "/images/moon-kittens.png"
+    }, {
+      text: "Little Stella discovers these magical kittens in her garden, their fur shimmering like starlight in the moonbeams.",
+      imageUrl: "/images/moon-kittens.png"
+    }, {
+      text: "The moon kittens teach Stella that dreams are the seeds of tomorrow's adventures, and every child's imagination is precious.",
+      imageUrl: "/images/moon-kittens.png"
+    }]
+  }, {
+    id: 3,
+    title: "The Dragon's Treasure",
+    coverUrl: "/images/dragon-treasure.png",
+    excerpt: "A young knight learns that the greatest treasure isn't gold or jewels, but the friendship of a lonely dragon who just wanted someone to talk to.",
+    theme: "Friendship",
+    pages: [{
+      text: "A young knight learns that the greatest treasure isn't gold or jewels, but the friendship of a lonely dragon who just wanted someone to talk to.",
+      imageUrl: "/images/dragon-treasure.png"
+    }, {
+      text: "Sir Oliver climbs the mountain expecting to find gold, but instead discovers that Draco the dragon is just lonely and loves to read stories.",
+      imageUrl: "/images/dragon-treasure.png"
+    }, {
+      text: "From that day forward, Oliver visits Draco every week to share stories and tea, proving that the best treasures are the friends we make.",
+      imageUrl: "/images/dragon-treasure.png"
+    }]
+  }];
+  return <div className="min-h-screen bg-gradient-to-br from-story-lightPurple via-story-yellow/30 to-story-seafoam/50">
       {/* Email Container */}
       <div className="max-w-2xl mx-auto p-4">
         <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-story-seafoam/30">
@@ -170,6 +149,19 @@ const Email = () => {
                     <p className="text-sm text-gray-600 pl-13">Meaningful stories that teach valuable lessons and positive values</p>
                   </div>
                 </div>
+                
+                {/* Decorative elements */}
+                <div className="flex justify-center mt-6">
+                  <div className="flex gap-2">
+                    <div className="w-3 h-3 bg-story-purple/40 rounded-full animate-bounce-slow"></div>
+                    <div className="w-3 h-3 bg-story-blue/40 rounded-full animate-bounce-slow" style={{
+                    animationDelay: '0.2s'
+                  }}></div>
+                    <div className="w-3 h-3 bg-story-seafoam/40 rounded-full animate-bounce-slow" style={{
+                    animationDelay: '0.4s'
+                  }}></div>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -179,13 +171,7 @@ const Email = () => {
                 ✨ Sample Stories from Our Magic Collection ✨
               </h3>
               <div className="space-y-6">
-                {sampleStories.map((story, index) => (
-                  <EmailStoryViewer 
-                    key={story.id} 
-                    story={story} 
-                    index={index}
-                  />
-                ))}
+                {sampleStories.map((story, index) => <EmailStoryViewer key={story.id} story={story} index={index} />)}
               </div>
             </div>
 
@@ -197,14 +183,7 @@ const Email = () => {
               <p className="text-gray-700 mb-6 text-lg">
                 Start crafting personalized bedtime stories that will become cherished memories.
               </p>
-              <Button 
-                asChild
-                className="bg-story-purple hover:bg-story-purple/90 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg transform hover:scale-105 transition-all"
-              >
-                <a href="https://www.nightknight.app/register" target="_blank" rel="noopener noreferrer">
-                  Get Your FREE Story Now! ✨
-                </a>
-              </Button>
+              <Button className="bg-story-purple hover:bg-story-purple/90 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg transform hover:scale-105 transition-all">First story free • Additional stories just £4.99 each</Button>
               <p className="text-sm text-gray-500 mt-4">
                 First story free • Additional stories just $6.99 each
               </p>
@@ -221,15 +200,12 @@ const Email = () => {
               <div className="flex items-center justify-center gap-4 mt-4 text-xs text-gray-500">
                 <span>www.nightknight.app</span>
                 <span>•</span>
-                <span>fairy@nightknight.app</span>
+                <span>hello@nightknight.app</span>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Email;
-
