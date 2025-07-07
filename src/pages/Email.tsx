@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -167,15 +166,6 @@ const Email = () => {
                       <span className="font-semibold text-story-teal">Life Lessons</span>
                     </div>
                     <p className="text-sm text-gray-600 pl-13">Meaningful stories that teach valuable lessons and positive values</p>
-                  </div>
-                </div>
-                
-                {/* Decorative elements */}
-                <div className="flex justify-center mt-6">
-                  <div className="flex gap-2">
-                    <div className="w-3 h-3 bg-story-purple/40 rounded-full animate-bounce-slow"></div>
-                    <div className="w-3 h-3 bg-story-blue/40 rounded-full animate-bounce-slow" style={{animationDelay: '0.2s'}}></div>
-                    <div className="w-3 h-3 bg-story-seafoam/40 rounded-full animate-bounce-slow" style={{animationDelay: '0.4s'}}></div>
                   </div>
                 </div>
               </div>
