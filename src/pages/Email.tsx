@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Sparkles, Heart, BookOpen, Gift, Star, Palette, Globe, Users } from 'lucide-react';
+import { Sparkles, Heart, BookOpen, Gift, Star, Palette, Globe, Users, Book, Sword } from 'lucide-react';
 import EmailStoryViewer from '@/components/email/EmailStoryViewer';
 
 const Email = () => {
@@ -82,8 +82,9 @@ const Email = () => {
           {/* Header */}
           <div className="bg-gradient-to-r from-story-purple to-story-blue p-8 text-center">
             <div className="flex items-center justify-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center">
-                <BookOpen className="w-6 h-6 text-story-purple" />
+              <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center relative">
+                <Book className="w-6 h-6 text-story-teal" />
+                <Sword className="absolute -top-1 -right-1 w-3 h-3 text-story-purple" />
               </div>
               <h1 className="text-3xl font-bold text-white font-ghibli">NightKnight</h1>
             </div>
