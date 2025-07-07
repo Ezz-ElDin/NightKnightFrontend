@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -195,8 +196,13 @@ const Email = () => {
               <p className="text-gray-700 mb-6 text-lg">
                 Start crafting personalized bedtime stories that will become cherished memories.
               </p>
-              <Button className="bg-story-purple hover:bg-story-purple/90 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg transform hover:scale-105 transition-all">
-                Get Your FREE Story Now! ✨
+              <Button 
+                asChild
+                className="bg-story-purple hover:bg-story-purple/90 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg transform hover:scale-105 transition-all"
+              >
+                <a href="https://www.nightknight.app/register" target="_blank" rel="noopener noreferrer">
+                  Get Your FREE Story Now! ✨
+                </a>
               </Button>
               <p className="text-sm text-gray-500 mt-4">
                 First story free • Additional stories just $6.99 each
