@@ -1,8 +1,14 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { BookOpen } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { BookOpen, ChevronLeft, ChevronRight } from 'lucide-react';
+
+interface StoryPage {
+  text: string;
+  imageUrl: string;
+}
 
 interface Story {
   id: number;
@@ -10,6 +16,7 @@ interface Story {
   coverUrl: string;
   excerpt: string;
   theme: string;
+  pages: StoryPage[];
 }
 
 interface EmailStoryViewerProps {
@@ -18,6 +25,8 @@ interface EmailStoryViewerProps {
 }
 
 const EmailStoryViewer: React.FC<EmailStoryViewerProps> = ({ story, index }) => {
+  const [currentPage, setCurrentPage] = useState(0);
+  
   // Alternate layout direction for visual variety
   const isReversed = index % 2 === 1;
   
@@ -27,6 +36,16 @@ const EmailStoryViewer: React.FC<EmailStoryViewerProps> = ({ story, index }) => 
     Friendship: 'bg-story-pink/20 text-story-purple'
   };
 
+  const handlePrevPage = () => {
+    setCurrentPage(prev => Math.max(0, prev - 1));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage(prev => Math.min(story.pages.length - 1, prev + 1));
+  };
+
+  const currentStoryPage = story.pages[currentPage];
+
   return (
     <Card className="overflow-hidden border-story-seafoam/30 shadow-md hover:shadow-lg transition-shadow">
       <div className={`flex ${isReversed ? 'flex-row-reverse' : 'flex-row'} items-center`}>
@@ -34,12 +53,37 @@ const EmailStoryViewer: React.FC<EmailStoryViewerProps> = ({ story, index }) => 
         <div className="w-1/3 relative">
           <div className="aspect-[3/4] relative overflow-hidden">
             <img
-              src={story.coverUrl}
+              src={currentStoryPage?.imageUrl || story.coverUrl}
               alt={story.title}
               className="w-full h-full object-cover"
             />
             {/* Overlay gradient for better text readability */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+            
+            {/* Navigation buttons */}
+            <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-1">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={handlePrevPage}
+                disabled={currentPage === 0}
+                className="w-6 h-6 p-0 bg-white/80 hover:bg-white border-none"
+              >
+                <ChevronLeft className="w-3 h-3" />
+              </Button>
+              <span className="text-xs bg-white/80 px-2 py-1 rounded text-gray-700 font-medium">
+                {currentPage + 1}/{story.pages.length}
+              </span>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={handleNextPage}
+                disabled={currentPage === story.pages.length - 1}
+                className="w-6 h-6 p-0 bg-white/80 hover:bg-white border-none"
+              >
+                <ChevronRight className="w-3 h-3" />
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -58,7 +102,7 @@ const EmailStoryViewer: React.FC<EmailStoryViewerProps> = ({ story, index }) => 
           </div>
           
           <p className="text-gray-700 text-sm leading-relaxed line-clamp-3">
-            {story.excerpt}
+            {currentStoryPage?.text || story.excerpt}
           </p>
           
           {/* Decorative elements */}
