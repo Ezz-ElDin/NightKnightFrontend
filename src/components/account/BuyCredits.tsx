@@ -95,11 +95,6 @@ const BuyCredits = () => {
                 {creditCount[0] > 1 ? 'stories' : 'story'}
               </span>
             </div>
-            <div className="bg-gradient-to-r from-story-yellow/20 to-story-green/20 rounded-full px-4 py-2 inline-block">
-              <p className="text-lg font-semibold text-story-purple">
-                Total: {totalStories} {isPlural ? 'stories' : 'story'}
-              </p>
-            </div>
           </div>
           
           <div className="mb-8 max-w-md mx-auto">
