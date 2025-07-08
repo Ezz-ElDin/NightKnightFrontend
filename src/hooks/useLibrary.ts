@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -57,7 +56,9 @@ export const useLibrary = () => {
     refetchOnWindowFocus: false,
   });
 
+  // Filter stories to only show completed ones
   const stories = allStories.filter((story: Story & { status?: string }) => {
+    // Only show stories that don't have a status property or have status === 'completed'
     return !story.status || story.status === 'completed';
   });
 
