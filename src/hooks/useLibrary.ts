@@ -57,7 +57,7 @@ export const useLibrary = () => {
   });
 
   // Filter stories to only show completed ones
-  const stories = allStories.filter((story: Story & { status?: string }) => {
+  const stories = allStories.filter((story: Story) => {
     console.log('Story:', story.title, 'Status:', story.status);
     // Only show stories that have status === 'completed'
     return story.status === 'completed';

@@ -129,6 +129,7 @@ export interface Story {
   coverUrl: string;
   createdAt: string;
   is_favourite: boolean;
+  status: string;
 }
 
 // === STORIES API ===
@@ -172,6 +173,7 @@ const normalizeStory = (raw: any): Story => ({
   coverUrl: adjustCoverUrl(raw.cover_front?.image_url || ""),
   createdAt: raw.created_at,
   is_favourite: raw.is_favourite,
+  status: raw.status,
 });
 
 // Map backend story GET /api/stories/:id/ to StoryDetails
