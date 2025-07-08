@@ -58,9 +58,13 @@ export const useLibrary = () => {
 
   // Filter stories to only show completed ones
   const stories = allStories.filter((story: Story & { status?: string }) => {
-    // Only show stories that don't have a status property or have status === 'completed'
-    return !story.status || story.status === 'completed';
+    console.log('Story:', story.title, 'Status:', story.status);
+    // Only show stories that have status === 'completed'
+    return story.status === 'completed';
   });
+
+  console.log('Total stories from API:', allStories.length);
+  console.log('Filtered completed stories:', stories.length);
 
   const favMutation = useMutation({
     mutationFn: async (input: { id: number; isFav: boolean }) => {
