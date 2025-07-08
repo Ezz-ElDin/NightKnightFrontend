@@ -9,6 +9,8 @@ import { useToast } from "@/hooks/use-toast";
 import { authApi } from "@/lib/api";
 import { useNavigate } from "react-router-dom";
 
+const SHOW_PASSWORD_CHANGE = false;
+
 const ProfileSettings = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -235,7 +237,8 @@ const ProfileSettings = () => {
       </Card>
 
       {/* Password Change */}
-      <Card className="p-6">
+      {SHOW_PASSWORD_CHANGE && (
+        <Card className="p-6">
         <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
           <Lock className="h-5 w-5" />
           Change Password
@@ -374,7 +377,8 @@ const ProfileSettings = () => {
             {isChangingPassword ? "Changing Password..." : "Change Password"}
           </Button>
         </div>
-      </Card>
+        </Card>
+      )}
     </div>
   );
 };
