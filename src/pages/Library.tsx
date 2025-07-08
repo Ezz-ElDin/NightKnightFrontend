@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Star, CreditCard } from "lucide-react";
@@ -7,10 +6,13 @@ import { Card } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import StoryBackground from "@/components/StoryBackground";
 import StoryGallery from "@/components/dashboard/StoryGallery";
+import StoryCard from "@/components/dashboard/StoryCard";
 import PaginationNav from "@/components/dashboard/PaginationNav";
 import EmailVerificationBanners from "@/components/dashboard/EmailVerificationBanners";
 import ConfirmDeleteDialog from "@/components/dashboard/ConfirmDeleteDialog";
 import SuccessBanner from "@/components/SuccessBanner";
+import GeneratingStoryBanner from "@/components/dashboard/GeneratingStoryBanner";
+import GeneratingStoryCard from "@/components/dashboard/story-card/GeneratingStoryCard";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { storiesApi, creditApi, Story } from "@/lib/api";
 
@@ -20,10 +22,21 @@ const Library = () => {
   const [page, setPage] = useState(1);
   const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; storyId: null | number }>({ open: false, storyId: null });
   const [showSuccessBanner, setShowSuccessBanner] = useState(false);
+  const [showGeneratingBanner, setShowGeneratingBanner] = useState(false);
+  const [generatingStoryId, setGeneratingStoryId] = useState<string | null>(null);
   const recentStoriesRef = useRef<HTMLDivElement>(null);
   
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+
+  // Check for generating story on mount
+  useEffect(() => {
+    const storedGeneratingId = localStorage.getItem('generatingStoryId');
+    if (storedGeneratingId) {
+      setGeneratingStoryId(storedGeneratingId);
+      setShowGeneratingBanner(true);
+    }
+  }, []);
 
   useEffect(() => {
     const sessionId = searchParams.get('session_id');
@@ -88,6 +101,30 @@ const Library = () => {
     },
   });
 
+  // Poll for story status if we have a generating story
+  const { data: generatingStoryStatus } = useQuery({
+    queryKey: ['story-status', generatingStoryId],
+    queryFn: async () => {
+      if (!generatingStoryId) return null;
+      return await storiesApi.getStatus(generatingStoryId);
+    },
+    enabled: !!generatingStoryId,
+    refetchInterval: 10000, // Poll every 10 seconds
+  });
+
+  // Handle story generation completion
+  useEffect(() => {
+    if (generatingStoryStatus?.status === 'completed') {
+      // Remove from localStorage and state
+      localStorage.removeItem('generatingStoryId');
+      setGeneratingStoryId(null);
+      setShowGeneratingBanner(false);
+      
+      // Refresh stories list
+      queryClient.invalidateQueries({ queryKey: ['stories'] });
+    }
+  }, [generatingStoryStatus, queryClient]);
+
   const allFavouriteStories = stories.filter((s) => s.is_favourite);
   const allNonFavouriteStories = stories.filter((s) => !s.is_favourite);
   const totalPages = Math.ceil(allNonFavouriteStories.length / STORIES_PER_PAGE);
@@ -116,6 +153,12 @@ const Library = () => {
     setShowSuccessBanner(false);
   };
 
+  const handleDismissGeneratingBanner = () => {
+    setShowGeneratingBanner(false);
+    localStorage.removeItem('generatingStoryId');
+    setGeneratingStoryId(null);
+  };
+
   const hasCredits = storyCredits > 0;
 
   return (
@@ -124,6 +167,10 @@ const Library = () => {
         <EmailVerificationBanners shouldShow={shouldShowVerificationBanner} />
 
         {showSuccessBanner && <SuccessBanner onClose={handleCloseBanner} />}
+
+        {showGeneratingBanner && (
+          <GeneratingStoryBanner onDismiss={handleDismissGeneratingBanner} />
+        )}
 
         {/* Mobile-optimized header */}
         <div className="mb-6 md:mb-8 mt-4 md:mt-6">
@@ -200,14 +247,38 @@ const Library = () => {
           />
           
           <div ref={recentStoriesRef}>
-            <StoryGallery
-              stories={pagedStories}
-              isLoading={isLoading}
-              showFavourites={false}
-              onStoryClick={handleStoryClick}
-              onFavourite={toggleFavourite}
-              onDelete={(id) => setDeleteDialog({ open: true, storyId: id })}
-            />
+            {/* Show generating story card at the top of recent stories if exists */}
+            {generatingStoryId && (
+              <div className="mb-6 md:mb-9">
+                <h3 className="text-lg md:text-xl font-semibold text-story-blue mb-2 md:mb-3 flex items-center gap-2 px-1">
+                  Recent Stories
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 mb-6 md:mb-8 px-1">
+                  <GeneratingStoryCard />
+                  {pagedStories.slice(0, STORIES_PER_PAGE - 1).map(story => (
+                    <StoryCard
+                      key={story.id}
+                      story={story}
+                      isFavourite={false}
+                      onClick={() => handleStoryClick(story.id)}
+                      onFavourite={() => toggleFavourite(story.id, false)}
+                      onDelete={() => setDeleteDialog({ open: true, storyId: story.id })}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            {!generatingStoryId && (
+              <StoryGallery
+                stories={pagedStories}
+                isLoading={isLoading}
+                showFavourites={false}
+                onStoryClick={handleStoryClick}
+                onFavourite={toggleFavourite}
+                onDelete={(id) => setDeleteDialog({ open: true, storyId: id })}
+              />
+            )}
           </div>
           
           <PaginationNav totalPages={totalPages} page={page} goToPage={goToPage} />

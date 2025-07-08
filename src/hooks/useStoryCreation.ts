@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -277,7 +278,9 @@ export const useStoryCreation = () => {
       // Extract story_id from nested response structure
       const storyId = res.data.data?.story_id;
       if (storyId) {
-        navigate(`/generating-story/${storyId}`, { state: { storyData } });
+        // Store the generating story ID in localStorage for the library to show
+        localStorage.setItem('generatingStoryId', storyId.toString());
+        navigate('/library');
       } else {
         throw new Error("No story_id received from server");
       }
