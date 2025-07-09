@@ -30,9 +30,9 @@ export const useStoryGeneration = () => {
     // Helper: Character objects mapping
     const characterList = Array.isArray(storyData.characters)
       ? storyData.characters.map((c: any) => ({
-          name: c.name,
-          appearance: c.appearance,
-          role: c.role,
+          name: (c.name || "").trim(),
+          appearance: (c.appearance || "").trim(),
+          role: (c.role || "").trim(),
           personality_traits: Array.isArray(c.personality) 
             ? c.personality.map((trait: string) => PERSONALITY_TRAITS_MAP[trait] || trait.toLowerCase())
             : [],
@@ -43,10 +43,10 @@ export const useStoryGeneration = () => {
     if (mode === "creative") {
       payload = {
         mode: "creative",
-        story_title: storyData.title ?? "",
+        story_title: (storyData.title || "").trim(),
         language: LANGUAGE_MAP[storyData.language] || "british_english",
-        age: storyData.ageRange,
-        moral_of_the_story: storyData.moral,
+        age: (storyData.ageRange || "").trim(),
+        moral_of_the_story: (storyData.moral || "").trim(),
         theme: THEME_MAP[storyData.genre] || "",
         tone: TONE_MAP[storyData.tone] || "",
         narrative_style: NARRATIVE_MAP[storyData.narrativeStyle] || "",
@@ -62,10 +62,10 @@ export const useStoryGeneration = () => {
       };
       payload = {
         mode: "magic",
-        story_title: storyData.title ?? "",
+        story_title: (storyData.title || "").trim(),
         language: LANGUAGE_MAP[storyData.language] || "british_english",
-        age: storyData.ageRange,
-        moral_of_the_story: storyData.moral,
+        age: (storyData.ageRange || "").trim(),
+        moral_of_the_story: (storyData.moral || "").trim(),
         theme: cardSettings.theme,
         tone: cardSettings.tone,
         narrative_style: cardSettings.narrative,
