@@ -11,7 +11,7 @@ interface StoryTextProps {
 const StoryText: React.FC<StoryTextProps> = ({ title, text, page, rtl }) => {
   // Function to split text into sentences and format them
   const formatTextWithLineBreaks = (text: string) => {
-    if (!text) return "";
+    if (!text) return [];
     
     // Split by periods, exclamation marks, and question marks while keeping the punctuation
     const sentences = text.split(/([.!?]+)/).filter(part => part.trim() !== "");
