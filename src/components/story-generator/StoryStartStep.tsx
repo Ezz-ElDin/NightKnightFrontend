@@ -7,7 +7,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import AgeRangeSelector from "./AgeRangeSelector";
 import LanguageSelector from "./LanguageSelector";
 import LessonInput from "./LessonInput";
-import TitleInput from "./TitleInput";
+// COMMENTED OUT: Hide title input from first page
+// import TitleInput from "./TitleInput";
 
 interface StoryStartStepProps {
   mode: "magic" | "creative";
@@ -62,7 +63,8 @@ const StoryStartStep: React.FC<StoryStartStepProps> = ({
             <AgeRangeSelector ageRange={ageRange} setAgeRange={setAgeRange} />
             <LanguageSelector language={language} setLanguage={setLanguage} />
             <LessonInput value={storyData.moral} onChange={v => updateStoryData({ moral: v })} />
-            <TitleInput value={storyData.title} onChange={v => updateStoryData({ title: v })} />
+            {/* COMMENTED OUT: Hide title input from first page */}
+            {/* <TitleInput value={storyData.title} onChange={v => updateStoryData({ title: v })} /> */}
           </div>
         </Card>
       </div>
