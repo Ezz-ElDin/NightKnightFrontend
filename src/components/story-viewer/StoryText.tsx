@@ -1,3 +1,4 @@
+
 import React from "react";
 import clsx from "clsx";
 
@@ -35,10 +36,10 @@ const StoryText: React.FC<StoryTextProps> = ({ title, text, page, rtl }) => {
     <div
       className={clsx(
         "flex-1 flex flex-col min-h-[340px] px-8 md:px-10 py-8 md:py-10 gap-0",
-        rtl ? "rtl text-right" : "ltr text-center",
+        rtl ? "rtl text-right" : "ltr text-left",
         page === 0
           ? "justify-center items-center"
-          : "justify-center items-center"
+          : "justify-center items-start"
       )}
       dir={rtl ? "rtl" : "ltr"}
     >
@@ -47,11 +48,11 @@ const StoryText: React.FC<StoryTextProps> = ({ title, text, page, rtl }) => {
           {title}
         </h3>
       ) : (
-        <div className="w-full text-center space-y-3">
+        <div className="w-full space-y-2">
           {sentences.map((sentence, index) => (
             <p 
               key={index} 
-              className="text-2xl md:text-3xl leading-relaxed font-medium text-gray-800"
+              className="text-lg md:text-xl leading-relaxed font-medium text-gray-800"
               style={{ wordBreak: "break-word" }}
             >
               {sentence}
