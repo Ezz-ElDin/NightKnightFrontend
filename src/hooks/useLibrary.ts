@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { storiesApi, creditApi, Story } from "@/lib/api";
+import { useToast } from "@/hooks/use-toast";
 
 const STORIES_PER_PAGE = 6;
 
@@ -16,6 +17,7 @@ export const useLibrary = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const queryClient = useQueryClient();
+  const { toast } = useToast();
 
   // Check for generating story on mount
   useEffect(() => {
@@ -100,7 +102,7 @@ export const useLibrary = () => {
     refetchInterval: 10000, // Poll every 10 seconds
   });
 
-  // Handle story generation completion
+  // Handle story generation completion or failure
   useEffect(() => {
     if (generatingStoryStatus?.status === 'completed') {
       // Remove from localStorage and state
@@ -110,8 +112,26 @@ export const useLibrary = () => {
       
       // Refresh stories list
       queryClient.invalidateQueries({ queryKey: ['stories'] });
+      
+      // Show success toast
+      toast({
+        title: "Story Generated Successfully!",
+        description: "Your new story is ready to read.",
+      });
+    } else if (generatingStoryStatus?.status === 'failed') {
+      // Remove from localStorage and state
+      localStorage.removeItem('generatingStoryId');
+      setGeneratingStoryId(null);
+      setShowGeneratingBanner(false);
+      
+      // Show error toast
+      toast({
+        title: "Story Generation Failed",
+        description: "Sorry, we couldn't generate your story. Please try again.",
+        variant: "destructive",
+      });
     }
-  }, [generatingStoryStatus, queryClient]);
+  }, [generatingStoryStatus, queryClient, toast]);
 
   const storyCredits = creditData?.data?.remaining_credit || 0;
   const loginMethod = localStorage.getItem('loginMethod');
