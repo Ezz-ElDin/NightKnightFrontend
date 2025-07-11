@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import StoryCard from "@/components/dashboard/StoryCard";
 import {
@@ -171,13 +172,8 @@ const DiscoverStories = () => {
                       <div className="flex-1 overflow-y-auto">
                         <div className="space-y-0">
                           {/* Title Page */}
-                          <div className="min-h-screen flex">
-                            <div className="w-full md:w-1/2 flex items-center justify-center bg-white p-8">
-                              <h3 className="font-ghibli text-3xl md:text-5xl font-bold text-center leading-tight">
-                                {selectedStory.title}
-                              </h3>
-                            </div>
-                            <div className="w-full md:w-1/2 bg-[#fafafd] flex items-center justify-center">
+                          <div className="min-h-screen flex flex-col">
+                            <div className="flex-1 bg-[#fafafd] flex items-center justify-center">
                               <div className="relative w-full h-full flex items-center justify-center bg-[#e8eafd] overflow-hidden">
                                 <img
                                   src={selectedStory.coverUrl}
@@ -186,31 +182,36 @@ const DiscoverStories = () => {
                                 />
                               </div>
                             </div>
+                            <div className="bg-white p-8 flex items-center justify-center">
+                              <h3 className="font-ghibli text-3xl md:text-5xl font-bold text-center leading-tight">
+                                {selectedStory.title}
+                              </h3>
+                            </div>
                           </div>
 
                           {/* Story Pages */}
                           {selectedStory.pages.map((page: any, index: number) => (
-                            <div key={page.id} className="min-h-screen flex">
-                              <div className="w-full md:w-1/2 bg-white flex items-center justify-center p-8">
-                                <div className="w-full max-w-lg space-y-6">
-                                  {formatTextWithLineBreaks(page.text).map((sentence, sentenceIndex) => (
-                                    <p 
-                                      key={sentenceIndex} 
-                                      className="text-lg md:text-xl leading-relaxed font-medium text-gray-800"
-                                      style={{ wordBreak: "break-word" }}
-                                    >
-                                      {sentence}
-                                    </p>
-                                  ))}
-                                </div>
-                              </div>
-                              <div className="w-full md:w-1/2 bg-[#fafafd] flex items-center justify-center">
+                            <div key={page.id} className="min-h-screen flex flex-col">
+                              <div className="flex-1 bg-[#fafafd] flex items-center justify-center">
                                 <div className="relative w-full h-full flex items-center justify-center bg-[#e8eafd] overflow-hidden">
                                   <img
                                     src={page.image}
                                     alt={`Page ${index + 1} illustration`}
                                     className="w-full h-full object-cover"
                                   />
+                                </div>
+                              </div>
+                              <div className="bg-white p-8 flex items-center justify-center">
+                                <div className="w-full max-w-4xl space-y-6">
+                                  {formatTextWithLineBreaks(page.text).map((sentence, sentenceIndex) => (
+                                    <p 
+                                      key={sentenceIndex} 
+                                      className="text-lg md:text-xl leading-relaxed font-medium text-gray-800 text-center"
+                                      style={{ wordBreak: "break-word" }}
+                                    >
+                                      {sentence}
+                                    </p>
+                                  ))}
                                 </div>
                               </div>
                             </div>
