@@ -1,4 +1,3 @@
-
 import React, { useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -162,60 +161,53 @@ const MobileStoryViewer = () => {
             </div>
 
             {/* Story Pages */}
-            {story.pages?.map((page: any, index: number) => {
-              // Check if this is the final page (end page)
-              const isEndPage = page.text === 'The End' || page.text === 'النهاية' || page.image_url === '/images/the-end-story-page.png';
-              
-              return (
-                <div key={page.id || index}>
-                  {/* Page Separator */}
-                  <div className="flex justify-center py-2">
-                    <Separator className="w-32 bg-gray-200" />
+            {story.pages?.map((page: any, index: number) => (
+              <div key={page.id || index}>
+                {/* Page Separator */}
+                <div className="flex justify-center py-2">
+                  <Separator className="w-32 bg-gray-200" />
+                </div>
+                
+                <div className="py-2">
+                  {/* Text First - Show text for all pages including end page */}
+                  <div className={clsx(
+                    "mb-4",
+                    isStoryArabic && "text-right"
+                  )} dir={isStoryArabic ? "rtl" : "ltr"}>
+                    <div className="space-y-3">
+                      {formatTextWithLineBreaks(page.text).map((sentence, sentenceIndex) => (
+                        <p 
+                          key={sentenceIndex} 
+                          className={clsx(
+                            "text-lg leading-relaxed font-medium text-gray-800",
+                            isStoryArabic ? "text-right font-cairo" : "text-left"
+                          )}
+                          style={{ wordBreak: "break-word" }}
+                        >
+                          {sentence}
+                        </p>
+                      ))}
+                    </div>
                   </div>
                   
-                  <div className="py-2">
-                    {/* Text First - Only show text if it's not the end page */}
-                    {!isEndPage && (
-                      <div className={clsx(
-                        "mb-4",
-                        isStoryArabic && "text-right"
-                      )} dir={isStoryArabic ? "rtl" : "ltr"}>
-                        <div className="space-y-3">
-                          {formatTextWithLineBreaks(page.text).map((sentence, sentenceIndex) => (
-                            <p 
-                              key={sentenceIndex} 
-                              className={clsx(
-                                "text-lg leading-relaxed font-medium text-gray-800",
-                                isStoryArabic ? "text-right font-cairo" : "text-left"
-                              )}
-                              style={{ wordBreak: "break-word" }}
-                            >
-                              {sentence}
-                            </p>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                    
-                    {/* Image Below Text */}
-                    <div className="mb-4">
-                      <div className="relative w-full aspect-[4/3] bg-[#e8eafd] rounded-xl overflow-hidden shadow-lg">
-                        <img
-                          src={page.image_url}
-                          alt={isEndPage ? "" : `Page ${index + 2} illustration`}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Subtle Page Number */}
-                    <div className="flex justify-center py-1">
-                      <span className="text-sm text-gray-400">{index + 2}</span>
+                  {/* Image Below Text */}
+                  <div className="mb-4">
+                    <div className="relative w-full aspect-[4/3] bg-[#e8eafd] rounded-xl overflow-hidden shadow-lg">
+                      <img
+                        src={page.image_url}
+                        alt={`Page ${index + 2} illustration`}
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                   </div>
+
+                  {/* Subtle Page Number */}
+                  <div className="flex justify-center py-1">
+                    <span className="text-sm text-gray-400">{index + 2}</span>
+                  </div>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         </div>
       </div>
