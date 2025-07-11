@@ -6,6 +6,8 @@ import {
   DialogTrigger,
   DialogPortal,
   DialogOverlay,
+  DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
@@ -119,7 +121,6 @@ const DiscoverStories = () => {
     setCurrentPage(0);
   };
 
-  // Handle tap zones for Instagram-style navigation
   const handleLeftTap = (e: React.MouseEvent) => {
     e.stopPropagation();
     handlePrevPage();
@@ -133,10 +134,8 @@ const DiscoverStories = () => {
   const formatTextWithLineBreaks = (text: string) => {
     if (!text) return [];
     
-    // Split by periods, exclamation marks, and question marks while keeping the punctuation
     const sentences = text.split(/([.!?]+)/).filter(part => part.trim() !== "");
     
-    // Combine punctuation back with sentences
     const formattedSentences = [];
     for (let i = 0; i < sentences.length; i += 2) {
       const sentence = sentences[i]?.trim();
@@ -173,12 +172,18 @@ const DiscoverStories = () => {
                 <DialogOverlay />
                 <DialogPrimitive.Content
                   className={cn(
-                    "fixed left-[50%] top-[50%] z-50 grid w-full max-w-4xl w-[90vw] max-h-[85vh] translate-x-[-50%] translate-y-[-50%] p-0 overflow-hidden border-0 bg-transparent shadow-2xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] rounded-3xl"
+                    "fixed left-[50%] top-[50%] z-50 grid w-full max-w-4xl w-[90vw] h-[85vh] translate-x-[-50%] translate-y-[-50%] p-0 overflow-hidden border-0 bg-transparent shadow-2xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] rounded-3xl"
                   )}
                 >
+                  <DialogTitle className="sr-only">
+                    {selectedStory?.title || "Story Viewer"}
+                  </DialogTitle>
+                  <DialogDescription className="sr-only">
+                    Reading story: {selectedStory?.title}. Use arrow keys or buttons to navigate between pages.
+                  </DialogDescription>
+
                   {selectedStory && (
-                    <div className="h-full w-full flex flex-col bg-white relative rounded-3xl overflow-hidden">
-                      {/* Single Close Button */}
+                    <div className="w-full h-full flex flex-col bg-white relative rounded-3xl overflow-hidden">
                       <button
                         onClick={handleCloseDialog}
                         className="absolute top-4 right-4 z-50 rounded-full opacity-70 ring-offset-background transition-all duration-200 hover:opacity-100 hover:scale-110 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 h-10 w-10 flex items-center justify-center bg-white/90 backdrop-blur-sm shadow-md"
@@ -187,7 +192,6 @@ const DiscoverStories = () => {
                         <span className="sr-only">Close</span>
                       </button>
 
-                      {/* Mobile Navigation Arrows - Smaller and more subtle */}
                       <div className="md:hidden absolute top-1/2 left-2 right-2 flex justify-between items-center z-40 pointer-events-none">
                         <Button
                           variant="outline"
@@ -210,29 +214,22 @@ const DiscoverStories = () => {
                         </Button>
                       </div>
 
-                      {/* Instagram-style tap zones - Only on mobile */}
                       <div className="md:hidden absolute inset-0 z-30 flex">
-                        {/* Left tap zone */}
                         <div 
                           className="w-1/3 h-full cursor-pointer"
                           onClick={handleLeftTap}
                         />
-                        {/* Middle zone - no action */}
                         <div className="w-1/3 h-full" />
-                        {/* Right tap zone */}
                         <div 
                           className="w-1/3 h-full cursor-pointer"
                           onClick={handleRightTap}
                         />
                       </div>
 
-                      {/* Story content - Fixed height container */}
-                      <div className="flex-1 flex h-full min-h-[500px] max-h-[85vh] rounded-3xl overflow-hidden">
-                        {/* Mobile Layout - Image at top (60%), text at bottom (40%), side-by-side on desktop */}
-                        <div className="flex-1 flex flex-col md:flex-row bg-white h-full">
-                          {/* Image Section - Top 60% on mobile, Right 50% on desktop */}
-                          <div className="h-[60%] md:h-full flex-1 flex order-1 md:order-2">
-                            <div className="w-full h-full bg-[#fafafd] flex items-center justify-center p-0 m-0">
+                      <div className="flex-1 flex h-full w-full rounded-3xl overflow-hidden">
+                        <div className="flex-1 flex flex-col md:flex-row bg-white h-full w-full">
+                          <div className="h-[60%] md:h-full md:w-1/2 flex order-1 md:order-2">
+                            <div className="w-full h-full bg-[#fafafd] flex items-center justify-center">
                               <div className="relative w-full h-full flex items-center justify-center bg-[#e8eafd] overflow-hidden">
                                 <img
                                   src={currentPage === 0 ? selectedStory.coverUrl : selectedStory.pages[currentPage - 1]?.image || selectedStory.coverUrl}
@@ -243,27 +240,28 @@ const DiscoverStories = () => {
                             </div>
                           </div>
 
-                          {/* Text Section - Bottom 40% on mobile with fixed height and scroll, Left 50% on desktop */}
-                          <div className="h-[40%] md:h-full flex-1 flex bg-white order-2 md:order-1 min-h-0">
-                            <div className="flex-1 flex flex-col px-4 md:px-10 py-4 md:py-10 gap-0 min-h-0 h-full">
+                          <div className="h-[40%] md:h-full md:w-1/2 flex bg-white order-2 md:order-1">
+                            <div className="w-full h-full flex flex-col px-4 md:px-10 py-4 md:py-10">
                               {currentPage === 0 ? (
                                 <div className="flex items-center justify-center h-full">
-                                  <h3 className="font-ghibli text-2xl md:text-5xl font-bold mb-0 w-full text-center leading-tight">
+                                  <h3 className="font-ghibli text-2xl md:text-5xl font-bold text-center leading-tight">
                                     {selectedStory.title}
                                   </h3>
                                 </div>
                               ) : (
-                                <div className="w-full flex flex-col justify-center h-full min-h-0">
-                                  <div className="space-y-3 md:space-y-6 overflow-y-auto flex-1 min-h-0 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-                                    {formatTextWithLineBreaks(selectedStory.pages[currentPage - 1]?.text || "").map((sentence, index) => (
-                                      <p 
-                                        key={index} 
-                                        className="text-base md:text-xl leading-relaxed font-medium text-gray-800 text-center md:text-left"
-                                        style={{ wordBreak: "break-word" }}
-                                      >
-                                        {sentence}
-                                      </p>
-                                    ))}
+                                <div className="h-full flex flex-col overflow-hidden">
+                                  <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+                                    <div className="space-y-3 md:space-y-6">
+                                      {formatTextWithLineBreaks(selectedStory.pages[currentPage - 1]?.text || "").map((sentence, index) => (
+                                        <p 
+                                          key={index} 
+                                          className="text-base md:text-xl leading-relaxed font-medium text-gray-800 text-center md:text-left"
+                                          style={{ wordBreak: "break-word" }}
+                                        >
+                                          {sentence}
+                                        </p>
+                                      ))}
+                                    </div>
                                   </div>
                                 </div>
                               )}
@@ -272,7 +270,6 @@ const DiscoverStories = () => {
                         </div>
                       </div>
                       
-                      {/* Navigation - Hidden on mobile, visible on desktop */}
                       <div className="hidden md:flex justify-between items-center p-6 bg-white border-t border-gray-100 shrink-0 rounded-b-3xl">
                         <Button
                           variant="outline"
