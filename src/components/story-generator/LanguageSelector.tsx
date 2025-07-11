@@ -49,9 +49,13 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ language, setLangua
           </SelectValue>
         </SelectTrigger>
         <SelectContent 
-          className="rounded-xl border-2 border-blue-400/30 shadow-lg bg-white z-50 max-h-60 overflow-y-auto"
+          className="rounded-xl border-2 border-blue-400/30 shadow-lg bg-white z-[9999] max-h-60 overflow-y-auto w-[var(--radix-select-trigger-width)] min-w-[200px]"
           position="popper"
+          side="bottom"
+          align="start"
           sideOffset={4}
+          avoidCollisions={true}
+          collisionPadding={8}
         >
           {sortedLanguages.map(lang => (
             <SelectItem 
