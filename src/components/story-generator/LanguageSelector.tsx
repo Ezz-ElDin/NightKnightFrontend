@@ -109,29 +109,33 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ language, setLangua
               <ChevronDown className="h-4 w-4 opacity-50" />
             </Button>
           </DialogTrigger>
-          <DialogContent className="w-[90vw] max-w-sm mx-auto top-[40%] translate-y-[-50%] rounded-2xl">
-            <DialogHeader className="pb-4">
-              <DialogTitle className="flex items-center gap-2 text-xl">
-                <span className="text-2xl">🌎</span>
-                Select Language
-              </DialogTitle>
-            </DialogHeader>
-            <div className="grid gap-1">
-              {sortedLanguages.map(lang => (
-                <Button
-                  key={lang.id}
-                  variant="ghost"
-                  className={`w-full justify-start px-4 py-4 h-auto rounded-xl ${
-                    language === lang.id ? 'bg-blue-50 text-blue-900 border border-blue-200' : 'hover:bg-blue-50'
-                  }`}
-                  onClick={() => handleLanguageSelect(lang.id)}
-                >
-                  <div className="flex items-center gap-3 w-full">
-                    <span className="text-xl flex-shrink-0">{LANGUAGE_FLAGS[lang.id]}</span>
-                    <span className="font-medium text-base">{lang.id}</span>
-                  </div>
-                </Button>
-              ))}
+          <DialogContent className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[85vw] max-w-sm bg-white rounded-2xl shadow-xl border-0 p-0 overflow-hidden z-[100]">
+            <div className="p-6">
+              <DialogHeader className="pb-4 text-center">
+                <DialogTitle className="flex items-center justify-center gap-2 text-xl font-semibold">
+                  <span className="text-2xl">🌎</span>
+                  Select Language
+                </DialogTitle>
+              </DialogHeader>
+              <div className="space-y-2">
+                {sortedLanguages.map(lang => (
+                  <Button
+                    key={lang.id}
+                    variant="ghost"
+                    className={`w-full justify-start px-4 py-4 h-auto rounded-xl transition-colors ${
+                      language === lang.id 
+                        ? 'bg-blue-50 text-blue-900 border border-blue-200 shadow-sm' 
+                        : 'hover:bg-blue-50 border border-transparent'
+                    }`}
+                    onClick={() => handleLanguageSelect(lang.id)}
+                  >
+                    <div className="flex items-center gap-3 w-full">
+                      <span className="text-xl flex-shrink-0">{LANGUAGE_FLAGS[lang.id]}</span>
+                      <span className="font-medium text-base">{lang.id}</span>
+                    </div>
+                  </Button>
+                ))}
+              </div>
             </div>
           </DialogContent>
         </Dialog>
