@@ -50,9 +50,9 @@ const MobileDiscoverStoryViewer: React.FC<MobileDiscoverStoryViewerProps> = ({
       <div className="h-full overflow-y-auto overscroll-contain">
         <div className="max-w-2xl mx-auto px-6 pt-16 pb-8">
           {/* Cover Page - Page 1 */}
-          <div className="py-4">
+          <div className="py-2">
             {/* Title */}
-            <div className="mb-6">
+            <div className="mb-4">
               <h1 className={clsx(
                 "text-3xl md:text-4xl font-bold text-center leading-tight text-gray-900",
                 isArabic && "font-cairo"
@@ -62,7 +62,7 @@ const MobileDiscoverStoryViewer: React.FC<MobileDiscoverStoryViewerProps> = ({
             </div>
             
             {/* Cover Image */}
-            <div className="mb-6">
+            <div className="mb-4">
               <div className="relative w-full aspect-[4/3] bg-[#e8eafd] rounded-xl overflow-hidden shadow-lg">
                 <img
                   src={story.coverUrl}
@@ -73,7 +73,7 @@ const MobileDiscoverStoryViewer: React.FC<MobileDiscoverStoryViewerProps> = ({
             </div>
 
             {/* Subtle Page Number */}
-            <div className="flex justify-center py-2">
+            <div className="flex justify-center py-1">
               <span className="text-sm text-gray-400">1</span>
             </div>
           </div>
@@ -82,17 +82,17 @@ const MobileDiscoverStoryViewer: React.FC<MobileDiscoverStoryViewerProps> = ({
           {story.pages?.map((page: any, index: number) => (
             <div key={page.id || index}>
               {/* Page Separator */}
-              <div className="flex justify-center py-3">
+              <div className="flex justify-center py-2">
                 <Separator className="w-32 bg-gray-200" />
               </div>
               
-              <div className="py-4">
+              <div className="py-2">
                 {/* Text First */}
                 <div className={clsx(
-                  "mb-6",
+                  "mb-4",
                   isArabic && "text-right"
                 )} dir={isArabic ? "rtl" : "ltr"}>
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     {formatTextWithLineBreaks(page.text).map((sentence, sentenceIndex) => (
                       <p 
                         key={sentenceIndex} 
@@ -109,7 +109,7 @@ const MobileDiscoverStoryViewer: React.FC<MobileDiscoverStoryViewerProps> = ({
                 </div>
                 
                 {/* Image Below Text */}
-                <div className="mb-6">
+                <div className="mb-4">
                   <div className="relative w-full aspect-[4/3] bg-[#e8eafd] rounded-xl overflow-hidden shadow-lg">
                     <img
                       src={page.image || page.image_url}
@@ -120,16 +120,34 @@ const MobileDiscoverStoryViewer: React.FC<MobileDiscoverStoryViewerProps> = ({
                 </div>
 
                 {/* Subtle Page Number */}
-                <div className="flex justify-center py-2">
+                <div className="flex justify-center py-1">
                   <span className="text-sm text-gray-400">{index + 2}</span>
                 </div>
               </div>
             </div>
           ))}
           
-          {/* End marker - Only separator, no text */}
-          <div className="flex justify-center py-4">
+          {/* Final Page Separator */}
+          <div className="flex justify-center py-2">
             <Separator className="w-32 bg-gray-200" />
+          </div>
+          
+          {/* Final Page - Only Image, No Text */}
+          <div className="py-2">
+            <div className="mb-4">
+              <div className="relative w-full aspect-[4/3] bg-[#e8eafd] rounded-xl overflow-hidden shadow-lg">
+                <img
+                  src="/images/the-end-story-page.png"
+                  alt="The End"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+
+            {/* Final Page Number */}
+            <div className="flex justify-center py-1">
+              <span className="text-sm text-gray-400">{(story.pages?.length || 0) + 2}</span>
+            </div>
           </div>
         </div>
       </div>
