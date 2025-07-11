@@ -11,12 +11,11 @@ import {
 } from "@/components/ui/dialog";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const DiscoverStories = () => {
   const [selectedStory, setSelectedStory] = useState<any>(null);
-  const [currentPage, setCurrentPage] = useState(0);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const sampleStories = [
@@ -99,36 +98,12 @@ const DiscoverStories = () => {
 
   const handleStoryClick = (story: any) => {
     setSelectedStory(story);
-    setCurrentPage(0);
     setIsDialogOpen(true);
-  };
-
-  const handleNextPage = () => {
-    if (selectedStory && currentPage < selectedStory.pages.length) {
-      setCurrentPage(prev => prev + 1);
-    }
-  };
-
-  const handlePrevPage = () => {
-    if (currentPage > 0) {
-      setCurrentPage(prev => prev - 1);
-    }
   };
 
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
     setSelectedStory(null);
-    setCurrentPage(0);
-  };
-
-  const handleLeftTap = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    handlePrevPage();
-  };
-
-  const handleRightTap = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    handleNextPage();
   };
 
   const formatTextWithLineBreaks = (text: string) => {
@@ -172,14 +147,14 @@ const DiscoverStories = () => {
                 <DialogOverlay />
                 <DialogPrimitive.Content
                   className={cn(
-                    "fixed left-[50%] top-[50%] z-50 grid w-full max-w-4xl w-[90vw] h-[85vh] translate-x-[-50%] translate-y-[-50%] p-0 overflow-hidden border-0 bg-transparent shadow-2xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] rounded-3xl"
+                    "fixed left-[50%] top-[50%] z-50 grid w-full max-w-4xl w-[90vw] h-[85vh] translate-x-[-50%] translate-y-[-50%] p-0 overflow-hidden border-0 bg-white shadow-2xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] rounded-3xl"
                   )}
                 >
                   <DialogTitle className="sr-only">
                     {selectedStory?.title || "Story Viewer"}
                   </DialogTitle>
                   <DialogDescription className="sr-only">
-                    Reading story: {selectedStory?.title}. Use arrow keys or buttons to navigate between pages.
+                    Reading story: {selectedStory?.title}. Scroll to read through all pages.
                   </DialogDescription>
 
                   {selectedStory && (
@@ -192,108 +167,55 @@ const DiscoverStories = () => {
                         <span className="sr-only">Close</span>
                       </button>
 
-                      <div className="md:hidden absolute top-1/2 left-2 right-2 flex justify-between items-center z-40 pointer-events-none">
-                        <Button
-                          variant="outline"
-                          onClick={handlePrevPage}
-                          disabled={currentPage === 0}
-                          className="pointer-events-auto rounded-full w-8 h-8 bg-white/70 backdrop-blur-sm shadow-sm border-0 hover:bg-white/90 hover:scale-105 transition-all duration-200 opacity-60 hover:opacity-100"
-                          size="icon"
-                        >
-                          <ChevronLeft className="h-4 w-4" />
-                        </Button>
-                        
-                        <Button
-                          variant="outline"
-                          onClick={handleNextPage}
-                          disabled={currentPage === selectedStory.pages.length}
-                          className="pointer-events-auto rounded-full w-8 h-8 bg-white/70 backdrop-blur-sm shadow-sm border-0 hover:bg-white/90 hover:scale-105 transition-all duration-200 opacity-60 hover:opacity-100"
-                          size="icon"
-                        >
-                          <ChevronRight className="h-4 w-4" />
-                        </Button>
-                      </div>
-
-                      <div className="md:hidden absolute inset-0 z-30 flex">
-                        <div 
-                          className="w-1/3 h-full cursor-pointer"
-                          onClick={handleLeftTap}
-                        />
-                        <div className="w-1/3 h-full" />
-                        <div 
-                          className="w-1/3 h-full cursor-pointer"
-                          onClick={handleRightTap}
-                        />
-                      </div>
-
+                      {/* Continuous Scroll Content */}
                       <div className="flex-1 overflow-y-auto">
-                        <div className="min-h-full flex flex-col md:flex-row">
-                          <div className="w-full md:w-1/2 h-[50vh] md:h-full flex order-1 md:order-2">
-                            <div className="w-full h-full bg-[#fafafd] flex items-center justify-center">
+                        <div className="space-y-0">
+                          {/* Title Page */}
+                          <div className="min-h-screen flex">
+                            <div className="w-full md:w-1/2 flex items-center justify-center bg-white p-8">
+                              <h3 className="font-ghibli text-3xl md:text-5xl font-bold text-center leading-tight">
+                                {selectedStory.title}
+                              </h3>
+                            </div>
+                            <div className="w-full md:w-1/2 bg-[#fafafd] flex items-center justify-center">
                               <div className="relative w-full h-full flex items-center justify-center bg-[#e8eafd] overflow-hidden">
                                 <img
-                                  src={currentPage === 0 ? selectedStory.coverUrl : selectedStory.pages[currentPage - 1]?.image || selectedStory.coverUrl}
-                                  alt={"Illustration for " + selectedStory.title}
+                                  src={selectedStory.coverUrl}
+                                  alt={selectedStory.title}
                                   className="w-full h-full object-cover"
                                 />
                               </div>
                             </div>
                           </div>
 
-                          <div className="w-full md:w-1/2 flex-1 md:h-full bg-white order-2 md:order-1">
-                            <div className="h-full flex flex-col px-4 md:px-10 py-4 md:py-10">
-                              {currentPage === 0 ? (
-                                <div className="flex items-center justify-center h-full min-h-[300px]">
-                                  <h3 className="font-ghibli text-2xl md:text-5xl font-bold text-center leading-tight">
-                                    {selectedStory.title}
-                                  </h3>
+                          {/* Story Pages */}
+                          {selectedStory.pages.map((page: any, index: number) => (
+                            <div key={page.id} className="min-h-screen flex">
+                              <div className="w-full md:w-1/2 bg-white flex items-center justify-center p-8">
+                                <div className="w-full max-w-lg space-y-6">
+                                  {formatTextWithLineBreaks(page.text).map((sentence, sentenceIndex) => (
+                                    <p 
+                                      key={sentenceIndex} 
+                                      className="text-lg md:text-xl leading-relaxed font-medium text-gray-800"
+                                      style={{ wordBreak: "break-word" }}
+                                    >
+                                      {sentence}
+                                    </p>
+                                  ))}
                                 </div>
-                              ) : (
-                                <div className="h-full flex flex-col min-h-[300px]">
-                                  <div className="flex-1 py-4">
-                                    <div className="space-y-3 md:space-y-6">
-                                      {formatTextWithLineBreaks(selectedStory.pages[currentPage - 1]?.text || "").map((sentence, index) => (
-                                        <p 
-                                          key={index} 
-                                          className="text-base md:text-xl leading-relaxed font-medium text-gray-800 text-center md:text-left"
-                                          style={{ wordBreak: "break-word" }}
-                                        >
-                                          {sentence}
-                                        </p>
-                                      ))}
-                                    </div>
-                                  </div>
+                              </div>
+                              <div className="w-full md:w-1/2 bg-[#fafafd] flex items-center justify-center">
+                                <div className="relative w-full h-full flex items-center justify-center bg-[#e8eafd] overflow-hidden">
+                                  <img
+                                    src={page.image}
+                                    alt={`Page ${index + 1} illustration`}
+                                    className="w-full h-full object-cover"
+                                  />
                                 </div>
-                              )}
+                              </div>
                             </div>
-                          </div>
+                          ))}
                         </div>
-                      </div>
-                      
-                      <div className="hidden md:flex justify-between items-center p-6 bg-white border-t border-gray-100 shrink-0 rounded-b-3xl">
-                        <Button
-                          variant="outline"
-                          onClick={handlePrevPage}
-                          disabled={currentPage === 0}
-                          className="flex items-center gap-2 px-6 py-2 rounded-full"
-                        >
-                          <ChevronLeft className="h-4 w-4" />
-                          Previous
-                        </Button>
-                        
-                        <span className="text-sm text-gray-600 font-medium">
-                          Page {currentPage + 1} of {selectedStory.pages.length + 1}
-                        </span>
-                        
-                        <Button
-                          variant="outline"
-                          onClick={handleNextPage}
-                          disabled={currentPage === selectedStory.pages.length}
-                          className="flex items-center gap-2 px-6 py-2 rounded-full"
-                        >
-                          Next
-                          <ChevronRight className="h-4 w-4" />
-                        </Button>
                       </div>
                     </div>
                   )}
