@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import StoryCard from "@/components/dashboard/StoryCard";
 import {
@@ -5,7 +6,8 @@ import {
   DialogContent,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import StoryPage from "@/components/story-viewer/StoryPage";
+import StoryText from "@/components/story-viewer/StoryText";
+import StoryVisual from "@/components/story-viewer/StoryVisual";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -25,17 +27,17 @@ const DiscoverStories = () => {
       pages: [
         {
           id: "1",
-          content: "Once upon a time, there was a friendly green dragon named Spark who lived in a colorful mountain cave. Spark collected magical treasures that brought joy to the children in the nearby village. Every evening, Spark would fly over the village, sprinkling golden dust that made beautiful dreams come true.",
+          text: "Once upon a time, there was a friendly green dragon named Spark who lived in a colorful mountain cave. Spark collected magical treasures that brought joy to the children in the nearby village. Every evening, Spark would fly over the village, sprinkling golden dust that made beautiful dreams come true.",
           image: "/images/dragon-treasure.png"
         },
         {
           id: "2", 
-          content: "One day, a little girl named Emma discovered Spark's secret cave while picking berries. Instead of being scared, she was amazed by all the glittering treasures. Spark welcomed her warmly and showed her his collection of dream crystals, magic books, and rainbow gems.",
+          text: "One day, a little girl named Emma discovered Spark's secret cave while picking berries. Instead of being scared, she was amazed by all the glittering treasures. Spark welcomed her warmly and showed her his collection of dream crystals, magic books, and rainbow gems.",
           image: "/images/dragon-treasure.png"
         },
         {
           id: "3",
-          content: "Emma and Spark became the best of friends. Together, they would create magical adventures for all the children in the village, spreading joy and wonder wherever they went. And they all lived happily ever after, sharing dreams and treasures for years to come.",
+          text: "Emma and Spark became the best of friends. Together, they would create magical adventures for all the children in the village, spreading joy and wonder wherever they went. And they all lived happily ever after, sharing dreams and treasures for years to come.",
           image: "/images/dragon-treasure.png"
         }
       ]
@@ -50,17 +52,17 @@ const DiscoverStories = () => {
       pages: [
         {
           id: "1",
-          content: "Luna se préparait à se coucher quand elle remarqua quelque chose de magique - cinq chatons moelleux jouant avec une pelote de laine sur son rebord de fenêtre! Ils brillaient au clair de lune et invitèrent Luna à rejoindre leurs aventures nocturnes.",
+          text: "Luna se préparait à se coucher quand elle remarqua quelque chose de magique - cinq chatons moelleux jouant avec une pelote de laine sur son rebord de fenêtre! Ils brillaient au clair de lune et invitèrent Luna à rejoindre leurs aventures nocturnes.",
           image: "/images/moon-kittens.png"
         },
         {
           id: "2",
-          content: "Les chatons lunaires emmenèrent Luna dans un voyage extraordinaire à travers les nuages. Ils visitèrent le royaume des rêves où les étoiles dansaient et où la lune chantait des berceuses douces pour tous les enfants du monde.",
+          text: "Les chatons lunaires emmenèrent Luna dans un voyage extraordinaire à travers les nuages. Ils visitèrent le royaume des rêves où les étoiles dansaient et où la lune chantait des berceuses douces pour tous les enfants du monde.",
           image: "/images/moon-kittens.png"
         },
         {
           id: "3",
-          content: "Avant l'aube, les chatons ramenèrent Luna dans son lit. Elle s'endormit avec un sourire, sachant que ses nouveaux amis magiques reviendraient la voir chaque nuit de pleine lune pour de nouvelles aventures merveilleuses.",
+          text: "Avant l'aube, les chatons ramenèrent Luna dans son lit. Elle s'endormit avec un sourire, sachant que ses nouveaux amis magiques reviendraient la voir chaque nuit de pleine lune pour de nouvelles aventures merveilleuses.",
           image: "/images/moon-kittens.png"
         }
       ]
@@ -75,17 +77,17 @@ const DiscoverStories = () => {
       pages: [
         {
           id: "1",
-          content: "Captain Leo and his trusty robot friend Beep were preparing for their greatest adventure yet! They climbed aboard their shiny new spaceship, ready to fly among the stars and discover worlds no one had ever seen before.",
+          text: "Captain Leo and his trusty robot friend Beep were preparing for their greatest adventure yet! They climbed aboard their shiny new spaceship, ready to fly among the stars and discover worlds no one had ever seen before.",
           image: "/images/space-journey.png"
         },
         {
           id: "2",
-          content: "Their first stop was a planet made entirely of rainbow crystals. The friendly alien creatures there taught Leo and Beep how to surf on shooting stars and play cosmic hide-and-seek among the colorful crystal formations.",
+          text: "Their first stop was a planet made entirely of rainbow crystals. The friendly alien creatures there taught Leo and Beep how to surf on shooting stars and play cosmic hide-and-seek among the colorful crystal formations.",
           image: "/images/space-journey.png"
         },
         {
           id: "3",
-          content: "After collecting stardust souvenirs and making new galactic friends, Leo and Beep returned home with hearts full of wonder. They promised to return soon for more space adventures, knowing the universe was full of magical surprises waiting to be discovered.",
+          text: "After collecting stardust souvenirs and making new galactic friends, Leo and Beep returned home with hearts full of wonder. They promised to return soon for more space adventures, knowing the universe was full of magical surprises waiting to be discovered.",
           image: "/images/space-journey.png"
         }
       ]
@@ -134,30 +136,30 @@ const DiscoverStories = () => {
               
               <DialogContent className="max-w-4xl w-[90vw] max-h-[80vh] p-0 overflow-hidden">
                 {selectedStory && (
-                  <div className="h-full w-full flex flex-col bg-story-peach/20">
-                    {/* Header with title */}
-                    <div className="flex justify-between items-center p-4 bg-white/80 backdrop-blur-sm">
-                      <h1 className="text-2xl font-bold text-story-purple">{selectedStory.title}</h1>
-                    </div>
-                    
-                    {/* Story content */}
-                    <div className="flex-1 flex items-center justify-center p-4">
-                      <div className="max-w-3xl w-full">
-                        <StoryPage
-                          content={selectedStory.pages[currentPage]?.content || ""}
-                          image={selectedStory.pages[currentPage]?.image || ""}
-                          pageNumber={currentPage + 1}
-                          totalPages={selectedStory.pages.length}
-                          pageId={selectedStory.pages[currentPage]?.id || ""}
-                          rating={null}
-                          onRate={() => {}}
-                          showRating={false}
+                  <div className="h-full w-full flex flex-col bg-[#fafafd]">
+                    {/* Story content with exact same layout as story viewer */}
+                    <div className="flex-1 flex h-full">
+                      {/* Text Section */}
+                      <div className="flex-1 flex">
+                        <StoryText
+                          title={selectedStory.title}
+                          text={currentPage === 0 ? "" : selectedStory.pages[currentPage - 1]?.text || ""}
+                          page={currentPage}
+                          rtl={false}
+                        />
+                      </div>
+
+                      {/* Image Section */}
+                      <div className="flex-1 flex">
+                        <StoryVisual
+                          coverUrl={currentPage === 0 ? selectedStory.coverUrl : selectedStory.pages[currentPage - 1]?.image || selectedStory.coverUrl}
+                          title={selectedStory.title}
                         />
                       </div>
                     </div>
                     
                     {/* Navigation */}
-                    <div className="flex justify-between items-center p-4 bg-white/80 backdrop-blur-sm">
+                    <div className="flex justify-between items-center p-4 bg-white/80 backdrop-blur-sm border-t">
                       <Button
                         variant="outline"
                         onClick={handlePrevPage}
@@ -169,13 +171,13 @@ const DiscoverStories = () => {
                       </Button>
                       
                       <span className="text-sm text-muted-foreground">
-                        Page {currentPage + 1} of {selectedStory.pages.length}
+                        Page {currentPage + 1} of {selectedStory.pages.length + 1}
                       </span>
                       
                       <Button
                         variant="outline"
                         onClick={handleNextPage}
-                        disabled={currentPage === selectedStory.pages.length - 1}
+                        disabled={currentPage === selectedStory.pages.length}
                         className="flex items-center gap-2"
                       >
                         Next
