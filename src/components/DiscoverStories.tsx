@@ -119,6 +119,17 @@ const DiscoverStories = () => {
     setCurrentPage(0);
   };
 
+  // Handle tap zones for Instagram-style navigation
+  const handleLeftTap = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    handlePrevPage();
+  };
+
+  const handleRightTap = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    handleNextPage();
+  };
+
   const formatTextWithLineBreaks = (text: string) => {
     if (!text) return [];
     
@@ -176,12 +187,51 @@ const DiscoverStories = () => {
                         <span className="sr-only">Close</span>
                       </button>
 
+                      {/* Mobile Navigation Arrows - Only visible on mobile */}
+                      <div className="md:hidden absolute top-1/2 left-4 right-4 flex justify-between items-center z-40 pointer-events-none">
+                        <Button
+                          variant="outline"
+                          onClick={handlePrevPage}
+                          disabled={currentPage === 0}
+                          className="pointer-events-auto rounded-full w-12 h-12 bg-white/90 backdrop-blur-sm shadow-md border-0 hover:bg-white hover:scale-110 transition-all duration-200"
+                          size="icon"
+                        >
+                          <ChevronLeft className="h-6 w-6" />
+                        </Button>
+                        
+                        <Button
+                          variant="outline"
+                          onClick={handleNextPage}
+                          disabled={currentPage === selectedStory.pages.length}
+                          className="pointer-events-auto rounded-full w-12 h-12 bg-white/90 backdrop-blur-sm shadow-md border-0 hover:bg-white hover:scale-110 transition-all duration-200"
+                          size="icon"
+                        >
+                          <ChevronRight className="h-6 w-6" />
+                        </Button>
+                      </div>
+
+                      {/* Instagram-style tap zones - Only on mobile */}
+                      <div className="md:hidden absolute inset-0 z-30 flex">
+                        {/* Left tap zone */}
+                        <div 
+                          className="w-1/3 h-full cursor-pointer"
+                          onClick={handleLeftTap}
+                        />
+                        {/* Middle zone - no action */}
+                        <div className="w-1/3 h-full" />
+                        {/* Right tap zone */}
+                        <div 
+                          className="w-1/3 h-full cursor-pointer"
+                          onClick={handleRightTap}
+                        />
+                      </div>
+
                       {/* Story content */}
                       <div className="flex-1 flex h-full min-h-[500px] rounded-3xl overflow-hidden">
-                        {/* Mobile Layout - Image at top, text at bottom */}
+                        {/* Mobile Layout - Image at top (60%), text at bottom (40%), side-by-side on desktop */}
                         <div className="flex-1 flex flex-col md:flex-row bg-white">
-                          {/* Image Section - Top on mobile, Right on desktop */}
-                          <div className="flex-1 flex order-1 md:order-2">
+                          {/* Image Section - Top 60% on mobile, Right 50% on desktop */}
+                          <div className="h-[60%] md:h-full flex-1 flex order-1 md:order-2">
                             <div className="w-full h-full bg-[#fafafd] flex items-center justify-center p-0 m-0">
                               <div className="relative w-full h-full flex items-center justify-center bg-[#e8eafd] overflow-hidden">
                                 <img
@@ -193,19 +243,19 @@ const DiscoverStories = () => {
                             </div>
                           </div>
 
-                          {/* Text Section - Bottom on mobile, Left on desktop */}
-                          <div className="flex-1 flex bg-white order-2 md:order-1">
-                            <div className="flex-1 flex flex-col min-h-[340px] px-8 md:px-10 py-8 md:py-10 gap-0 justify-center items-start">
+                          {/* Text Section - Bottom 40% on mobile (centered), Left 50% on desktop */}
+                          <div className="h-[40%] md:h-full flex-1 flex bg-white order-2 md:order-1">
+                            <div className="flex-1 flex flex-col px-4 md:px-10 py-4 md:py-10 gap-0 justify-center items-start">
                               {currentPage === 0 ? (
-                                <h3 className="font-ghibli text-[2.6rem] md:text-5xl font-bold mb-0 w-full text-center leading-tight">
+                                <h3 className="font-ghibli text-2xl md:text-5xl font-bold mb-0 w-full text-center leading-tight">
                                   {selectedStory.title}
                                 </h3>
                               ) : (
-                                <div className="w-full space-y-6">
+                                <div className="w-full space-y-3 md:space-y-6 flex flex-col justify-center h-full">
                                   {formatTextWithLineBreaks(selectedStory.pages[currentPage - 1]?.text || "").map((sentence, index) => (
                                     <p 
                                       key={index} 
-                                      className="text-lg md:text-xl leading-relaxed font-medium text-gray-800"
+                                      className="text-base md:text-xl leading-relaxed font-medium text-gray-800 text-center md:text-left"
                                       style={{ wordBreak: "break-word" }}
                                     >
                                       {sentence}
@@ -218,8 +268,8 @@ const DiscoverStories = () => {
                         </div>
                       </div>
                       
-                      {/* Navigation */}
-                      <div className="flex justify-between items-center p-6 bg-white border-t border-gray-100 shrink-0 rounded-b-3xl">
+                      {/* Navigation - Hidden on mobile, visible on desktop */}
+                      <div className="hidden md:flex justify-between items-center p-6 bg-white border-t border-gray-100 shrink-0 rounded-b-3xl">
                         <Button
                           variant="outline"
                           onClick={handlePrevPage}
