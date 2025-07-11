@@ -129,71 +129,58 @@ const MobileStoryViewer = () => {
         {/* Scrollable Content Container */}
         <div className="h-full overflow-y-auto overscroll-contain">
           <div className="max-w-2xl mx-auto px-6 pt-16 pb-8">
-            {/* Cover Page - Page 1 */}
-            <div className="py-2">
-              {/* Title */}
-              <div className="mb-4">
-                <h1 className={clsx(
-                  "text-3xl md:text-4xl font-bold text-center leading-tight text-gray-900",
-                  isArabicStory && "font-cairo"
-                )} dir={isArabicStory ? "rtl" : "ltr"}>
-                  {story.title}
-                </h1>
-              </div>
-              
-              {/* Cover Image - Use first page image */}
-              <div className="mb-4">
-                <div className="relative w-full aspect-[4/3] bg-[#e8eafd] rounded-xl overflow-hidden shadow-lg">
-                  <img
-                    src={story.pages[0]?.image_url || ""}
-                    alt={story.title}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </div>
-
-              {/* Subtle Page Number */}
-              <div className="flex justify-center py-1">
-                <span className="text-sm text-gray-400">1</span>
-              </div>
-            </div>
-
-            {/* Story Pages */}
+            {/* Story Pages - First page serves as cover */}
             {story.pages?.map((page, index) => (
-              <div key={page.id || index}>
-                {/* Page Separator */}
-                <div className="flex justify-center py-2">
-                  <Separator className="w-32 bg-gray-200" />
-                </div>
+              <div key={index}>
+                {/* Page Separator - Skip for first page */}
+                {index > 0 && (
+                  <div className="flex justify-center py-2">
+                    <Separator className="w-32 bg-gray-200" />
+                  </div>
+                )}
                 
                 <div className="py-2">
-                  {/* Text First */}
-                  <div className={clsx(
-                    "mb-4",
-                    isArabicStory && "text-right"
-                  )} dir={isArabicStory ? "rtl" : "ltr"}>
-                    <div className="space-y-3">
-                      {formatTextWithLineBreaks(page.text).map((sentence, sentenceIndex) => (
-                        <p 
-                          key={sentenceIndex} 
-                          className={clsx(
-                            "text-lg leading-relaxed font-medium text-gray-800",
-                            isArabicStory ? "text-right font-cairo" : "text-left"
-                          )}
-                          style={{ wordBreak: "break-word" }}
-                        >
-                          {sentence}
-                        </p>
-                      ))}
+                  {/* First page gets title treatment */}
+                  {index === 0 && (
+                    <div className="mb-4">
+                      <h1 className={clsx(
+                        "text-3xl md:text-4xl font-bold text-center leading-tight text-gray-900",
+                        isArabicStory && "font-cairo"
+                      )} dir={isArabicStory ? "rtl" : "ltr"}>
+                        {story.title}
+                      </h1>
                     </div>
-                  </div>
+                  )}
+
+                  {/* Text - Only for non-first pages */}
+                  {index > 0 && (
+                    <div className={clsx(
+                      "mb-4",
+                      isArabicStory && "text-right"
+                    )} dir={isArabicStory ? "rtl" : "ltr"}>
+                      <div className="space-y-3">
+                        {formatTextWithLineBreaks(page.text).map((sentence, sentenceIndex) => (
+                          <p 
+                            key={sentenceIndex} 
+                            className={clsx(
+                              "text-lg leading-relaxed font-medium text-gray-800",
+                              isArabicStory ? "text-right font-cairo" : "text-left"
+                            )}
+                            style={{ wordBreak: "break-word" }}
+                          >
+                            {sentence}
+                          </p>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                   
-                  {/* Image Below Text */}
+                  {/* Image for all pages */}
                   <div className="mb-4">
                     <div className="relative w-full aspect-[4/3] bg-[#e8eafd] rounded-xl overflow-hidden shadow-lg">
                       <img
                         src={page.image_url}
-                        alt={`Page ${index + 2} illustration`}
+                        alt={index === 0 ? story.title : `Page ${index + 1} illustration`}
                         className="w-full h-full object-cover"
                       />
                     </div>
@@ -201,7 +188,7 @@ const MobileStoryViewer = () => {
 
                   {/* Subtle Page Number */}
                   <div className="flex justify-center py-1">
-                    <span className="text-sm text-gray-400">{index + 2}</span>
+                    <span className="text-sm text-gray-400">{index + 1}</span>
                   </div>
                 </div>
               </div>
@@ -228,7 +215,7 @@ const MobileStoryViewer = () => {
 
                 {/* Subtle Page Number */}
                 <div className="flex justify-center py-1">
-                  <span className="text-sm text-gray-400">{story.pages.length + 2}</span>
+                  <span className="text-sm text-gray-400">{story.pages.length + 1}</span>
                 </div>
               </div>
             </div>
