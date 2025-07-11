@@ -115,13 +115,19 @@ const MobileStoryViewer = () => {
           </div>
         ) : isEndPage ? (
           <EndPage />
-        ) : (
+        ) : currentPage ? (
           <StoryPage
-            page={currentPage}
-            rtl={rtl}
-            isMobile={true}
+            content={currentPage.text}
+            image={currentPage.image}
+            pageNumber={page}
+            totalPages={numPages}
+            pageId={currentPage.id || `page-${page}`}
+            rating={null}
+            onRate={() => {}}
+            isRtl={rtl}
+            showRating={false}
           />
-        )}
+        ) : null}
       </div>
 
       {/* Navigation Footer */}
