@@ -1,8 +1,12 @@
 
-import React from 'react';
-import { X } from 'lucide-react';
-import { Separator } from '@/components/ui/separator';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { X, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import clsx from 'clsx';
+import StoryText from '@/components/story-viewer/StoryText';
+import StoryVisual from '@/components/story-viewer/StoryVisual';
+import EndPage from '@/components/story-viewer/EndPage';
 
 interface MobileDiscoverStoryViewerProps {
   story: any;
@@ -13,101 +17,154 @@ const MobileDiscoverStoryViewer: React.FC<MobileDiscoverStoryViewerProps> = ({
   story,
   onClose
 }) => {
-  const formatTextWithLineBreaks = (text: string) => {
-    if (!text) return [];
-    
-    const sentences = text.split(/([.!?]+)/).filter(part => part.trim() !== "");
-    
-    const formattedSentences = [];
-    for (let i = 0; i < sentences.length; i += 2) {
-      const sentence = sentences[i]?.trim();
-      const punctuation = sentences[i + 1] || "";
-      if (sentence) {
-        formattedSentences.push(sentence + punctuation);
-      }
-    }
-    
-    return formattedSentences;
-  };
+  const [page, setPage] = useState(1); // Start from page 1 (cover page)
+  
+  if (!story) return null;
 
+  // Total pages: cover page (1) + story pages (2 to n+1) + end page
+  const numPages = story.pages ? story.pages.length + 2 : 2; // +1 for cover, +1 for end
+  const isEndPage = page === numPages;
+  const isCoverPage = page === 1;
+  
+  // For story pages (page 2+), get the corresponding page from story.pages array
+  const currentPage = !isCoverPage && !isEndPage ? story.pages[page - 2] : null;
+  
   // Check if the story language is Arabic for RTL support
   const isArabic = story.language === 'Arabic';
 
+  const handlePrevPage = () => {
+    setPage(Math.max(1, page - 1));
+  };
+
+  const handleNextPage = () => {
+    setPage(Math.min(numPages, page + 1));
+  };
+
+  // Keyboard navigation
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") {
+        handlePrevPage();
+      } else if (e.key === "ArrowRight") {
+        handleNextPage();
+      } else if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [page, numPages, onClose]);
+
   return (
     <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center">
-      <div className="w-full h-full max-w-4xl bg-white relative rounded-none md:rounded-3xl overflow-hidden">
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 z-50 rounded-full opacity-70 ring-offset-background transition-all duration-200 hover:opacity-100 hover:scale-110 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 h-10 w-10 flex items-center justify-center bg-white/90 backdrop-blur-sm shadow-md"
-        >
-          <X className="h-5 w-5" />
-          <span className="sr-only">Close</span>
-        </button>
+      <div className="min-h-screen bg-gray-50 px-4 py-0 w-full">
+        <div className="max-w-md mx-auto">
+          <div className="bg-white rounded-none shadow-lg overflow-hidden min-h-screen">
+            {/* Close Button */}
+            <button
+              onClick={onClose}
+              className="absolute top-4 right-4 z-50 rounded-full opacity-70 ring-offset-background transition-all duration-200 hover:opacity-100 hover:scale-110 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 h-10 w-10 flex items-center justify-center bg-white/90 backdrop-blur-sm shadow-md"
+            >
+              <X className="h-5 w-5" />
+              <span className="sr-only">Close</span>
+            </button>
 
-        {/* Continuous Scroll Content */}
-        <div className="flex-1 overflow-y-auto">
-          <div className="space-y-0">
-            {/* Cover Page - Page 1 */}
-            <div className="min-h-screen flex flex-col">
-              <div className="bg-white p-8 flex items-center justify-center">
-                <h3 className={clsx(
-                  "font-ghibli text-3xl md:text-5xl font-bold text-center leading-tight",
-                  isArabic && "font-cairo"
-                )} dir={isArabic ? "rtl" : "ltr"}>
-                  {story.coverText || story.title}
-                </h3>
-              </div>
-              <div className="flex-1 bg-[#fafafd] flex items-center justify-center">
-                <div className="relative w-full h-full flex items-center justify-center bg-[#e8eafd] overflow-hidden">
-                  <img
-                    src={story.coverUrl}
-                    alt={story.title}
-                    className="w-full h-full object-cover"
-                  />
+            {/* Story Content */}
+            <div className="flex-1 flex flex-col">
+              {isEndPage ? (
+                <div className="w-full min-h-screen flex flex-col">
+                  {/* Full height image */}
+                  <div className="w-full flex-1">
+                    <div className="w-full h-full bg-[#fafafd] flex items-center justify-center p-0 m-0">
+                      <div
+                        className="relative w-full h-full flex items-center justify-center"
+                        style={{
+                          background: "#e8eafd",
+                          borderRadius: "0",
+                          overflow: "hidden",
+                          boxShadow: "0 4px 32px 3px rgba(100,100,115,0.10)",
+                        }}
+                      >
+                        <img
+                          src="/images/the-end-story-page.png"
+                          alt="The End"
+                          className="w-full h-full object-cover"
+                          style={{
+                            objectFit: "cover",
+                            borderRadius: "0",
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <>
+                  {/* Text Section - Top */}
+                  <div className="w-full">
+                    <StoryText
+                      title={story.title}
+                      text={isCoverPage ? story.title : (currentPage?.text || "")}
+                      page={isCoverPage ? 0 : page - 1} // Show as title page for cover
+                      rtl={isArabic}
+                    />
+                  </div>
+                  
+                  {/* Visual Section - Bottom */}
+                  <div className="w-full">
+                    <StoryVisual
+                      coverUrl={isCoverPage ? story.coverUrl : (currentPage?.image || currentPage?.image_url || "")}
+                      title={story.title}
+                    />
+                  </div>
+                </>
+              )}
             </div>
 
-            {/* Story Pages with Separators */}
-            {story.pages?.map((page: any, index: number) => (
-              <div key={page.id || index}>
-                {/* Add separator before each story page */}
-                <div className="flex justify-center py-8 bg-white">
-                  <Separator className="w-24 bg-gray-200" />
-                </div>
+            {/* Mobile Navigation Bar */}
+            <div className="flex items-center justify-between px-4 py-4 bg-white border-t border-gray-100">
+              {/* Back Button - Left */}
+              <Button
+                onClick={onClose}
+                variant="outline"
+                className="flex items-center gap-2"
+                aria-label="Close story"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Back
+              </Button>
+              
+              {/* Navigation Arrows - Center */}
+              <div className="flex items-center gap-4">
+                <Button
+                  onClick={handlePrevPage}
+                  variant="outline"
+                  size="icon"
+                  disabled={page === 1}
+                  aria-label="Previous Page"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                </Button>
                 
-                <div className="min-h-screen flex flex-col">
-                  <div className="bg-white p-8 flex items-center justify-center">
-                    <div className={clsx(
-                      "w-full max-w-4xl space-y-6",
-                      isArabic && "text-right"
-                    )} dir={isArabic ? "rtl" : "ltr"}>
-                      {formatTextWithLineBreaks(page.text).map((sentence, sentenceIndex) => (
-                        <p 
-                          key={sentenceIndex} 
-                          className={clsx(
-                            "text-lg md:text-xl leading-relaxed font-medium text-gray-800",
-                            isArabic ? "text-right font-cairo" : "text-left"
-                          )}
-                          style={{ wordBreak: "break-word" }}
-                        >
-                          {sentence}
-                        </p>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="flex-1 bg-[#fafafd] flex items-center justify-center">
-                    <div className="relative w-full h-full flex items-center justify-center bg-[#e8eafd] overflow-hidden">
-                      <img
-                        src={page.image || page.image_url}
-                        alt={`Page ${index + 2} illustration`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  </div>
-                </div>
+                <span className="text-sm font-medium text-muted-foreground">
+                  {page} / {numPages}
+                </span>
+                
+                <Button
+                  onClick={handleNextPage}
+                  variant="outline"
+                  size="icon"
+                  disabled={page >= numPages}
+                  aria-label="Next Page"
+                >
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
               </div>
-            ))}
+              
+              {/* Empty space for symmetry */}
+              <div className="w-[72px]"></div>
+            </div>
           </div>
         </div>
       </div>
