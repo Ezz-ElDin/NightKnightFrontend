@@ -226,10 +226,10 @@ const DiscoverStories = () => {
                         />
                       </div>
 
-                      {/* Story content */}
-                      <div className="flex-1 flex h-full min-h-[500px] rounded-3xl overflow-hidden">
+                      {/* Story content - Fixed height container */}
+                      <div className="flex-1 flex h-full min-h-[500px] max-h-[85vh] rounded-3xl overflow-hidden">
                         {/* Mobile Layout - Image at top (60%), text at bottom (40%), side-by-side on desktop */}
-                        <div className="flex-1 flex flex-col md:flex-row bg-white">
+                        <div className="flex-1 flex flex-col md:flex-row bg-white h-full">
                           {/* Image Section - Top 60% on mobile, Right 50% on desktop */}
                           <div className="h-[60%] md:h-full flex-1 flex order-1 md:order-2">
                             <div className="w-full h-full bg-[#fafafd] flex items-center justify-center p-0 m-0">
@@ -243,24 +243,28 @@ const DiscoverStories = () => {
                             </div>
                           </div>
 
-                          {/* Text Section - Bottom 40% on mobile with scroll, Left 50% on desktop */}
-                          <div className="h-[40%] md:h-full flex-1 flex bg-white order-2 md:order-1">
-                            <div className="flex-1 flex flex-col px-4 md:px-10 py-4 md:py-10 gap-0 justify-center items-start overflow-y-auto">
+                          {/* Text Section - Bottom 40% on mobile with fixed height and scroll, Left 50% on desktop */}
+                          <div className="h-[40%] md:h-full flex-1 flex bg-white order-2 md:order-1 min-h-0">
+                            <div className="flex-1 flex flex-col px-4 md:px-10 py-4 md:py-10 gap-0 min-h-0 h-full">
                               {currentPage === 0 ? (
-                                <h3 className="font-ghibli text-2xl md:text-5xl font-bold mb-0 w-full text-center leading-tight">
-                                  {selectedStory.title}
-                                </h3>
+                                <div className="flex items-center justify-center h-full">
+                                  <h3 className="font-ghibli text-2xl md:text-5xl font-bold mb-0 w-full text-center leading-tight">
+                                    {selectedStory.title}
+                                  </h3>
+                                </div>
                               ) : (
-                                <div className="w-full space-y-3 md:space-y-6 flex flex-col justify-center h-full">
-                                  {formatTextWithLineBreaks(selectedStory.pages[currentPage - 1]?.text || "").map((sentence, index) => (
-                                    <p 
-                                      key={index} 
-                                      className="text-base md:text-xl leading-relaxed font-medium text-gray-800 text-center md:text-left"
-                                      style={{ wordBreak: "break-word" }}
-                                    >
-                                      {sentence}
-                                    </p>
-                                  ))}
+                                <div className="w-full flex flex-col justify-center h-full min-h-0">
+                                  <div className="space-y-3 md:space-y-6 overflow-y-auto flex-1 min-h-0 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+                                    {formatTextWithLineBreaks(selectedStory.pages[currentPage - 1]?.text || "").map((sentence, index) => (
+                                      <p 
+                                        key={index} 
+                                        className="text-base md:text-xl leading-relaxed font-medium text-gray-800 text-center md:text-left"
+                                        style={{ wordBreak: "break-word" }}
+                                      >
+                                        {sentence}
+                                      </p>
+                                    ))}
+                                  </div>
                                 </div>
                               )}
                             </div>
