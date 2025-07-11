@@ -127,12 +127,9 @@ const MobileDiscoverStoryViewer: React.FC<MobileDiscoverStoryViewerProps> = ({
             </div>
           ))}
           
-          {/* End marker */}
+          {/* End marker - Only separator, no text */}
           <div className="flex justify-center py-4">
             <Separator className="w-32 bg-gray-200" />
-          </div>
-          <div className="text-center py-6">
-            <span className="text-2xl font-bold text-gray-600">The End</span>
           </div>
         </div>
       </div>
