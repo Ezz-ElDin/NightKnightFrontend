@@ -226,9 +226,9 @@ const DiscoverStories = () => {
                         />
                       </div>
 
-                      <div className="flex-1 flex h-full w-full rounded-3xl overflow-hidden">
-                        <div className="flex-1 flex flex-col md:flex-row bg-white h-full w-full">
-                          <div className="h-[60%] md:h-full md:w-1/2 flex order-1 md:order-2">
+                      <div className="flex-1 overflow-y-auto">
+                        <div className="min-h-full flex flex-col md:flex-row">
+                          <div className="w-full md:w-1/2 h-[50vh] md:h-full flex order-1 md:order-2">
                             <div className="w-full h-full bg-[#fafafd] flex items-center justify-center">
                               <div className="relative w-full h-full flex items-center justify-center bg-[#e8eafd] overflow-hidden">
                                 <img
@@ -240,17 +240,17 @@ const DiscoverStories = () => {
                             </div>
                           </div>
 
-                          <div className="h-[40%] md:h-full md:w-1/2 flex bg-white order-2 md:order-1">
-                            <div className="w-full h-full flex flex-col px-4 md:px-10 py-4 md:py-10">
+                          <div className="w-full md:w-1/2 flex-1 md:h-full bg-white order-2 md:order-1">
+                            <div className="h-full flex flex-col px-4 md:px-10 py-4 md:py-10">
                               {currentPage === 0 ? (
-                                <div className="flex items-center justify-center h-full">
+                                <div className="flex items-center justify-center h-full min-h-[300px]">
                                   <h3 className="font-ghibli text-2xl md:text-5xl font-bold text-center leading-tight">
                                     {selectedStory.title}
                                   </h3>
                                 </div>
                               ) : (
-                                <div className="h-full flex flex-col overflow-hidden">
-                                  <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+                                <div className="h-full flex flex-col min-h-[300px]">
+                                  <div className="flex-1 py-4">
                                     <div className="space-y-3 md:space-y-6">
                                       {formatTextWithLineBreaks(selectedStory.pages[currentPage - 1]?.text || "").map((sentence, index) => (
                                         <p 
