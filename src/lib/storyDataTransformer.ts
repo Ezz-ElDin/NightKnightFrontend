@@ -61,8 +61,6 @@ const getEndPageText = (language: string): string => {
 };
 
 export const transformStoryData = (jsonStories: JsonStory[]): TransformedStory[] => {
-  console.log('Input JSON stories:', jsonStories);
-  
   return jsonStories.map(story => {
     const language = getLanguageFromTags(story.tags);
     const genre = getGenreFromTags(story.tags);
@@ -71,15 +69,8 @@ export const transformStoryData = (jsonStories: JsonStory[]): TransformedStory[]
     const coverImage = story.images.find(img => img.page === 0);
     const coverUrl = coverImage ? coverImage.image_url.replace('public/', '/') : '';
     
-    // Find cover text from script (page 0)
-    const coverScript = story.script.find(script => script.page_number === 0);
-    const coverText = coverScript ? coverScript.text : story.story_title;
-    
-    console.log(`Story ${story.id}:`, {
-      title: story.story_title,
-      coverText: coverText,
-      coverScript: coverScript
-    });
+    // Use story_title for both card display and cover page content (matching library behavior)
+    const coverText = story.story_title;
     
     // Transform all story pages (pages 1-10 from script)
     const storyPages = story.script
@@ -100,19 +91,15 @@ export const transformStoryData = (jsonStories: JsonStory[]): TransformedStory[]
       image: '/images/the-end-story-page.png'
     };
     
-    const transformedStory = {
+    return {
       id: story.id,
-      title: story.story_title, // Keep story title for display purposes
+      title: story.story_title,
       coverUrl,
-      coverText, // Use script[0].text for the actual cover content
+      coverText, // Same as title to match library page behavior
       createdAt: new Date().toISOString().split('T')[0], // Today's date
       language,
       genre,
       pages: [...storyPages, endPage] // Story pages (1-10) + end page
     };
-    
-    console.log(`Transformed story ${story.id}:`, transformedStory);
-    
-    return transformedStory;
   });
 };

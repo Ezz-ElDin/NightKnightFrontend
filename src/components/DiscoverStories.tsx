@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import StoryCard from "@/components/dashboard/StoryCard";
 import DesktopDiscoverStoryViewer from "@/components/story-viewer/DesktopDiscoverStoryViewer";
@@ -24,14 +23,7 @@ const DiscoverStories = () => {
   // Transform the JSON data to the expected format
   const sampleStories = transformStoryData(jsonStoriesData);
   
-  // Debug logging to see the transformed data
-  console.log('Transformed stories:', sampleStories);
-  console.log('First story coverText:', sampleStories[0]?.coverText);
-  console.log('First story title:', sampleStories[0]?.title);
-
   const handleStoryClick = (story: any) => {
-    console.log('Selected story data:', story);
-    console.log('Selected story coverText:', story.coverText);
     setSelectedStory(story);
     setIsDialogOpen(true);
     setPage(0); // Reset to title page
