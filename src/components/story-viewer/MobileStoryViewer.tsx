@@ -29,7 +29,8 @@ const MobileStoryViewer = () => {
     enabled: !!storyId
   });
 
-  const canExport = true;
+  // const canExport = true;
+  const canExport = false; // Commented out export functionality for mobile view
 
   // Export functionality
   const handleExport = async () => {
@@ -214,8 +215,8 @@ const MobileStoryViewer = () => {
                 </Button>
               </div>
               
-              {/* Export Button - Right */}
-              {canExport && (
+              {/* Export Button - Right - COMMENTED OUT FOR MOBILE VIEW */}
+              {/* {canExport && (
                 <Button
                   onClick={handleExport}
                   variant="outline"
@@ -230,7 +231,7 @@ const MobileStoryViewer = () => {
                     <Download className="h-4 w-4" />
                   )}
                 </Button>
-              )}
+              )} */}
             </div>
           </div>
         </div>
