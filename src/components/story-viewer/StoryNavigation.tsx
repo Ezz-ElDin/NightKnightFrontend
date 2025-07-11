@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, Fullscreen } from "lucide-react";
+import { ArrowLeft, ArrowRight, Fullscreen, Download, Loader2 } from "lucide-react";
 
 interface StoryNavigationProps {
   onBack: () => void;
@@ -68,8 +68,24 @@ const StoryNavigation: React.FC<StoryNavigationProps> = ({
       </Button>
     </div>
     
-    {/* Action Buttons - Only Fullscreen (Export button removed) */}
+    {/* Action Buttons - Export and Fullscreen */}
     <div className="absolute bottom-6 right-6 flex gap-3">
+      {canExport && (
+        <Button
+          onClick={onExport}
+          variant="outline"
+          size="icon"
+          aria-label="Export story"
+          disabled={isExporting}
+          className="rounded-full shadow border transition-transform duration-200 hover:scale-105 bg-story-green hover:bg-story-green/90 border-story-green text-white"
+        >
+          {isExporting ? (
+            <Loader2 className="h-6 w-6 animate-spin" />
+          ) : (
+            <Download className="h-6 w-6" />
+          )}
+        </Button>
+      )}
       <Button
         onClick={onToggleFullscreen}
         variant={isFullscreen ? "secondary" : "outline"}
