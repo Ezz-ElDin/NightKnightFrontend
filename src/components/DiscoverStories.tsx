@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import StoryCard from "@/components/dashboard/StoryCard";
 import {
@@ -9,7 +8,7 @@ import {
 import StoryText from "@/components/story-viewer/StoryText";
 import StoryVisual from "@/components/story-viewer/StoryVisual";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
 const DiscoverStories = () => {
   const [selectedStory, setSelectedStory] = useState<any>(null);
@@ -101,7 +100,7 @@ const DiscoverStories = () => {
   };
 
   const handleNextPage = () => {
-    if (selectedStory && currentPage < selectedStory.pages.length - 1) {
+    if (selectedStory && currentPage < selectedStory.pages.length) {
       setCurrentPage(prev => prev + 1);
     }
   };
@@ -134,11 +133,20 @@ const DiscoverStories = () => {
                 </div>
               </DialogTrigger>
               
-              <DialogContent className="max-w-4xl w-[90vw] max-h-[80vh] p-0 overflow-hidden">
+              <DialogContent className="max-w-2xl w-[45vw] max-h-[60vh] p-0 overflow-hidden">
                 {selectedStory && (
-                  <div className="h-full w-full flex flex-col bg-[#fafafd]">
+                  <div className="h-full w-full flex flex-col bg-[#fafafd] relative">
+                    {/* Custom Close Button */}
+                    <button
+                      onClick={handleCloseDialog}
+                      className="absolute top-4 right-4 z-50 rounded-full opacity-70 ring-offset-background transition-all duration-200 hover:opacity-100 hover:scale-110 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 h-8 w-8 flex items-center justify-center bg-white/80 backdrop-blur-sm"
+                    >
+                      <X className="h-4 w-4" />
+                      <span className="sr-only">Close</span>
+                    </button>
+
                     {/* Story content with exact same layout as story viewer */}
-                    <div className="flex-1 flex h-full">
+                    <div className="flex-1 flex h-full min-h-[400px]">
                       {/* Text Section */}
                       <div className="flex-1 flex">
                         <StoryText
@@ -158,8 +166,8 @@ const DiscoverStories = () => {
                       </div>
                     </div>
                     
-                    {/* Navigation */}
-                    <div className="flex justify-between items-center p-4 bg-white/80 backdrop-blur-sm border-t">
+                    {/* Navigation - Fixed positioning */}
+                    <div className="flex justify-between items-center p-4 bg-white/90 backdrop-blur-sm border-t shrink-0">
                       <Button
                         variant="outline"
                         onClick={handlePrevPage}
@@ -170,7 +178,7 @@ const DiscoverStories = () => {
                         Previous
                       </Button>
                       
-                      <span className="text-sm text-muted-foreground">
+                      <span className="text-sm text-muted-foreground font-medium">
                         Page {currentPage + 1} of {selectedStory.pages.length + 1}
                       </span>
                       
