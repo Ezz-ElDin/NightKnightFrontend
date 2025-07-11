@@ -140,7 +140,7 @@ const MobileStoryViewer = () => {
                         }}
                       >
                         <img
-                          src="/the-end-story-page.png"
+                          src="/images/the-end-story-page.png"
                           alt="The End"
                           className="w-full h-full object-cover"
                           style={{
