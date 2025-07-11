@@ -61,6 +61,8 @@ const getEndPageText = (language: string): string => {
 };
 
 export const transformStoryData = (jsonStories: JsonStory[]): TransformedStory[] => {
+  console.log('Input JSON stories:', jsonStories);
+  
   return jsonStories.map(story => {
     const language = getLanguageFromTags(story.tags);
     const genre = getGenreFromTags(story.tags);
@@ -72,6 +74,12 @@ export const transformStoryData = (jsonStories: JsonStory[]): TransformedStory[]
     // Find cover text from script (page 0)
     const coverScript = story.script.find(script => script.page_number === 0);
     const coverText = coverScript ? coverScript.text : story.story_title;
+    
+    console.log(`Story ${story.id}:`, {
+      title: story.story_title,
+      coverText: coverText,
+      coverScript: coverScript
+    });
     
     // Transform all story pages (pages 1-10 from script)
     const storyPages = story.script
@@ -92,7 +100,7 @@ export const transformStoryData = (jsonStories: JsonStory[]): TransformedStory[]
       image: '/images/the-end-story-page.png'
     };
     
-    return {
+    const transformedStory = {
       id: story.id,
       title: story.story_title, // Keep story title for display purposes
       coverUrl,
@@ -102,5 +110,9 @@ export const transformStoryData = (jsonStories: JsonStory[]): TransformedStory[]
       genre,
       pages: [...storyPages, endPage] // Story pages (1-10) + end page
     };
+    
+    console.log(`Transformed story ${story.id}:`, transformedStory);
+    
+    return transformedStory;
   });
 };
