@@ -109,26 +109,26 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ language, setLangua
               <ChevronDown className="h-4 w-4 opacity-50" />
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-md">
-            <DialogHeader>
-              <DialogTitle className="flex items-center gap-2">
+          <DialogContent className="w-[90vw] max-w-sm mx-auto top-[40%] translate-y-[-50%] rounded-2xl">
+            <DialogHeader className="pb-4">
+              <DialogTitle className="flex items-center gap-2 text-xl">
                 <span className="text-2xl">🌎</span>
                 Select Language
               </DialogTitle>
             </DialogHeader>
-            <div className="grid gap-2">
+            <div className="grid gap-1">
               {sortedLanguages.map(lang => (
                 <Button
                   key={lang.id}
                   variant="ghost"
-                  className={`w-full justify-start px-4 py-3 h-auto ${
-                    language === lang.id ? 'bg-blue-50 text-blue-900' : 'hover:bg-blue-50'
+                  className={`w-full justify-start px-4 py-4 h-auto rounded-xl ${
+                    language === lang.id ? 'bg-blue-50 text-blue-900 border border-blue-200' : 'hover:bg-blue-50'
                   }`}
                   onClick={() => handleLanguageSelect(lang.id)}
                 >
                   <div className="flex items-center gap-3 w-full">
                     <span className="text-xl flex-shrink-0">{LANGUAGE_FLAGS[lang.id]}</span>
-                    <span className="font-medium">{lang.id}</span>
+                    <span className="font-medium text-base">{lang.id}</span>
                   </div>
                 </Button>
               ))}
