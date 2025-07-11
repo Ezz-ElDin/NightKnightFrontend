@@ -38,7 +38,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ language, setLangua
         Language
       </label>
       <Select value={language} onValueChange={setLanguage}>
-        <SelectTrigger className="w-full rounded-xl border-2 border-blue-400/30 text-base md:text-lg bg-white px-5 py-3 shadow-md focus:border-blue-500 focus:ring-2 focus:ring-blue-200 font-ghibli h-auto min-h-[52px]">
+        <SelectTrigger className="w-full rounded-xl border-2 border-blue-400/30 text-base md:text-lg bg-white px-5 py-3 shadow-md focus:border-blue-500 focus:ring-2 focus:ring-blue-200 font-ghibli h-auto min-h-[52px] [&>svg]:hidden">
           <SelectValue placeholder="Select a language">
             {language && (
               <div className="flex items-center gap-2">
