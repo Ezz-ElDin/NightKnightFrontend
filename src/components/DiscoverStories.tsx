@@ -172,7 +172,7 @@ const DiscoverStories = () => {
                 <DialogOverlay />
                 <DialogPrimitive.Content
                   className={cn(
-                    "fixed left-[50%] top-[50%] z-50 grid w-full max-w-4xl w-[90vw] h-[85vh] translate-x-[-50%] translate-y-[-50%] p-0 overflow-hidden border-0 bg-transparent shadow-2xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] rounded-3xl"
+                    "fixed left-[50%] top-[50%] z-50 w-[90vw] h-[85vh] max-w-4xl translate-x-[-50%] translate-y-[-50%] p-0 overflow-hidden border-0 bg-transparent shadow-2xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] rounded-3xl"
                   )}
                 >
                   <DialogTitle className="sr-only">
@@ -241,21 +241,21 @@ const DiscoverStories = () => {
                           </div>
 
                           <div className="h-[40%] md:h-full md:w-1/2 flex bg-white order-2 md:order-1">
-                            <div className="w-full h-full flex flex-col px-4 md:px-10 py-4 md:py-10">
+                            <div className="w-full h-full flex flex-col">
                               {currentPage === 0 ? (
-                                <div className="flex items-center justify-center h-full">
+                                <div className="flex items-center justify-center h-full px-4 md:px-10">
                                   <h3 className="font-ghibli text-2xl md:text-5xl font-bold text-center leading-tight">
                                     {selectedStory.title}
                                   </h3>
                                 </div>
                               ) : (
-                                <div className="h-full flex flex-col overflow-hidden">
-                                  <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-                                    <div className="space-y-3 md:space-y-6">
+                                <div className="h-full flex flex-col px-4 md:px-10 py-4 md:py-8">
+                                  <div className="flex-1 overflow-y-auto">
+                                    <div className="space-y-3 md:space-y-4 pr-2">
                                       {formatTextWithLineBreaks(selectedStory.pages[currentPage - 1]?.text || "").map((sentence, index) => (
                                         <p 
                                           key={index} 
-                                          className="text-base md:text-xl leading-relaxed font-medium text-gray-800 text-center md:text-left"
+                                          className="text-base md:text-lg leading-relaxed font-medium text-gray-800 text-center md:text-left"
                                           style={{ wordBreak: "break-word" }}
                                         >
                                           {sentence}
