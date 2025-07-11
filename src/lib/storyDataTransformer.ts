@@ -27,6 +27,7 @@ interface TransformedStory {
   id: number;
   title: string;
   coverUrl: string;
+  coverText: string;
   createdAt: string;
   language: string;
   genre: string;
@@ -68,9 +69,13 @@ export const transformStoryData = (jsonStories: JsonStory[]): TransformedStory[]
     const coverImage = story.images.find(img => img.page === 0);
     const coverUrl = coverImage ? coverImage.image_url.replace('public/', '/') : '';
     
-    // Transform pages (excluding page 0 which is the cover)
+    // Find cover text from script (page 0)
+    const coverScript = story.script.find(script => script.page_number === 0);
+    const coverText = coverScript ? coverScript.text : story.story_title;
+    
+    // Transform all story pages (pages 1-10 from script)
     const storyPages = story.script
-      .filter(script => script.page_number > 0)
+      .filter(script => script.page_number >= 1) // Include pages 1-10
       .map(script => {
         const correspondingImage = story.images.find(img => img.page === script.page_number);
         return {
@@ -89,12 +94,13 @@ export const transformStoryData = (jsonStories: JsonStory[]): TransformedStory[]
     
     return {
       id: story.id,
-      title: story.story_title,
+      title: story.story_title, // Keep story title for display purposes
       coverUrl,
+      coverText, // Use script[0].text for the actual cover content
       createdAt: new Date().toISOString().split('T')[0], // Today's date
       language,
       genre,
-      pages: [...storyPages, endPage]
+      pages: [...storyPages, endPage] // Story pages (1-10) + end page
     };
   });
 };

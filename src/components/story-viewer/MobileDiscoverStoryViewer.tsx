@@ -63,7 +63,7 @@ const MobileDiscoverStoryViewer: React.FC<MobileDiscoverStoryViewerProps> = ({
                   "font-ghibli text-3xl md:text-5xl font-bold text-center leading-tight",
                   isArabic && "font-cairo"
                 )} dir={isArabic ? "rtl" : "ltr"}>
-                  {story.title}
+                  {story.coverText || story.title}
                 </h3>
               </div>
             </div>
