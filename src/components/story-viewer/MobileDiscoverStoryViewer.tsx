@@ -132,15 +132,11 @@ const MobileDiscoverStoryViewer: React.FC<MobileDiscoverStoryViewerProps> = ({
             <Separator className="w-32 bg-gray-200" />
           </div>
           
-          {/* Final Page - Only Image, No Text */}
+          {/* Final Page - Only a simple visual end without any text or "The End" image */}
           <div className="py-2">
             <div className="mb-4">
-              <div className="relative w-full aspect-[4/3] bg-[#e8eafd] rounded-xl overflow-hidden shadow-lg">
-                <img
-                  src="/images/the-end-story-page.png"
-                  alt="The End"
-                  className="w-full h-full object-cover"
-                />
+              <div className="relative w-full aspect-[4/3] bg-gradient-to-br from-story-lightPurple/20 to-story-peach/20 rounded-xl overflow-hidden shadow-lg flex items-center justify-center">
+                <div className="text-6xl">✨</div>
               </div>
             </div>
 
