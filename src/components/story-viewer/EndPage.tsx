@@ -34,7 +34,7 @@ const EndPage: React.FC<EndPageProps> = ({ rtl }) => {
             }}
           >
             <img
-              src="/images/the-end-story-page.png"
+              src="/the-end-story-page.png"
               alt="The End"
               className="w-full h-full object-cover"
               style={{
