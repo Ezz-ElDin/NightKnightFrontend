@@ -142,14 +142,16 @@ const MobileStoryViewer = () => {
                 </h1>
               </div>
               
-              {/* Cover Image */}
+              {/* Cover Image - Use first page image as cover since StoryDetails doesn't have cover_url */}
               <div className="mb-4">
                 <div className="relative w-full aspect-[4/3] bg-[#e8eafd] rounded-xl overflow-hidden shadow-lg">
-                  <img
-                    src={story.cover_url}
-                    alt={story.title}
-                    className="w-full h-full object-cover"
-                  />
+                  {story.pages && story.pages.length > 0 && (
+                    <img
+                      src={story.pages[0].image_url}
+                      alt={story.title}
+                      className="w-full h-full object-cover"
+                    />
+                  )}
                 </div>
               </div>
 
