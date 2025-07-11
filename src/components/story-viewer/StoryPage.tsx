@@ -1,6 +1,5 @@
 
 import React from "react";
-import { ThumbsUp, ThumbsDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface StoryPageProps {
@@ -12,6 +11,7 @@ interface StoryPageProps {
   rating: 'up' | 'down' | null;
   onRate: (pageId: string, rating: 'up' | 'down') => void;
   isRtl?: boolean;
+  showRating?: boolean;
 }
 
 const StoryPage: React.FC<StoryPageProps> = ({
@@ -22,7 +22,8 @@ const StoryPage: React.FC<StoryPageProps> = ({
   pageId,
   rating,
   onRate,
-  isRtl = false
+  isRtl = false,
+  showRating = true
 }) => {
   return (
     <div className="story-page ghibli-card p-8 min-h-[70vh] flex flex-col">
@@ -43,31 +44,33 @@ const StoryPage: React.FC<StoryPageProps> = ({
             {content}
           </p>
           
-          <div className={cn(
-            "flex mt-6 gap-6",
-            isRtl ? "justify-start" : "justify-end"
-          )}>
-            <button 
-              onClick={() => onRate(pageId, 'up')}
-              className={cn(
-                "rating-btn text-muted-foreground hover:text-primary transition-colors", 
-                rating === 'up' && "text-green-500 hover:text-green-600"
-              )}
-              aria-label="Like this page"
-            >
-              <ThumbsUp className="h-5 w-5" />
-            </button>
-            <button 
-              onClick={() => onRate(pageId, 'down')}
-              className={cn(
-                "rating-btn text-muted-foreground hover:text-primary transition-colors", 
-                rating === 'down' && "text-red-500 hover:text-red-600"
-              )}
-              aria-label="Dislike this page"
-            >
-              <ThumbsDown className="h-5 w-5" />
-            </button>
-          </div>
+          {showRating && (
+            <div className={cn(
+              "flex mt-6 gap-6",
+              isRtl ? "justify-start" : "justify-end"
+            )}>
+              <button 
+                onClick={() => onRate(pageId, 'up')}
+                className={cn(
+                  "rating-btn text-muted-foreground hover:text-primary transition-colors", 
+                  rating === 'up' && "text-green-500 hover:text-green-600"
+                )}
+                aria-label="Like this page"
+              >
+                {/* Thumbs up icon removed */}
+              </button>
+              <button 
+                onClick={() => onRate(pageId, 'down')}
+                className={cn(
+                  "rating-btn text-muted-foreground hover:text-primary transition-colors", 
+                  rating === 'down' && "text-red-500 hover:text-red-600"
+                )}
+                aria-label="Dislike this page"
+              >
+                {/* Thumbs down icon removed */}
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Image Section */}

@@ -2,18 +2,11 @@
 import { useState } from "react";
 import StoryCard from "@/components/dashboard/StoryCard";
 import {
-  FullScreenDialog,
-  FullScreenDialogContent,
-  FullScreenDialogTrigger,
-} from "@/components/ui/full-screen-dialog";
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import StoryPage from "@/components/story-viewer/StoryPage";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -28,6 +21,8 @@ const DiscoverStories = () => {
       title: "The Dragon's Treasure",
       coverUrl: "/images/dragon-treasure.png",
       createdAt: "2024-01-15",
+      language: "English",
+      genre: "Fantasy",
       pages: [
         {
           id: "1",
@@ -51,6 +46,8 @@ const DiscoverStories = () => {
       title: "Les Chatons de la Lune",
       coverUrl: "/images/moon-kittens.png",
       createdAt: "2024-01-20",
+      language: "French",
+      genre: "Adventure",
       pages: [
         {
           id: "1",
@@ -74,6 +71,8 @@ const DiscoverStories = () => {
       title: "Captain Leo's Space Journey",
       coverUrl: "/images/space-journey.png",
       createdAt: "2024-01-25",
+      language: "English",
+      genre: "Sci-Fi",
       pages: [
         {
           id: "1",
@@ -127,18 +126,14 @@ const DiscoverStories = () => {
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {sampleStories.map(story => (
-            <FullScreenDialog key={story.id} open={isDialogOpen && selectedStory?.id === story.id} onOpenChange={setIsDialogOpen}>
-              <FullScreenDialogTrigger asChild>
+            <Dialog key={story.id} open={isDialogOpen && selectedStory?.id === story.id} onOpenChange={setIsDialogOpen}>
+              <DialogTrigger asChild>
                 <div onClick={() => handleStoryClick(story)}>
-                  <StoryCard
-                    story={story}
-                    isFavourite={false}
-                    onClick={() => handleStoryClick(story)}
-                  />
+                  <DiscoverStoryCard story={story} />
                 </div>
-              </FullScreenDialogTrigger>
+              </DialogTrigger>
               
-              <FullScreenDialogContent>
+              <DialogContent className="max-w-none w-screen h-screen p-0 overflow-hidden">
                 {selectedStory && (
                   <div className="h-full w-full flex flex-col bg-story-peach/20">
                     {/* Header with close button */}
@@ -165,6 +160,7 @@ const DiscoverStories = () => {
                           pageId={selectedStory.pages[currentPage]?.id || ""}
                           rating={null}
                           onRate={() => {}}
+                          showRating={false}
                         />
                       </div>
                     </div>
@@ -197,12 +193,48 @@ const DiscoverStories = () => {
                     </div>
                   </div>
                 )}
-              </FullScreenDialogContent>
-            </FullScreenDialog>
+              </DialogContent>
+            </Dialog>
           ))}
         </div>
       </div>
     </section>
+  );
+};
+
+// Custom story card component for discover section
+const DiscoverStoryCard = ({ story }: { story: any }) => {
+  return (
+    <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-story-seafoam/30 flex flex-col relative group hover:shadow-lg transition-shadow min-h-[305px] cursor-pointer">
+      <div className="h-48 bg-gradient-to-br from-story-lightPurple/20 to-story-peach/20 flex items-center justify-center overflow-hidden">
+        {story.coverUrl ? (
+          <img 
+            src={story.coverUrl} 
+            alt={story.title}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-story-lightPurple/40 to-story-peach/40 flex items-center justify-center">
+            <span className="text-story-purple/60 text-sm">No Image</span>
+          </div>
+        )}
+      </div>
+      
+      <div className="p-4 flex-1 flex flex-col">
+        <h3 className="font-bold text-lg line-clamp-2 mb-3 text-story-purple">
+          {story.title}
+        </h3>
+        
+        <div className="flex flex-wrap gap-2 mt-auto">
+          <span className="inline-block px-3 py-1 text-xs font-semibold rounded-full bg-story-blue/10 text-story-blue">
+            {story.language}
+          </span>
+          <span className="inline-block px-3 py-1 text-xs font-semibold rounded-full bg-story-purple/10 text-story-purple">
+            {story.genre}
+          </span>
+        </div>
+      </div>
+    </div>
   );
 };
 
