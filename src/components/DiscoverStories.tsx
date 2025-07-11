@@ -1,22 +1,23 @@
 import { useState } from "react";
 import StoryCard from "@/components/dashboard/StoryCard";
-import DesktopDiscoverStoryViewer from "@/components/story-viewer/DesktopDiscoverStoryViewer";
-import MobileDiscoverStoryViewer from "@/components/story-viewer/MobileDiscoverStoryViewer";
-import { useDiscoverStoryViewer } from "@/hooks/useDiscoverStoryViewer";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DialogPortal,
+  DialogOverlay,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { X } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const DiscoverStories = () => {
   const [selectedStory, setSelectedStory] = useState<any>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-  const {
-    page,
-    setPage,
-    numPages,
-    currentPage,
-    canPrev,
-    canNext,
-    isMobile,
-  } = useDiscoverStoryViewer(selectedStory);
 
   const sampleStories = [
     {
@@ -99,13 +100,28 @@ const DiscoverStories = () => {
   const handleStoryClick = (story: any) => {
     setSelectedStory(story);
     setIsDialogOpen(true);
-    setPage(0); // Reset to title page
   };
 
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
     setSelectedStory(null);
-    setPage(0);
+  };
+
+  const formatTextWithLineBreaks = (text: string) => {
+    if (!text) return [];
+    
+    const sentences = text.split(/([.!?]+)/).filter(part => part.trim() !== "");
+    
+    const formattedSentences = [];
+    for (let i = 0; i < sentences.length; i += 2) {
+      const sentence = sentences[i]?.trim();
+      const punctuation = sentences[i + 1] || "";
+      if (sentence) {
+        formattedSentences.push(sentence + punctuation);
+      }
+    }
+    
+    return formattedSentences;
   };
 
   return (
@@ -117,32 +133,107 @@ const DiscoverStories = () => {
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {sampleStories.map(story => (
-            <div key={story.id} onClick={() => handleStoryClick(story)}>
-              <DiscoverStoryCard story={story} />
-            </div>
+            <Dialog key={story.id} open={isDialogOpen && selectedStory?.id === story.id} onOpenChange={(open) => {
+              if (!open) {
+                handleCloseDialog();
+              }
+            }}>
+              <DialogTrigger asChild>
+                <div onClick={() => handleStoryClick(story)}>
+                  <DiscoverStoryCard story={story} />
+                </div>
+              </DialogTrigger>
+              
+              <DialogPortal>
+                <DialogOverlay />
+                <DialogPrimitive.Content
+                  className={cn(
+                    "fixed left-[50%] top-[50%] z-50 grid w-full max-w-4xl w-[90vw] h-[85vh] translate-x-[-50%] translate-y-[-50%] p-0 overflow-hidden border-0 bg-white shadow-2xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] rounded-3xl"
+                  )}
+                >
+                  <DialogTitle className="sr-only">
+                    {selectedStory?.title || "Story Viewer"}
+                  </DialogTitle>
+                  <DialogDescription className="sr-only">
+                    Reading story: {selectedStory?.title}. Scroll to read through all pages.
+                  </DialogDescription>
+
+                  {selectedStory && (
+                    <div className="w-full h-full flex flex-col bg-white relative rounded-3xl overflow-hidden">
+                      <button
+                        onClick={handleCloseDialog}
+                        className="absolute top-4 right-4 z-50 rounded-full opacity-70 ring-offset-background transition-all duration-200 hover:opacity-100 hover:scale-110 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 h-10 w-10 flex items-center justify-center bg-white/90 backdrop-blur-sm shadow-md"
+                      >
+                        <X className="h-5 w-5" />
+                        <span className="sr-only">Close</span>
+                      </button>
+
+                      {/* Continuous Scroll Content */}
+                      <div className="flex-1 overflow-y-auto">
+                        <div className="space-y-0">
+                          {/* Title Page */}
+                          <div className="min-h-screen flex flex-col">
+                            <div className="flex-1 bg-[#fafafd] flex items-center justify-center">
+                              <div className="relative w-full h-full flex items-center justify-center bg-[#e8eafd] overflow-hidden">
+                                <img
+                                  src={selectedStory.coverUrl}
+                                  alt={selectedStory.title}
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+                            </div>
+                            <div className="bg-white p-8 flex items-center justify-center">
+                              <h3 className="font-ghibli text-3xl md:text-5xl font-bold text-center leading-tight">
+                                {selectedStory.title}
+                              </h3>
+                            </div>
+                          </div>
+
+                          {/* Story Pages with Separators */}
+                          {selectedStory.pages.map((page: any, index: number) => (
+                            <div key={page.id}>
+                              {/* Add separator before each story page (but not before the first one) */}
+                              {index > 0 && (
+                                <div className="flex justify-center py-8 bg-white">
+                                  <Separator className="w-24 bg-gray-200" />
+                                </div>
+                              )}
+                              
+                              <div className="min-h-screen flex flex-col">
+                                <div className="flex-1 bg-[#fafafd] flex items-center justify-center">
+                                  <div className="relative w-full h-full flex items-center justify-center bg-[#e8eafd] overflow-hidden">
+                                    <img
+                                      src={page.image}
+                                      alt={`Page ${index + 1} illustration`}
+                                      className="w-full h-full object-cover"
+                                    />
+                                  </div>
+                                </div>
+                                <div className="bg-white p-8 flex items-center justify-center">
+                                  <div className="w-full max-w-4xl space-y-6">
+                                    {formatTextWithLineBreaks(page.text).map((sentence, sentenceIndex) => (
+                                      <p 
+                                        key={sentenceIndex} 
+                                        className="text-lg md:text-xl leading-relaxed font-medium text-gray-800 text-left"
+                                        style={{ wordBreak: "break-word" }}
+                                      >
+                                        {sentence}
+                                      </p>
+                                    ))}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </DialogPrimitive.Content>
+              </DialogPortal>
+            </Dialog>
           ))}
         </div>
-
-        {/* Conditional Story Viewer */}
-        {isDialogOpen && selectedStory && (
-          isMobile ? (
-            <MobileDiscoverStoryViewer
-              story={selectedStory}
-              onClose={handleCloseDialog}
-            />
-          ) : (
-            <DesktopDiscoverStoryViewer
-              story={selectedStory}
-              page={page}
-              setPage={setPage}
-              numPages={numPages}
-              currentPage={currentPage}
-              canPrev={canPrev}
-              canNext={canNext}
-              onClose={handleCloseDialog}
-            />
-          )
-        )}
       </div>
     </section>
   );
