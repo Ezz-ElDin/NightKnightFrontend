@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import StoryCard from "@/components/dashboard/StoryCard";
 import {
@@ -6,8 +5,6 @@ import {
   DialogContent,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import StoryText from "@/components/story-viewer/StoryText";
-import StoryVisual from "@/components/story-viewer/StoryVisual";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
@@ -118,6 +115,25 @@ const DiscoverStories = () => {
     setCurrentPage(0);
   };
 
+  const formatTextWithLineBreaks = (text: string) => {
+    if (!text) return [];
+    
+    // Split by periods, exclamation marks, and question marks while keeping the punctuation
+    const sentences = text.split(/([.!?]+)/).filter(part => part.trim() !== "");
+    
+    // Combine punctuation back with sentences
+    const formattedSentences = [];
+    for (let i = 0; i < sentences.length; i += 2) {
+      const sentence = sentences[i]?.trim();
+      const punctuation = sentences[i + 1] || "";
+      if (sentence) {
+        formattedSentences.push(sentence + punctuation);
+      }
+    }
+    
+    return formattedSentences;
+  };
+
   return (
     <section className="py-16 px-4 bg-gradient-to-b from-story-lightPurple/30 to-white">
       <div className="container mx-auto">
@@ -138,10 +154,10 @@ const DiscoverStories = () => {
                 </div>
               </DialogTrigger>
               
-              <DialogContent className="max-w-2xl w-[45vw] max-h-[60vh] p-0 overflow-hidden border-0 bg-transparent shadow-2xl rounded-3xl">
+              <DialogContent className="max-w-4xl w-[90vw] max-h-[85vh] p-0 overflow-hidden border-0 bg-transparent shadow-2xl rounded-3xl">
                 {selectedStory && (
                   <div className="h-full w-full flex flex-col bg-white relative rounded-3xl overflow-hidden">
-                    {/* Custom Close Button - Only one, positioned properly */}
+                    {/* Single Close Button */}
                     <button
                       onClick={handleCloseDialog}
                       className="absolute top-4 right-4 z-50 rounded-full opacity-70 ring-offset-background transition-all duration-200 hover:opacity-100 hover:scale-110 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 h-10 w-10 flex items-center justify-center bg-white/90 backdrop-blur-sm shadow-md"
@@ -150,20 +166,26 @@ const DiscoverStories = () => {
                       <span className="sr-only">Close</span>
                     </button>
 
-                    {/* Story content with consistent design */}
-                    <div className="flex-1 flex h-full min-h-[400px] rounded-3xl overflow-hidden">
+                    {/* Story content */}
+                    <div className="flex-1 flex h-full min-h-[500px] rounded-3xl overflow-hidden">
                       {/* Text Section */}
                       <div className="flex-1 flex bg-white">
-                        <div className="flex-1 flex flex-col min-h-[340px] px-6 py-8 gap-0 justify-center items-start">
+                        <div className="flex-1 flex flex-col min-h-[340px] px-8 md:px-10 py-8 md:py-10 gap-0 justify-center items-start">
                           {currentPage === 0 ? (
-                            <h3 className="font-bold text-3xl mb-0 w-full text-left leading-tight text-gray-900">
+                            <h3 className="font-ghibli text-[2.6rem] md:text-5xl font-bold mb-0 w-full text-center leading-tight">
                               {selectedStory.title}
                             </h3>
                           ) : (
-                            <div className="w-full space-y-4">
-                              <p className="text-base leading-relaxed font-medium text-gray-800">
-                                {selectedStory.pages[currentPage - 1]?.text || ""}
-                              </p>
+                            <div className="w-full space-y-6">
+                              {formatTextWithLineBreaks(selectedStory.pages[currentPage - 1]?.text || "").map((sentence, index) => (
+                                <p 
+                                  key={index} 
+                                  className="text-lg md:text-xl leading-relaxed font-medium text-gray-800"
+                                  style={{ wordBreak: "break-word" }}
+                                >
+                                  {sentence}
+                                </p>
+                              ))}
                             </div>
                           )}
                         </div>
@@ -183,7 +205,7 @@ const DiscoverStories = () => {
                       </div>
                     </div>
                     
-                    {/* Navigation - Consistent design throughout */}
+                    {/* Navigation */}
                     <div className="flex justify-between items-center p-6 bg-white border-t border-gray-100 shrink-0 rounded-b-3xl">
                       <Button
                         variant="outline"
@@ -220,7 +242,6 @@ const DiscoverStories = () => {
   );
 };
 
-// Custom story card component for discover section
 const DiscoverStoryCard = ({ story }: { story: any }) => {
   return (
     <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-story-seafoam/30 flex flex-col relative group hover:shadow-lg transition-shadow min-h-[305px] cursor-pointer">
