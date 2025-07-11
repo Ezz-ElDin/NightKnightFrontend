@@ -187,26 +187,26 @@ const DiscoverStories = () => {
                         <span className="sr-only">Close</span>
                       </button>
 
-                      {/* Mobile Navigation Arrows - Only visible on mobile */}
-                      <div className="md:hidden absolute top-1/2 left-4 right-4 flex justify-between items-center z-40 pointer-events-none">
+                      {/* Mobile Navigation Arrows - Smaller and more subtle */}
+                      <div className="md:hidden absolute top-1/2 left-2 right-2 flex justify-between items-center z-40 pointer-events-none">
                         <Button
                           variant="outline"
                           onClick={handlePrevPage}
                           disabled={currentPage === 0}
-                          className="pointer-events-auto rounded-full w-12 h-12 bg-white/90 backdrop-blur-sm shadow-md border-0 hover:bg-white hover:scale-110 transition-all duration-200"
+                          className="pointer-events-auto rounded-full w-8 h-8 bg-white/70 backdrop-blur-sm shadow-sm border-0 hover:bg-white/90 hover:scale-105 transition-all duration-200 opacity-60 hover:opacity-100"
                           size="icon"
                         >
-                          <ChevronLeft className="h-6 w-6" />
+                          <ChevronLeft className="h-4 w-4" />
                         </Button>
                         
                         <Button
                           variant="outline"
                           onClick={handleNextPage}
                           disabled={currentPage === selectedStory.pages.length}
-                          className="pointer-events-auto rounded-full w-12 h-12 bg-white/90 backdrop-blur-sm shadow-md border-0 hover:bg-white hover:scale-110 transition-all duration-200"
+                          className="pointer-events-auto rounded-full w-8 h-8 bg-white/70 backdrop-blur-sm shadow-sm border-0 hover:bg-white/90 hover:scale-105 transition-all duration-200 opacity-60 hover:opacity-100"
                           size="icon"
                         >
-                          <ChevronRight className="h-6 w-6" />
+                          <ChevronRight className="h-4 w-4" />
                         </Button>
                       </div>
 
@@ -243,9 +243,9 @@ const DiscoverStories = () => {
                             </div>
                           </div>
 
-                          {/* Text Section - Bottom 40% on mobile (centered), Left 50% on desktop */}
+                          {/* Text Section - Bottom 40% on mobile with scroll, Left 50% on desktop */}
                           <div className="h-[40%] md:h-full flex-1 flex bg-white order-2 md:order-1">
-                            <div className="flex-1 flex flex-col px-4 md:px-10 py-4 md:py-10 gap-0 justify-center items-start">
+                            <div className="flex-1 flex flex-col px-4 md:px-10 py-4 md:py-10 gap-0 justify-center items-start overflow-y-auto">
                               {currentPage === 0 ? (
                                 <h3 className="font-ghibli text-2xl md:text-5xl font-bold mb-0 w-full text-center leading-tight">
                                   {selectedStory.title}
