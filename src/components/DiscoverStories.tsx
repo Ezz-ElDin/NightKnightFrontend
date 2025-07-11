@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import StoryCard from "@/components/dashboard/StoryCard";
 import {
@@ -11,6 +12,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const DiscoverStories = () => {
   const [selectedStory, setSelectedStory] = useState<any>(null);
@@ -187,26 +189,26 @@ const DiscoverStories = () => {
                         <span className="sr-only">Close</span>
                       </button>
 
-                      {/* Mobile Navigation Arrows - Only visible on mobile */}
-                      <div className="md:hidden absolute top-1/2 left-4 right-4 flex justify-between items-center z-40 pointer-events-none">
+                      {/* Mobile Navigation Arrows - Smaller and more subtle */}
+                      <div className="md:hidden absolute top-1/2 left-2 right-2 flex justify-between items-center z-40 pointer-events-none">
                         <Button
-                          variant="outline"
+                          variant="ghost"
                           onClick={handlePrevPage}
                           disabled={currentPage === 0}
-                          className="pointer-events-auto rounded-full w-12 h-12 bg-white/90 backdrop-blur-sm shadow-md border-0 hover:bg-white hover:scale-110 transition-all duration-200"
+                          className="pointer-events-auto rounded-full w-8 h-8 bg-black/20 backdrop-blur-sm shadow-sm border-0 hover:bg-black/30 transition-all duration-200 opacity-60 hover:opacity-100"
                           size="icon"
                         >
-                          <ChevronLeft className="h-6 w-6" />
+                          <ChevronLeft className="h-4 w-4 text-white" />
                         </Button>
                         
                         <Button
-                          variant="outline"
+                          variant="ghost"
                           onClick={handleNextPage}
                           disabled={currentPage === selectedStory.pages.length}
-                          className="pointer-events-auto rounded-full w-12 h-12 bg-white/90 backdrop-blur-sm shadow-md border-0 hover:bg-white hover:scale-110 transition-all duration-200"
+                          className="pointer-events-auto rounded-full w-8 h-8 bg-black/20 backdrop-blur-sm shadow-sm border-0 hover:bg-black/30 transition-all duration-200 opacity-60 hover:opacity-100"
                           size="icon"
                         >
-                          <ChevronRight className="h-6 w-6" />
+                          <ChevronRight className="h-4 w-4 text-white" />
                         </Button>
                       </div>
 
@@ -243,25 +245,29 @@ const DiscoverStories = () => {
                             </div>
                           </div>
 
-                          {/* Text Section - Bottom 40% on mobile (centered), Left 50% on desktop */}
+                          {/* Text Section - Bottom 40% on mobile (scrollable), Left 50% on desktop */}
                           <div className="h-[40%] md:h-full flex-1 flex bg-white order-2 md:order-1">
-                            <div className="flex-1 flex flex-col px-4 md:px-10 py-4 md:py-10 gap-0 justify-center items-start">
+                            <div className="flex-1 flex flex-col gap-0 justify-center items-start overflow-hidden">
                               {currentPage === 0 ? (
-                                <h3 className="font-ghibli text-2xl md:text-5xl font-bold mb-0 w-full text-center leading-tight">
-                                  {selectedStory.title}
-                                </h3>
-                              ) : (
-                                <div className="w-full space-y-3 md:space-y-6 flex flex-col justify-center h-full">
-                                  {formatTextWithLineBreaks(selectedStory.pages[currentPage - 1]?.text || "").map((sentence, index) => (
-                                    <p 
-                                      key={index} 
-                                      className="text-base md:text-xl leading-relaxed font-medium text-gray-800 text-center md:text-left"
-                                      style={{ wordBreak: "break-word" }}
-                                    >
-                                      {sentence}
-                                    </p>
-                                  ))}
+                                <div className="px-4 md:px-10 py-4 md:py-10 flex items-center justify-center h-full w-full">
+                                  <h3 className="font-ghibli text-2xl md:text-5xl font-bold mb-0 w-full text-center leading-tight">
+                                    {selectedStory.title}
+                                  </h3>
                                 </div>
+                              ) : (
+                                <ScrollArea className="flex-1 w-full h-full">
+                                  <div className="px-4 md:px-10 py-4 md:py-10 space-y-3 md:space-y-6">
+                                    {formatTextWithLineBreaks(selectedStory.pages[currentPage - 1]?.text || "").map((sentence, index) => (
+                                      <p 
+                                        key={index} 
+                                        className="text-base md:text-xl leading-relaxed font-medium text-gray-800 text-center md:text-left"
+                                        style={{ wordBreak: "break-word" }}
+                                      >
+                                        {sentence}
+                                      </p>
+                                    ))}
+                                  </div>
+                                </ScrollArea>
                               )}
                             </div>
                           </div>
