@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import StoryCard from "@/components/dashboard/StoryCard";
 import {
@@ -12,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -189,29 +189,38 @@ const DiscoverStories = () => {
                             </div>
                           </div>
 
-                          {/* Story Pages */}
+                          {/* Story Pages with Separators */}
                           {selectedStory.pages.map((page: any, index: number) => (
-                            <div key={page.id} className="min-h-screen flex flex-col">
-                              <div className="flex-1 bg-[#fafafd] flex items-center justify-center">
-                                <div className="relative w-full h-full flex items-center justify-center bg-[#e8eafd] overflow-hidden">
-                                  <img
-                                    src={page.image}
-                                    alt={`Page ${index + 1} illustration`}
-                                    className="w-full h-full object-cover"
-                                  />
+                            <div key={page.id}>
+                              {/* Add separator before each story page (but not before the first one) */}
+                              {index > 0 && (
+                                <div className="flex justify-center py-8 bg-white">
+                                  <Separator className="w-24 bg-gray-200" />
                                 </div>
-                              </div>
-                              <div className="bg-white p-8 flex items-center justify-center">
-                                <div className="w-full max-w-4xl space-y-6">
-                                  {formatTextWithLineBreaks(page.text).map((sentence, sentenceIndex) => (
-                                    <p 
-                                      key={sentenceIndex} 
-                                      className="text-lg md:text-xl leading-relaxed font-medium text-gray-800 text-center"
-                                      style={{ wordBreak: "break-word" }}
-                                    >
-                                      {sentence}
-                                    </p>
-                                  ))}
+                              )}
+                              
+                              <div className="min-h-screen flex flex-col">
+                                <div className="flex-1 bg-[#fafafd] flex items-center justify-center">
+                                  <div className="relative w-full h-full flex items-center justify-center bg-[#e8eafd] overflow-hidden">
+                                    <img
+                                      src={page.image}
+                                      alt={`Page ${index + 1} illustration`}
+                                      className="w-full h-full object-cover"
+                                    />
+                                  </div>
+                                </div>
+                                <div className="bg-white p-8 flex items-center justify-center">
+                                  <div className="w-full max-w-4xl space-y-6">
+                                    {formatTextWithLineBreaks(page.text).map((sentence, sentenceIndex) => (
+                                      <p 
+                                        key={sentenceIndex} 
+                                        className="text-lg md:text-xl leading-relaxed font-medium text-gray-800 text-center"
+                                        style={{ wordBreak: "break-word" }}
+                                      >
+                                        {sentence}
+                                      </p>
+                                    ))}
+                                  </div>
                                 </div>
                               </div>
                             </div>
