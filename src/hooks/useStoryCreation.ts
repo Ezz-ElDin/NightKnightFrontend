@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { MAGIC_CARDS } from "@/components/story-generator/MagicModeCards";
 import { useStoryGeneration } from "./story-creation/useStoryGeneration";
@@ -17,7 +16,7 @@ export const useStoryCreation = () => {
     ageRange: "",
     moral: "",
     characters: [],
-    language: "",
+    language: "English",
     illustrationStyle: "",
   });
 
