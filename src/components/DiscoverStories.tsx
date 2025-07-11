@@ -214,7 +214,7 @@ const DiscoverStories = () => {
                                     {formatTextWithLineBreaks(page.text).map((sentence, sentenceIndex) => (
                                       <p 
                                         key={sentenceIndex} 
-                                        className="text-lg md:text-xl leading-relaxed font-medium text-gray-800 text-center"
+                                        className="text-lg md:text-xl leading-relaxed font-medium text-gray-800 text-left"
                                         style={{ wordBreak: "break-word" }}
                                       >
                                         {sentence}
