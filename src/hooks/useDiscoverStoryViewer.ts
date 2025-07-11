@@ -19,6 +19,7 @@ export const useDiscoverStoryViewer = (story: any) => {
     };
   }
 
+  // Total pages: title page (0) + story pages (1 to n) + end page
   const numPages = story.pages ? story.pages.length + 1 : 1; // +1 for title page
   const isEndPage = page >= numPages - 1;
   const currentPage = page === 0 ? null : story.pages[page - 1]; // page 0 is title, page 1+ are story pages

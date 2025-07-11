@@ -2,6 +2,7 @@
 import React from 'react';
 import { X } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
+import clsx from 'clsx';
 
 interface MobileDiscoverStoryViewerProps {
   story: any;
@@ -29,6 +30,9 @@ const MobileDiscoverStoryViewer: React.FC<MobileDiscoverStoryViewerProps> = ({
     return formattedSentences;
   };
 
+  // Check if the story language is Arabic for RTL support
+  const isArabic = story.language === 'Arabic';
+
   return (
     <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center">
       <div className="w-full h-full max-w-4xl bg-white relative rounded-none md:rounded-3xl overflow-hidden">
@@ -55,7 +59,10 @@ const MobileDiscoverStoryViewer: React.FC<MobileDiscoverStoryViewerProps> = ({
                 </div>
               </div>
               <div className="bg-white p-8 flex items-center justify-center">
-                <h3 className="font-ghibli text-3xl md:text-5xl font-bold text-center leading-tight">
+                <h3 className={clsx(
+                  "font-ghibli text-3xl md:text-5xl font-bold text-center leading-tight",
+                  isArabic && "font-cairo"
+                )} dir={isArabic ? "rtl" : "ltr"}>
                   {story.title}
                 </h3>
               </div>
@@ -80,11 +87,17 @@ const MobileDiscoverStoryViewer: React.FC<MobileDiscoverStoryViewerProps> = ({
                     </div>
                   </div>
                   <div className="bg-white p-8 flex items-center justify-center">
-                    <div className="w-full max-w-4xl space-y-6">
+                    <div className={clsx(
+                      "w-full max-w-4xl space-y-6",
+                      isArabic && "text-right"
+                    )} dir={isArabic ? "rtl" : "ltr"}>
                       {formatTextWithLineBreaks(page.text).map((sentence, sentenceIndex) => (
                         <p 
                           key={sentenceIndex} 
-                          className="text-lg md:text-xl leading-relaxed font-medium text-gray-800 text-left"
+                          className={clsx(
+                            "text-lg md:text-xl leading-relaxed font-medium text-gray-800",
+                            isArabic ? "text-right font-cairo" : "text-left"
+                          )}
                           style={{ wordBreak: "break-word" }}
                         >
                           {sentence}

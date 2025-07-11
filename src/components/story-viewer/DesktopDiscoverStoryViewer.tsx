@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight, X } from 'lucide-react';
 import clsx from 'clsx';
 import StoryVisual from './StoryVisual';
 import StoryText from './StoryText';
+import EndPage from './EndPage';
 
 interface DesktopDiscoverStoryViewerProps {
   story: any;
@@ -56,6 +57,10 @@ const DesktopDiscoverStoryViewer: React.FC<DesktopDiscoverStoryViewerProps> = ({
   }, [canPrev, canNext, onClose]);
 
   const isTitle = page === 0;
+  const isEndPage = page === numPages - 1;
+  
+  // Check if the story language is Arabic for RTL support
+  const isArabic = story.language === 'Arabic';
 
   return (
     <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
@@ -90,11 +95,17 @@ const DesktopDiscoverStoryViewer: React.FC<DesktopDiscoverStoryViewerProps> = ({
               </div>
             </div>
             <div className="bg-white p-8 flex items-center justify-center">
-              <h3 className="font-ghibli text-3xl md:text-5xl font-bold text-center leading-tight">
+              <h3 className={clsx(
+                "font-ghibli text-3xl md:text-5xl font-bold text-center leading-tight",
+                isArabic && "font-cairo"
+              )} dir={isArabic ? "rtl" : "ltr"}>
                 {story.title}
               </h3>
             </div>
           </div>
+        ) : isEndPage ? (
+          // End Page
+          <EndPage rtl={isArabic} />
         ) : (
           // Story Pages
           <div className="flex flex-col md:flex-row w-full md:divide-x divide-y md:divide-y-0 divide-gray-200 flex-1">
@@ -104,7 +115,7 @@ const DesktopDiscoverStoryViewer: React.FC<DesktopDiscoverStoryViewerProps> = ({
                 title={story.title}
                 text={currentPage?.text || ""}
                 page={page - 1} // Adjust for title page offset
-                rtl={false}
+                rtl={isArabic}
               />
             </div>
             {/* Right Side - Visual - 55% */}
