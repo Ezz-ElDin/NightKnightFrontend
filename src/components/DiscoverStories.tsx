@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import StoryCard from "@/components/dashboard/StoryCard";
 import {
@@ -126,59 +127,75 @@ const DiscoverStories = () => {
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {sampleStories.map(story => (
-            <Dialog key={story.id} open={isDialogOpen && selectedStory?.id === story.id} onOpenChange={setIsDialogOpen}>
+            <Dialog key={story.id} open={isDialogOpen && selectedStory?.id === story.id} onOpenChange={(open) => {
+              if (!open) {
+                handleCloseDialog();
+              }
+            }}>
               <DialogTrigger asChild>
                 <div onClick={() => handleStoryClick(story)}>
                   <DiscoverStoryCard story={story} />
                 </div>
               </DialogTrigger>
               
-              <DialogContent className="max-w-2xl w-[45vw] max-h-[60vh] p-0 overflow-hidden">
+              <DialogContent className="max-w-2xl w-[45vw] max-h-[60vh] p-0 overflow-hidden border-0 bg-transparent shadow-2xl rounded-3xl">
                 {selectedStory && (
-                  <div className="h-full w-full flex flex-col bg-[#fafafd] relative">
-                    {/* Custom Close Button */}
+                  <div className="h-full w-full flex flex-col bg-white relative rounded-3xl overflow-hidden">
+                    {/* Custom Close Button - Only one, positioned properly */}
                     <button
                       onClick={handleCloseDialog}
-                      className="absolute top-4 right-4 z-50 rounded-full opacity-70 ring-offset-background transition-all duration-200 hover:opacity-100 hover:scale-110 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 h-8 w-8 flex items-center justify-center bg-white/80 backdrop-blur-sm"
+                      className="absolute top-4 right-4 z-50 rounded-full opacity-70 ring-offset-background transition-all duration-200 hover:opacity-100 hover:scale-110 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 h-10 w-10 flex items-center justify-center bg-white/90 backdrop-blur-sm shadow-md"
                     >
-                      <X className="h-4 w-4" />
+                      <X className="h-5 w-5" />
                       <span className="sr-only">Close</span>
                     </button>
 
-                    {/* Story content with exact same layout as story viewer */}
-                    <div className="flex-1 flex h-full min-h-[400px]">
+                    {/* Story content with consistent design */}
+                    <div className="flex-1 flex h-full min-h-[400px] rounded-3xl overflow-hidden">
                       {/* Text Section */}
-                      <div className="flex-1 flex">
-                        <StoryText
-                          title={selectedStory.title}
-                          text={currentPage === 0 ? "" : selectedStory.pages[currentPage - 1]?.text || ""}
-                          page={currentPage}
-                          rtl={false}
-                        />
+                      <div className="flex-1 flex bg-white">
+                        <div className="flex-1 flex flex-col min-h-[340px] px-6 py-8 gap-0 justify-center items-start">
+                          {currentPage === 0 ? (
+                            <h3 className="font-bold text-3xl mb-0 w-full text-left leading-tight text-gray-900">
+                              {selectedStory.title}
+                            </h3>
+                          ) : (
+                            <div className="w-full space-y-4">
+                              <p className="text-base leading-relaxed font-medium text-gray-800">
+                                {selectedStory.pages[currentPage - 1]?.text || ""}
+                              </p>
+                            </div>
+                          )}
+                        </div>
                       </div>
 
                       {/* Image Section */}
                       <div className="flex-1 flex">
-                        <StoryVisual
-                          coverUrl={currentPage === 0 ? selectedStory.coverUrl : selectedStory.pages[currentPage - 1]?.image || selectedStory.coverUrl}
-                          title={selectedStory.title}
-                        />
+                        <div className="w-full h-full bg-[#fafafd] flex items-center justify-center p-0 m-0">
+                          <div className="relative w-full h-full flex items-center justify-center bg-[#e8eafd] overflow-hidden">
+                            <img
+                              src={currentPage === 0 ? selectedStory.coverUrl : selectedStory.pages[currentPage - 1]?.image || selectedStory.coverUrl}
+                              alt={"Illustration for " + selectedStory.title}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        </div>
                       </div>
                     </div>
                     
-                    {/* Navigation - Fixed positioning */}
-                    <div className="flex justify-between items-center p-4 bg-white/90 backdrop-blur-sm border-t shrink-0">
+                    {/* Navigation - Consistent design throughout */}
+                    <div className="flex justify-between items-center p-6 bg-white border-t border-gray-100 shrink-0 rounded-b-3xl">
                       <Button
                         variant="outline"
                         onClick={handlePrevPage}
                         disabled={currentPage === 0}
-                        className="flex items-center gap-2"
+                        className="flex items-center gap-2 px-6 py-2 rounded-full"
                       >
                         <ChevronLeft className="h-4 w-4" />
                         Previous
                       </Button>
                       
-                      <span className="text-sm text-muted-foreground font-medium">
+                      <span className="text-sm text-gray-600 font-medium">
                         Page {currentPage + 1} of {selectedStory.pages.length + 1}
                       </span>
                       
@@ -186,7 +203,7 @@ const DiscoverStories = () => {
                         variant="outline"
                         onClick={handleNextPage}
                         disabled={currentPage === selectedStory.pages.length}
-                        className="flex items-center gap-2"
+                        className="flex items-center gap-2 px-6 py-2 rounded-full"
                       >
                         Next
                         <ChevronRight className="h-4 w-4" />
