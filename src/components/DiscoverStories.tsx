@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import StoryCard from "@/components/dashboard/StoryCard";
 import {
@@ -8,7 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import StoryPage from "@/components/story-viewer/StoryPage";
 import { Button } from "@/components/ui/button";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const DiscoverStories = () => {
   const [selectedStory, setSelectedStory] = useState<any>(null);
@@ -133,25 +132,17 @@ const DiscoverStories = () => {
                 </div>
               </DialogTrigger>
               
-              <DialogContent className="max-w-none w-screen h-screen p-0 overflow-hidden">
+              <DialogContent className="max-w-4xl w-[90vw] max-h-[80vh] p-0 overflow-hidden">
                 {selectedStory && (
                   <div className="h-full w-full flex flex-col bg-story-peach/20">
-                    {/* Header with close button */}
+                    {/* Header with title */}
                     <div className="flex justify-between items-center p-4 bg-white/80 backdrop-blur-sm">
                       <h1 className="text-2xl font-bold text-story-purple">{selectedStory.title}</h1>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={handleCloseDialog}
-                        className="h-10 w-10"
-                      >
-                        <X className="h-6 w-6" />
-                      </Button>
                     </div>
                     
                     {/* Story content */}
                     <div className="flex-1 flex items-center justify-center p-4">
-                      <div className="max-w-4xl w-full">
+                      <div className="max-w-3xl w-full">
                         <StoryPage
                           content={selectedStory.pages[currentPage]?.content || ""}
                           image={selectedStory.pages[currentPage]?.image || ""}
