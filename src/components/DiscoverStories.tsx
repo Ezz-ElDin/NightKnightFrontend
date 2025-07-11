@@ -1,4 +1,5 @@
-import { useState, useRef, useEffect } from "react";
+
+import { useState } from "react";
 import StoryCard from "@/components/dashboard/StoryCard";
 import {
   Dialog,
@@ -11,14 +12,12 @@ import {
 } from "@/components/ui/dialog";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const DiscoverStories = () => {
   const [selectedStory, setSelectedStory] = useState<any>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [currentPageIndex, setCurrentPageIndex] = useState(0);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const sampleStories = [
     {
@@ -100,43 +99,12 @@ const DiscoverStories = () => {
 
   const handleStoryClick = (story: any) => {
     setSelectedStory(story);
-    setCurrentPageIndex(0);
     setIsDialogOpen(true);
   };
 
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
     setSelectedStory(null);
-    setCurrentPageIndex(0);
-  };
-
-  const navigateToPage = (pageIndex: number) => {
-    if (!selectedStory || !scrollContainerRef.current) return;
-    
-    const totalPages = selectedStory.pages.length + 1; // +1 for title page
-    const validIndex = Math.max(0, Math.min(pageIndex, totalPages - 1));
-    
-    setCurrentPageIndex(validIndex);
-    
-    // Scroll to the specific page
-    const pageElement = scrollContainerRef.current.children[validIndex] as HTMLElement;
-    if (pageElement) {
-      pageElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
-  const handleNextPage = () => {
-    if (!selectedStory) return;
-    const totalPages = selectedStory.pages.length + 1;
-    if (currentPageIndex < totalPages - 1) {
-      navigateToPage(currentPageIndex + 1);
-    }
-  };
-
-  const handlePrevPage = () => {
-    if (currentPageIndex > 0) {
-      navigateToPage(currentPageIndex - 1);
-    }
   };
 
   const formatTextWithLineBreaks = (text: string) => {
@@ -155,24 +123,6 @@ const DiscoverStories = () => {
     
     return formattedSentences;
   };
-
-  // Handle keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (!isDialogOpen) return;
-      
-      if (event.key === 'ArrowLeft') {
-        event.preventDefault();
-        handlePrevPage();
-      } else if (event.key === 'ArrowRight') {
-        event.preventDefault();
-        handleNextPage();
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isDialogOpen, currentPageIndex, selectedStory]);
 
   return (
     <section className="py-16 px-4 bg-gradient-to-b from-story-lightPurple/30 to-white">
@@ -205,7 +155,7 @@ const DiscoverStories = () => {
                     {selectedStory?.title || "Story Viewer"}
                   </DialogTitle>
                   <DialogDescription className="sr-only">
-                    Reading story: {selectedStory?.title}. Use arrow keys or buttons to navigate between pages.
+                    Reading story: {selectedStory?.title}. Scroll to read through all pages.
                   </DialogDescription>
 
                   {selectedStory && (
@@ -218,39 +168,11 @@ const DiscoverStories = () => {
                         <span className="sr-only">Close</span>
                       </button>
 
-                      {/* Navigation Buttons */}
-                      {currentPageIndex > 0 && (
-                        <button
-                          onClick={handlePrevPage}
-                          className="absolute left-4 top-1/2 -translate-y-1/2 z-40 rounded-full opacity-70 ring-offset-background transition-all duration-200 hover:opacity-100 hover:scale-110 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 h-12 w-12 flex items-center justify-center bg-white/90 backdrop-blur-sm shadow-md"
-                        >
-                          <ChevronLeft className="h-6 w-6" />
-                          <span className="sr-only">Previous page</span>
-                        </button>
-                      )}
-
-                      {currentPageIndex < (selectedStory.pages.length) && (
-                        <button
-                          onClick={handleNextPage}
-                          className="absolute right-4 top-1/2 -translate-y-1/2 z-40 rounded-full opacity-70 ring-offset-background transition-all duration-200 hover:opacity-100 hover:scale-110 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 h-12 w-12 flex items-center justify-center bg-white/90 backdrop-blur-sm shadow-md"
-                        >
-                          <ChevronRight className="h-6 w-6" />
-                          <span className="sr-only">Next page</span>
-                        </button>
-                      )}
-
-                      {/* Page Indicator */}
-                      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 bg-black/50 backdrop-blur-sm rounded-full px-4 py-2">
-                        <span className="text-white text-sm font-medium">
-                          {currentPageIndex + 1} / {selectedStory.pages.length + 1}
-                        </span>
-                      </div>
-
-                      {/* Scrollable Content */}
-                      <div className="flex-1 overflow-y-auto" ref={scrollContainerRef}>
+                      {/* Continuous Scroll Content */}
+                      <div className="flex-1 overflow-y-auto">
                         <div className="space-y-0">
                           {/* Title Page */}
-                          <div className="min-h-[85vh] flex flex-col">
+                          <div className="min-h-screen flex flex-col">
                             <div className="flex-1 bg-[#fafafd] flex items-center justify-center">
                               <div className="relative w-full h-full flex items-center justify-center bg-[#e8eafd] overflow-hidden">
                                 <img
@@ -269,7 +191,7 @@ const DiscoverStories = () => {
 
                           {/* Story Pages */}
                           {selectedStory.pages.map((page: any, index: number) => (
-                            <div key={page.id} className="min-h-[85vh] flex flex-col">
+                            <div key={page.id} className="min-h-screen flex flex-col">
                               <div className="flex-1 bg-[#fafafd] flex items-center justify-center">
                                 <div className="relative w-full h-full flex items-center justify-center bg-[#e8eafd] overflow-hidden">
                                   <img
