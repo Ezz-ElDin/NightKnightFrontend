@@ -178,38 +178,41 @@ const DiscoverStories = () => {
 
                       {/* Story content */}
                       <div className="flex-1 flex h-full min-h-[500px] rounded-3xl overflow-hidden">
-                        {/* Text Section */}
-                        <div className="flex-1 flex bg-white">
-                          <div className="flex-1 flex flex-col min-h-[340px] px-8 md:px-10 py-8 md:py-10 gap-0 justify-center items-start">
-                            {currentPage === 0 ? (
-                              <h3 className="font-ghibli text-[2.6rem] md:text-5xl font-bold mb-0 w-full text-center leading-tight">
-                                {selectedStory.title}
-                              </h3>
-                            ) : (
-                              <div className="w-full space-y-6">
-                                {formatTextWithLineBreaks(selectedStory.pages[currentPage - 1]?.text || "").map((sentence, index) => (
-                                  <p 
-                                    key={index} 
-                                    className="text-lg md:text-xl leading-relaxed font-medium text-gray-800"
-                                    style={{ wordBreak: "break-word" }}
-                                  >
-                                    {sentence}
-                                  </p>
-                                ))}
+                        {/* Mobile Layout - Image at top, text at bottom */}
+                        <div className="flex-1 flex flex-col md:flex-row bg-white">
+                          {/* Image Section - Top on mobile, Right on desktop */}
+                          <div className="flex-1 flex order-1 md:order-2">
+                            <div className="w-full h-full bg-[#fafafd] flex items-center justify-center p-0 m-0">
+                              <div className="relative w-full h-full flex items-center justify-center bg-[#e8eafd] overflow-hidden">
+                                <img
+                                  src={currentPage === 0 ? selectedStory.coverUrl : selectedStory.pages[currentPage - 1]?.image || selectedStory.coverUrl}
+                                  alt={"Illustration for " + selectedStory.title}
+                                  className="w-full h-full object-cover"
+                                />
                               </div>
-                            )}
+                            </div>
                           </div>
-                        </div>
 
-                        {/* Image Section */}
-                        <div className="flex-1 flex">
-                          <div className="w-full h-full bg-[#fafafd] flex items-center justify-center p-0 m-0">
-                            <div className="relative w-full h-full flex items-center justify-center bg-[#e8eafd] overflow-hidden">
-                              <img
-                                src={currentPage === 0 ? selectedStory.coverUrl : selectedStory.pages[currentPage - 1]?.image || selectedStory.coverUrl}
-                                alt={"Illustration for " + selectedStory.title}
-                                className="w-full h-full object-cover"
-                              />
+                          {/* Text Section - Bottom on mobile, Left on desktop */}
+                          <div className="flex-1 flex bg-white order-2 md:order-1">
+                            <div className="flex-1 flex flex-col min-h-[340px] px-8 md:px-10 py-8 md:py-10 gap-0 justify-center items-start">
+                              {currentPage === 0 ? (
+                                <h3 className="font-ghibli text-[2.6rem] md:text-5xl font-bold mb-0 w-full text-center leading-tight">
+                                  {selectedStory.title}
+                                </h3>
+                              ) : (
+                                <div className="w-full space-y-6">
+                                  {formatTextWithLineBreaks(selectedStory.pages[currentPage - 1]?.text || "").map((sentence, index) => (
+                                    <p 
+                                      key={index} 
+                                      className="text-lg md:text-xl leading-relaxed font-medium text-gray-800"
+                                      style={{ wordBreak: "break-word" }}
+                                    >
+                                      {sentence}
+                                    </p>
+                                  ))}
+                                </div>
+                              )}
                             </div>
                           </div>
                         </div>
