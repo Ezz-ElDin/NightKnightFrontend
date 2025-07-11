@@ -26,13 +26,13 @@ const DiscoverStories = () => {
   const handleStoryClick = (story: any) => {
     setSelectedStory(story);
     setIsDialogOpen(true);
-    setPage(0); // Reset to title page
+    setPage(1); // Reset to page 1 (cover page)
   };
 
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
     setSelectedStory(null);
-    setPage(0);
+    setPage(1); // Reset to page 1
   };
 
   return (

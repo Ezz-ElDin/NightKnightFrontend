@@ -30,13 +30,13 @@ const DesktopDiscoverStoryViewer: React.FC<DesktopDiscoverStoryViewerProps> = ({
 }) => {
   const handlePrevPage = () => {
     if (canPrev) {
-      setPage(Math.max(0, page - 1));
+      setPage(Math.max(1, page - 1));
     }
   };
 
   const handleNextPage = () => {
     if (canNext) {
-      setPage(Math.min(numPages - 1, page + 1));
+      setPage(Math.min(numPages, page + 1));
     }
   };
 
@@ -56,8 +56,7 @@ const DesktopDiscoverStoryViewer: React.FC<DesktopDiscoverStoryViewerProps> = ({
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [canPrev, canNext, onClose]);
 
-  const isTitle = page === 0;
-  const isEndPage = page === numPages - 1;
+  const isEndPage = page === numPages;
   
   // Check if the story language is Arabic for RTL support
   const isArabic = story.language === 'Arabic';
@@ -82,46 +81,25 @@ const DesktopDiscoverStoryViewer: React.FC<DesktopDiscoverStoryViewerProps> = ({
         </button>
 
         {/* Story Content */}
-        {isTitle ? (
-          // Title Page
-          <div className="flex-1 flex flex-col">
-            <div className="flex-1 bg-[#fafafd] flex items-center justify-center">
-              <div className="relative w-full h-full flex items-center justify-center bg-[#e8eafd] overflow-hidden">
-                <img
-                  src={story.coverUrl}
-                  alt={story.title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-            <div className="bg-white p-8 flex items-center justify-center">
-              <h3 className={clsx(
-                "font-ghibli text-3xl md:text-5xl font-bold text-center leading-tight",
-                isArabic && "font-cairo"
-              )} dir={isArabic ? "rtl" : "ltr"}>
-                {story.coverText || story.title}
-              </h3>
-            </div>
-          </div>
-        ) : isEndPage ? (
+        {isEndPage ? (
           // End Page
           <EndPage rtl={isArabic} />
         ) : (
-          // Story Pages
+          // Story Pages (including cover as page 1)
           <div className="flex flex-col md:flex-row w-full md:divide-x divide-y md:divide-y-0 divide-gray-200 flex-1">
             {/* Left Side - Story Page Text - 45% */}
             <div className="md:w-[45%] flex-none">
               <StoryText
                 title={story.title}
-                text={currentPage?.text || ""}
-                page={page - 1} // Adjust for title page offset
+                text={page === 1 ? story.coverText || story.title : currentPage?.text || ""}
+                page={page === 1 ? 0 : page - 1} // Show as title page for page 1
                 rtl={isArabic}
               />
             </div>
             {/* Right Side - Visual - 55% */}
             <div className="md:w-[55%] flex-none">
               <StoryVisual
-                coverUrl={currentPage?.image || currentPage?.image_url || ""}
+                coverUrl={page === 1 ? story.coverUrl : (currentPage?.image || currentPage?.image_url || "")}
                 title={story.title}
               />
             </div>
@@ -143,7 +121,7 @@ const DesktopDiscoverStoryViewer: React.FC<DesktopDiscoverStoryViewerProps> = ({
               <ArrowLeft className="h-6 w-6" />
             </Button>
             <span className="text-muted-foreground font-semibold text-lg select-none">
-              {page + 1} of {numPages}
+              {page} of {numPages}
             </span>
             <Button
               onClick={handleNextPage}

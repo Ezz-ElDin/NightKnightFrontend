@@ -3,12 +3,12 @@ import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export const useDiscoverStoryViewer = (story: any) => {
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1); // Start from page 1 instead of 0
   const isMobile = useIsMobile();
   
   if (!story) {
     return {
-      page: 0,
+      page: 1,
       setPage: () => {},
       numPages: 0,
       currentPage: null,
@@ -19,13 +19,13 @@ export const useDiscoverStoryViewer = (story: any) => {
     };
   }
 
-  // Total pages: title page (0) + story pages (1 to n) + end page
-  const numPages = story.pages ? story.pages.length + 1 : 1; // +1 for title page
-  const isEndPage = page >= numPages - 1;
-  const currentPage = page === 0 ? null : story.pages[page - 1]; // page 0 is title, page 1+ are story pages
+  // Total pages: cover page (1) + story pages (2 to n) + end page
+  const numPages = story.pages ? story.pages.length + 1 : 1; // +1 for cover page
+  const isEndPage = page >= numPages;
+  const currentPage = page === 1 ? null : story.pages[page - 2]; // page 1 is cover, page 2+ are story pages
   
-  const canPrev = page > 0;
-  const canNext = page < numPages - 1;
+  const canPrev = page > 1;
+  const canNext = page < numPages;
 
   return {
     page,

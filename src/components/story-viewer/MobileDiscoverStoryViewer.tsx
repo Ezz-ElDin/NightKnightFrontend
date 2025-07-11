@@ -47,8 +47,16 @@ const MobileDiscoverStoryViewer: React.FC<MobileDiscoverStoryViewerProps> = ({
         {/* Continuous Scroll Content */}
         <div className="flex-1 overflow-y-auto">
           <div className="space-y-0">
-            {/* Title Page */}
+            {/* Cover Page - Page 1 */}
             <div className="min-h-screen flex flex-col">
+              <div className="bg-white p-8 flex items-center justify-center">
+                <h3 className={clsx(
+                  "font-ghibli text-3xl md:text-5xl font-bold text-center leading-tight",
+                  isArabic && "font-cairo"
+                )} dir={isArabic ? "rtl" : "ltr"}>
+                  {story.coverText || story.title}
+                </h3>
+              </div>
               <div className="flex-1 bg-[#fafafd] flex items-center justify-center">
                 <div className="relative w-full h-full flex items-center justify-center bg-[#e8eafd] overflow-hidden">
                   <img
@@ -57,14 +65,6 @@ const MobileDiscoverStoryViewer: React.FC<MobileDiscoverStoryViewerProps> = ({
                     className="w-full h-full object-cover"
                   />
                 </div>
-              </div>
-              <div className="bg-white p-8 flex items-center justify-center">
-                <h3 className={clsx(
-                  "font-ghibli text-3xl md:text-5xl font-bold text-center leading-tight",
-                  isArabic && "font-cairo"
-                )} dir={isArabic ? "rtl" : "ltr"}>
-                  {story.coverText || story.title}
-                </h3>
               </div>
             </div>
 
@@ -77,15 +77,6 @@ const MobileDiscoverStoryViewer: React.FC<MobileDiscoverStoryViewerProps> = ({
                 </div>
                 
                 <div className="min-h-screen flex flex-col">
-                  <div className="flex-1 bg-[#fafafd] flex items-center justify-center">
-                    <div className="relative w-full h-full flex items-center justify-center bg-[#e8eafd] overflow-hidden">
-                      <img
-                        src={page.image || page.image_url}
-                        alt={`Page ${index + 1} illustration`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  </div>
                   <div className="bg-white p-8 flex items-center justify-center">
                     <div className={clsx(
                       "w-full max-w-4xl space-y-6",
@@ -103,6 +94,15 @@ const MobileDiscoverStoryViewer: React.FC<MobileDiscoverStoryViewerProps> = ({
                           {sentence}
                         </p>
                       ))}
+                    </div>
+                  </div>
+                  <div className="flex-1 bg-[#fafafd] flex items-center justify-center">
+                    <div className="relative w-full h-full flex items-center justify-center bg-[#e8eafd] overflow-hidden">
+                      <img
+                        src={page.image || page.image_url}
+                        alt={`Page ${index + 2} illustration`}
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                   </div>
                 </div>
