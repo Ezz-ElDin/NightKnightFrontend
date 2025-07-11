@@ -1,23 +1,20 @@
-import React, { useMemo, useRef, useState } from "react";
+
+import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { storiesApi, StoryDetails } from "@/lib/api";
 import { exportService } from "@/lib/exportService";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, Download, Loader2 } from "lucide-react";
-import clsx from "clsx";
-import StoryText from "@/components/story-viewer/StoryText";
-import StoryVisual from "@/components/story-viewer/StoryVisual";
-import EndPage from "@/components/story-viewer/EndPage";
+import { X, Download, Loader2 } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
+import { Separator } from "@/components/ui/separator";
+import clsx from "clsx";
 
 const isArabic = (text: string) => /[\u0600-\u06FF]/.test(text);
 
 const MobileStoryViewer = () => {
   const navigate = useNavigate();
   const { storyId } = useParams<{ storyId?: string }>();
-  const [page, setPage] = useState(0);
   const [showComingSoonDialog, setShowComingSoonDialog] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const { toast } = useToast();
@@ -29,7 +26,6 @@ const MobileStoryViewer = () => {
     enabled: !!storyId
   });
 
-  // const canExport = true;
   const canExport = false; // Commented out export functionality for mobile view
 
   // Export functionality
@@ -61,23 +57,24 @@ const MobileStoryViewer = () => {
     }
   };
 
-  // Keyboard navigation
-  React.useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") {
-        setPage(prev => Math.max(0, prev - 1));
-      } else if (e.key === "ArrowRight") {
-        if (data && page < (data.pages.length - 1)) {
-          setPage(prev => Math.min(data.pages.length - 1, prev + 1));
-        }
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [data, page]);
-
   const goBack = () => navigate("/library");
+
+  const formatTextWithLineBreaks = (text: string) => {
+    if (!text) return [];
+    
+    const sentences = text.split(/([.!?]+)/).filter(part => part.trim() !== "");
+    
+    const formattedSentences = [];
+    for (let i = 0; i < sentences.length; i += 2) {
+      const sentence = sentences[i]?.trim();
+      const punctuation = sentences[i + 1] || "";
+      if (sentence) {
+        formattedSentences.push(sentence + punctuation);
+      }
+    }
+    
+    return formattedSentences;
+  };
 
   if (isLoading) {
     return (
@@ -103,9 +100,9 @@ const MobileStoryViewer = () => {
             <p className="text-lg text-muted-foreground mb-6">
               Sorry, we couldn't find that story.
             </p>
-            <Button onClick={goBack} variant="outline">
-              Back to Dashboard
-            </Button>
+            <button onClick={goBack} className="px-4 py-2 bg-primary text-white rounded">
+              Back to Library
+            </button>
           </div>
         </div>
       </div>
@@ -113,125 +110,127 @@ const MobileStoryViewer = () => {
   }
 
   const story: StoryDetails = data;
-  const numPages = story.pages.length + 1; // Add 1 for the "The End" page
-  const currentPage = page < story.pages.length ? story.pages[page] : null;
-  const isEndPage = page === story.pages.length;
-  const rtl = currentPage && (isArabic(story.title) || isArabic(currentPage.text));
+  const isArabicStory = story.language === 'Arabic' || isArabic(story.title);
 
   return (
     <>
-      <div className="min-h-screen bg-gray-50 px-4 py-6">
-        <div className="max-w-md mx-auto">
-          <div className="bg-white rounded-2xl shadow-lg overflow-hidden min-h-[calc(100vh-3rem)]">
-            {/* Story Content */}
-            <div className="flex-1 flex flex-col">
-              {isEndPage ? (
-                <div className="w-full min-h-[calc(100vh-8rem)] flex flex-col">
-                  {/* Full height image */}
-                  <div className="w-full flex-1">
-                    <div className="w-full h-full bg-[#fafafd] flex items-center justify-center p-0 m-0">
-                      <div
-                        className="relative w-full h-full flex items-center justify-center"
-                        style={{
-                          background: "#e8eafd",
-                          borderRadius: "0",
-                          overflow: "hidden",
-                          boxShadow: "0 4px 32px 3px rgba(100,100,115,0.10)",
-                        }}
-                      >
-                        <img
-                          src="/images/the-end-story-page.png"
-                          alt="The End"
-                          className="w-full h-full object-cover"
-                          style={{
-                            objectFit: "cover",
-                            borderRadius: "0",
-                          }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <>
-                  {/* Text Section - Top */}
-                  <div className="w-full">
-                    <StoryText
-                      title={story.title}
-                      text={currentPage?.text || ""}
-                      page={page}
-                      rtl={rtl}
-                    />
-                  </div>
-                  
-                  {/* Visual Section - Bottom */}
-                  <div className="w-full">
-                    <StoryVisual
-                      coverUrl={currentPage?.image_url || ""}
-                      title={story.title}
-                    />
-                  </div>
-                </>
-              )}
-            </div>
+      <div className="fixed inset-0 z-50 bg-white overflow-hidden">
+        {/* Close Button - Fixed at top */}
+        <div className="absolute top-0 right-0 z-50 p-4">
+          <button
+            onClick={goBack}
+            className="rounded-full opacity-70 ring-offset-background transition-all duration-200 hover:opacity-100 hover:scale-110 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 h-10 w-10 flex items-center justify-center bg-white/80 backdrop-blur-sm shadow-sm"
+          >
+            <X className="h-5 w-5" />
+            <span className="sr-only">Close</span>
+          </button>
+        </div>
 
-            {/* Mobile Navigation Bar */}
-            <div className="flex items-center justify-between px-4 py-4 bg-white border-t border-gray-100">
-              {/* Back Button - Left */}
-              <Button
-                onClick={goBack}
-                variant="outline"
-                className="flex items-center gap-2"
-                aria-label="Back to library"
-              >
-                <ArrowLeft className="h-4 w-4" />
-                Back
-              </Button>
-              
-              {/* Navigation Arrows - Center */}
-              <div className="flex items-center gap-4">
-                <Button
-                  onClick={() => setPage(Math.max(0, page - 1))}
-                  variant="outline"
-                  size="icon"
-                  disabled={page === 0}
-                  aria-label="Previous Page"
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                </Button>
-                
-                <span className="text-sm font-medium text-muted-foreground">
-                  {page + 1} / {numPages}
-                </span>
-                
-                <Button
-                  onClick={() => setPage(Math.min(numPages - 1, page + 1))}
-                  variant="outline"
-                  size="icon"
-                  disabled={page >= numPages - 1}
-                  aria-label="Next Page"
-                >
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
+        {/* Scrollable Content Container */}
+        <div className="h-full overflow-y-auto overscroll-contain">
+          <div className="max-w-2xl mx-auto px-6 pt-16 pb-8">
+            {/* Cover Page - Page 1 */}
+            <div className="py-2">
+              {/* Title */}
+              <div className="mb-4">
+                <h1 className={clsx(
+                  "text-3xl md:text-4xl font-bold text-center leading-tight text-gray-900",
+                  isArabicStory && "font-cairo"
+                )} dir={isArabicStory ? "rtl" : "ltr"}>
+                  {story.title}
+                </h1>
               </div>
               
-              {/* Export Button - Right - COMMENTED OUT FOR MOBILE VIEW */}
-              {/* {canExport && (
-                <Button
-                  onClick={handleExport}
-                  variant="outline"
-                  size="icon"
-                  aria-label="Export story"
-                  disabled={isExporting}
-                  className="bg-story-green hover:bg-story-green/90 border-story-green text-white"
-                >
-                  {isExporting ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <Download className="h-4 w-4" />
-                  )}
-                </Button>
-              )} */}
+              {/* Cover Image - Use first page image */}
+              <div className="mb-4">
+                <div className="relative w-full aspect-[4/3] bg-[#e8eafd] rounded-xl overflow-hidden shadow-lg">
+                  <img
+                    src={story.pages[0]?.image_url || ""}
+                    alt={story.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+
+              {/* Subtle Page Number */}
+              <div className="flex justify-center py-1">
+                <span className="text-sm text-gray-400">1</span>
+              </div>
+            </div>
+
+            {/* Story Pages */}
+            {story.pages?.map((page, index) => (
+              <div key={page.id || index}>
+                {/* Page Separator */}
+                <div className="flex justify-center py-2">
+                  <Separator className="w-32 bg-gray-200" />
+                </div>
+                
+                <div className="py-2">
+                  {/* Text First */}
+                  <div className={clsx(
+                    "mb-4",
+                    isArabicStory && "text-right"
+                  )} dir={isArabicStory ? "rtl" : "ltr"}>
+                    <div className="space-y-3">
+                      {formatTextWithLineBreaks(page.text).map((sentence, sentenceIndex) => (
+                        <p 
+                          key={sentenceIndex} 
+                          className={clsx(
+                            "text-lg leading-relaxed font-medium text-gray-800",
+                            isArabicStory ? "text-right font-cairo" : "text-left"
+                          )}
+                          style={{ wordBreak: "break-word" }}
+                        >
+                          {sentence}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Image Below Text */}
+                  <div className="mb-4">
+                    <div className="relative w-full aspect-[4/3] bg-[#e8eafd] rounded-xl overflow-hidden shadow-lg">
+                      <img
+                        src={page.image_url}
+                        alt={`Page ${index + 2} illustration`}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Subtle Page Number */}
+                  <div className="flex justify-center py-1">
+                    <span className="text-sm text-gray-400">{index + 2}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            {/* The End Page */}
+            <div>
+              {/* Page Separator */}
+              <div className="flex justify-center py-2">
+                <Separator className="w-32 bg-gray-200" />
+              </div>
+              
+              <div className="py-2">
+                {/* End Image */}
+                <div className="mb-4">
+                  <div className="relative w-full aspect-[4/3] bg-[#e8eafd] rounded-xl overflow-hidden shadow-lg">
+                    <img
+                      src="/images/the-end-story-page.png"
+                      alt="The End"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+
+                {/* Subtle Page Number */}
+                <div className="flex justify-center py-1">
+                  <span className="text-sm text-gray-400">{story.pages.length + 2}</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -251,12 +250,12 @@ const MobileStoryViewer = () => {
               We're working hard to bring you the export feature for Arabic stories. 
               Stay tuned for this exciting update!
             </p>
-            <Button 
+            <button 
               onClick={() => setShowComingSoonDialog(false)}
-              className="bg-gradient-to-r from-story-green to-story-blue hover:from-story-green/90 hover:to-story-blue/90 text-white px-4 py-2 text-sm"
+              className="bg-gradient-to-r from-story-green to-story-blue hover:from-story-green/90 hover:to-story-blue/90 text-white px-4 py-2 text-sm rounded"
             >
               Got it! ✨
-            </Button>
+            </button>
           </div>
         </DialogContent>
       </Dialog>
