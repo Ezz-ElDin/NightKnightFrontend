@@ -48,7 +48,7 @@ const StoryText: React.FC<StoryTextProps> = ({ title, text, page, rtl }) => {
           {title}
         </h3>
       ) : (
-        <div className="w-full space-y-4">
+        <div className="w-full space-y-6">
           {sentences.map((sentence, index) => (
             <p 
               key={index} 
