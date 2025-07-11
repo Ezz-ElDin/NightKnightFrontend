@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import StoryBackground from "@/components/StoryBackground";
 import HowItWorks from "@/components/HowItWorks";
 import StorySamples from "@/components/StorySamples";
+import DiscoverStories from "@/components/DiscoverStories";
 import PricingSlider from "@/components/PricingSlider";
 import Footer from "@/components/Footer";
 
@@ -46,6 +47,9 @@ const Index = () => {
       
       {/* Move StorySamples to the top, right after hero section */}
       <StorySamples />
+      
+      {/* New Discover Stories section */}
+      <DiscoverStories />
       
       {/* Features section moved after story samples */}
       <section className="py-12 md:py-16 px-4 bg-gradient-to-b from-story-lightPurple/30 to-white">
