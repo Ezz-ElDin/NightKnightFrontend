@@ -118,10 +118,10 @@ const MobileStoryViewer = () => {
         ) : currentPage ? (
           <StoryPage
             content={currentPage.text}
-            image={currentPage.image}
+            image={currentPage.image_url || null}
             pageNumber={page}
             totalPages={numPages}
-            pageId={currentPage.id || `page-${page}`}
+            pageId={`page-${page}`}
             rating={null}
             onRate={() => {}}
             isRtl={rtl}
