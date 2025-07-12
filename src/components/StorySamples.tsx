@@ -54,10 +54,10 @@ const StorySamples = () => {
   console.log("Image paths:", stories.map(story => story.imageUrl));
 
   return (
-    <section className="py-16 px-4 bg-story-lightPurple/30" id="discover">
+    <section className="py-16 px-4 bg-story-lightPurple/30" id="samples">
       <div className="container mx-auto">
         <h2 className="text-4xl font-bold mb-12 text-center text-story-purple">
-          Discover Magical Stories
+          Magical Story Samples
         </h2>
         
         <Carousel className="max-w-5xl mx-auto">
