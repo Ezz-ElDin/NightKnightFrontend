@@ -1,10 +1,10 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Sparkles, Heart, BookOpen, Gift, Star, Palette, Globe, Users, Clock, Coffee } from 'lucide-react';
 import { transformStoryData } from '@/lib/storyDataTransformer';
 import { jsonStoriesData } from '@/data/discoverStoriesData';
+import { isArabic } from '@/components/dashboard/story-card/utils';
 
 const Email = () => {
   // Get discover stories data
@@ -151,63 +151,71 @@ const Email = () => {
                 Click any story below to read it on our main site and see the magic in action!
               </p>
               <div className="space-y-6">
-                {discoverStories.map((story, index) => (
-                  <Card 
-                    key={story.id} 
-                    className="overflow-hidden border-story-seafoam/30 shadow-md hover:shadow-lg transition-all cursor-pointer group"
-                    onClick={() => handleStoryClick(story.id)}
-                  >
-                    <div className={`flex ${index % 2 === 1 ? 'flex-row-reverse' : 'flex-row'} items-center`}>
-                      {/* Image Section */}
-                      <div className="w-1/3 relative">
-                        <div className="aspect-[3/4] relative overflow-hidden">
-                          <img
-                            src={story.coverUrl}
-                            alt={story.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover:from-black/30 transition-all"></div>
-                          <div className="absolute top-2 right-2 bg-story-purple text-white px-2 py-1 rounded-full text-xs font-semibold">
-                            Click to Read
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Content Section */}
-                      <div className={`w-2/3 p-6 ${index % 2 === 1 ? 'pr-6 pl-8' : 'pl-6 pr-8'}`}>
-                        <div className="flex items-start gap-3 mb-3">
-                          <BookOpen className="w-5 h-5 text-story-purple mt-1 flex-shrink-0" />
-                          <div className="flex-1">
-                            <h4 className="text-xl font-bold text-story-purple font-ghibli line-clamp-2 mb-2 group-hover:text-story-blue transition-colors">
-                              {story.title}
-                            </h4>
-                            <div className="flex gap-2 mb-3">
-                              <span className="bg-story-blue/20 text-story-blue border-none text-xs font-semibold px-2 py-1 rounded-full">
-                                {story.language}
-                              </span>
-                              <span className="bg-story-purple/20 text-story-purple border-none text-xs font-semibold px-2 py-1 rounded-full">
-                                {story.genre}
-                              </span>
+                {discoverStories.map((story, index) => {
+                  const storyText = story.pages[0]?.text || "Click to read this magical story and see how NightKnight brings imagination to life!";
+                  const isRTL = isArabic(storyText);
+                  
+                  return (
+                    <Card 
+                      key={story.id} 
+                      className="overflow-hidden border-story-seafoam/30 shadow-md hover:shadow-lg transition-all cursor-pointer group"
+                      onClick={() => handleStoryClick(story.id)}
+                    >
+                      <div className={`flex ${index % 2 === 1 ? 'flex-row-reverse' : 'flex-row'} items-center`}>
+                        {/* Image Section */}
+                        <div className="w-1/3 relative">
+                          <div className="aspect-[3/4] relative overflow-hidden">
+                            <img
+                              src={story.coverUrl}
+                              alt={story.title}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover:from-black/30 transition-all"></div>
+                            <div className="absolute top-2 right-2 bg-story-purple text-white px-2 py-1 rounded-full text-xs font-semibold">
+                              Click to Read
                             </div>
                           </div>
                         </div>
-                        
-                        <p className="text-gray-700 text-sm leading-relaxed line-clamp-3 mb-4">
-                          {story.pages[0]?.text || "Click to read this magical story and see how NightKnight brings imagination to life!"}
-                        </p>
-                        
-                        {/* Decorative elements */}
-                        <div className={`flex ${index % 2 === 1 ? 'justify-start' : 'justify-end'}`}>
-                          <div className="flex gap-1">
-                            <div className="w-2 h-2 bg-story-purple/30 rounded-full group-hover:bg-story-purple/50 transition-colors"></div>
-                            <div className="w-2 h-2 bg-story-blue/30 rounded-full group-hover:bg-story-blue/50 transition-colors"></div>
-                            <div className="w-2 h-2 bg-story-seafoam/30 rounded-full group-hover:bg-story-seafoam/50 transition-colors"></div>
+
+                        {/* Content Section */}
+                        <div className={`w-2/3 p-6 ${index % 2 === 1 ? 'pr-6 pl-8' : 'pl-6 pr-8'}`}>
+                          <div className="flex items-start gap-3 mb-3">
+                            <BookOpen className="w-5 h-5 text-story-purple mt-1 flex-shrink-0" />
+                            <div className="flex-1">
+                              <h4 className="text-xl font-bold text-story-purple font-ghibli line-clamp-2 mb-2 group-hover:text-story-blue transition-colors">
+                                {story.title}
+                              </h4>
+                              <div className="flex gap-2 mb-3">
+                                <span className="bg-story-blue/20 text-story-blue border-none text-xs font-semibold px-2 py-1 rounded-full">
+                                  {story.language}
+                                </span>
+                                <span className="bg-story-purple/20 text-story-purple border-none text-xs font-semibold px-2 py-1 rounded-full">
+                                  {story.genre}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <p 
+                            className={`text-gray-700 text-sm leading-relaxed line-clamp-3 mb-4 ${isRTL ? 'text-right' : 'text-left'}`}
+                            dir={isRTL ? 'rtl' : 'ltr'}
+                          >
+                            {storyText}
+                          </p>
+                          
+                          {/* Decorative elements */}
+                          <div className={`flex ${index % 2 === 1 ? 'justify-start' : 'justify-end'}`}>
+                            <div className="flex gap-1">
+                              <div className="w-2 h-2 bg-story-purple/30 rounded-full group-hover:bg-story-purple/50 transition-colors"></div>
+                              <div className="w-2 h-2 bg-story-blue/30 rounded-full group-hover:bg-story-blue/50 transition-colors"></div>
+                              <div className="w-2 h-2 bg-story-seafoam/30 rounded-full group-hover:bg-story-seafoam/50 transition-colors"></div>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </Card>
-                ))}
+                    </Card>
+                  );
+                })}
               </div>
             </div>
 
