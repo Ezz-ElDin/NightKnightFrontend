@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -108,7 +109,7 @@ const Email = () => {
                     </div>
                     <span className="font-semibold text-story-green">Learning a New Value</span>
                   </div>
-                  <p className="text-sm text-gray-600 pl-13">Each story teaches important life lessons and values through engaging narratives</p>
+                  <p className="text-sm text-gray-600 pl-13">Parents can choose and set important life values to teach through the story, creating meaningful conversations with their children</p>
                 </div>
                 
                 <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 border border-story-teal/10">
