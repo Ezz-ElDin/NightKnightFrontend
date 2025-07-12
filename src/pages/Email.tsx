@@ -237,7 +237,7 @@ const Email = () => {
                 </a>
               </Button>
               <p className="text-sm text-gray-500 mt-4">
-                First story free • Additional stories just $6.99 each • No subscription required
+                First story free • Additional stories $6.99 / £4.99 each • No subscription required
               </p>
             </div>
 
