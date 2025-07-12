@@ -150,10 +150,14 @@ export interface StoryDetails {
 }
 
 export interface StoryStatus {
-  status: 'pending' | 'processing' | 'completed' | 'failed';
-  progress?: number;
-  message?: string;
-  percent_complete?: number;
+  status: 'pending' | 'processing' | 'completed' | 'failed' | 'generating_concept' | 'generating_script' | 'generating_visuals' | 'generating_images';
+  percent_complete: number;
+  story_id: string | number;
+  concept_output?: any;
+  script_output?: any;
+  visual_output?: any;
+  images_output?: any;
+  failure_reason?: string;
 }
 
 // Helper to prepend API_URL to media paths

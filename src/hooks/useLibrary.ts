@@ -124,10 +124,11 @@ export const useLibrary = () => {
       setGeneratingStoryId(null);
       setShowGeneratingBanner(false);
       
-      // Show error toast
+      // Show error toast with failure reason if available
+      const errorMessage = generatingStoryStatus.failure_reason || "Sorry, we couldn't generate your story. Please try again.";
       toast({
         title: "Story Generation Failed",
-        description: "Sorry, we couldn't generate your story. Please try again.",
+        description: errorMessage,
         variant: "destructive",
       });
     }

@@ -106,9 +106,10 @@ const GeneratingStory = () => {
       
       // Only show error after 3 failed attempts (60+ seconds)
       if (failedAttempts >= 2) { // 0, 1, 2 = 3 attempts
+        const errorMessage = statusData.failure_reason || "Something went wrong while creating your story. Please try again.";
         toast({
           title: "Story generation failed 😬",
-          description: "Something went wrong while creating your story. Please try again.",
+          description: errorMessage,
           variant: "destructive",
         });
         navigate("/create-story");
