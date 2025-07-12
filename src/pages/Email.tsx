@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -6,6 +7,7 @@ import { Sparkles, Heart, BookOpen, Gift, Star, Palette, Globe, Users, Clock, Co
 import { transformStoryData } from '@/lib/storyDataTransformer';
 import { jsonStoriesData } from '@/data/discoverStoriesData';
 import { isArabic } from '@/components/dashboard/story-card/utils';
+
 const Email = () => {
   // Get discover stories data
   const discoverStories = transformStoryData(jsonStoriesData).slice(0, 3); // Take first 3 stories
@@ -14,7 +16,9 @@ const Email = () => {
     // This will open the main site and trigger the story viewer
     window.open(`https://www.nightknight.app/?story=${storyId}`, '_blank');
   };
-  return <div className="min-h-screen bg-gradient-to-br from-story-lightPurple via-story-yellow/30 to-story-seafoam/50">
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-story-lightPurple via-story-yellow/30 to-story-seafoam/50">
       {/* Email Container */}
       <div className="max-w-2xl mx-auto p-4">
         <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-story-seafoam/30">
@@ -48,7 +52,7 @@ const Email = () => {
               <p className="text-lg text-gray-700 leading-relaxed mb-6">
                 What better way to spend a relaxing Sunday than creating magical stories with your little ones? 
                 Turn screen time into <strong>dream time</strong> and watch their creativity soar as you craft 
-                personalized adventures together!
+                personalised adventures together!
               </p>
 
               {/* Call to Action */}
@@ -89,7 +93,7 @@ const Email = () => {
                     </div>
                     <span className="font-semibold text-story-purple">Quality Family Time</span>
                   </div>
-                  <p className="text-sm text-gray-600 pl-13">Create lasting memories while engaging your child's imagination</p>
+                  <p className="text-sm text-gray-600 pl-13">Create lasting memories whilst engaging your child's imagination</p>
                 </div>
                 
                 <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 border border-story-blue/10">
@@ -143,14 +147,20 @@ const Email = () => {
               </p>
               <div className="space-y-6">
                 {discoverStories.map((story, index) => {
-                const storyText = story.pages[0]?.text || "Click to read this magical story and see how NightKnight brings imagination to life!";
-                const isRTL = isArabic(storyText);
-                return <Card key={story.id} className="overflow-hidden border-story-seafoam/30 shadow-md hover:shadow-lg transition-all cursor-pointer group" onClick={() => handleStoryClick(story.id)}>
+                  const storyText = story.pages[0]?.text || "Click to read this magical story and see how NightKnight brings imagination to life!";
+                  const isRTL = isArabic(storyText);
+                  
+                  return (
+                    <Card key={story.id} className="overflow-hidden border-story-seafoam/30 shadow-md hover:shadow-lg transition-all cursor-pointer group" onClick={() => handleStoryClick(story.id)}>
                       <div className={`flex ${index % 2 === 1 ? 'flex-row-reverse' : 'flex-row'} items-center`}>
                         {/* Image Section */}
                         <div className="w-1/3 relative">
                           <div className="aspect-[3/4] relative overflow-hidden">
-                            <img src={story.coverUrl} alt={story.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                            <img 
+                              src={story.coverUrl} 
+                              alt={story.title} 
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform" 
+                            />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover:from-black/30 transition-all"></div>
                             <div className="absolute top-2 right-2 bg-story-purple text-white px-2 py-1 rounded-full text-xs font-semibold">
                               Click to Read
@@ -163,7 +173,7 @@ const Email = () => {
                           <div className="flex items-start gap-3 mb-3">
                             <BookOpen className="w-5 h-5 text-story-purple mt-1 flex-shrink-0" />
                             <div className="flex-1">
-                              <h4 className="text-xl font-bold text-story-purple font-ghibli line-clamp-2 mb-2 group-hover:text-story-blue transition-colors">
+                              <h4 className="text-xl font-bold text-story-purple font-ghibli line-clamp-2 mb-2 group-hover:text-story-blue transition-colours">
                                 {story.title}
                               </h4>
                               <div className="flex gap-2 mb-3">
@@ -184,15 +194,16 @@ const Email = () => {
                           {/* Decorative elements */}
                           <div className={`flex ${index % 2 === 1 ? 'justify-start' : 'justify-end'}`}>
                             <div className="flex gap-1">
-                              <div className="w-2 h-2 bg-story-purple/30 rounded-full group-hover:bg-story-purple/50 transition-colors"></div>
-                              <div className="w-2 h-2 bg-story-blue/30 rounded-full group-hover:bg-story-blue/50 transition-colors"></div>
-                              <div className="w-2 h-2 bg-story-seafoam/30 rounded-full group-hover:bg-story-seafoam/50 transition-colors"></div>
+                              <div className="w-2 h-2 bg-story-purple/30 rounded-full group-hover:bg-story-purple/50 transition-colours"></div>
+                              <div className="w-2 h-2 bg-story-blue/30 rounded-full group-hover:bg-story-blue/50 transition-colours"></div>
+                              <div className="w-2 h-2 bg-story-seafoam/30 rounded-full group-hover:bg-story-seafoam/50 transition-colours"></div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </Card>;
-              })}
+                    </Card>
+                  );
+                })}
               </div>
             </div>
 
@@ -202,7 +213,7 @@ const Email = () => {
                 ⏰ Don't Miss Out This Sunday! ⏰
               </h3>
               <p className="text-gray-700 mb-6 text-lg">
-                Make this Sunday special with a <strong>FREE personalized story</strong>. 
+                Make this Sunday special with a <strong>FREE personalised story</strong>. 
                 Your children will thank you for the magical adventure!
               </p>
               <Button asChild className="bg-story-orange hover:bg-story-orange/90 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg transform hover:scale-105 transition-all">
@@ -232,6 +243,9 @@ const Email = () => {
           </div>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default Email;
+
