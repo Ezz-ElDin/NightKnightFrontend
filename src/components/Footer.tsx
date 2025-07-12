@@ -33,10 +33,10 @@ const Footer = () => {
                 </li>
                 <li>
                   <a 
-                    href="#samples" 
+                    href="#discover-stories" 
                     className="text-gray-700 hover:text-story-purple transition-colors duration-200 text-base"
                   >
-                    Story Samples
+                    Discover Stories
                   </a>
                 </li>
                 <li>

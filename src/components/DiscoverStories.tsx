@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import StoryCard from "@/components/dashboard/StoryCard";
 import DesktopDiscoverStoryViewer from "@/components/story-viewer/DesktopDiscoverStoryViewer";
@@ -36,7 +37,7 @@ const DiscoverStories = () => {
   };
 
   return (
-    <section className="py-16 px-4 bg-gradient-to-b from-story-lightPurple/30 to-white">
+    <section className="py-16 px-4 bg-gradient-to-b from-story-lightPurple/30 to-white" id="discover-stories">
       <div className="container mx-auto">
         <h2 className="text-4xl font-bold mb-12 text-center text-story-purple">
           Discover Magical Stories
