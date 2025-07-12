@@ -5,7 +5,6 @@ import { Sparkles, Heart, BookOpen, Gift, Star, Palette, Globe, Users, Clock, Co
 import { transformStoryData } from '@/lib/storyDataTransformer';
 import { jsonStoriesData } from '@/data/discoverStoriesData';
 import { isArabic } from '@/components/dashboard/story-card/utils';
-
 const Email = () => {
   // Get discover stories data
   const discoverStories = transformStoryData(jsonStoriesData).slice(0, 3); // Take first 3 stories
@@ -14,9 +13,7 @@ const Email = () => {
     // This will open the main site and trigger the story viewer
     window.open(`https://www.nightknight.app/?story=${storyId}`, '_blank');
   };
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-story-lightPurple via-story-yellow/30 to-story-seafoam/50">
+  return <div className="min-h-screen bg-gradient-to-br from-story-lightPurple via-story-yellow/30 to-story-seafoam/50">
       {/* Email Container */}
       <div className="max-w-2xl mx-auto p-4">
         <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-story-seafoam/30">
@@ -54,10 +51,7 @@ const Email = () => {
               </p>
 
               {/* Call to Action */}
-              <Button 
-                asChild
-                className="bg-story-purple hover:bg-story-purple/90 text-white px-6 py-3 rounded-full text-lg font-semibold shadow-lg transform hover:scale-105 transition-all mb-6"
-              >
+              <Button asChild className="bg-story-purple hover:bg-story-purple/90 text-white px-6 py-3 rounded-full text-lg font-semibold shadow-lg transform hover:scale-105 transition-all mb-6">
                 <a href="https://www.nightknight.app/register" target="_blank" rel="noopener noreferrer">
                   Start Creating Now! ✨
                 </a>
@@ -124,17 +118,13 @@ const Email = () => {
                     </div>
                     <span className="font-semibold text-story-teal">Meaningful Tech Interaction</span>
                   </div>
-                  <p className="text-sm text-gray-600 pl-13">Meaningful interaction with technology rather than sitting in front of the screen having one way communication</p>
+                  <p className="text-sm text-gray-600 pl-13">Meaningful interaction with technology</p>
                 </div>
               </div>
 
               {/* Call to Action in Features */}
               <div className="text-center">
-                <Button 
-                  asChild
-                  variant="outline"
-                  className="border-2 border-story-purple text-story-purple hover:bg-story-purple hover:text-white px-6 py-2 rounded-full font-semibold"
-                >
+                <Button asChild variant="outline" className="border-2 border-story-purple text-story-purple hover:bg-story-purple hover:text-white px-6 py-2 rounded-full font-semibold">
                   <a href="https://www.nightknight.app/register" target="_blank" rel="noopener noreferrer">
                     Try Your Free Story
                   </a>
@@ -152,24 +142,14 @@ const Email = () => {
               </p>
               <div className="space-y-6">
                 {discoverStories.map((story, index) => {
-                  const storyText = story.pages[0]?.text || "Click to read this magical story and see how NightKnight brings imagination to life!";
-                  const isRTL = isArabic(storyText);
-                  
-                  return (
-                    <Card 
-                      key={story.id} 
-                      className="overflow-hidden border-story-seafoam/30 shadow-md hover:shadow-lg transition-all cursor-pointer group"
-                      onClick={() => handleStoryClick(story.id)}
-                    >
+                const storyText = story.pages[0]?.text || "Click to read this magical story and see how NightKnight brings imagination to life!";
+                const isRTL = isArabic(storyText);
+                return <Card key={story.id} className="overflow-hidden border-story-seafoam/30 shadow-md hover:shadow-lg transition-all cursor-pointer group" onClick={() => handleStoryClick(story.id)}>
                       <div className={`flex ${index % 2 === 1 ? 'flex-row-reverse' : 'flex-row'} items-center`}>
                         {/* Image Section */}
                         <div className="w-1/3 relative">
                           <div className="aspect-[3/4] relative overflow-hidden">
-                            <img
-                              src={story.coverUrl}
-                              alt={story.title}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                            />
+                            <img src={story.coverUrl} alt={story.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover:from-black/30 transition-all"></div>
                             <div className="absolute top-2 right-2 bg-story-purple text-white px-2 py-1 rounded-full text-xs font-semibold">
                               Click to Read
@@ -196,10 +176,7 @@ const Email = () => {
                             </div>
                           </div>
                           
-                          <p 
-                            className={`text-gray-700 text-sm leading-relaxed line-clamp-3 mb-4 ${isRTL ? 'text-right' : 'text-left'}`}
-                            dir={isRTL ? 'rtl' : 'ltr'}
-                          >
+                          <p className={`text-gray-700 text-sm leading-relaxed line-clamp-3 mb-4 ${isRTL ? 'text-right' : 'text-left'}`} dir={isRTL ? 'rtl' : 'ltr'}>
                             {storyText}
                           </p>
                           
@@ -213,9 +190,8 @@ const Email = () => {
                           </div>
                         </div>
                       </div>
-                    </Card>
-                  );
-                })}
+                    </Card>;
+              })}
               </div>
             </div>
 
@@ -228,10 +204,7 @@ const Email = () => {
                 Make this Sunday special with a <strong>FREE personalized story</strong>. 
                 Your children will thank you for the magical adventure!
               </p>
-              <Button 
-                asChild
-                className="bg-story-orange hover:bg-story-orange/90 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg transform hover:scale-105 transition-all"
-              >
+              <Button asChild className="bg-story-orange hover:bg-story-orange/90 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg transform hover:scale-105 transition-all">
                 <a href="https://www.nightknight.app/register" target="_blank" rel="noopener noreferrer">
                   Claim Your FREE Story Now! 🎁
                 </a>
@@ -258,8 +231,6 @@ const Email = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Email;
