@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Sparkles, Heart, BookOpen, Gift, Star, Palette, Globe, Users, Clock, Coffee } from 'lucide-react';
+import { Sparkles, Heart, BookOpen, Gift, Star, Palette, Globe, Users, Clock, Coffee, Lightbulb, Monitor } from 'lucide-react';
 import { transformStoryData } from '@/lib/storyDataTransformer';
 import { jsonStoriesData } from '@/data/discoverStoriesData';
 import { isArabic } from '@/components/dashboard/story-card/utils';
@@ -110,21 +110,21 @@ const Email = () => {
                 <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 border border-story-green/10">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="w-10 h-10 bg-story-green/20 rounded-full flex items-center justify-center">
-                      <Clock className="w-5 h-5 text-story-green" />
+                      <Lightbulb className="w-5 h-5 text-story-green" />
                     </div>
-                    <span className="font-semibold text-story-green">Just 5 Minutes</span>
+                    <span className="font-semibold text-story-green">Learning a New Value</span>
                   </div>
-                  <p className="text-sm text-gray-600 pl-13">Quick setup means more time for storytelling and bonding</p>
+                  <p className="text-sm text-gray-600 pl-13">Each story teaches important life lessons and values through engaging narratives</p>
                 </div>
                 
                 <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 border border-story-teal/10">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="w-10 h-10 bg-story-teal/20 rounded-full flex items-center justify-center">
-                      <Heart className="w-5 h-5 text-story-teal" fill="currentColor" />
+                      <Monitor className="w-5 h-5 text-story-teal" />
                     </div>
-                    <span className="font-semibold text-story-teal">Screen-Free Ending</span>
+                    <span className="font-semibold text-story-teal">Meaningful Tech Interaction</span>
                   </div>
-                  <p className="text-sm text-gray-600 pl-13">Perfect bedtime stories that don't require devices to enjoy</p>
+                  <p className="text-sm text-gray-600 pl-13">Meaningful interaction with technology rather than sitting in front of the screen having one way communication</p>
                 </div>
               </div>
 
