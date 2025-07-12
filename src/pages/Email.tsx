@@ -193,7 +193,7 @@ const Email = () => {
                         </div>
                         
                         <p className="text-gray-700 text-sm leading-relaxed line-clamp-3 mb-4">
-                          Click to read this magical story and see how NightKnight brings imagination to life!
+                          {story.pages[0]?.text || "Click to read this magical story and see how NightKnight brings imagination to life!"}
                         </p>
                         
                         {/* Decorative elements */}
