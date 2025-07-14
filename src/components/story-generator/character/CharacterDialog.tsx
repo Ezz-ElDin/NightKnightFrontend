@@ -28,8 +28,10 @@ function summarizeAppearance({
   appearanceTypeCustom,
   appearanceEyes,
   appearanceEyesCustom,
-  appearanceHair,
-  appearanceHairCustom,
+  appearanceHairStyle,
+  appearanceHairStyleCustom,
+  appearanceHairColor,
+  appearanceHairColorCustom,
   appearanceAccessory1,
   appearanceAccessory2,
 }: {
@@ -40,8 +42,10 @@ function summarizeAppearance({
   appearanceTypeCustom: string;
   appearanceEyes: string;
   appearanceEyesCustom: string;
-  appearanceHair: string;
-  appearanceHairCustom: string;
+  appearanceHairStyle: string;
+  appearanceHairStyleCustom: string;
+  appearanceHairColor: string;
+  appearanceHairColorCustom: string;
   appearanceAccessory1: string;
   appearanceAccessory2: string;
 }) {
@@ -49,7 +53,8 @@ function summarizeAppearance({
   const color = appearanceColor === "other" ? appearanceColorCustom : appearanceColor;
   const type = appearanceType === "other" ? appearanceTypeCustom : appearanceType;
   const eyes = appearanceEyes === "other" ? appearanceEyesCustom : appearanceEyes;
-  const hair = appearanceHair === "other" ? appearanceHairCustom : appearanceHair;
+  const hairStyle = appearanceHairStyle === "other" ? appearanceHairStyleCustom : appearanceHairStyle;
+  const hairColor = appearanceHairColor === "other" ? appearanceHairColorCustom : appearanceHairColor;
 
   // Compose the "A" or "An" logic (simple: check for vowel)
   const firstWord = color;
@@ -63,7 +68,11 @@ function summarizeAppearance({
   // Add "with" clause
   const withItems = [];
   if (eyes) withItems.push(eyes);
-  if (hair) withItems.push(hair);
+  
+  // Combine hair style and color
+  if (hairStyle && hairColor) {
+    withItems.push(`${hairStyle} ${hairColor} hair`);
+  }
   
   // Compose accessories
   const accessories = [appearanceAccessory1, appearanceAccessory2].filter(x => !!x && x.trim());
@@ -283,7 +292,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
   const handleAddCharacter = () => {
     if (!name.trim()) return;
     
-    const appearance = summarizeAppearance({ ...appearanceFields });
+    const appearance = summarizeAppearance(appearanceFields);
     onAddCharacter({
       name,
       appearance,
@@ -294,15 +303,8 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
     onOpenChange(false);
   };
 
-  // Update the generatedAppearance calculation to use separate hair style and color
-  const generatedAppearance = summarizeAppearance({ 
-    ...appearanceFields,
-    // Combine hair style and color for the summary
-    appearanceHair: appearanceFields.appearanceHairStyle && appearanceFields.appearanceHairColor 
-      ? `${appearanceFields.appearanceHairStyle === "other" ? appearanceFields.appearanceHairStyleCustom : appearanceFields.appearanceHairStyle} ${appearanceFields.appearanceHairColor === "other" ? appearanceFields.appearanceHairColorCustom : appearanceFields.appearanceHairColor} hair`
-      : "",
-    appearanceHairCustom: "" // Not used since we combine above
-  });
+  // Update the generatedAppearance calculation to use the new structure
+  const generatedAppearance = summarizeAppearance(appearanceFields);
 
   const renderCurrentStep = () => {
     switch (currentStep) {
