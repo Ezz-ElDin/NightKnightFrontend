@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { 
   FullScreenDialog, 
   FullScreenDialogContent, 
@@ -200,7 +199,8 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
     onOpenChange(false);
   };
 
-  const canProceed = () => {
+  // Memoize canProceed to prevent infinite re-renders
+  const canProceed = useMemo(() => {
     const result = (() => {
       switch (currentStep) {
         case "name":
@@ -227,7 +227,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
     })();
     console.log("canProceed for step", currentStep, ":", result);
     return result;
-  };
+  }, [currentStep, name, role, appearanceFields]);
 
   const generatedAppearance = summarizeAppearance({ ...appearanceFields });
 
@@ -333,7 +333,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
                   onBack={goToPreviousStep}
                   onNext={handleNext}
                   onSkip={handleSkip}
-                  canProceed={canProceed()}
+                  canProceed={canProceed}
                 />
               </div>
             </div>
