@@ -10,25 +10,21 @@ interface RoleStepProps {
 }
 
 const RoleStep: React.FC<RoleStepProps> = ({ selectedRole, onRoleChange, onNext }) => {
-  const handleRoleChange = (role: string) => {
-    onRoleChange(role);
-    // Auto-advance when role is selected
-    if (role !== selectedRole) {
-      setTimeout(() => {
-        onNext();
-      }, 500);
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && selectedRole) {
+      onNext();
     }
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" onKeyDown={handleKeyDown}>
       <div className="space-y-4">
         <Label className="text-2xl font-semibold">What role does your character play?</Label>
         <p className="text-gray-600">Choose how your character fits into the story!</p>
         
         <RoleSelector 
           selectedRole={selectedRole}
-          onRoleChange={handleRoleChange}
+          onRoleChange={onRoleChange}
         />
       </div>
     </div>

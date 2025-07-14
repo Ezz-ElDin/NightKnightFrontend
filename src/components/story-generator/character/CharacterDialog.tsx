@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { 
   FullScreenDialog, 
@@ -230,6 +231,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
             appearanceAccessory2={appearanceFields.appearanceAccessory2}
             onAppearanceAccessory2Change={(v: string) => handleAppearanceField("appearanceAccessory2", v)}
             generatedAppearance={generatedAppearance}
+            onNext={handleNext}
           />
         );
       case "personality":
@@ -237,6 +239,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
           <PersonalityStep
             selectedTraits={personality}
             onTraitToggle={togglePersonalityTrait}
+            onNext={handleNext}
           />
         );
       default:

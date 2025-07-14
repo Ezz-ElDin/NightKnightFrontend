@@ -11,18 +11,14 @@ interface NameStepProps {
 }
 
 const NameStep: React.FC<NameStepProps> = ({ name, onNameChange, onNext }) => {
-  const handleNameChange = (newName: string) => {
-    onNameChange(newName);
-    // Auto-advance when name is entered
-    if (newName.trim() && !name.trim()) {
-      setTimeout(() => {
-        onNext();
-      }, 500);
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && name.trim()) {
+      onNext();
     }
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" onKeyDown={handleKeyDown}>
       <CharacterDisclaimer />
       
       <div className="space-y-4">
@@ -31,7 +27,7 @@ const NameStep: React.FC<NameStepProps> = ({ name, onNameChange, onNext }) => {
         
         <CharacterNameInput
           name={name}
-          onNameChange={handleNameChange}
+          onNameChange={onNameChange}
         />
       </div>
     </div>

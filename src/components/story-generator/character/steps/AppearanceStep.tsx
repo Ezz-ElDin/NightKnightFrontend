@@ -19,11 +19,20 @@ interface AppearanceStepProps {
   appearanceAccessory2: string;
   onAppearanceAccessory2Change: (v: string) => void;
   generatedAppearance: string;
+  onNext: () => void;
 }
 
 const AppearanceStep: React.FC<AppearanceStepProps> = (props) => {
+  const { onNext } = props;
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      onNext();
+    }
+  };
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" onKeyDown={handleKeyDown}>
       <div className="space-y-4">
         <Label className="text-2xl font-semibold">How does your character look?</Label>
         <p className="text-gray-600">Describe your character's appearance in detail!</p>
