@@ -21,6 +21,8 @@ const CharacterNameInput: React.FC<CharacterNameInputProps> = ({
         onChange={(e) => onNameChange(e.target.value)}
         placeholder="What's this character called?"
         className="p-6 text-lg"
+        autoComplete="off"
+        autoFocus
       />
     </div>
   );

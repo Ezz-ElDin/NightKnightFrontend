@@ -11,16 +11,6 @@ interface NameStepProps {
 }
 
 const NameStep: React.FC<NameStepProps> = ({ name, onNameChange, onNext }) => {
-  const handleNameChange = (newName: string) => {
-    onNameChange(newName);
-    // Auto-advance when name is entered
-    if (newName.trim() && !name.trim()) {
-      setTimeout(() => {
-        onNext();
-      }, 500);
-    }
-  };
-
   return (
     <div className="space-y-6">
       <CharacterDisclaimer />
@@ -31,7 +21,7 @@ const NameStep: React.FC<NameStepProps> = ({ name, onNameChange, onNext }) => {
         
         <CharacterNameInput
           name={name}
-          onNameChange={handleNameChange}
+          onNameChange={onNameChange}
         />
       </div>
     </div>
