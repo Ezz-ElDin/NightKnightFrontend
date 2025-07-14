@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { 
   FullScreenDialog, 
@@ -99,8 +98,10 @@ interface AppearanceFields {
   appearanceTypeCustom: string;
   appearanceEyes: string;
   appearanceEyesCustom: string;
-  appearanceHair: string;
-  appearanceHairCustom: string;
+  appearanceHairStyle: string;
+  appearanceHairStyleCustom: string;
+  appearanceHairColor: string;
+  appearanceHairColorCustom: string;
   appearanceAccessory1: string;
   appearanceAccessory2: string;
 }
@@ -120,8 +121,10 @@ const initialAppearanceFields: AppearanceFields = {
   appearanceTypeCustom: "",
   appearanceEyes: "",
   appearanceEyesCustom: "",
-  appearanceHair: "",
-  appearanceHairCustom: "",
+  appearanceHairStyle: "",
+  appearanceHairStyleCustom: "",
+  appearanceHairColor: "",
+  appearanceHairColorCustom: "",
   appearanceAccessory1: "",
   appearanceAccessory2: "",
 };
@@ -175,7 +178,8 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
       ...(field === "appearanceColor" && value !== "other" ? { appearanceColorCustom: "" } : {}),
       ...(field === "appearanceType" && value !== "other" ? { appearanceTypeCustom: "" } : {}),
       ...(field === "appearanceEyes" && value !== "other" ? { appearanceEyesCustom: "" } : {}),
-      ...(field === "appearanceHair" && value !== "other" ? { appearanceHairCustom: "" } : {}),
+      ...(field === "appearanceHairStyle" && value !== "other" ? { appearanceHairStyleCustom: "" } : {}),
+      ...(field === "appearanceHairColor" && value !== "other" ? { appearanceHairColorCustom: "" } : {}),
     }));
   };
 
@@ -219,8 +223,10 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
         handleAppearanceField("appearanceEyesCustom", "");
         break;
       case "appearance-hair":
-        handleAppearanceField("appearanceHair", "");
-        handleAppearanceField("appearanceHairCustom", "");
+        handleAppearanceField("appearanceHairStyle", "");
+        handleAppearanceField("appearanceHairStyleCustom", "");
+        handleAppearanceField("appearanceHairColor", "");
+        handleAppearanceField("appearanceHairColorCustom", "");
         break;
       case "appearance-accessories":
         handleAppearanceField("appearanceAccessory1", "");
@@ -247,8 +253,10 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
         return appearanceFields.appearanceEyes.length > 0 && 
                (appearanceFields.appearanceEyes !== "other" || appearanceFields.appearanceEyesCustom.trim().length > 0);
       case "appearance-hair":
-        return appearanceFields.appearanceHair.length > 0 && 
-               (appearanceFields.appearanceHair !== "other" || appearanceFields.appearanceHairCustom.trim().length > 0);
+        return appearanceFields.appearanceHairStyle.length > 0 && 
+               (appearanceFields.appearanceHairStyle !== "other" || appearanceFields.appearanceHairStyleCustom.trim().length > 0) &&
+               appearanceFields.appearanceHairColor.length > 0 && 
+               (appearanceFields.appearanceHairColor !== "other" || appearanceFields.appearanceHairColorCustom.trim().length > 0);
       case "appearance-accessories":
         return true; // Optional step
       default:
@@ -286,7 +294,15 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
     onOpenChange(false);
   };
 
-  const generatedAppearance = summarizeAppearance({ ...appearanceFields });
+  // Update the generatedAppearance calculation to use separate hair style and color
+  const generatedAppearance = summarizeAppearance({ 
+    ...appearanceFields,
+    // Combine hair style and color for the summary
+    appearanceHair: appearanceFields.appearanceHairStyle && appearanceFields.appearanceHairColor 
+      ? `${appearanceFields.appearanceHairStyle === "other" ? appearanceFields.appearanceHairStyleCustom : appearanceFields.appearanceHairStyle} ${appearanceFields.appearanceHairColor === "other" ? appearanceFields.appearanceHairColorCustom : appearanceFields.appearanceHairColor} hair`
+      : "",
+    appearanceHairCustom: "" // Not used since we combine above
+  });
 
   const renderCurrentStep = () => {
     switch (currentStep) {
@@ -347,10 +363,14 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
       case "appearance-hair":
         return (
           <AppearanceHairStep
-            selectedHair={appearanceFields.appearanceHair}
-            customHair={appearanceFields.appearanceHairCustom}
-            onHairChange={(v: string) => handleAppearanceField("appearanceHair", v)}
-            onCustomHairChange={(v: string) => handleAppearanceField("appearanceHairCustom", v)}
+            selectedHairStyle={appearanceFields.appearanceHairStyle}
+            selectedHairColor={appearanceFields.appearanceHairColor}
+            customHairStyle={appearanceFields.appearanceHairStyleCustom}
+            customHairColor={appearanceFields.appearanceHairColorCustom}
+            onHairStyleChange={(v: string) => handleAppearanceField("appearanceHairStyle", v)}
+            onHairColorChange={(v: string) => handleAppearanceField("appearanceHairColor", v)}
+            onCustomHairStyleChange={(v: string) => handleAppearanceField("appearanceHairStyleCustom", v)}
+            onCustomHairColorChange={(v: string) => handleAppearanceField("appearanceHairColorCustom", v)}
             onNext={handleNext}
           />
         );
@@ -392,35 +412,35 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
               </div>
             </ScrollArea>
 
-            {/* Navigation */}
-            <div className="flex-shrink-0 px-8 py-6 border-t border-primary/20 bg-white">
-              <div className="max-w-4xl mx-auto">
-                <CharacterStepNavigation
-                  isFirstStep={isFirstStep}
-                  isLastStep={isLastStep}
-                  onBack={goToPreviousStep}
-                  onNext={handleNext}
-                  onSkip={handleSkip}
-                  onClearCurrentStep={clearCurrentStepValue}
-                  canProceed={isCurrentStepValid()}
-                />
+              {/* Navigation */}
+              <div className="flex-shrink-0 px-8 py-6 border-t border-primary/20 bg-white">
+                <div className="max-w-4xl mx-auto">
+                  <CharacterStepNavigation
+                    isFirstStep={isFirstStep}
+                    isLastStep={isLastStep}
+                    onBack={goToPreviousStep}
+                    onNext={handleNext}
+                    onSkip={handleSkip}
+                    onClearCurrentStep={clearCurrentStepValue}
+                    canProceed={isCurrentStepValid()}
+                  />
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Preview Sidebar */}
-          <div className="w-80 border-l border-primary/20 bg-primary/5 p-6">
-            <CharacterPreview
-              name={name}
-              role={role}
-              generatedAppearance={generatedAppearance}
-              personality={personality}
-            />
+            {/* Preview Sidebar */}
+            <div className="w-80 border-l border-primary/20 bg-primary/5 p-6">
+              <CharacterPreview
+                name={name}
+                role={role}
+                generatedAppearance={generatedAppearance}
+                personality={personality}
+              />
+            </div>
           </div>
-        </div>
-      </FullScreenDialogContent>
-    </FullScreenDialog>
-  );
-};
+        </FullScreenDialogContent>
+      </FullScreenDialog>
+    );
+  };
 
 export default CharacterDialog;
