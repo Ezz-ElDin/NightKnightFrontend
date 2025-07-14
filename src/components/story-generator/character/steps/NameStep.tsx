@@ -13,11 +13,11 @@ interface NameStepProps {
 const NameStep: React.FC<NameStepProps> = ({ name, onNameChange, onNext }) => {
   const handleNameChange = (newName: string) => {
     onNameChange(newName);
-    // Auto-advance when name is entered and it's the first time entering text
-    if (newName.trim().length > 2 && !name.trim()) {
+    // Auto-advance when name is entered
+    if (newName.trim() && !name.trim()) {
       setTimeout(() => {
         onNext();
-      }, 1000);
+      }, 500);
     }
   };
 
