@@ -12,13 +12,18 @@ const CharacterNameInput: React.FC<CharacterNameInputProps> = ({
   name, 
   onNameChange 
 }) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("CharacterNameInput: input changed to:", e.target.value);
+    onNameChange(e.target.value);
+  };
+
   return (
     <div className="space-y-2">
       <Label htmlFor="characterName" className="text-lg">Name</Label>
       <Input
         id="characterName"
         value={name}
-        onChange={(e) => onNameChange(e.target.value)}
+        onChange={handleChange}
         placeholder="What's this character called?"
         className="p-6 text-lg"
       />

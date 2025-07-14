@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { 
   FullScreenDialog, 
@@ -133,6 +134,11 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
     }
   }, [open, initialCharacter, resetSteps]);
 
+  const handleNameChange = (newName: string) => {
+    console.log("Name changing from:", name, "to:", newName);
+    setName(newName);
+  };
+
   const handleAppearanceField = (field: keyof AppearanceFields, value: string) => {
     console.log("Updating appearance field:", field, "to:", value);
     setAppearanceFields((prev) => ({
@@ -198,7 +204,9 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
     const result = (() => {
       switch (currentStep) {
         case "name":
-          return name.trim().length > 0;
+          const nameCheck = name.trim().length > 0;
+          console.log("Name step validation - name:", name, "length:", name.length, "canProceed:", nameCheck);
+          return nameCheck;
         case "role":
           return role.length > 0;
         case "appearance-age":
@@ -224,13 +232,13 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
   const generatedAppearance = summarizeAppearance({ ...appearanceFields });
 
   const renderCurrentStep = () => {
-    console.log("Rendering step:", currentStep);
+    console.log("Rendering step:", currentStep, "with name:", name);
     switch (currentStep) {
       case "name":
         return (
           <NameStep
             name={name}
-            onNameChange={setName}
+            onNameChange={handleNameChange}
             onNext={handleNext}
           />
         );
