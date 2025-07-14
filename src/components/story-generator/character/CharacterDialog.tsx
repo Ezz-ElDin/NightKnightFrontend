@@ -11,9 +11,13 @@ import { Character } from "../constants";
 import { useCharacterSteps } from "@/hooks/useCharacterSteps";
 import CharacterPreview from "./CharacterPreview";
 import CharacterStepNavigation from "./CharacterStepNavigation";
+import DisclaimerStep from "./steps/DisclaimerStep";
 import NameStep from "./steps/NameStep";
 import RoleStep from "./steps/RoleStep";
-import AppearanceStep from "./steps/AppearanceStep";
+import AppearanceAgeStep from "./steps/AppearanceAgeStep";
+import AppearanceColorStep from "./steps/AppearanceColorStep";
+import AppearanceTypeStep from "./steps/AppearanceTypeStep";
+import AppearanceAccessoriesStep from "./steps/AppearanceAccessoriesStep";
 import PersonalityStep from "./steps/PersonalityStep";
 
 // Helper to synthesize appearance preview summary for display & saving
@@ -186,8 +190,24 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
 
   const canProceed = () => {
     switch (currentStep) {
+      case "disclaimer":
+        return true;
       case "name":
         return name.trim().length > 0;
+      case "role":
+        return role.length > 0;
+      case "appearance-age":
+        return appearanceFields.appearanceAge.length > 0;
+      case "appearance-color":
+        return appearanceFields.appearanceColor.length > 0 && 
+               (appearanceFields.appearanceColor !== "other" || appearanceFields.appearanceColorCustom.trim().length > 0);
+      case "appearance-type":
+        return appearanceFields.appearanceType.length > 0 && 
+               (appearanceFields.appearanceType !== "other" || appearanceFields.appearanceTypeCustom.trim().length > 0);
+      case "appearance-accessories":
+        return true; // This step is optional
+      case "personality":
+        return true; // This step is optional
       default:
         return true;
     }
@@ -197,6 +217,8 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
 
   const renderCurrentStep = () => {
     switch (currentStep) {
+      case "disclaimer":
+        return <DisclaimerStep onNext={handleNext} />;
       case "name":
         return (
           <NameStep
@@ -213,24 +235,41 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
             onNext={handleNext}
           />
         );
-      case "appearance":
+      case "appearance-age":
         return (
-          <AppearanceStep
-            appearanceAge={appearanceFields.appearanceAge}
-            onAppearanceAgeChange={(v: string) => handleAppearanceField("appearanceAge", v)}
-            appearanceColor={appearanceFields.appearanceColor}
-            onAppearanceColorChange={(v: string) => handleAppearanceField("appearanceColor", v)}
-            appearanceColorCustom={appearanceFields.appearanceColorCustom}
-            onAppearanceColorCustomChange={(v: string) => handleAppearanceField("appearanceColorCustom", v)}
-            appearanceType={appearanceFields.appearanceType}
-            onAppearanceTypeChange={(v: string) => handleAppearanceField("appearanceType", v)}
-            appearanceTypeCustom={appearanceFields.appearanceTypeCustom}
-            onAppearanceTypeCustomChange={(v: string) => handleAppearanceField("appearanceTypeCustom", v)}
-            appearanceAccessory1={appearanceFields.appearanceAccessory1}
-            onAppearanceAccessory1Change={(v: string) => handleAppearanceField("appearanceAccessory1", v)}
-            appearanceAccessory2={appearanceFields.appearanceAccessory2}
-            onAppearanceAccessory2Change={(v: string) => handleAppearanceField("appearanceAccessory2", v)}
-            generatedAppearance={generatedAppearance}
+          <AppearanceAgeStep
+            selectedAge={appearanceFields.appearanceAge}
+            onAgeChange={(v: string) => handleAppearanceField("appearanceAge", v)}
+            onNext={handleNext}
+          />
+        );
+      case "appearance-color":
+        return (
+          <AppearanceColorStep
+            selectedColor={appearanceFields.appearanceColor}
+            customColor={appearanceFields.appearanceColorCustom}
+            onColorChange={(v: string) => handleAppearanceField("appearanceColor", v)}
+            onCustomColorChange={(v: string) => handleAppearanceField("appearanceColorCustom", v)}
+            onNext={handleNext}
+          />
+        );
+      case "appearance-type":
+        return (
+          <AppearanceTypeStep
+            selectedType={appearanceFields.appearanceType}
+            customType={appearanceFields.appearanceTypeCustom}
+            onTypeChange={(v: string) => handleAppearanceField("appearanceType", v)}
+            onCustomTypeChange={(v: string) => handleAppearanceField("appearanceTypeCustom", v)}
+            onNext={handleNext}
+          />
+        );
+      case "appearance-accessories":
+        return (
+          <AppearanceAccessoriesStep
+            accessory1={appearanceFields.appearanceAccessory1}
+            accessory2={appearanceFields.appearanceAccessory2}
+            onAccessory1Change={(v: string) => handleAppearanceField("appearanceAccessory1", v)}
+            onAccessory2Change={(v: string) => handleAppearanceField("appearanceAccessory2", v)}
             onNext={handleNext}
           />
         );

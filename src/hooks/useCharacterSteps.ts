@@ -1,12 +1,12 @@
 
 import { useState } from "react";
 
-export type CharacterStep = "name" | "role" | "appearance" | "personality";
+export type CharacterStep = "disclaimer" | "name" | "role" | "appearance-age" | "appearance-color" | "appearance-type" | "appearance-accessories" | "personality";
 
-const STEPS: CharacterStep[] = ["name", "role", "appearance", "personality"];
+const STEPS: CharacterStep[] = ["disclaimer", "name", "role", "appearance-age", "appearance-color", "appearance-type", "appearance-accessories", "personality"];
 
 export const useCharacterSteps = () => {
-  const [currentStep, setCurrentStep] = useState<CharacterStep>("name");
+  const [currentStep, setCurrentStep] = useState<CharacterStep>("disclaimer");
 
   const currentStepIndex = STEPS.indexOf(currentStep);
   const isFirstStep = currentStepIndex === 0;
@@ -29,7 +29,7 @@ export const useCharacterSteps = () => {
   };
 
   const resetSteps = () => {
-    setCurrentStep("name");
+    setCurrentStep("disclaimer");
   };
 
   return {
