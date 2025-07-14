@@ -7,12 +7,21 @@ import {
   FullScreenDialogTitle
 } from "@/components/ui/full-screen-dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import { Character } from "../constants";
-import { AppearanceForm } from "./AppearanceForm";
-import { RoleSelector } from "./RoleSelector";
-import CharacterNameInput from "./CharacterNameInput";
-import PersonalitySelector from "./PersonalitySelector";
+import { useCharacterSteps, CharacterStep } from "@/hooks/useCharacterSteps";
+import CharacterStepNavigation from "./CharacterStepNavigation";
+import CharacterPreview from "./CharacterPreview";
+
+// Step components
+import DisclaimerStep from "./steps/DisclaimerStep";
+import NameStep from "./steps/NameStep";
+import RoleStep from "./steps/RoleStep";
+import AppearanceAgeStep from "./steps/AppearanceAgeStep";
+import AppearanceColorStep from "./steps/AppearanceColorStep";
+import AppearanceTypeStep from "./steps/AppearanceTypeStep";
+import AppearanceAccessoriesStep from "./steps/AppearanceAccessoriesStep";
+import PersonalityStep from "./steps/PersonalityStep";
 
 // Helper to synthesize appearance preview summary for display & saving
 function summarizeAppearance({
@@ -64,16 +73,6 @@ function summarizeAppearance({
   return phrase;
 }
 
-interface AppearanceFields {
-  appearanceAge: string;
-  appearanceColor: string;
-  appearanceColorCustom: string;
-  appearanceType: string;
-  appearanceTypeCustom: string;
-  appearanceAccessory1: string;
-  appearanceAccessory2: string;
-}
-
 interface CharacterDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -81,72 +80,58 @@ interface CharacterDialogProps {
   initialCharacter?: Omit<Character, "id">;
 }
 
-const initialAppearanceFields: AppearanceFields = {
-  appearanceAge: "",
-  appearanceColor: "",
-  appearanceColorCustom: "",
-  appearanceType: "",
-  appearanceTypeCustom: "",
-  appearanceAccessory1: "",
-  appearanceAccessory2: "",
-};
-
 const CharacterDialog: React.FC<CharacterDialogProps> = ({ 
   open, 
   onOpenChange,
   onAddCharacter,
   initialCharacter
 }) => {
-  // These fields are now explicit, not just "appearance" as a string
+  // Step management
+  const {
+    currentStep,
+    currentStepIndex,
+    totalSteps,
+    isFirstStep,
+    isLastStep,
+    goToNextStep,
+    goToPrevStep,
+    resetSteps
+  } = useCharacterSteps();
+
+  // Character data
   const [name, setName] = useState("");
   const [role, setRole] = useState("Hero");
   const [personality, setPersonality] = useState<string[]>([]);
-  const [appearanceFields, setAppearanceFields] = useState<AppearanceFields>(initialAppearanceFields);
+  const [appearanceAge, setAppearanceAge] = useState("");
+  const [appearanceColor, setAppearanceColor] = useState("");
+  const [appearanceColorCustom, setAppearanceColorCustom] = useState("");
+  const [appearanceType, setAppearanceType] = useState("");
+  const [appearanceTypeCustom, setAppearanceTypeCustom] = useState("");
+  const [appearanceAccessory1, setAppearanceAccessory1] = useState("");
+  const [appearanceAccessory2, setAppearanceAccessory2] = useState("");
 
   // Reset or hydrate fields on open
   useEffect(() => {
-    if (open && initialCharacter) {
-      setName(initialCharacter.name || "");
-      setRole(initialCharacter.role || "Hero");
-      setPersonality(initialCharacter.personality || []);
-      setAppearanceFields({
-        ...initialAppearanceFields,
-      });
-    } else if (open && !initialCharacter) {
-      setName("");
-      setRole("Hero");
-      setPersonality([]);
-      setAppearanceFields(initialAppearanceFields);
+    if (open) {
+      if (initialCharacter) {
+        setName(initialCharacter.name || "");
+        setRole(initialCharacter.role || "Hero");
+        setPersonality(initialCharacter.personality || []);
+      } else {
+        setName("");
+        setRole("Hero");
+        setPersonality([]);
+        setAppearanceAge("");
+        setAppearanceColor("");
+        setAppearanceColorCustom("");
+        setAppearanceType("");
+        setAppearanceTypeCustom("");
+        setAppearanceAccessory1("");
+        setAppearanceAccessory2("");
+      }
+      resetSteps();
     }
-  }, [open, initialCharacter]);
-
-  const handleAppearanceField = (field: keyof AppearanceFields, value: string) => {
-    setAppearanceFields((prev) => ({
-      ...prev,
-      [field]: value,
-      ...(field === "appearanceColor" && value !== "other" ? { appearanceColorCustom: "" } : {}),
-      ...(field === "appearanceType" && value !== "other" ? { appearanceTypeCustom: "" } : {}),
-    }));
-  };
-
-  // Handlers for each prop
-  const propsForForm = {
-    appearanceAge: appearanceFields.appearanceAge,
-    onAppearanceAgeChange: (v: string) => handleAppearanceField("appearanceAge", v),
-    appearanceColor: appearanceFields.appearanceColor,
-    onAppearanceColorChange: (v: string) => handleAppearanceField("appearanceColor", v),
-    appearanceColorCustom: appearanceFields.appearanceColorCustom,
-    onAppearanceColorCustomChange: (v: string) => handleAppearanceField("appearanceColorCustom", v),
-    appearanceType: appearanceFields.appearanceType,
-    onAppearanceTypeChange: (v: string) => handleAppearanceField("appearanceType", v),
-    appearanceTypeCustom: appearanceFields.appearanceTypeCustom,
-    onAppearanceTypeCustomChange: (v: string) => handleAppearanceField("appearanceTypeCustom", v),
-    appearanceAccessory1: appearanceFields.appearanceAccessory1,
-    onAppearanceAccessory1Change: (v: string) => handleAppearanceField("appearanceAccessory1", v),
-    appearanceAccessory2: appearanceFields.appearanceAccessory2,
-    onAppearanceAccessory2Change: (v: string) => handleAppearanceField("appearanceAccessory2", v),
-    generatedAppearance: summarizeAppearance({ ...appearanceFields }),
-  };
+  }, [open, initialCharacter, resetSteps]);
 
   const togglePersonalityTrait = (trait: string) => {
     setPersonality((prev) =>
@@ -156,71 +141,208 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
     );
   };
 
-  const resetCharacter = () => {
-    setName("");
-    setRole("Hero");
-    setPersonality([]);
-    setAppearanceFields(initialAppearanceFields);
+  const handleClose = () => {
+    resetSteps();
+    onOpenChange(false);
   };
 
-  const handleAddCharacter = () => {
-    if (!name) return;
-    const appearance = summarizeAppearance({ ...appearanceFields });
+  const handleFinish = () => {
+    if (!name.trim()) return;
+    
+    const appearance = summarizeAppearance({
+      appearanceAge,
+      appearanceColor,
+      appearanceColorCustom,
+      appearanceType,
+      appearanceTypeCustom,
+      appearanceAccessory1,
+      appearanceAccessory2,
+    });
+
     onAddCharacter({
-      name,
+      name: name.trim(),
       appearance,
       personality,
       role,
     });
-    resetCharacter();
-    onOpenChange(false);
+    
+    handleClose();
   };
 
+  const canGoNext = () => {
+    switch (currentStep) {
+      case "disclaimer":
+        return true;
+      case "name":
+        return name.trim().length > 0;
+      case "role":
+        return role !== "";
+      case "appearance-age":
+        return appearanceAge !== "";
+      case "appearance-color":
+        return appearanceColor !== "" && (appearanceColor !== "other" || appearanceColorCustom.trim() !== "");
+      case "appearance-type":
+        return appearanceType !== "" && (appearanceType !== "other" || appearanceTypeCustom.trim() !== "");
+      case "appearance-accessories":
+        return true; // Optional step
+      case "personality":
+        return true; // Optional step
+      default:
+        return false;
+    }
+  };
+
+  const canSkip = () => {
+    return currentStep === "appearance-accessories" || currentStep === "personality";
+  };
+
+  const handleNext = () => {
+    if (isLastStep) {
+      handleFinish();
+    } else {
+      goToNextStep();
+    }
+  };
+
+  const progress = ((currentStepIndex + 1) / totalSteps) * 100;
+
+  const renderCurrentStep = () => {
+    switch (currentStep) {
+      case "disclaimer":
+        return <DisclaimerStep onAutoAdvance={goToNextStep} />;
+      
+      case "name":
+        return (
+          <NameStep
+            name={name}
+            onNameChange={setName}
+            onAutoAdvance={goToNextStep}
+          />
+        );
+      
+      case "role":
+        return (
+          <RoleStep
+            selectedRole={role}
+            onRoleChange={setRole}
+            onAutoAdvance={goToNextStep}
+          />
+        );
+      
+      case "appearance-age":
+        return (
+          <AppearanceAgeStep
+            selectedAge={appearanceAge}
+            onAgeChange={setAppearanceAge}
+            onAutoAdvance={goToNextStep}
+          />
+        );
+      
+      case "appearance-color":
+        return (
+          <AppearanceColorStep
+            selectedColor={appearanceColor}
+            customColor={appearanceColorCustom}
+            onColorChange={setAppearanceColor}
+            onCustomColorChange={setAppearanceColorCustom}
+            onAutoAdvance={goToNextStep}
+          />
+        );
+      
+      case "appearance-type":
+        return (
+          <AppearanceTypeStep
+            selectedType={appearanceType}
+            customType={appearanceTypeCustom}
+            onTypeChange={setAppearanceType}
+            onCustomTypeChange={setAppearanceTypeCustom}
+            onAutoAdvance={goToNextStep}
+          />
+        );
+      
+      case "appearance-accessories":
+        return (
+          <AppearanceAccessoriesStep
+            accessory1={appearanceAccessory1}
+            accessory2={appearanceAccessory2}
+            onAccessory1Change={setAppearanceAccessory1}
+            onAccessory2Change={setAppearanceAccessory2}
+          />
+        );
+      
+      case "personality":
+        return (
+          <PersonalityStep
+            selectedTraits={personality}
+            onTraitToggle={togglePersonalityTrait}
+          />
+        );
+      
+      default:
+        return null;
+    }
+  };
+
+  const appearanceDescription = summarizeAppearance({
+    appearanceAge,
+    appearanceColor,
+    appearanceColorCustom,
+    appearanceType,
+    appearanceTypeCustom,
+    appearanceAccessory1,
+    appearanceAccessory2,
+  });
+
   return (
-    <FullScreenDialog open={open} onOpenChange={(newOpenState) => {
-      if (!newOpenState) resetCharacter();
-      onOpenChange(newOpenState);
-    }}>
-      <FullScreenDialogContent className="bg-gradient-to-b from-white to-primary/5 flex flex-col overflow-hidden">
+    <FullScreenDialog open={open} onOpenChange={handleClose}>
+      <FullScreenDialogContent className="bg-gradient-to-b from-white to-primary/5">
         {/* Header */}
         <FullScreenDialogHeader className="flex-shrink-0 px-8 py-6 border-b border-primary/20">
           <FullScreenDialogTitle className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600">
             {initialCharacter ? "Edit Magical Character" : "Create a Magical Character"}
           </FullScreenDialogTitle>
+          <div className="mt-4">
+            <Progress value={progress} className="h-2" />
+            <p className="text-sm text-muted-foreground mt-2">
+              Step {currentStepIndex + 1} of {totalSteps}
+            </p>
+          </div>
         </FullScreenDialogHeader>
 
-        {/* Scrollable content */}
-        <ScrollArea className="flex-1 px-8 py-6">
-          <div className="max-w-4xl mx-auto space-y-8">
-            {/* Role selection at the top */}
-            <RoleSelector 
-              selectedRole={role}
-              onRoleChange={setRole}
-            />
-            <CharacterNameInput
-              name={name}
-              onNameChange={setName}
-            />
-            <AppearanceForm
-              {...propsForForm}
-            />
-            <PersonalitySelector
-              selectedTraits={personality}
-              onTraitToggle={togglePersonalityTrait}
-            />
-          </div>
-        </ScrollArea>
+        {/* Content */}
+        <div className="flex-1 flex overflow-hidden">
+          {/* Main content */}
+          <div className="flex-1 flex flex-col">
+            <ScrollArea className="flex-1 px-8 py-6">
+              <div className="max-w-2xl mx-auto">
+                {renderCurrentStep()}
+              </div>
+            </ScrollArea>
 
-        {/* Footer with save button */}
-        <div className="flex-shrink-0 px-8 py-6 border-t border-primary/20 bg-white">
-          <div className="max-w-4xl mx-auto flex justify-end">
-            <Button 
-              onClick={handleAddCharacter}
-              disabled={!name}
-              className="text-xl px-12 py-8 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 shadow-lg rounded-xl"
-            >
-              {initialCharacter ? "Save Changes" : "Add Character"} ✨
-            </Button>
+            {/* Navigation */}
+            <div className="flex-shrink-0 px-8 py-6">
+              <div className="max-w-2xl mx-auto">
+                <CharacterStepNavigation
+                  onBack={goToPrevStep}
+                  onNext={handleNext}
+                  onSkip={canSkip() ? goToNextStep : undefined}
+                  canGoBack={!isFirstStep}
+                  canGoNext={canGoNext()}
+                  canSkip={canSkip()}
+                  isLastStep={isLastStep}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Preview sidebar */}
+          <div className="w-80 border-l border-primary/20 bg-white/50 p-6">
+            <CharacterPreview
+              name={name}
+              role={role}
+              personality={personality}
+              appearanceDescription={appearanceDescription}
+            />
           </div>
         </div>
       </FullScreenDialogContent>
