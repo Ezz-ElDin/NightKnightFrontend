@@ -1,11 +1,11 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Baby, Child, User, Users } from "lucide-react";
+import { Baby, Users, User, UserCheck } from "lucide-react";
 
 const AGE_OPTIONS = [
   { value: "young", label: "Young", icon: Baby },
-  { value: "child", label: "Child", icon: Child },
+  { value: "child", label: "Child", icon: UserCheck },
   { value: "adult", label: "Adult", icon: User },
   { value: "elder", label: "Elder", icon: Users },
 ];
