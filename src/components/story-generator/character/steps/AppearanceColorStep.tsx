@@ -43,8 +43,8 @@ const AppearanceColorStep: React.FC<AppearanceColorStepProps> = ({
   return (
     <div className="space-y-6" onKeyDown={handleKeyDown}>
       <div className="space-y-4">
-        <Label className="text-2xl font-semibold">What color is your character?</Label>
-        <p className="text-gray-600">Choose the main color that describes your character!</p>
+        <Label className="text-2xl font-semibold">What skin color is your character?</Label>
+        <p className="text-gray-600">Choose the main skin color that describes your character!</p>
         
         <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
           {COLOR_OPTIONS.map(color => (
