@@ -15,6 +15,8 @@ import RoleStep from "./steps/RoleStep";
 import AppearanceAgeStep from "./steps/AppearanceAgeStep";
 import AppearanceColorStep from "./steps/AppearanceColorStep";
 import AppearanceTypeStep from "./steps/AppearanceTypeStep";
+import AppearanceEyesStep from "./steps/AppearanceEyesStep";
+import AppearanceHairStep from "./steps/AppearanceHairStep";
 import AppearanceAccessoriesStep from "./steps/AppearanceAccessoriesStep";
 import PersonalityStep from "./steps/PersonalityStep";
 
@@ -25,6 +27,10 @@ function summarizeAppearance({
   appearanceColorCustom,
   appearanceType,
   appearanceTypeCustom,
+  appearanceEyes,
+  appearanceEyesCustom,
+  appearanceHair,
+  appearanceHairCustom,
   appearanceAccessory1,
   appearanceAccessory2,
 }: {
@@ -33,36 +39,53 @@ function summarizeAppearance({
   appearanceColorCustom: string;
   appearanceType: string;
   appearanceTypeCustom: string;
+  appearanceEyes: string;
+  appearanceEyesCustom: string;
+  appearanceHair: string;
+  appearanceHairCustom: string;
   appearanceAccessory1: string;
   appearanceAccessory2: string;
 }) {
   // Choose custom or regular values
   const color = appearanceColor === "other" ? appearanceColorCustom : appearanceColor;
   const type = appearanceType === "other" ? appearanceTypeCustom : appearanceType;
+  const eyes = appearanceEyes === "other" ? appearanceEyesCustom : appearanceEyes;
+  const hair = appearanceHair === "other" ? appearanceHairCustom : appearanceHair;
 
   // Compose the "A" or "An" logic (simple: check for vowel)
-  const firstWord = [appearanceAge, color, type].find((v) => v && v.trim());
+  const firstWord = color;
   const article = firstWord && /^[aeiou]/i.test(firstWord) ? "An" : "A";
 
-  // Compose main phrase
+  // Compose main phrase: "A {skin colour} {Character type} with {eyes colour}, {Hair colour}, {accessory 1} and {accessory 2}"
   let phrase = `${article}`;
-  if (appearanceAge) phrase += ` ${appearanceAge}`;
   if (color) phrase += ` ${color}`;
   if (type) phrase += ` ${type}`;
   
+  // Add "with" clause
+  const withItems = [];
+  if (eyes) withItems.push(eyes);
+  if (hair) withItems.push(hair);
+  
   // Compose accessories
   const accessories = [appearanceAccessory1, appearanceAccessory2].filter(x => !!x && x.trim());
-  if (accessories.length === 1) {
-    phrase += `, with ${accessories[0]}`;
-  } else if (accessories.length === 2) {
-    phrase += `, with ${accessories[0]} and ${accessories[1]}`;
+  withItems.push(...accessories);
+
+  if (withItems.length > 0) {
+    phrase += " with ";
+    if (withItems.length === 1) {
+      phrase += withItems[0];
+    } else if (withItems.length === 2) {
+      phrase += `${withItems[0]} and ${withItems[1]}`;
+    } else {
+      phrase += withItems.slice(0, -1).join(", ") + " and " + withItems[withItems.length - 1];
+    }
   }
 
   phrase += ".";
 
   // If nothing filled in, avoid "A  ." (return empty).
   if (
-    !appearanceAge && !color && !type && accessories.length === 0
+    !color && !type && withItems.length === 0
   ) return "";
 
   return phrase;
@@ -74,6 +97,10 @@ interface AppearanceFields {
   appearanceColorCustom: string;
   appearanceType: string;
   appearanceTypeCustom: string;
+  appearanceEyes: string;
+  appearanceEyesCustom: string;
+  appearanceHair: string;
+  appearanceHairCustom: string;
   appearanceAccessory1: string;
   appearanceAccessory2: string;
 }
@@ -91,6 +118,10 @@ const initialAppearanceFields: AppearanceFields = {
   appearanceColorCustom: "",
   appearanceType: "",
   appearanceTypeCustom: "",
+  appearanceEyes: "",
+  appearanceEyesCustom: "",
+  appearanceHair: "",
+  appearanceHairCustom: "",
   appearanceAccessory1: "",
   appearanceAccessory2: "",
 };
@@ -143,6 +174,8 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
       [field]: value,
       ...(field === "appearanceColor" && value !== "other" ? { appearanceColorCustom: "" } : {}),
       ...(field === "appearanceType" && value !== "other" ? { appearanceTypeCustom: "" } : {}),
+      ...(field === "appearanceEyes" && value !== "other" ? { appearanceEyesCustom: "" } : {}),
+      ...(field === "appearanceHair" && value !== "other" ? { appearanceHairCustom: "" } : {}),
     }));
   };
 
@@ -170,6 +203,10 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
       case "role":
         setRole("Hero");
         break;
+      case "appearance-type":
+        handleAppearanceField("appearanceType", "");
+        handleAppearanceField("appearanceTypeCustom", "");
+        break;
       case "appearance-age":
         handleAppearanceField("appearanceAge", "");
         break;
@@ -177,9 +214,13 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
         handleAppearanceField("appearanceColor", "");
         handleAppearanceField("appearanceColorCustom", "");
         break;
-      case "appearance-type":
-        handleAppearanceField("appearanceType", "");
-        handleAppearanceField("appearanceTypeCustom", "");
+      case "appearance-eyes":
+        handleAppearanceField("appearanceEyes", "");
+        handleAppearanceField("appearanceEyesCustom", "");
+        break;
+      case "appearance-hair":
+        handleAppearanceField("appearanceHair", "");
+        handleAppearanceField("appearanceHairCustom", "");
         break;
       case "appearance-accessories":
         handleAppearanceField("appearanceAccessory1", "");
@@ -197,14 +238,20 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
         return name.trim().length > 0;
       case "role":
         return role.length > 0;
-      case "appearance-age":
-        return appearanceFields.appearanceAge.length > 0;
-      case "appearance-color":
-        return appearanceFields.appearanceColor.length > 0 && 
-               (appearanceFields.appearanceColor !== "other" || appearanceFields.appearanceColorCustom.trim().length > 0);
       case "appearance-type":
         return appearanceFields.appearanceType.length > 0 && 
                (appearanceFields.appearanceType !== "other" || appearanceFields.appearanceTypeCustom.trim().length > 0);
+      case "appearance-age":
+        return true; // Optional step
+      case "appearance-color":
+        return appearanceFields.appearanceColor.length > 0 && 
+               (appearanceFields.appearanceColor !== "other" || appearanceFields.appearanceColorCustom.trim().length > 0);
+      case "appearance-eyes":
+        return appearanceFields.appearanceEyes.length > 0 && 
+               (appearanceFields.appearanceEyes !== "other" || appearanceFields.appearanceEyesCustom.trim().length > 0);
+      case "appearance-hair":
+        return appearanceFields.appearanceHair.length > 0 && 
+               (appearanceFields.appearanceHair !== "other" || appearanceFields.appearanceHairCustom.trim().length > 0);
       case "appearance-accessories":
         return true; // Optional step
       case "personality":
@@ -264,6 +311,16 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
             onNext={handleNext}
           />
         );
+      case "appearance-type":
+        return (
+          <AppearanceTypeStep
+            selectedType={appearanceFields.appearanceType}
+            customType={appearanceFields.appearanceTypeCustom}
+            onTypeChange={(v: string) => handleAppearanceField("appearanceType", v)}
+            onCustomTypeChange={(v: string) => handleAppearanceField("appearanceTypeCustom", v)}
+            onNext={handleNext}
+          />
+        );
       case "appearance-age":
         return (
           <AppearanceAgeStep
@@ -282,13 +339,23 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
             onNext={handleNext}
           />
         );
-      case "appearance-type":
+      case "appearance-eyes":
         return (
-          <AppearanceTypeStep
-            selectedType={appearanceFields.appearanceType}
-            customType={appearanceFields.appearanceTypeCustom}
-            onTypeChange={(v: string) => handleAppearanceField("appearanceType", v)}
-            onCustomTypeChange={(v: string) => handleAppearanceField("appearanceTypeCustom", v)}
+          <AppearanceEyesStep
+            selectedEyes={appearanceFields.appearanceEyes}
+            customEyes={appearanceFields.appearanceEyesCustom}
+            onEyesChange={(v: string) => handleAppearanceField("appearanceEyes", v)}
+            onCustomEyesChange={(v: string) => handleAppearanceField("appearanceEyesCustom", v)}
+            onNext={handleNext}
+          />
+        );
+      case "appearance-hair":
+        return (
+          <AppearanceHairStep
+            selectedHair={appearanceFields.appearanceHair}
+            customHair={appearanceFields.appearanceHairCustom}
+            onHairChange={(v: string) => handleAppearanceField("appearanceHair", v)}
+            onCustomHairChange={(v: string) => handleAppearanceField("appearanceHairCustom", v)}
             onNext={handleNext}
           />
         );
