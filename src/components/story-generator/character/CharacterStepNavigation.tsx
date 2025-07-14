@@ -9,6 +9,7 @@ interface CharacterStepNavigationProps {
   onBack: () => void;
   onNext: () => void;
   onSkip: () => void;
+  onClearCurrentStep?: () => void;
   canProceed?: boolean;
 }
 
@@ -18,8 +19,16 @@ const CharacterStepNavigation: React.FC<CharacterStepNavigationProps> = ({
   onBack,
   onNext,
   onSkip,
+  onClearCurrentStep,
   canProceed = true,
 }) => {
+  const handleSkip = () => {
+    if (onClearCurrentStep) {
+      onClearCurrentStep();
+    }
+    onSkip();
+  };
+
   return (
     <div className="flex justify-between items-center pt-6 border-t border-primary/20">
       <div className="flex space-x-3">
@@ -39,7 +48,7 @@ const CharacterStepNavigation: React.FC<CharacterStepNavigationProps> = ({
         {!isLastStep && (
           <Button
             variant="ghost"
-            onClick={onSkip}
+            onClick={handleSkip}
             className="flex items-center space-x-2 text-gray-500 hover:text-gray-700"
           >
             <SkipForward className="h-4 w-4" />

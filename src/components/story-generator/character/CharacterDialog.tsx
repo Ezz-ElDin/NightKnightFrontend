@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { 
   FullScreenDialog, 
@@ -163,6 +162,35 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
     setHasInitialized(false);
   };
 
+  const clearCurrentStepValue = () => {
+    switch (currentStep) {
+      case "name":
+        setName("");
+        break;
+      case "role":
+        setRole("Hero");
+        break;
+      case "appearance-age":
+        handleAppearanceField("appearanceAge", "");
+        break;
+      case "appearance-color":
+        handleAppearanceField("appearanceColor", "");
+        handleAppearanceField("appearanceColorCustom", "");
+        break;
+      case "appearance-type":
+        handleAppearanceField("appearanceType", "");
+        handleAppearanceField("appearanceTypeCustom", "");
+        break;
+      case "appearance-accessories":
+        handleAppearanceField("appearanceAccessory1", "");
+        handleAppearanceField("appearanceAccessory2", "");
+        break;
+      case "personality":
+        setPersonality([]);
+        break;
+    }
+  };
+
   const isCurrentStepValid = () => {
     switch (currentStep) {
       case "name":
@@ -319,6 +347,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
                   onBack={goToPreviousStep}
                   onNext={handleNext}
                   onSkip={handleSkip}
+                  onClearCurrentStep={clearCurrentStepValue}
                   canProceed={isCurrentStepValid()}
                 />
               </div>
