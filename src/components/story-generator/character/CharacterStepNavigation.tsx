@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Skip } from "lucide-react";
+import { ChevronLeft, ChevronRight, SkipForward } from "lucide-react";
 
 interface CharacterStepNavigationProps {
   isFirstStep: boolean;
@@ -42,7 +42,7 @@ const CharacterStepNavigation: React.FC<CharacterStepNavigationProps> = ({
             onClick={onSkip}
             className="flex items-center space-x-2 text-gray-500 hover:text-gray-700"
           >
-            <Skip className="h-4 w-4" />
+            <SkipForward className="h-4 w-4" />
             <span>Skip</span>
           </Button>
         )}
