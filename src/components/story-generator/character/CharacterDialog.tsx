@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useMemo } from "react";
+
+import React, { useState, useEffect } from "react";
 import { 
   FullScreenDialog, 
   FullScreenDialogContent, 
@@ -117,7 +118,6 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
 
   // Reset or hydrate fields on open
   useEffect(() => {
-    console.log("Dialog open state changed:", open, "initialCharacter:", initialCharacter);
     if (open && initialCharacter) {
       setName(initialCharacter.name || "");
       setRole(initialCharacter.role || "Hero");
@@ -133,13 +133,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
     }
   }, [open, initialCharacter, resetSteps]);
 
-  const handleNameChange = (newName: string) => {
-    console.log("Name changing from:", name, "to:", newName);
-    setName(newName);
-  };
-
   const handleAppearanceField = (field: keyof AppearanceFields, value: string) => {
-    console.log("Updating appearance field:", field, "to:", value);
     setAppearanceFields((prev) => ({
       ...prev,
       [field]: value,
@@ -149,7 +143,6 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
   };
 
   const togglePersonalityTrait = (trait: string) => {
-    console.log("Toggling personality trait:", trait);
     setPersonality((prev) =>
       prev.includes(trait)
         ? prev.filter((t) => t !== trait)
@@ -158,7 +151,6 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
   };
 
   const resetCharacter = () => {
-    console.log("Resetting character");
     setName("");
     setRole("Hero");
     setPersonality([]);
@@ -166,18 +158,39 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
     resetSteps();
   };
 
+  // Simple validation function - no memoization to avoid render loops
+  const isCurrentStepValid = () => {
+    switch (currentStep) {
+      case "name":
+        return name.trim().length > 0;
+      case "role":
+        return role.length > 0;
+      case "appearance-age":
+        return appearanceFields.appearanceAge.length > 0;
+      case "appearance-color":
+        return appearanceFields.appearanceColor.length > 0 && 
+               (appearanceFields.appearanceColor !== "other" || appearanceFields.appearanceColorCustom.trim().length > 0);
+      case "appearance-type":
+        return appearanceFields.appearanceType.length > 0 && 
+               (appearanceFields.appearanceType !== "other" || appearanceFields.appearanceTypeCustom.trim().length > 0);
+      case "appearance-accessories":
+        return true; // Optional step
+      case "personality":
+        return true; // Optional step
+      default:
+        return true;
+    }
+  };
+
   const handleNext = () => {
-    console.log("handleNext called, current step:", currentStep, "isLastStep:", isLastStep);
     if (isLastStep) {
       handleAddCharacter();
     } else {
-      console.log("Calling goToNextStep");
       goToNextStep();
     }
   };
 
   const handleSkip = () => {
-    console.log("handleSkip called");
     if (isLastStep) {
       handleAddCharacter();
     } else {
@@ -186,8 +199,8 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
   };
 
   const handleAddCharacter = () => {
-    console.log("handleAddCharacter called with name:", name);
-    if (!name) return;
+    if (!name.trim()) return;
+    
     const appearance = summarizeAppearance({ ...appearanceFields });
     onAddCharacter({
       name,
@@ -199,46 +212,15 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
     onOpenChange(false);
   };
 
-  // Memoize canProceed to prevent infinite re-renders
-  const canProceed = useMemo(() => {
-    const result = (() => {
-      switch (currentStep) {
-        case "name":
-          const nameCheck = name.trim().length > 0;
-          console.log("Name step validation - name:", name, "length:", name.length, "canProceed:", nameCheck);
-          return nameCheck;
-        case "role":
-          return role.length > 0;
-        case "appearance-age":
-          return appearanceFields.appearanceAge.length > 0;
-        case "appearance-color":
-          return appearanceFields.appearanceColor.length > 0 && 
-                 (appearanceFields.appearanceColor !== "other" || appearanceFields.appearanceColorCustom.trim().length > 0);
-        case "appearance-type":
-          return appearanceFields.appearanceType.length > 0 && 
-                 (appearanceFields.appearanceType !== "other" || appearanceFields.appearanceTypeCustom.trim().length > 0);
-        case "appearance-accessories":
-          return true; // This step is optional
-        case "personality":
-          return true; // This step is optional
-        default:
-          return true;
-      }
-    })();
-    console.log("canProceed for step", currentStep, ":", result);
-    return result;
-  }, [currentStep, name, role, appearanceFields]);
-
   const generatedAppearance = summarizeAppearance({ ...appearanceFields });
 
   const renderCurrentStep = () => {
-    console.log("Rendering step:", currentStep, "with name:", name);
     switch (currentStep) {
       case "name":
         return (
           <NameStep
             name={name}
-            onNameChange={handleNameChange}
+            onNameChange={setName}
             onNext={handleNext}
           />
         );
@@ -333,7 +315,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
                   onBack={goToPreviousStep}
                   onNext={handleNext}
                   onSkip={handleSkip}
-                  canProceed={canProceed}
+                  canProceed={isCurrentStepValid()}
                 />
               </div>
             </div>

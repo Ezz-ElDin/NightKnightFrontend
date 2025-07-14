@@ -12,16 +12,9 @@ interface NameStepProps {
 
 const NameStep: React.FC<NameStepProps> = ({ name, onNameChange, onNext }) => {
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    console.log("KeyDown in NameStep:", e.key, "name:", name);
     if (e.key === "Enter" && name.trim()) {
-      console.log("Enter pressed in NameStep, calling onNext");
       onNext();
     }
-  };
-
-  const handleNameChange = (newName: string) => {
-    console.log("NameStep: handleNameChange called with:", newName);
-    onNameChange(newName);
   };
 
   return (
@@ -32,7 +25,7 @@ const NameStep: React.FC<NameStepProps> = ({ name, onNameChange, onNext }) => {
         
         <CharacterNameInput
           name={name}
-          onNameChange={handleNameChange}
+          onNameChange={onNameChange}
         />
       </div>
       

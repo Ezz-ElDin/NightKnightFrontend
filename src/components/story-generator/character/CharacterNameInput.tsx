@@ -13,7 +13,6 @@ const CharacterNameInput: React.FC<CharacterNameInputProps> = ({
   onNameChange 
 }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("CharacterNameInput: input changed to:", e.target.value);
     onNameChange(e.target.value);
   };
 
@@ -26,6 +25,7 @@ const CharacterNameInput: React.FC<CharacterNameInputProps> = ({
         onChange={handleChange}
         placeholder="What's this character called?"
         className="p-6 text-lg"
+        autoFocus
       />
     </div>
   );
