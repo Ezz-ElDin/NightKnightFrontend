@@ -1,65 +1,46 @@
 
-import { useState, useCallback } from "react";
+import { useState } from "react";
 
-export type CharacterStep = 
-  | "disclaimer" 
-  | "name" 
-  | "role" 
-  | "appearance-age" 
-  | "appearance-color" 
-  | "appearance-type" 
-  | "appearance-accessories" 
-  | "personality";
+export type CharacterStep = "name" | "role" | "appearance" | "personality";
 
-const STEPS: CharacterStep[] = [
-  "disclaimer",
-  "name", 
-  "role",
-  "appearance-age",
-  "appearance-color", 
-  "appearance-type",
-  "appearance-accessories",
-  "personality"
-];
+const STEPS: CharacterStep[] = ["name", "role", "appearance", "personality"];
 
 export const useCharacterSteps = () => {
-  const [currentStep, setCurrentStep] = useState<CharacterStep>("disclaimer");
-  
-  const currentStepIndex = STEPS.indexOf(currentStep);
-  const totalSteps = STEPS.length;
-  const isFirstStep = currentStepIndex === 0;
-  const isLastStep = currentStepIndex === totalSteps - 1;
+  const [currentStep, setCurrentStep] = useState<CharacterStep>("name");
 
-  const goToNextStep = useCallback(() => {
+  const currentStepIndex = STEPS.indexOf(currentStep);
+  const isFirstStep = currentStepIndex === 0;
+  const isLastStep = currentStepIndex === STEPS.length - 1;
+
+  const goToNextStep = () => {
     if (!isLastStep) {
       setCurrentStep(STEPS[currentStepIndex + 1]);
     }
-  }, [currentStepIndex, isLastStep]);
+  };
 
-  const goToPrevStep = useCallback(() => {
+  const goToPreviousStep = () => {
     if (!isFirstStep) {
       setCurrentStep(STEPS[currentStepIndex - 1]);
     }
-  }, [currentStepIndex, isFirstStep]);
+  };
 
-  const goToStep = useCallback((step: CharacterStep) => {
+  const goToStep = (step: CharacterStep) => {
     setCurrentStep(step);
-  }, []);
+  };
 
-  const resetSteps = useCallback(() => {
-    setCurrentStep("disclaimer");
-  }, []);
+  const resetSteps = () => {
+    setCurrentStep("name");
+  };
 
   return {
     currentStep,
     currentStepIndex,
-    totalSteps,
+    totalSteps: STEPS.length,
     isFirstStep,
     isLastStep,
     goToNextStep,
-    goToPrevStep,
+    goToPreviousStep,
     goToStep,
     resetSteps,
-    steps: STEPS
   };
 };

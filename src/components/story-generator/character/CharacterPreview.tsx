@@ -1,77 +1,67 @@
 
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { User, Sparkles } from "lucide-react";
+import { Label } from "@/components/ui/label";
 
 interface CharacterPreviewProps {
   name: string;
   role: string;
+  generatedAppearance: string;
   personality: string[];
-  appearanceDescription: string;
 }
 
 const CharacterPreview: React.FC<CharacterPreviewProps> = ({
   name,
   role,
+  generatedAppearance,
   personality,
-  appearanceDescription
 }) => {
-  const hasAnyData = name || role || personality.length > 0 || appearanceDescription;
-
-  if (!hasAnyData) {
-    return (
-      <Card className="bg-gradient-to-br from-purple-50 to-blue-50 border-purple-200">
-        <CardHeader className="text-center">
-          <div className="mx-auto w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mb-2">
-            <User className="h-8 w-8 text-purple-500" />
-          </div>
-          <CardTitle className="text-lg text-purple-700">Character Preview</CardTitle>
-        </CardHeader>
-        <CardContent className="text-center text-muted-foreground">
-          <p>Start creating your character to see a preview here!</p>
-        </CardContent>
-      </Card>
-    );
-  }
-
   return (
-    <Card className="bg-gradient-to-br from-purple-50 to-blue-50 border-purple-200">
-      <CardHeader className="text-center">
-        <div className="mx-auto w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mb-2">
-          <Sparkles className="h-8 w-8 text-purple-500" />
+    <div className="bg-white rounded-xl border-2 border-purple-200 shadow-sm p-6 sticky top-0">
+      <Label className="text-lg font-semibold text-purple-700 mb-4 block">
+        Character Preview ✨
+      </Label>
+      
+      <div className="space-y-3">
+        <div>
+          <span className="font-medium text-gray-700">Name:</span>
+          <span className="ml-2 text-purple-600">
+            {name || "Not set yet"}
+          </span>
         </div>
-        <CardTitle className="text-xl text-purple-700">
-          {name || "Unnamed Character"}
-        </CardTitle>
-        {role && (
-          <p className="text-purple-600 font-medium">{role}</p>
-        )}
-      </CardHeader>
-      <CardContent className="space-y-3">
-        {appearanceDescription && (
-          <div>
-            <h4 className="font-medium text-gray-700 mb-1">Appearance</h4>
-            <p className="text-sm text-gray-600">{appearanceDescription}</p>
-          </div>
-        )}
         
-        {personality.length > 0 && (
-          <div>
-            <h4 className="font-medium text-gray-700 mb-2">Personality</h4>
-            <div className="flex flex-wrap gap-1">
-              {personality.map((trait, index) => (
-                <span 
+        <div>
+          <span className="font-medium text-gray-700">Role:</span>
+          <span className="ml-2 text-purple-600">
+            {role || "Not set yet"}
+          </span>
+        </div>
+        
+        <div>
+          <span className="font-medium text-gray-700">Appearance:</span>
+          <p className="text-purple-600 mt-1 text-sm">
+            {generatedAppearance || "Not described yet"}
+          </p>
+        </div>
+        
+        <div>
+          <span className="font-medium text-gray-700">Personality:</span>
+          <div className="flex flex-wrap gap-1 mt-1">
+            {personality.length > 0 ? (
+              personality.map((trait, index) => (
+                <span
                   key={index}
-                  className="px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-medium"
+                  className="bg-purple-100 text-purple-700 px-2 py-1 rounded-full text-xs"
                 >
                   {trait}
                 </span>
-              ))}
-            </div>
+              ))
+            ) : (
+              <span className="text-purple-600 text-sm">No traits selected</span>
+            )}
           </div>
-        )}
-      </CardContent>
-    </Card>
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -4,60 +4,57 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, SkipForward } from "lucide-react";
 
 interface CharacterStepNavigationProps {
+  isFirstStep: boolean;
+  isLastStep: boolean;
   onBack: () => void;
   onNext: () => void;
-  onSkip?: () => void;
-  canGoBack: boolean;
-  canGoNext: boolean;
-  canSkip: boolean;
-  isLastStep: boolean;
+  onSkip: () => void;
+  canProceed?: boolean;
 }
 
 const CharacterStepNavigation: React.FC<CharacterStepNavigationProps> = ({
+  isFirstStep,
+  isLastStep,
   onBack,
   onNext,
   onSkip,
-  canGoBack,
-  canGoNext,
-  canSkip,
-  isLastStep
+  canProceed = true,
 }) => {
   return (
     <div className="flex justify-between items-center pt-6 border-t border-primary/20">
-      <div>
-        {canGoBack && (
-          <Button 
-            variant="outline" 
+      <div className="flex space-x-3">
+        {!isFirstStep && (
+          <Button
+            variant="outline"
             onClick={onBack}
-            className="gap-2"
+            className="flex items-center space-x-2"
           >
             <ChevronLeft className="h-4 w-4" />
-            Back
+            <span>Back</span>
           </Button>
         )}
       </div>
       
-      <div className="flex gap-3">
-        {canSkip && onSkip && (
-          <Button 
-            variant="ghost" 
+      <div className="flex space-x-3">
+        {!isLastStep && (
+          <Button
+            variant="ghost"
             onClick={onSkip}
-            className="gap-2 text-muted-foreground"
+            className="flex items-center space-x-2 text-gray-500 hover:text-gray-700"
           >
             <SkipForward className="h-4 w-4" />
-            Skip
+            <span>Skip</span>
           </Button>
         )}
         
-        {canGoNext && (
-          <Button 
-            onClick={onNext}
-            className="gap-2"
-          >
-            {isLastStep ? "Finish" : "Next"}
-            {!isLastStep && <ChevronRight className="h-4 w-4" />}
-          </Button>
-        )}
+        <Button
+          onClick={onNext}
+          disabled={!canProceed}
+          className="flex items-center space-x-2 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
+        >
+          <span>{isLastStep ? "Finish" : "Next"}</span>
+          {!isLastStep && <ChevronRight className="h-4 w-4" />}
+        </Button>
       </div>
     </div>
   );
