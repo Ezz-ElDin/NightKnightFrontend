@@ -1,6 +1,5 @@
 
 import React, { useState } from "react";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Character } from "./constants";
 import CharacterDialog from "./character/CharacterDialog";
@@ -43,8 +42,7 @@ const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateC
 
   return (
     <div className="space-y-3">
-      <div className="flex justify-between items-center">
-        <Label>Characters</Label>
+      <div className="flex justify-end">
         <Button 
           variant="outline" 
           onClick={() => { setEditingCharacter(null); setCharacterDialogOpen(true); }}
