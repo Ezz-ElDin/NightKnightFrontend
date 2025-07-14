@@ -106,6 +106,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
   const [role, setRole] = useState("Hero");
   const [personality, setPersonality] = useState<string[]>([]);
   const [appearanceFields, setAppearanceFields] = useState<AppearanceFields>(initialAppearanceFields);
+  const [hasInitialized, setHasInitialized] = useState(false);
 
   const {
     currentStep,
@@ -116,22 +117,26 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
     resetSteps,
   } = useCharacterSteps();
 
-  // Reset or hydrate fields on open
+  // Initialize form data only when dialog opens
   useEffect(() => {
-    if (open && initialCharacter) {
-      setName(initialCharacter.name || "");
-      setRole(initialCharacter.role || "Hero");
-      setPersonality(initialCharacter.personality || []);
-      setAppearanceFields(initialAppearanceFields);
+    if (open && !hasInitialized) {
+      if (initialCharacter) {
+        setName(initialCharacter.name || "");
+        setRole(initialCharacter.role || "Hero");
+        setPersonality(initialCharacter.personality || []);
+        setAppearanceFields(initialAppearanceFields);
+      } else {
+        setName("");
+        setRole("Hero");
+        setPersonality([]);
+        setAppearanceFields(initialAppearanceFields);
+      }
       resetSteps();
-    } else if (open && !initialCharacter) {
-      setName("");
-      setRole("Hero");
-      setPersonality([]);
-      setAppearanceFields(initialAppearanceFields);
-      resetSteps();
+      setHasInitialized(true);
+    } else if (!open) {
+      setHasInitialized(false);
     }
-  }, [open, initialCharacter, resetSteps]);
+  }, [open, initialCharacter, resetSteps, hasInitialized]);
 
   const handleAppearanceField = (field: keyof AppearanceFields, value: string) => {
     setAppearanceFields((prev) => ({
@@ -155,10 +160,9 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
     setRole("Hero");
     setPersonality([]);
     setAppearanceFields(initialAppearanceFields);
-    resetSteps();
+    setHasInitialized(false);
   };
 
-  // Simple validation function - no memoization to avoid render loops
   const isCurrentStepValid = () => {
     switch (currentStep) {
       case "name":
