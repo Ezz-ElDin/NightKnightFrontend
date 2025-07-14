@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { 
   FullScreenDialog, 
@@ -18,7 +19,6 @@ import AppearanceTypeStep from "./steps/AppearanceTypeStep";
 import AppearanceEyesStep from "./steps/AppearanceEyesStep";
 import AppearanceHairStep from "./steps/AppearanceHairStep";
 import AppearanceAccessoriesStep from "./steps/AppearanceAccessoriesStep";
-import PersonalityStep from "./steps/PersonalityStep";
 
 // Helper to synthesize appearance preview summary for display & saving
 function summarizeAppearance({
@@ -226,9 +226,6 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
         handleAppearanceField("appearanceAccessory1", "");
         handleAppearanceField("appearanceAccessory2", "");
         break;
-      case "personality":
-        setPersonality([]);
-        break;
     }
   };
 
@@ -253,8 +250,6 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
         return appearanceFields.appearanceHair.length > 0 && 
                (appearanceFields.appearanceHair !== "other" || appearanceFields.appearanceHairCustom.trim().length > 0);
       case "appearance-accessories":
-        return true; // Optional step
-      case "personality":
         return true; // Optional step
       default:
         return true;
@@ -366,14 +361,6 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
             accessory2={appearanceFields.appearanceAccessory2}
             onAccessory1Change={(v: string) => handleAppearanceField("appearanceAccessory1", v)}
             onAccessory2Change={(v: string) => handleAppearanceField("appearanceAccessory2", v)}
-            onNext={handleNext}
-          />
-        );
-      case "personality":
-        return (
-          <PersonalityStep
-            selectedTraits={personality}
-            onTraitToggle={togglePersonalityTrait}
             onNext={handleNext}
           />
         );
