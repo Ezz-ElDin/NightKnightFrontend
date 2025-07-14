@@ -259,15 +259,12 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
         return appearanceFields.appearanceColor.length > 0 && 
                (appearanceFields.appearanceColor !== "other" || appearanceFields.appearanceColorCustom.trim().length > 0);
       case "appearance-eyes":
-        return appearanceFields.appearanceEyes.length > 0 && 
-               (appearanceFields.appearanceEyes !== "other" || appearanceFields.appearanceEyesCustom.trim().length > 0);
-      case "appearance-hair":
-        return appearanceFields.appearanceHairStyle.length > 0 && 
-               (appearanceFields.appearanceHairStyle !== "other" || appearanceFields.appearanceHairStyleCustom.trim().length > 0) &&
-               appearanceFields.appearanceHairColor.length > 0 && 
-               (appearanceFields.appearanceHairColor !== "other" || appearanceFields.appearanceHairColorCustom.trim().length > 0);
-      case "appearance-accessories":
         return true; // Optional step
+      case "appearance-hair":
+        return true; // Optional step
+      case "appearance-accessories":
+        return appearanceFields.appearanceAccessory1.trim().length > 0 || 
+               appearanceFields.appearanceAccessory2.trim().length > 0;
       default:
         return true;
     }
