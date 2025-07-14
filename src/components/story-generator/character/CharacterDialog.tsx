@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { 
   FullScreenDialog, 
@@ -11,7 +10,6 @@ import { Character } from "../constants";
 import { useCharacterSteps } from "@/hooks/useCharacterSteps";
 import CharacterPreview from "./CharacterPreview";
 import CharacterStepNavigation from "./CharacterStepNavigation";
-import DisclaimerStep from "./steps/DisclaimerStep";
 import NameStep from "./steps/NameStep";
 import RoleStep from "./steps/RoleStep";
 import AppearanceAgeStep from "./steps/AppearanceAgeStep";
@@ -119,6 +117,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
 
   // Reset or hydrate fields on open
   useEffect(() => {
+    console.log("Dialog open state changed:", open, "initialCharacter:", initialCharacter);
     if (open && initialCharacter) {
       setName(initialCharacter.name || "");
       setRole(initialCharacter.role || "Hero");
@@ -135,6 +134,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
   }, [open, initialCharacter, resetSteps]);
 
   const handleAppearanceField = (field: keyof AppearanceFields, value: string) => {
+    console.log("Updating appearance field:", field, "to:", value);
     setAppearanceFields((prev) => ({
       ...prev,
       [field]: value,
@@ -144,6 +144,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
   };
 
   const togglePersonalityTrait = (trait: string) => {
+    console.log("Toggling personality trait:", trait);
     setPersonality((prev) =>
       prev.includes(trait)
         ? prev.filter((t) => t !== trait)
@@ -152,6 +153,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
   };
 
   const resetCharacter = () => {
+    console.log("Resetting character");
     setName("");
     setRole("Hero");
     setPersonality([]);
@@ -160,14 +162,17 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
   };
 
   const handleNext = () => {
+    console.log("handleNext called, current step:", currentStep, "isLastStep:", isLastStep);
     if (isLastStep) {
       handleAddCharacter();
     } else {
+      console.log("Calling goToNextStep");
       goToNextStep();
     }
   };
 
   const handleSkip = () => {
+    console.log("handleSkip called");
     if (isLastStep) {
       handleAddCharacter();
     } else {
@@ -176,6 +181,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
   };
 
   const handleAddCharacter = () => {
+    console.log("handleAddCharacter called with name:", name);
     if (!name) return;
     const appearance = summarizeAppearance({ ...appearanceFields });
     onAddCharacter({
@@ -189,36 +195,37 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
   };
 
   const canProceed = () => {
-    switch (currentStep) {
-      case "disclaimer":
-        return true;
-      case "name":
-        return name.trim().length > 0;
-      case "role":
-        return role.length > 0;
-      case "appearance-age":
-        return appearanceFields.appearanceAge.length > 0;
-      case "appearance-color":
-        return appearanceFields.appearanceColor.length > 0 && 
-               (appearanceFields.appearanceColor !== "other" || appearanceFields.appearanceColorCustom.trim().length > 0);
-      case "appearance-type":
-        return appearanceFields.appearanceType.length > 0 && 
-               (appearanceFields.appearanceType !== "other" || appearanceFields.appearanceTypeCustom.trim().length > 0);
-      case "appearance-accessories":
-        return true; // This step is optional
-      case "personality":
-        return true; // This step is optional
-      default:
-        return true;
-    }
+    const result = (() => {
+      switch (currentStep) {
+        case "name":
+          return name.trim().length > 0;
+        case "role":
+          return role.length > 0;
+        case "appearance-age":
+          return appearanceFields.appearanceAge.length > 0;
+        case "appearance-color":
+          return appearanceFields.appearanceColor.length > 0 && 
+                 (appearanceFields.appearanceColor !== "other" || appearanceFields.appearanceColorCustom.trim().length > 0);
+        case "appearance-type":
+          return appearanceFields.appearanceType.length > 0 && 
+                 (appearanceFields.appearanceType !== "other" || appearanceFields.appearanceTypeCustom.trim().length > 0);
+        case "appearance-accessories":
+          return true; // This step is optional
+        case "personality":
+          return true; // This step is optional
+        default:
+          return true;
+      }
+    })();
+    console.log("canProceed for step", currentStep, ":", result);
+    return result;
   };
 
   const generatedAppearance = summarizeAppearance({ ...appearanceFields });
 
   const renderCurrentStep = () => {
+    console.log("Rendering step:", currentStep);
     switch (currentStep) {
-      case "disclaimer":
-        return <DisclaimerStep onNext={handleNext} />;
       case "name":
         return (
           <NameStep
