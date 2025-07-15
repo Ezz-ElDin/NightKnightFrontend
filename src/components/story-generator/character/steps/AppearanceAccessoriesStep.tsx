@@ -91,19 +91,19 @@ const AppearanceAccessoriesStep: React.FC<AppearanceAccessoriesStepProps> = ({
         
         <div className="space-y-4">
           <Label className="text-lg font-medium">Select Accessories (you can choose multiple)</Label>
-          <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2">
+          <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
             {ACCESSORY_OPTIONS.map(accessory => (
               <Button
                 key={accessory.value}
                 variant={accessories.includes(accessory.value) || (accessory.value === "other" && showCustomInput) ? "default" : "outline"}
                 onClick={() => handleAccessoryToggle(accessory.value)}
-                className={`h-16 p-2 flex flex-col items-center justify-center space-y-1 text-xs transition-all duration-200 ${
+                className={`h-16 p-2 flex flex-col items-center justify-center space-y-1 text-sm font-medium transition-all duration-200 ${
                   accessories.includes(accessory.value) || (accessory.value === "other" && showCustomInput)
-                    ? "bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg scale-105" 
-                    : "hover:scale-105 hover:shadow-md border-2 border-gray-200 hover:border-purple-300"
+                    ? "ring-2 ring-purple-500 ring-offset-2 scale-105" 
+                    : "hover:scale-105 hover:shadow-md"
                 }`}
               >
-                <span className="text-xl">{accessory.emoji}</span>
+                <span className="text-2xl">{accessory.emoji}</span>
                 <span className="text-xs">{accessory.label}</span>
               </Button>
             ))}
