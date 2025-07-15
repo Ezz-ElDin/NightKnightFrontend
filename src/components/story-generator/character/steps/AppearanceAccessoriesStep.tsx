@@ -28,7 +28,7 @@ const AppearanceAccessoriesStep: React.FC<AppearanceAccessoriesStepProps> = ({
     <div className="space-y-6" onKeyDown={handleKeyDown}>
       <div className="space-y-4">
         <Label className="text-2xl font-semibold">What accessories does your character have?</Label>
-        <p className="text-gray-600">Add special items, clothing, or features that make your character unique! (Optional)</p>
+        <p className="text-gray-600">Add special items, clothing, or features that make your character unique!</p>
         
         <div className="space-y-4">
           <div className="space-y-2">
