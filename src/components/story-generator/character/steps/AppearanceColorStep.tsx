@@ -1,8 +1,22 @@
 
 import React from "react";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
+const COLOR_OPTIONS = [
+  { value: "fair", label: "Fair" },
+  { value: "light", label: "Light" },
+  { value: "olive", label: "Olive" },
+  { value: "medium", label: "Medium" },
+  { value: "dark", label: "Dark" },
+  { value: "tan", label: "Tan" },
+  { value: "pale", label: "Pale" },
+  { value: "golden", label: "Golden" },
+  { value: "rosy", label: "Rosy" },
+  { value: "peachy", label: "Peachy" },
+  { value: "other", label: "Other" },
+];
 
 interface AppearanceColorStepProps {
   selectedColor: string;
@@ -12,70 +26,66 @@ interface AppearanceColorStepProps {
   onNext: () => void;
 }
 
-const COLOR_OPTIONS = [
-  { value: "golden", label: "Golden", color: "bg-yellow-400" },
-  { value: "silver", label: "Silver", color: "bg-gray-300" },
-  { value: "blue", label: "Blue", color: "bg-blue-500" },
-  { value: "green", label: "Green", color: "bg-green-500" },
-  { value: "red", label: "Red", color: "bg-red-500" },
-  { value: "purple", label: "Purple", color: "bg-purple-500" },
-  { value: "pink", label: "Pink", color: "bg-pink-400" },
-  { value: "black", label: "Black", color: "bg-black" },
-  { value: "white", label: "White", color: "bg-white border-2 border-gray-300" },
-  { value: "brown", label: "Brown", color: "bg-amber-700" },
-  { value: "rainbow", label: "Rainbow", color: "bg-gradient-to-r from-red-500 via-yellow-500 to-blue-500" },
-  { value: "other", label: "Other", color: "bg-gray-100 border-2 border-dashed border-gray-400" },
-];
-
-const AppearanceColorStep: React.FC<AppearanceColorStepProps> = ({ 
-  selectedColor, 
-  customColor, 
-  onColorChange, 
-  onCustomColorChange, 
-  onNext 
+const AppearanceColorStep: React.FC<AppearanceColorStepProps> = ({
+  selectedColor,
+  customColor,
+  onColorChange,
+  onCustomColorChange,
+  onNext,
 }) => {
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && selectedColor) {
-      onNext();
-    }
+  const handleColorSelect = (color: string) => {
+    onColorChange(color);
   };
 
-  return (
-    <div className="space-y-6" onKeyDown={handleKeyDown}>
-      <div className="space-y-4">
-        <Label className="text-2xl font-semibold">What skin color is your character?</Label>
-        <p className="text-gray-600">Choose the main skin color that describes your character!</p>
-        
-        <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
-          {COLOR_OPTIONS.map(color => (
-            <Button
-              key={color.value}
-              variant={selectedColor === color.value ? "default" : "outline"}
-              onClick={() => onColorChange(color.value)}
-              className={`h-16 p-2 flex flex-col items-center justify-center space-y-1 text-sm font-medium transition-all duration-200 ${
-                selectedColor === color.value 
-                  ? "ring-2 ring-purple-500 ring-offset-2 scale-105" 
-                  : "hover:scale-105 hover:shadow-md"
-              }`}
-            >
-              <div className={`w-8 h-8 rounded-full ${color.color}`}></div>
-              <span>{color.label}</span>
-            </Button>
-          ))}
-        </div>
+  const isValid = selectedColor && (selectedColor !== "other" || customColor.trim());
 
-        {selectedColor === "other" && (
-          <div className="space-y-2 mt-4">
-            <Label htmlFor="customColor" className="text-lg">Custom Color</Label>
-            <Input
-              id="customColor"
-              value={customColor}
-              onChange={(e) => onCustomColorChange(e.target.value)}
-              placeholder="Describe your custom color..."
-              className="p-4 text-lg"
-            />
-          </div>
-        )}
+  return (
+    <div className="space-y-8">
+      <div className="text-center space-y-2">
+        <h2 className="text-2xl md:text-3xl font-bold text-primary">
+          What colour is your character's skin?
+        </h2>
+        <p className="text-muted-foreground text-lg">
+          Choose the skin colour that matches your character
+        </p>
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        {COLOR_OPTIONS.map((color) => (
+          <Button
+            key={color.value}
+            variant={selectedColor === color.value ? "default" : "outline"}
+            className="h-16 text-lg font-medium"
+            onClick={() => handleColorSelect(color.value)}
+          >
+            {color.label}
+          </Button>
+        ))}
+      </div>
+
+      {selectedColor === "other" && (
+        <div className="space-y-2">
+          <Label htmlFor="custom-color">Custom skin colour</Label>
+          <Input
+            id="custom-color"
+            type="text"
+            placeholder="Enter custom colour..."
+            value={customColor}
+            onChange={(e) => onCustomColorChange(e.target.value)}
+            className="text-lg"
+          />
+        </div>
+      )}
+
+      <div className="flex justify-center pt-4">
+        <Button
+          onClick={onNext}
+          disabled={!isValid}
+          size="lg"
+          className="px-8"
+        >
+          Continue
+        </Button>
       </div>
     </div>
   );
