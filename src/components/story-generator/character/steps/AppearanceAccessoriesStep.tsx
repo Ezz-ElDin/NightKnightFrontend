@@ -35,6 +35,7 @@ const AppearanceAccessoriesStep: React.FC<AppearanceAccessoriesStepProps> = ({
   onNext 
 }) => {
   const [customAccessory, setCustomAccessory] = React.useState("");
+  const [showCustomInput, setShowCustomInput] = React.useState(false);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
@@ -44,7 +45,8 @@ const AppearanceAccessoriesStep: React.FC<AppearanceAccessoriesStepProps> = ({
 
   const handleAccessoryToggle = (accessory: string) => {
     if (accessory === "other") {
-      return; // Don't select "other" directly, let user type
+      setShowCustomInput(true);
+      return;
     }
     
     if (accessories.includes(accessory)) {
@@ -69,9 +71,6 @@ const AppearanceAccessoriesStep: React.FC<AppearanceAccessoriesStepProps> = ({
     }
   };
 
-  const showCustomInput = accessories.includes("other") || 
-    accessories.some(acc => !ACCESSORY_OPTIONS.some(opt => opt.value === acc));
-
   return (
     <div className="space-y-6" onKeyDown={handleKeyDown}>
       <div className="space-y-4">
@@ -84,10 +83,10 @@ const AppearanceAccessoriesStep: React.FC<AppearanceAccessoriesStepProps> = ({
             {ACCESSORY_OPTIONS.map(accessory => (
               <Button
                 key={accessory.value}
-                variant={accessories.includes(accessory.value) ? "default" : "outline"}
+                variant={accessories.includes(accessory.value) || (accessory.value === "other" && showCustomInput) ? "default" : "outline"}
                 onClick={() => handleAccessoryToggle(accessory.value)}
                 className={`h-16 p-2 flex flex-col items-center justify-center space-y-1 text-xs transition-all duration-200 ${
-                  accessories.includes(accessory.value)
+                  accessories.includes(accessory.value) || (accessory.value === "other" && showCustomInput)
                     ? "bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg scale-105" 
                     : "hover:scale-105 hover:shadow-md border-2 border-gray-200 hover:border-purple-300"
                 }`}
