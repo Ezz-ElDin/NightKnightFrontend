@@ -43,8 +43,8 @@ const AppearanceEyesStep: React.FC<AppearanceEyesStepProps> = ({
   return (
     <div className="space-y-6" onKeyDown={handleKeyDown}>
       <div className="space-y-4">
-        <Label className="text-2xl font-semibold">What eye color does your character have?</Label>
-        <p className="text-gray-600">Choose the eye color that fits your character best!</p>
+        <Label className="text-2xl font-semibold">What eye colour does your character have?</Label>
+        <p className="text-gray-600">Choose the eye colour that fits your character best!</p>
         
         <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
           {EYES_OPTIONS.map(eyes => (
@@ -66,12 +66,12 @@ const AppearanceEyesStep: React.FC<AppearanceEyesStepProps> = ({
 
         {selectedEyes === "other" && (
           <div className="space-y-2 mt-4">
-            <Label htmlFor="customEyes" className="text-lg">Custom Eye Color</Label>
+            <Label htmlFor="customEyes" className="text-lg">Custom Eye Colour</Label>
             <Input
               id="customEyes"
               value={customEyes}
               onChange={(e) => onCustomEyesChange(e.target.value)}
-              placeholder="Describe your custom eye color..."
+              placeholder="Describe your custom eye colour..."
               className="p-4 text-lg"
             />
           </div>

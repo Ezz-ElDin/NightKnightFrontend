@@ -43,8 +43,8 @@ const AppearanceColorStep: React.FC<AppearanceColorStepProps> = ({
   return (
     <div className="space-y-6" onKeyDown={handleKeyDown}>
       <div className="space-y-4">
-        <Label className="text-2xl font-semibold">What skin color is your character?</Label>
-        <p className="text-gray-600">Choose the main skin color that describes your character!</p>
+        <Label className="text-2xl font-semibold">What skin colour is your character?</Label>
+        <p className="text-gray-600">Choose the main skin colour that describes your character!</p>
         
         <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
           {COLOR_OPTIONS.map(color => (
@@ -66,12 +66,12 @@ const AppearanceColorStep: React.FC<AppearanceColorStepProps> = ({
 
         {selectedColor === "other" && (
           <div className="space-y-2 mt-4">
-            <Label htmlFor="customColor" className="text-lg">Custom Color</Label>
+            <Label htmlFor="customColor" className="text-lg">Custom Colour</Label>
             <Input
               id="customColor"
               value={customColor}
               onChange={(e) => onCustomColorChange(e.target.value)}
-              placeholder="Describe your custom color..."
+              placeholder="Describe your custom colour..."
               className="p-4 text-lg"
             />
           </div>
