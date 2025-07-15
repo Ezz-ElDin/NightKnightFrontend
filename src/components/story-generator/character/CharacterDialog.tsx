@@ -55,11 +55,12 @@ function summarizeAppearance({
   const hairColor = appearanceHairColor === "other" ? appearanceHairColorCustom : appearanceHairColor;
 
   // Compose the "A" or "An" logic (simple: check for vowel)
-  const firstWord = color;
+  const firstWord = appearanceAge || color;
   const article = firstWord && /^[aeiou]/i.test(firstWord) ? "An" : "A";
 
-  // Compose main phrase: "A {skin colour} {Character type} with {eyes colour}, {Hair colour}, {accessories}"
+  // Compose main phrase: "A {age} {skin colour} {Character type} with {eyes colour}, {Hair colour}, {accessories}"
   let phrase = `${article}`;
+  if (appearanceAge) phrase += ` ${appearanceAge}`;
   if (color) phrase += ` ${color}`;
   if (type) phrase += ` ${type}`;
   
@@ -139,7 +140,7 @@ function summarizeAppearance({
 
   // If nothing filled in, avoid "A  ." (return empty).
   if (
-    !color && !type && withItems.length === 0
+    !appearanceAge && !color && !type && withItems.length === 0
   ) return "";
 
   return phrase;
