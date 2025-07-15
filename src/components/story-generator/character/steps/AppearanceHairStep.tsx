@@ -20,7 +20,6 @@ const HAIR_STYLE_OPTIONS = [
   { value: "long", label: "Long", emoji: "👩‍🦰" },
   { value: "curly", label: "Curly", emoji: "👩‍🦱" },
   { value: "straight", label: "Straight", emoji: "👱‍♀️" },
-  { value: "wavy", label: "Wavy", emoji: "🌊" },
   { value: "braided", label: "Braided", emoji: "👧" },
   { value: "ponytail", label: "Ponytail", emoji: "🎀" },
   { value: "bald", label: "Bald", emoji: "👨‍🦲" },
