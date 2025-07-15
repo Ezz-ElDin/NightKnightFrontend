@@ -32,8 +32,7 @@ function summarizeAppearance({
   appearanceHairStyleCustom,
   appearanceHairColor,
   appearanceHairColorCustom,
-  appearanceAccessory1,
-  appearanceAccessory2,
+  appearanceAccessories,
 }: {
   appearanceAge: string;
   appearanceColor: string;
@@ -46,8 +45,7 @@ function summarizeAppearance({
   appearanceHairStyleCustom: string;
   appearanceHairColor: string;
   appearanceHairColorCustom: string;
-  appearanceAccessory1: string;
-  appearanceAccessory2: string;
+  appearanceAccessories: string[];
 }) {
   // Choose custom or regular values
   const color = appearanceColor === "other" ? appearanceColorCustom : appearanceColor;
@@ -60,23 +58,71 @@ function summarizeAppearance({
   const firstWord = color;
   const article = firstWord && /^[aeiou]/i.test(firstWord) ? "An" : "A";
 
-  // Compose main phrase: "A {skin colour} {Character type} with {eyes colour}, {Hair colour}, {accessory 1} and {accessory 2}"
+  // Compose main phrase: "A {skin colour} {Character type} with {eyes colour}, {Hair colour}, {accessories}"
   let phrase = `${article}`;
   if (color) phrase += ` ${color}`;
   if (type) phrase += ` ${type}`;
   
   // Add "with" clause
   const withItems = [];
-  if (eyes) withItems.push(eyes);
+  if (eyes) withItems.push(`${eyes} eyes`);
   
   // Combine hair style and color
   if (hairStyle && hairColor) {
     withItems.push(`${hairStyle} ${hairColor} hair`);
+  } else if (hairStyle) {
+    withItems.push(`${hairStyle} hair`);
+  } else if (hairColor) {
+    withItems.push(`${hairColor} hair`);
   }
-  
-  // Compose accessories
-  const accessories = [appearanceAccessory1, appearanceAccessory2].filter(x => !!x && x.trim());
-  withItems.push(...accessories);
+
+  // Group accessories by verb
+  const ACCESSORY_OPTIONS = [
+    { value: "crown", label: "Crown", emoji: "👑", verb: "wearing" },
+    { value: "hat", label: "Hat", emoji: "🎩", verb: "wearing" },
+    { value: "glasses", label: "Glasses", emoji: "👓", verb: "wearing" },
+    { value: "necklace", label: "Necklace", emoji: "📿", verb: "wearing" },
+    { value: "cape", label: "Cape", emoji: "🦸", verb: "wearing" },
+    { value: "wings", label: "Wings", emoji: "🪶", verb: "having" },
+    { value: "sword", label: "Sword", emoji: "⚔️", verb: "holding" },
+    { value: "wand", label: "Wand", emoji: "🪄", verb: "holding" },
+    { value: "shield", label: "Shield", emoji: "🛡️", verb: "holding" },
+    { value: "bow", label: "Bow", emoji: "🏹", verb: "holding" },
+    { value: "backpack", label: "Backpack", emoji: "🎒", verb: "wearing" },
+    { value: "boots", label: "Boots", emoji: "👢", verb: "wearing" },
+    { value: "scarf", label: "Scarf", emoji: "🧣", verb: "wearing" },
+    { value: "gloves", label: "Gloves", emoji: "🧤", verb: "wearing" },
+    { value: "belt", label: "Belt", emoji: "👓", verb: "wearing" },
+  ];
+
+  if (appearanceAccessories.length > 0) {
+    // Group accessories by verb
+    const accessoryGroups: { [key: string]: string[] } = {};
+    
+    appearanceAccessories.forEach(accessory => {
+      const option = ACCESSORY_OPTIONS.find(opt => opt.value === accessory);
+      const verb = option ? option.verb : "having";
+      
+      if (!accessoryGroups[verb]) {
+        accessoryGroups[verb] = [];
+      }
+      
+      // Use the label if it's a predefined option, otherwise use the custom text
+      const displayName = option ? option.label.toLowerCase() : accessory;
+      accessoryGroups[verb].push(displayName);
+    });
+
+    // Create phrases for each verb group
+    Object.entries(accessoryGroups).forEach(([verb, items]) => {
+      if (items.length === 1) {
+        withItems.push(`${verb} ${items[0]}`);
+      } else if (items.length === 2) {
+        withItems.push(`${verb} ${items[0]} and ${items[1]}`);
+      } else {
+        withItems.push(`${verb} ${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`);
+      }
+    });
+  }
 
   if (withItems.length > 0) {
     phrase += " with ";
@@ -111,8 +157,7 @@ interface AppearanceFields {
   appearanceHairStyleCustom: string;
   appearanceHairColor: string;
   appearanceHairColorCustom: string;
-  appearanceAccessory1: string;
-  appearanceAccessory2: string;
+  appearanceAccessories: string[];
 }
 
 interface CharacterDialogProps {
@@ -134,8 +179,7 @@ const initialAppearanceFields: AppearanceFields = {
   appearanceHairStyleCustom: "",
   appearanceHairColor: "",
   appearanceHairColorCustom: "",
-  appearanceAccessory1: "",
-  appearanceAccessory2: "",
+  appearanceAccessories: [],
 };
 
 const CharacterDialog: React.FC<CharacterDialogProps> = ({ 
@@ -180,7 +224,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
     }
   }, [open, initialCharacter, resetSteps, hasInitialized]);
 
-  const handleAppearanceField = (field: keyof AppearanceFields, value: string) => {
+  const handleAppearanceField = (field: keyof AppearanceFields, value: string | string[]) => {
     setAppearanceFields((prev) => ({
       ...prev,
       [field]: value,
@@ -238,8 +282,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
         handleAppearanceField("appearanceHairColorCustom", "");
         break;
       case "appearance-accessories":
-        handleAppearanceField("appearanceAccessory1", "");
-        handleAppearanceField("appearanceAccessory2", "");
+        handleAppearanceField("appearanceAccessories", []);
         break;
     }
   };
@@ -263,8 +306,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
       case "appearance-hair":
         return true; // Optional step
       case "appearance-accessories":
-        return appearanceFields.appearanceAccessory1.trim().length > 0 || 
-               appearanceFields.appearanceAccessory2.trim().length > 0;
+        return appearanceFields.appearanceAccessories.length > 0;
       default:
         return true;
     }
@@ -376,10 +418,8 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
       case "appearance-accessories":
         return (
           <AppearanceAccessoriesStep
-            accessory1={appearanceFields.appearanceAccessory1}
-            accessory2={appearanceFields.appearanceAccessory2}
-            onAccessory1Change={(v: string) => handleAppearanceField("appearanceAccessory1", v)}
-            onAccessory2Change={(v: string) => handleAppearanceField("appearanceAccessory2", v)}
+            accessories={appearanceFields.appearanceAccessories}
+            onAccessoriesChange={(v: string[]) => handleAppearanceField("appearanceAccessories", v)}
             onNext={handleNext}
           />
         );
