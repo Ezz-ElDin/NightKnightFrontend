@@ -8,6 +8,7 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Character } from "../constants";
 import { useCharacterSteps } from "@/hooks/useCharacterSteps";
+import { useIsMobile } from "@/hooks/use-mobile";
 import CharacterPreview from "./CharacterPreview";
 import CharacterStepNavigation from "./CharacterStepNavigation";
 import NameStep from "./steps/NameStep";
@@ -190,6 +191,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
   onAddCharacter,
   initialCharacter
 }) => {
+  const isMobile = useIsMobile();
   const [name, setName] = useState("");
   const [role, setRole] = useState("Hero");
   const [personality, setPersonality] = useState<string[]>([]);
@@ -450,39 +452,40 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
     }}>
       <FullScreenDialogContent className="bg-gradient-to-b from-white to-primary/5 flex flex-col overflow-hidden">
         {/* Header */}
-        <FullScreenDialogHeader className="flex-shrink-0 px-8 py-6 border-b border-primary/20">
-          <FullScreenDialogTitle className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600">
+        <FullScreenDialogHeader className={`flex-shrink-0 ${isMobile ? 'px-4 py-4' : 'px-8 py-6'} border-b border-primary/20`}>
+          <FullScreenDialogTitle className={`${isMobile ? 'text-xl' : 'text-3xl'} font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600 text-center`}>
             {initialCharacter ? "Edit Magical Character" : "Create a Magical Character"}
           </FullScreenDialogTitle>
         </FullScreenDialogHeader>
 
         {/* Content */}
         <div className="flex-1 flex overflow-hidden">
-          {/* Main Content */}
+          {/* Main Content - Full width on mobile */}
           <div className="flex-1 flex flex-col">
-            <ScrollArea className="flex-1 px-8 py-6">
-              <div className="max-w-4xl mx-auto">
+            <ScrollArea className={`flex-1 ${isMobile ? 'px-4 py-4' : 'px-8 py-6'}`}>
+              <div className={`${isMobile ? '' : 'max-w-4xl'} mx-auto`}>
                 {renderCurrentStep()}
               </div>
             </ScrollArea>
 
-              {/* Navigation */}
-              <div className="flex-shrink-0 px-8 py-6 border-t border-primary/20 bg-white">
-                <div className="max-w-4xl mx-auto">
-                  <CharacterStepNavigation
-                    isFirstStep={isFirstStep}
-                    isLastStep={isLastStep}
-                    onBack={goToPreviousStep}
-                    onNext={handleNext}
-                    onSkip={handleSkip}
-                    onClearCurrentStep={clearCurrentStepValue}
-                    canProceed={isCurrentStepValid()}
-                  />
-                </div>
+            {/* Navigation */}
+            <div className={`flex-shrink-0 ${isMobile ? 'px-4 py-4' : 'px-8 py-6'} border-t border-primary/20 bg-white`}>
+              <div className={`${isMobile ? '' : 'max-w-4xl'} mx-auto`}>
+                <CharacterStepNavigation
+                  isFirstStep={isFirstStep}
+                  isLastStep={isLastStep}
+                  onBack={goToPreviousStep}
+                  onNext={handleNext}
+                  onSkip={handleSkip}
+                  onClearCurrentStep={clearCurrentStepValue}
+                  canProceed={isCurrentStepValid()}
+                />
               </div>
             </div>
+          </div>
 
-            {/* Preview Sidebar */}
+          {/* Preview Sidebar - Only show on desktop */}
+          {!isMobile && (
             <div className="w-80 border-l border-primary/20 bg-primary/5 p-6">
               <CharacterPreview
                 name={name}
@@ -491,10 +494,11 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
                 personality={personality}
               />
             </div>
-          </div>
-        </FullScreenDialogContent>
-      </FullScreenDialog>
-    );
-  };
+          )}
+        </div>
+      </FullScreenDialogContent>
+    </FullScreenDialog>
+  );
+};
 
 export default CharacterDialog;

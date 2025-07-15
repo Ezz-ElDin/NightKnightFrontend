@@ -1,7 +1,8 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, SkipForward, Trash2 } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface CharacterStepNavigationProps {
   isFirstStep: boolean;
@@ -9,8 +10,8 @@ interface CharacterStepNavigationProps {
   onBack: () => void;
   onNext: () => void;
   onSkip: () => void;
-  onClearCurrentStep?: () => void;
-  canProceed?: boolean;
+  onClearCurrentStep: () => void;
+  canProceed: boolean;
 }
 
 const CharacterStepNavigation: React.FC<CharacterStepNavigationProps> = ({
@@ -18,31 +19,55 @@ const CharacterStepNavigation: React.FC<CharacterStepNavigationProps> = ({
   isLastStep,
   onBack,
   onNext,
-  canProceed = true,
+  onSkip,
+  onClearCurrentStep,
+  canProceed,
 }) => {
+  const isMobile = useIsMobile();
+
   return (
-    <div className="flex justify-between items-center pt-6 border-t border-primary/20">
-      <div className="flex space-x-3">
-        {!isFirstStep && (
-          <Button
-            variant="outline"
-            onClick={onBack}
-            className="flex items-center space-x-2"
-          >
-            <ChevronLeft className="h-4 w-4" />
-            <span>Back</span>
-          </Button>
-        )}
+    <div className={`flex ${isMobile ? 'flex-col space-y-3' : 'justify-between items-center'}`}>
+      {/* Left side - Back button and Clear */}
+      <div className={`flex ${isMobile ? 'justify-between' : 'space-x-2'}`}>
+        <Button
+          variant="outline"
+          onClick={onBack}
+          disabled={isFirstStep}
+          className={`${isMobile ? 'flex-1 mr-2' : ''} border-primary/30 text-primary hover:bg-primary/10`}
+        >
+          <ChevronLeft className="w-4 h-4 mr-1" />
+          Back
+        </Button>
+        
+        <Button
+          variant="ghost"
+          onClick={onClearCurrentStep}
+          className={`${isMobile ? 'px-3' : ''} text-gray-500 hover:text-gray-700 hover:bg-gray-100`}
+          size={isMobile ? "sm" : "default"}
+        >
+          <Trash2 className="w-4 h-4" />
+          {!isMobile && <span className="ml-1">Clear</span>}
+        </Button>
       </div>
-      
-      <div className="flex space-x-3">
+
+      {/* Right side - Skip and Next buttons */}
+      <div className={`flex ${isMobile ? 'space-x-2' : 'space-x-3'}`}>
+        <Button
+          variant="outline"
+          onClick={onSkip}
+          className={`${isMobile ? 'flex-1' : ''} border-purple-300 text-purple-600 hover:bg-purple-50`}
+        >
+          <SkipForward className="w-4 h-4 mr-1" />
+          Skip
+        </Button>
+        
         <Button
           onClick={onNext}
           disabled={!canProceed}
-          className="flex items-center space-x-2 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
+          className={`${isMobile ? 'flex-1' : ''} bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg`}
         >
-          <span>{isLastStep ? "Finish" : "Next"}</span>
-          {!isLastStep && <ChevronRight className="h-4 w-4" />}
+          {isLastStep ? "Create Character" : "Next"}
+          {!isLastStep && <ChevronRight className="w-4 h-4 ml-1" />}
         </Button>
       </div>
     </div>
