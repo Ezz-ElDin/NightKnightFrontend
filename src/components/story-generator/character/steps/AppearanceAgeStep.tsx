@@ -12,10 +12,8 @@ interface AppearanceAgeStepProps {
 
 const AGE_OPTIONS = [
   { value: "baby", label: "Baby", emoji: "👶" },
-  { value: "toddler", label: "Toddler", emoji: "🧒" },
   { value: "child", label: "Child", emoji: "👧" },
   { value: "teen", label: "Teen", emoji: "👦" },
-  { value: "young adult", label: "Young Adult", emoji: "👩" },
   { value: "adult", label: "Adult", emoji: "👨" },
   { value: "elderly", label: "Elderly", emoji: "👴" },
 ];
