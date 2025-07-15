@@ -460,25 +460,22 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
 
         {/* Content - Mobile optimized layout */}
         {isMobile ? (
-          <div className="flex-1 flex flex-col h-full overflow-hidden">
-            {/* Scrollable content area - takes remaining space */}
-            <div className="flex-1 overflow-y-auto overflow-x-hidden">
-              <div className="px-4 py-4 pb-24">
-                {renderCurrentStep()}
+          <div className="flex-1 overflow-y-auto overflow-x-hidden">
+            <div className="px-4 py-4">
+              {renderCurrentStep()}
+              
+              {/* Navigation buttons right after content */}
+              <div className="mt-8 pb-8">
+                <CharacterStepNavigation
+                  isFirstStep={isFirstStep}
+                  isLastStep={isLastStep}
+                  onBack={goToPreviousStep}
+                  onNext={handleNext}
+                  onSkip={handleSkip}
+                  onClearCurrentStep={clearCurrentStepValue}
+                  canProceed={isCurrentStepValid()}
+                />
               </div>
-            </div>
-
-            {/* Fixed navigation at bottom - always visible */}
-            <div className="absolute bottom-0 left-0 right-0 px-4 py-4 border-t border-primary/20 bg-white shadow-lg">
-              <CharacterStepNavigation
-                isFirstStep={isFirstStep}
-                isLastStep={isLastStep}
-                onBack={goToPreviousStep}
-                onNext={handleNext}
-                onSkip={handleSkip}
-                onClearCurrentStep={clearCurrentStepValue}
-                canProceed={isCurrentStepValid()}
-              />
             </div>
           </div>
         ) : (
