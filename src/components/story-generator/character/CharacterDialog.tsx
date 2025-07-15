@@ -18,6 +18,7 @@ import AppearanceTypeStep from "./steps/AppearanceTypeStep";
 import AppearanceEyesStep from "./steps/AppearanceEyesStep";
 import AppearanceHairStep from "./steps/AppearanceHairStep";
 import AppearanceAccessoriesStep from "./steps/AppearanceAccessoriesStep";
+import PersonalityStep from "./steps/PersonalityStep";
 
 // Helper to synthesize appearance preview summary for display & saving
 function summarizeAppearance({
@@ -261,6 +262,9 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
       case "role":
         setRole("Hero");
         break;
+      case "personality":
+        setPersonality([]);
+        break;
       case "appearance-type":
         handleAppearanceField("appearanceType", "");
         handleAppearanceField("appearanceTypeCustom", "");
@@ -294,6 +298,8 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
         return name.trim().length > 0;
       case "role":
         return role.length > 0;
+      case "personality":
+        return personality.length > 0;
       case "appearance-type":
         return appearanceFields.appearanceType.length > 0 && 
                (appearanceFields.appearanceType !== "other" || appearanceFields.appearanceTypeCustom.trim().length > 0);
@@ -361,6 +367,14 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
           <RoleStep
             selectedRole={role}
             onRoleChange={setRole}
+            onNext={handleNext}
+          />
+        );
+      case "personality":
+        return (
+          <PersonalityStep
+            selectedTraits={personality}
+            onTraitToggle={togglePersonalityTrait}
             onNext={handleNext}
           />
         );
