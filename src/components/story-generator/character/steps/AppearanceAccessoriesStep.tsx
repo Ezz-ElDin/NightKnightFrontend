@@ -25,7 +25,7 @@ const ACCESSORY_OPTIONS = [
   { value: "boots", label: "Boots", emoji: "👢", verb: "wearing" },
   { value: "scarf", label: "Scarf", emoji: "🧣", verb: "wearing" },
   { value: "gloves", label: "Gloves", emoji: "🧤", verb: "wearing" },
-  { value: "belt", label: "Belt", emoji: "👓", verb: "wearing" },
+  { value: "belt", label: "Belt", emoji: "👔", verb: "wearing" },
   { value: "other", label: "Other", emoji: "✨", verb: "having" },
 ];
 
