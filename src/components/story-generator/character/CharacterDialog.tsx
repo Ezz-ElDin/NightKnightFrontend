@@ -460,16 +460,16 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
 
         {/* Content - Mobile optimized layout */}
         {isMobile ? (
-          <div className="flex-1 flex flex-col min-h-0">
-            {/* Scrollable content area */}
-            <div className="flex-1 overflow-y-auto">
-              <div className="px-4 py-4 pb-20">
+          <div className="flex-1 flex flex-col h-full">
+            {/* Scrollable content area - takes remaining space */}
+            <div className="flex-1 overflow-y-auto px-4 py-4">
+              <div className="pb-4">
                 {renderCurrentStep()}
               </div>
             </div>
 
-            {/* Fixed navigation at bottom */}
-            <div className="flex-shrink-0 px-4 py-4 border-t border-primary/20 bg-white/95 backdrop-blur-sm">
+            {/* Fixed navigation at bottom - always visible */}
+            <div className="flex-shrink-0 px-4 py-4 border-t border-primary/20 bg-white shadow-lg">
               <CharacterStepNavigation
                 isFirstStep={isFirstStep}
                 isLastStep={isLastStep}
