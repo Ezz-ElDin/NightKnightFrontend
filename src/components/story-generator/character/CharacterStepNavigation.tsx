@@ -26,40 +26,43 @@ const CharacterStepNavigation: React.FC<CharacterStepNavigationProps> = ({
   const isMobile = useIsMobile();
 
   return (
-    <div className={`flex ${isMobile ? 'flex-col space-y-3' : 'justify-between items-center'}`}>
-      {/* Left side - Back button and Clear */}
-      <div className={`flex ${isMobile ? 'justify-between' : 'space-x-2'}`}>
+    <div className={`flex ${isMobile ? 'justify-between items-center' : 'justify-between items-center'}`}>
+      {/* Left side - Back button and Clear (desktop only) */}
+      <div className={`flex ${isMobile ? '' : 'space-x-2'}`}>
         <Button
           variant="outline"
           onClick={onBack}
           disabled={isFirstStep}
-          className={`${isMobile ? 'flex-1 mr-2' : ''} border-primary/30 text-primary hover:bg-primary/10`}
+          className={`${isMobile ? 'flex-1' : ''} border-primary/30 text-primary hover:bg-primary/10`}
         >
           <ChevronLeft className="w-4 h-4 mr-1" />
           Back
         </Button>
         
-        <Button
-          variant="ghost"
-          onClick={onClearCurrentStep}
-          className={`${isMobile ? 'px-3' : ''} text-gray-500 hover:text-gray-700 hover:bg-gray-100`}
-          size={isMobile ? "sm" : "default"}
-        >
-          <Trash2 className="w-4 h-4" />
-          {!isMobile && <span className="ml-1">Clear</span>}
-        </Button>
+        {!isMobile && (
+          <Button
+            variant="ghost"
+            onClick={onClearCurrentStep}
+            className="text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+          >
+            <Trash2 className="w-4 h-4" />
+            <span className="ml-1">Clear</span>
+          </Button>
+        )}
       </div>
 
-      {/* Right side - Skip and Next buttons */}
-      <div className={`flex ${isMobile ? 'space-x-2' : 'space-x-3'}`}>
-        <Button
-          variant="outline"
-          onClick={onSkip}
-          className={`${isMobile ? 'flex-1' : ''} border-purple-300 text-purple-600 hover:bg-purple-50`}
-        >
-          <SkipForward className="w-4 h-4 mr-1" />
-          Skip
-        </Button>
+      {/* Right side - Skip (desktop only) and Next buttons */}
+      <div className={`flex ${isMobile ? '' : 'space-x-3'}`}>
+        {!isMobile && (
+          <Button
+            variant="outline"
+            onClick={onSkip}
+            className="border-purple-300 text-purple-600 hover:bg-purple-50"
+          >
+            <SkipForward className="w-4 h-4 mr-1" />
+            Skip
+          </Button>
+        )}
         
         <Button
           onClick={onNext}
