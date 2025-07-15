@@ -1,9 +1,8 @@
-
 import { useState } from "react";
 
-export type CharacterStep = "name" | "role" | "personality" | "appearance-type" | "appearance-age" | "appearance-color" | "appearance-eyes" | "appearance-hair" | "appearance-accessories";
+export type CharacterStep = "name" | "role" | "appearance-type" | "appearance-age" | "appearance-color" | "appearance-eyes" | "appearance-hair" | "appearance-accessories" | "personality";
 
-const STEPS: CharacterStep[] = ["name", "role", "personality", "appearance-type", "appearance-age", "appearance-color", "appearance-eyes", "appearance-hair", "appearance-accessories"];
+const STEPS: CharacterStep[] = ["name", "role", "appearance-type", "appearance-age", "appearance-color", "appearance-eyes", "appearance-hair", "appearance-accessories", "personality"];
 
 export const useCharacterSteps = () => {
   const [currentStep, setCurrentStep] = useState<CharacterStep>("name");
