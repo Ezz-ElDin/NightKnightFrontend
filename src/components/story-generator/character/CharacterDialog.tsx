@@ -465,7 +465,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
               {renderCurrentStep()}
               
               {/* Navigation buttons right after content */}
-              <div className="mt-8 pb-8">
+              <div className="mt-8 pb-32">
                 <CharacterStepNavigation
                   isFirstStep={isFirstStep}
                   isLastStep={isLastStep}
