@@ -66,7 +66,7 @@ function summarizeAppearance({
   
   // Add "with" clause
   const withItems = [];
-  if (eyes) withItems.push(`${eyes} eyes`);
+  if (eyes) withItems.push(eyes);
   
   // Combine hair style and color
   if (hairStyle && hairColor) {

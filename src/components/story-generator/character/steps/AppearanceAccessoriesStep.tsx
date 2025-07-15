@@ -45,7 +45,19 @@ const AppearanceAccessoriesStep: React.FC<AppearanceAccessoriesStepProps> = ({
 
   const handleAccessoryToggle = (accessory: string) => {
     if (accessory === "other") {
-      setShowCustomInput(true);
+      if (showCustomInput) {
+        // Deselecting "other" - hide input and remove custom accessory
+        setShowCustomInput(false);
+        setCustomAccessory("");
+        // Remove any custom accessories from the list
+        const predefinedAccessories = accessories.filter(acc => 
+          ACCESSORY_OPTIONS.some(opt => opt.value === acc)
+        );
+        onAccessoriesChange(predefinedAccessories);
+      } else {
+        // Selecting "other" - show input
+        setShowCustomInput(true);
+      }
       return;
     }
     
