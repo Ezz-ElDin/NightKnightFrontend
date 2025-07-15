@@ -452,40 +452,62 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
     }}>
       <FullScreenDialogContent className="bg-gradient-to-b from-white to-primary/5 flex flex-col overflow-hidden">
         {/* Header */}
-        <FullScreenDialogHeader className={`flex-shrink-0 ${isMobile ? 'px-4 py-4' : 'px-8 py-6'} border-b border-primary/20`}>
-          <FullScreenDialogTitle className={`${isMobile ? 'text-xl' : 'text-3xl'} font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600 text-center`}>
+        <FullScreenDialogHeader className={`flex-shrink-0 ${isMobile ? 'px-4 py-3' : 'px-8 py-6'} border-b border-primary/20`}>
+          <FullScreenDialogTitle className={`${isMobile ? 'text-lg' : 'text-3xl'} font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600 text-center`}>
             {initialCharacter ? "Edit Magical Character" : "Create a Magical Character"}
           </FullScreenDialogTitle>
         </FullScreenDialogHeader>
 
-        {/* Content */}
-        <div className="flex-1 flex overflow-hidden">
-          {/* Main Content - Full width on mobile */}
-          <div className="flex-1 flex flex-col">
-            <ScrollArea className={`flex-1 ${isMobile ? 'px-4 py-4' : 'px-8 py-6'}`}>
-              <div className={`${isMobile ? '' : 'max-w-4xl'} mx-auto`}>
+        {/* Content - Mobile optimized layout */}
+        {isMobile ? (
+          <div className="flex-1 flex flex-col min-h-0">
+            {/* Scrollable content area */}
+            <div className="flex-1 overflow-y-auto">
+              <div className="px-4 py-4 pb-20">
                 {renderCurrentStep()}
               </div>
-            </ScrollArea>
+            </div>
 
-            {/* Navigation */}
-            <div className={`flex-shrink-0 ${isMobile ? 'px-4 py-4' : 'px-8 py-6'} border-t border-primary/20 bg-white`}>
-              <div className={`${isMobile ? '' : 'max-w-4xl'} mx-auto`}>
-                <CharacterStepNavigation
-                  isFirstStep={isFirstStep}
-                  isLastStep={isLastStep}
-                  onBack={goToPreviousStep}
-                  onNext={handleNext}
-                  onSkip={handleSkip}
-                  onClearCurrentStep={clearCurrentStepValue}
-                  canProceed={isCurrentStepValid()}
-                />
-              </div>
+            {/* Fixed navigation at bottom */}
+            <div className="flex-shrink-0 px-4 py-4 border-t border-primary/20 bg-white/95 backdrop-blur-sm">
+              <CharacterStepNavigation
+                isFirstStep={isFirstStep}
+                isLastStep={isLastStep}
+                onBack={goToPreviousStep}
+                onNext={handleNext}
+                onSkip={handleSkip}
+                onClearCurrentStep={clearCurrentStepValue}
+                canProceed={isCurrentStepValid()}
+              />
             </div>
           </div>
+        ) : (
+          <div className="flex-1 flex overflow-hidden">
+            {/* Main Content - Desktop */}
+            <div className="flex-1 flex flex-col">
+              <ScrollArea className="flex-1 px-8 py-6">
+                <div className="max-w-4xl mx-auto">
+                  {renderCurrentStep()}
+                </div>
+              </ScrollArea>
 
-          {/* Preview Sidebar - Only show on desktop */}
-          {!isMobile && (
+              {/* Navigation */}
+              <div className="flex-shrink-0 px-8 py-6 border-t border-primary/20 bg-white">
+                <div className="max-w-4xl mx-auto">
+                  <CharacterStepNavigation
+                    isFirstStep={isFirstStep}
+                    isLastStep={isLastStep}
+                    onBack={goToPreviousStep}
+                    onNext={handleNext}
+                    onSkip={handleSkip}
+                    onClearCurrentStep={clearCurrentStepValue}
+                    canProceed={isCurrentStepValid()}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Preview Sidebar - Desktop only */}
             <div className="w-80 border-l border-primary/20 bg-primary/5 p-6">
               <CharacterPreview
                 name={name}
@@ -494,8 +516,8 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
                 personality={personality}
               />
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </FullScreenDialogContent>
     </FullScreenDialog>
   );
