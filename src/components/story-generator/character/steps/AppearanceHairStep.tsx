@@ -1,32 +1,8 @@
 
 import React from "react";
+import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-
-const HAIR_STYLE_OPTIONS = [
-  { value: "short", label: "Short" },
-  { value: "long", label: "Long" },
-  { value: "curly", label: "Curly" },
-  { value: "straight", label: "Straight" },
-  { value: "wavy", label: "Wavy" },
-  { value: "braided", label: "Braided" },
-  { value: "spiky", label: "Spiky" },
-  { value: "bald", label: "Bald" },
-  { value: "other", label: "Other" },
-];
-
-const HAIR_COLOR_OPTIONS = [
-  { value: "black", label: "Black" },
-  { value: "brown", label: "Brown" },
-  { value: "blonde", label: "Blonde" },
-  { value: "red", label: "Red" },
-  { value: "grey", label: "Grey" },
-  { value: "white", label: "White" },
-  { value: "auburn", label: "Auburn" },
-  { value: "ginger", label: "Ginger" },
-  { value: "other", label: "Other" },
-];
 
 interface AppearanceHairStepProps {
   selectedHairStyle: string;
@@ -40,7 +16,32 @@ interface AppearanceHairStepProps {
   onNext: () => void;
 }
 
-const AppearanceHairStep: React.FC<AppearanceHairStepProps> = ({
+const HAIR_STYLE_OPTIONS = [
+  { value: "long", label: "Long", emoji: "💇‍♀️" },
+  { value: "short", label: "Short", emoji: "💇‍♂️" },
+  { value: "curly", label: "Curly", emoji: "👩‍🦱" },
+  { value: "straight", label: "Straight", emoji: "👱‍♀️" },
+  { value: "braided", label: "Braided", emoji: "👸" },
+  { value: "no hair", label: "No Hair", emoji: "👨‍🦲" },
+  { value: "other", label: "Other Style", emoji: "✨" },
+];
+
+const HAIR_COLOR_OPTIONS = [
+  { value: "brown", label: "Brown", color: "bg-amber-800" },
+  { value: "blonde", label: "Blonde", color: "bg-yellow-400" },
+  { value: "black", label: "Black", color: "bg-black" },
+  { value: "red", label: "Red", color: "bg-red-500" },
+  { value: "silver", label: "Silver", color: "bg-gray-300" },
+  { value: "golden", label: "Golden", color: "bg-yellow-400" },
+  { value: "blue", label: "Blue", color: "bg-blue-500" },
+  { value: "purple", label: "Purple", color: "bg-purple-500" },
+  { value: "green", label: "Green", color: "bg-green-500" },
+  { value: "rainbow", label: "Rainbow", color: "bg-gradient-to-r from-red-500 via-yellow-500 to-blue-500" },
+  { value: "white", label: "White", color: "bg-gray-100 border-2 border-gray-400" },
+  { value: "other", label: "Other Color", color: "bg-gray-100 border-2 border-dashed border-gray-400" },
+];
+
+const AppearanceHairStep: React.FC<AppearanceHairStepProps> = ({ 
   selectedHairStyle,
   selectedHairColor,
   customHairStyle,
@@ -49,97 +50,89 @@ const AppearanceHairStep: React.FC<AppearanceHairStepProps> = ({
   onHairColorChange,
   onCustomHairStyleChange,
   onCustomHairColorChange,
-  onNext,
+  onNext 
 }) => {
-  const handleHairStyleSelect = (style: string) => {
-    onHairStyleChange(style);
-  };
-
-  const handleHairColorSelect = (color: string) => {
-    onHairColorChange(color);
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && selectedHairStyle && selectedHairColor) {
+      onNext();
+    }
   };
 
   return (
-    <div className="space-y-8">
-      <div className="text-center space-y-2">
-        <h2 className="text-2xl md:text-3xl font-bold text-primary">
-          What does your character's hair look like?
-        </h2>
-        <p className="text-muted-foreground text-lg">
-          Choose the hair style and colour for your character
-        </p>
-      </div>
-
-      {/* Hair Style Section */}
+    <div className="space-y-8" onKeyDown={handleKeyDown}>
       <div className="space-y-4">
-        <h3 className="text-xl font-semibold text-center">Hair Style</h3>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {HAIR_STYLE_OPTIONS.map((style) => (
-            <Button
-              key={style.value}
-              variant={selectedHairStyle === style.value ? "default" : "outline"}
-              className="h-16 text-lg font-medium"
-              onClick={() => handleHairStyleSelect(style.value)}
-            >
-              {style.label}
-            </Button>
-          ))}
+        <Label className="text-2xl font-semibold">What hair style and color does your character have?</Label>
+        <p className="text-gray-600">First choose the hair style, then pick the color!</p>
+        
+        {/* Hair Style Selection */}
+        <div className="space-y-4">
+          <Label className="text-xl font-medium text-purple-700">Hair Style</Label>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            {HAIR_STYLE_OPTIONS.map(style => (
+              <Button
+                key={style.value}
+                variant={selectedHairStyle === style.value ? "default" : "outline"}
+                onClick={() => onHairStyleChange(style.value)}
+                className={`h-16 p-3 flex flex-col items-center justify-center space-y-1 text-sm font-medium transition-all duration-200 ${
+                  selectedHairStyle === style.value 
+                    ? "bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg scale-105" 
+                    : "hover:scale-105 hover:shadow-md border-2 border-gray-200 hover:border-purple-300"
+                }`}
+              >
+                <span className="text-lg">{style.emoji}</span>
+                <span className="text-center text-xs">{style.label}</span>
+              </Button>
+            ))}
+          </div>
+
+          {selectedHairStyle === "other" && (
+            <div className="space-y-2 mt-4">
+              <Label htmlFor="customHairStyle" className="text-lg">Custom Hair Style</Label>
+              <Input
+                id="customHairStyle"
+                value={customHairStyle}
+                onChange={(e) => onCustomHairStyleChange(e.target.value)}
+                placeholder="Describe your custom hair style..."
+                className="p-4 text-lg"
+              />
+            </div>
+          )}
         </div>
 
-        {selectedHairStyle === "other" && (
-          <div className="space-y-2">
-            <Label htmlFor="custom-hair-style">Custom hair style</Label>
-            <Input
-              id="custom-hair-style"
-              type="text"
-              placeholder="Enter custom style..."
-              value={customHairStyle}
-              onChange={(e) => onCustomHairStyleChange(e.target.value)}
-              className="text-lg"
-            />
+        {/* Hair Color Selection */}
+        <div className="space-y-4">
+          <Label className="text-xl font-medium text-purple-700">Hair Color</Label>
+          <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
+            {HAIR_COLOR_OPTIONS.map(color => (
+              <Button
+                key={color.value}
+                variant={selectedHairColor === color.value ? "default" : "outline"}
+                onClick={() => onHairColorChange(color.value)}
+                className={`h-16 p-2 flex flex-col items-center justify-center space-y-1 text-sm font-medium transition-all duration-200 ${
+                  selectedHairColor === color.value 
+                    ? "ring-2 ring-purple-500 ring-offset-2 scale-105" 
+                    : "hover:scale-105 hover:shadow-md"
+                }`}
+              >
+                <div className={`w-8 h-8 rounded-full ${color.color}`}></div>
+                <span>{color.label}</span>
+              </Button>
+            ))}
           </div>
-        )}
-      </div>
 
-      {/* Hair Color Section */}
-      <div className="space-y-4">
-        <h3 className="text-xl font-semibold text-center">Hair Colour</h3>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {HAIR_COLOR_OPTIONS.map((color) => (
-            <Button
-              key={color.value}
-              variant={selectedHairColor === color.value ? "default" : "outline"}
-              className="h-16 text-lg font-medium"
-              onClick={() => handleHairColorSelect(color.value)}
-            >
-              {color.label}
-            </Button>
-          ))}
+          {selectedHairColor === "other" && (
+            <div className="space-y-2 mt-4">
+              <Label htmlFor="customHairColor" className="text-lg">Custom Hair Color</Label>
+              <Input
+                id="customHairColor"
+                value={customHairColor}
+                onChange={(e) => onCustomHairColorChange(e.target.value)}
+                placeholder="Describe your custom hair color..."
+                className="p-4 text-lg"
+              />
+            </div>
+          )}
         </div>
-
-        {selectedHairColor === "other" && (
-          <div className="space-y-2">
-            <Label htmlFor="custom-hair-color">Custom hair colour</Label>
-            <Input
-              id="custom-hair-color"
-              type="text"
-              placeholder="Enter custom colour..."
-              value={customHairColor}
-              onChange={(e) => onCustomHairColorChange(e.target.value)}
-              className="text-lg"
-            />
-          </div>
-        )}
-      </div>
-
-      <div className="flex justify-center pt-4">
-        <Button
-          onClick={onNext}
-          size="lg"
-          className="px-8"
-        >
-          Continue
-        </Button>
       </div>
     </div>
   );

@@ -1,20 +1,8 @@
 
 import React from "react";
+import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-
-const EYE_OPTIONS = [
-  { value: "brown", label: "Brown" },
-  { value: "blue", label: "Blue" },
-  { value: "green", label: "Green" },
-  { value: "hazel", label: "Hazel" },
-  { value: "grey", label: "Grey" },
-  { value: "amber", label: "Amber" },
-  { value: "violet", label: "Violet" },
-  { value: "black", label: "Black" },
-  { value: "other", label: "Other" },
-];
 
 interface AppearanceEyesStepProps {
   selectedEyes: string;
@@ -24,63 +12,70 @@ interface AppearanceEyesStepProps {
   onNext: () => void;
 }
 
-const AppearanceEyesStep: React.FC<AppearanceEyesStepProps> = ({
-  selectedEyes,
-  customEyes,
-  onEyesChange,
-  onCustomEyesChange,
-  onNext,
+const EYES_OPTIONS = [
+  { value: "brown eyes", label: "Brown", color: "bg-amber-800" },
+  { value: "blue eyes", label: "Blue", color: "bg-blue-500" },
+  { value: "green eyes", label: "Green", color: "bg-green-500" },
+  { value: "hazel eyes", label: "Hazel", color: "bg-yellow-600" },
+  { value: "gray eyes", label: "Gray", color: "bg-gray-500" },
+  { value: "black eyes", label: "Black", color: "bg-black" },
+  { value: "violet eyes", label: "Violet", color: "bg-purple-500" },
+  { value: "golden eyes", label: "Golden", color: "bg-yellow-400" },
+  { value: "silver eyes", label: "Silver", color: "bg-gray-300" },
+  { value: "red eyes", label: "Red", color: "bg-red-500" },
+  { value: "rainbow eyes", label: "Rainbow", color: "bg-gradient-to-r from-red-500 via-yellow-500 to-blue-500" },
+  { value: "other", label: "Other", color: "bg-gray-100 border-2 border-dashed border-gray-400" },
+];
+
+const AppearanceEyesStep: React.FC<AppearanceEyesStepProps> = ({ 
+  selectedEyes, 
+  customEyes, 
+  onEyesChange, 
+  onCustomEyesChange, 
+  onNext 
 }) => {
-  const handleEyesSelect = (eyes: string) => {
-    onEyesChange(eyes);
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && selectedEyes) {
+      onNext();
+    }
   };
 
   return (
-    <div className="space-y-8">
-      <div className="text-center space-y-2">
-        <h2 className="text-2xl md:text-3xl font-bold text-primary">
-          What colour are your character's eyes?
-        </h2>
-        <p className="text-muted-foreground text-lg">
-          Choose the eye colour that matches your character
-        </p>
-      </div>
-
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        {EYE_OPTIONS.map((eye) => (
-          <Button
-            key={eye.value}
-            variant={selectedEyes === eye.value ? "default" : "outline"}
-            className="h-16 text-lg font-medium"
-            onClick={() => handleEyesSelect(eye.value)}
-          >
-            {eye.label}
-          </Button>
-        ))}
-      </div>
-
-      {selectedEyes === "other" && (
-        <div className="space-y-2">
-          <Label htmlFor="custom-eyes">Custom eye colour</Label>
-          <Input
-            id="custom-eyes"
-            type="text"
-            placeholder="Enter custom colour..."
-            value={customEyes}
-            onChange={(e) => onCustomEyesChange(e.target.value)}
-            className="text-lg"
-          />
+    <div className="space-y-6" onKeyDown={handleKeyDown}>
+      <div className="space-y-4">
+        <Label className="text-2xl font-semibold">What eye color does your character have?</Label>
+        <p className="text-gray-600">Choose the eye color that fits your character best!</p>
+        
+        <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
+          {EYES_OPTIONS.map(eyes => (
+            <Button
+              key={eyes.value}
+              variant={selectedEyes === eyes.value ? "default" : "outline"}
+              onClick={() => onEyesChange(eyes.value)}
+              className={`h-16 p-2 flex flex-col items-center justify-center space-y-1 text-sm font-medium transition-all duration-200 ${
+                selectedEyes === eyes.value 
+                  ? "ring-2 ring-purple-500 ring-offset-2 scale-105" 
+                  : "hover:scale-105 hover:shadow-md"
+              }`}
+            >
+              <div className={`w-8 h-8 rounded-full ${eyes.color}`}></div>
+              <span>{eyes.label}</span>
+            </Button>
+          ))}
         </div>
-      )}
 
-      <div className="flex justify-center pt-4">
-        <Button
-          onClick={onNext}
-          size="lg"
-          className="px-8"
-        >
-          Continue
-        </Button>
+        {selectedEyes === "other" && (
+          <div className="space-y-2 mt-4">
+            <Label htmlFor="customEyes" className="text-lg">Custom Eye Color</Label>
+            <Input
+              id="customEyes"
+              value={customEyes}
+              onChange={(e) => onCustomEyesChange(e.target.value)}
+              placeholder="Describe your custom eye color..."
+              className="p-4 text-lg"
+            />
+          </div>
+        )}
       </div>
     </div>
   );
