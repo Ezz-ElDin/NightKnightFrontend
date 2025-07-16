@@ -1,6 +1,5 @@
 
 import StoryBackground from "@/components/StoryBackground";
-import EmailVerificationBanners from "@/components/dashboard/EmailVerificationBanners";
 import ConfirmDeleteDialog from "@/components/dashboard/ConfirmDeleteDialog";
 import SuccessBanner from "@/components/SuccessBanner";
 import GeneratingStoryBanner from "@/components/dashboard/GeneratingStoryBanner";
@@ -17,7 +16,6 @@ const Library = () => {
     showGeneratingBanner,
     generatingStoryId,
     storyCredits,
-    shouldShowVerificationBanner,
     hasCredits,
     allFavouriteStories,
     pagedStories,
@@ -36,8 +34,6 @@ const Library = () => {
   return (
     <StoryBackground>
       <div className="container max-w-6xl mx-auto px-3 md:px-4 z-10">
-        <EmailVerificationBanners shouldShow={shouldShowVerificationBanner} />
-
         {showSuccessBanner && <SuccessBanner onClose={handleCloseBanner} />}
 
         {showGeneratingBanner && (

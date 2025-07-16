@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -142,8 +141,6 @@ export const useLibrary = () => {
   }, [generatingStoryStatus, queryClient, toast]);
 
   const storyCredits = creditData?.data?.remaining_credit || 0;
-  const loginMethod = localStorage.getItem('loginMethod');
-  const shouldShowVerificationBanner = loginMethod === 'email';
   const hasCredits = storyCredits > 0;
 
   const allFavouriteStories = stories.filter((s) => s.is_favourite);
@@ -194,7 +191,6 @@ export const useLibrary = () => {
     
     // Data
     storyCredits,
-    shouldShowVerificationBanner,
     hasCredits,
     allFavouriteStories,
     pagedStories,
