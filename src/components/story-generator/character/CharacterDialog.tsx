@@ -214,6 +214,9 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
         setName(initialCharacter.name || "");
         setRole(initialCharacter.role || "Hero");
         setPersonality(initialCharacter.personality || []);
+        
+        // For editing, we keep the appearance fields empty since we can't easily parse them back
+        // The user will need to re-enter appearance details when editing
         setAppearanceFields(initialAppearanceFields);
       } else {
         setName("");

@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Edit } from "lucide-react";
 
@@ -22,7 +23,7 @@ interface Character {
 interface CharacterListProps {
   characters: Character[];
   onRemoveCharacter: (id: string) => void;
-  onEditCharacter?: (character: Character) => void; // new optional prop
+  onEditCharacter?: (character: Character) => void;
 }
 
 const CharacterList: React.FC<CharacterListProps> = ({ characters, onRemoveCharacter, onEditCharacter }) => {
@@ -90,7 +91,8 @@ const CharacterList: React.FC<CharacterListProps> = ({ characters, onRemoveChara
           >
             ✕
           </button>
-          {/* Bigger, more visible Edit button at bottom-right */}
+          
+          {/* Edit button - Show if onEditCharacter is provided */}
           {onEditCharacter && (
             <button
               onClick={() => onEditCharacter(character)}

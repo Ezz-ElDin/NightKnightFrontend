@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Character } from "./constants";
 import CharacterDialog from "./character/CharacterDialog";
@@ -12,6 +12,23 @@ interface CharacterManagerProps {
 const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateCharacters }) => {
   const [characterDialogOpen, setCharacterDialogOpen] = useState(false);
   const [editingCharacter, setEditingCharacter] = useState<Character | null>(null);
+  const managerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleEditCharacter = (event: CustomEvent) => {
+      const character = event.detail;
+      setEditingCharacter(character);
+      setCharacterDialogOpen(true);
+    };
+
+    const element = managerRef.current;
+    if (element) {
+      element.addEventListener('editCharacter', handleEditCharacter as EventListener);
+      return () => {
+        element.removeEventListener('editCharacter', handleEditCharacter as EventListener);
+      };
+    }
+  }, []);
 
   const addCharacter = (characterData: Omit<Character, "id">) => {
     const newCharacter = {
@@ -41,7 +58,7 @@ const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateC
   };
 
   return (
-    <div className="space-y-3">
+    <div ref={managerRef} data-character-manager className="space-y-3">
       <div className="flex justify-end">
         <Button 
           variant="outline" 

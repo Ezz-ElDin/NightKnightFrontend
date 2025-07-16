@@ -31,7 +31,13 @@ const CharacterStep: React.FC<CharacterStepProps> = ({ storyData, updateStoryDat
             <CharacterList 
               characters={storyData.characters}
               onRemoveCharacter={removeCharacter}
-              // Removed onEditCharacter prop to hide edit button
+              onEditCharacter={(character) => {
+                // This will be handled by CharacterManager
+                const characterManagerRef = document.querySelector('[data-character-manager]');
+                if (characterManagerRef) {
+                  characterManagerRef.dispatchEvent(new CustomEvent('editCharacter', { detail: character }));
+                }
+              }}
             />
           </div>
           <CharacterManager 
