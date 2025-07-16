@@ -40,7 +40,6 @@ const LoggedInMenu = ({ isMobile = false, onMobileMenuClose }: LoggedInMenuProps
     queryKey: ['credits'],
     queryFn: creditApi.get,
     refetchOnWindowFocus: true,
-    refetchInterval: 30000, // Refetch every 30 seconds
   });
 
   const storyCredits = creditData?.data?.remaining_credit || 0;
