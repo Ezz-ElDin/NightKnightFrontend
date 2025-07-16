@@ -43,7 +43,8 @@ const CharacterManager: React.FC<CharacterManagerProps> = ({ characters, updateC
     if (!editingCharacter) return;
     const updated = {
       ...editingCharacter,
-      ...characterData
+      ...characterData,
+      id: editingCharacter.id, // Preserve the original id
     };
     updateCharacters(
       characters.map(c => c.id === editingCharacter.id ? updated : c)

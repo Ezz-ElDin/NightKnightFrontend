@@ -167,7 +167,7 @@ interface CharacterDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onAddCharacter: (character: Omit<Character, "id">) => void;
-  initialCharacter?: Omit<Character, "id">;
+  initialCharacter?: Character;
 }
 
 const initialAppearanceFields: AppearanceFields = {
@@ -215,9 +215,12 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
         setRole(initialCharacter.role || "Hero");
         setPersonality(initialCharacter.personality || []);
         
-        // For editing, we keep the appearance fields empty since we can't easily parse them back
-        // The user will need to re-enter appearance details when editing
-        setAppearanceFields(initialAppearanceFields);
+        // Restore appearance fields if they exist, otherwise use empty fields
+        if (initialCharacter.appearanceFields) {
+          setAppearanceFields(initialCharacter.appearanceFields);
+        } else {
+          setAppearanceFields(initialAppearanceFields);
+        }
       } else {
         setName("");
         setRole("Hero");
@@ -349,6 +352,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
       appearance,
       personality,
       role,
+      appearanceFields,
     });
     resetCharacter();
     onOpenChange(false);
