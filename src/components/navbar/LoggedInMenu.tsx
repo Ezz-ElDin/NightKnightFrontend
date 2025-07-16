@@ -2,7 +2,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Home, BookOpen, User, Settings, LogOut } from "lucide-react";
+import { Home, BookOpen, User, Settings, LogOut, Plus } from "lucide-react";
 import { 
   NavigationMenu,
   NavigationMenuList,
@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { authApi, creditApi } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 
@@ -115,6 +116,29 @@ const LoggedInMenu = ({ isMobile = false, onMobileMenuClose }: LoggedInMenuProps
   
   const userEmail = userData?.email || localStorage.getItem("userEmail") || "user@example.com";
 
+  // Credit badge component
+  const CreditBadge = ({ count }: { count: number }) => {
+    const getVariant = () => {
+      if (count === 0) return "destructive";
+      if (count <= 2) return "secondary";
+      return "default";
+    };
+
+    const getBadgeText = () => {
+      if (count > 99) return "99+";
+      return count.toString();
+    };
+
+    return (
+      <Badge 
+        variant={getVariant()} 
+        className="ml-1 px-1.5 py-0.5 text-xs font-medium min-w-[20px] h-5 flex items-center justify-center"
+      >
+        {getBadgeText()}
+      </Badge>
+    );
+  };
+
   if (isMobile) {
     return (
       <>
@@ -127,19 +151,29 @@ const LoggedInMenu = ({ isMobile = false, onMobileMenuClose }: LoggedInMenuProps
             <Link to="/create-story" className="px-3 py-2 rounded-xl hover:bg-story-lightPurple/50 text-story-purple font-medium flex items-center gap-2" onClick={handleClick}>
               <BookOpen className="h-4 w-4" />
               Create Story
+              <CreditBadge count={storyCredits} />
             </Link>
           ) : (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <span className="px-3 py-2 rounded-xl text-gray-400 font-medium flex items-center gap-2 cursor-not-allowed">
-                  <BookOpen className="h-4 w-4" />
-                  Create Story
-                </span>
-              </TooltipTrigger>
-              <TooltipContent side="bottom" className="bg-gray-800 text-white px-3 py-2 rounded-md text-sm">
-                <p>You need to buy credits to create a story</p>
-              </TooltipContent>
-            </Tooltip>
+            <div className="flex items-center gap-2">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span className="px-3 py-2 rounded-xl text-gray-400 font-medium flex items-center gap-2 cursor-not-allowed">
+                    <BookOpen className="h-4 w-4" />
+                    Create Story
+                    <CreditBadge count={storyCredits} />
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="bg-gray-800 text-white px-3 py-2 rounded-md text-sm">
+                  <p>You need to buy credits to create a story</p>
+                </TooltipContent>
+              </Tooltip>
+              <Link to="/account-settings?tab=credits" onClick={handleClick}>
+                <Button size="sm" className="bg-story-purple hover:bg-story-purple/90 text-white gap-1 px-2 py-1 rounded-md text-xs">
+                  <Plus className="h-3 w-3" />
+                  Buy
+                </Button>
+              </Link>
+            </div>
           )}
         </TooltipProvider>
         <Link to="/account-settings" className="px-3 py-2 rounded-xl hover:bg-story-lightPurple/50 text-story-purple font-medium flex items-center gap-2" onClick={handleClick}>
@@ -172,19 +206,29 @@ const LoggedInMenu = ({ isMobile = false, onMobileMenuClose }: LoggedInMenuProps
               <Link to="/create-story" className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-story-lightPurple/50 hover:text-story-purple focus:bg-story-lightPurple/50 focus:text-story-purple focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-story-lightPurple/50 data-[state=open]:bg-story-lightPurple/50 text-story-purple">
                 <BookOpen className="mr-1.5 h-4 w-4" />
                 Create Story
+                <CreditBadge count={storyCredits} />
               </Link>
             ) : (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <span className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium text-gray-400 cursor-not-allowed">
-                    <BookOpen className="mr-1.5 h-4 w-4" />
-                    Create Story
-                  </span>
-                </TooltipTrigger>
-                <TooltipContent side="bottom" className="bg-gray-800 text-white px-3 py-2 rounded-md text-sm">
-                  <p>You need to buy credits to create a story</p>
-                </TooltipContent>
-              </Tooltip>
+              <div className="flex items-center gap-2">
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium text-gray-400 cursor-not-allowed">
+                      <BookOpen className="mr-1.5 h-4 w-4" />
+                      Create Story
+                      <CreditBadge count={storyCredits} />
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" className="bg-gray-800 text-white px-3 py-2 rounded-md text-sm">
+                    <p>You need to buy credits to create a story</p>
+                  </TooltipContent>
+                </Tooltip>
+                <Link to="/account-settings?tab=credits">
+                  <Button size="sm" className="bg-story-purple hover:bg-story-purple/90 text-white gap-1 px-2 py-1 rounded-md text-xs">
+                    <Plus className="h-3 w-3" />
+                    Buy
+                  </Button>
+                </Link>
+              </div>
             )}
           </TooltipProvider>
         </NavigationMenuItem>
