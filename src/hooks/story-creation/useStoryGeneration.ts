@@ -81,6 +81,10 @@ export const useStoryGeneration = () => {
       if (storyId) {
         // Store the generating story ID in localStorage for the library to show
         localStorage.setItem('generatingStoryId', storyId.toString());
+        
+        // Dispatch event to update credits in navbar
+        window.dispatchEvent(new Event('story-generated'));
+        
         navigate('/library');
       } else {
         throw new Error("No story_id received from server");

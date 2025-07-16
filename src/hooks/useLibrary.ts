@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -39,6 +40,9 @@ export const useLibrary = () => {
       setSearchParams(newSearchParams, { replace: true });
       
       queryClient.invalidateQueries({ queryKey: ['credits'] });
+      
+      // Dispatch event to update credits in navbar
+      window.dispatchEvent(new Event('credits-purchased'));
     }
   }, [searchParams, setSearchParams, queryClient]);
 
@@ -112,6 +116,9 @@ export const useLibrary = () => {
       
       // Refresh stories list
       queryClient.invalidateQueries({ queryKey: ['stories'] });
+      
+      // Dispatch event to update credits in navbar
+      window.dispatchEvent(new Event('credits-updated'));
       
       // Show success toast
       toast({

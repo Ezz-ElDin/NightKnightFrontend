@@ -1,7 +1,6 @@
-
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Home, BookOpen, User, Settings, LogOut, Plus } from "lucide-react";
 import { 
   NavigationMenu,
@@ -29,6 +28,7 @@ interface LoggedInMenuProps {
 const LoggedInMenu = ({ isMobile = false, onMobileMenuClose }: LoggedInMenuProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const handleClick = () => {
     if (isMobile && onMobileMenuClose) {
@@ -39,7 +39,8 @@ const LoggedInMenu = ({ isMobile = false, onMobileMenuClose }: LoggedInMenuProps
   const { data: creditData } = useQuery({
     queryKey: ['credits'],
     queryFn: creditApi.get,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
+    refetchInterval: 30000, // Refetch every 30 seconds
   });
 
   const storyCredits = creditData?.data?.remaining_credit || 0;
@@ -115,6 +116,24 @@ const LoggedInMenu = ({ isMobile = false, onMobileMenuClose }: LoggedInMenuProps
     : localStorage.getItem("userName") || "User";
   
   const userEmail = userData?.email || localStorage.getItem("userEmail") || "user@example.com";
+
+  // Listen for credit updates from other parts of the app
+  React.useEffect(() => {
+    const handleCreditUpdate = () => {
+      queryClient.invalidateQueries({ queryKey: ['credits'] });
+    };
+
+    // Listen for custom events that indicate credit changes
+    window.addEventListener('credits-updated', handleCreditUpdate);
+    window.addEventListener('story-generated', handleCreditUpdate);
+    window.addEventListener('credits-purchased', handleCreditUpdate);
+
+    return () => {
+      window.removeEventListener('credits-updated', handleCreditUpdate);
+      window.removeEventListener('story-generated', handleCreditUpdate);
+      window.removeEventListener('credits-purchased', handleCreditUpdate);
+    };
+  }, [queryClient]);
 
   // Credit badge component
   const CreditBadge = ({ count }: { count: number }) => {

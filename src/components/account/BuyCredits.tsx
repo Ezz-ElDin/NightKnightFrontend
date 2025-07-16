@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -38,6 +39,20 @@ const BuyCredits = () => {
     };
 
     detectLocation();
+  }, []);
+
+  // Listen for successful payment completion
+  useEffect(() => {
+    const handlePaymentSuccess = () => {
+      // Dispatch event to update credits in navbar
+      window.dispatchEvent(new Event('credits-purchased'));
+    };
+
+    // Check if we're returning from a successful payment
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('session_id')) {
+      handlePaymentSuccess();
+    }
   }, []);
   
   // Calculate price per credit
