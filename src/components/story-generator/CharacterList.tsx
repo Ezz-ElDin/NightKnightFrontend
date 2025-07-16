@@ -1,6 +1,6 @@
-
-import React from "react";
+import React, { useState } from "react";
 import { Edit } from "lucide-react";
+import ConfirmDeleteDialog from "@/components/dashboard/ConfirmDeleteDialog";
 
 // Role options with emojis - girl empowerment focused
 const ROLE_EMOJIS = {
@@ -27,6 +27,9 @@ interface CharacterListProps {
 }
 
 const CharacterList: React.FC<CharacterListProps> = ({ characters, onRemoveCharacter, onEditCharacter }) => {
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [characterToDelete, setCharacterToDelete] = useState<{ id: string; name: string } | null>(null);
+
   // Helper function to get a gradient color based on character role
   const getCharacterGradient = (role: string) => {
     switch(role) {
@@ -40,6 +43,24 @@ const CharacterList: React.FC<CharacterListProps> = ({ characters, onRemoveChara
     }
   };
 
+  const handleDeleteClick = (character: Character) => {
+    setCharacterToDelete({ id: character.id, name: character.name });
+    setDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (characterToDelete) {
+      onRemoveCharacter(characterToDelete.id);
+      setCharacterToDelete(null);
+    }
+    setDeleteDialogOpen(false);
+  };
+
+  const handleCancelDelete = () => {
+    setCharacterToDelete(null);
+    setDeleteDialogOpen(false);
+  };
+
   if (characters.length === 0) {
     return (
       <div className="text-center p-8 mb-6 border-2 border-dashed border-primary/20 rounded-xl">
@@ -51,61 +72,71 @@ const CharacterList: React.FC<CharacterListProps> = ({ characters, onRemoveChara
   }
   
   return (
-    <div className="space-y-4">
-      {characters.map((character) => (
-        <div 
-          key={character.id} 
-          className="border-2 border-primary/20 p-4 rounded-xl bg-white shadow-md flex flex-col md:flex-row items-center gap-4 relative"
-        >
-          {/* Character emoji icon */}
-          <div className={`w-24 h-24 rounded-full flex items-center justify-center bg-gradient-to-br ${getCharacterGradient(character.role)}`}>
-            <span className="text-4xl">{ROLE_EMOJIS[character.role] || "👤"}</span>
-          </div>
-          
-          <div className="flex-1 text-center md:text-left">
-            <div className="font-bold text-xl">{character.name}</div>
-            <div className="text-sm text-primary bg-primary/10 inline-block px-2 py-1 rounded-full">
-              <span className="mr-1 text-xl">{ROLE_EMOJIS[character.role] || "👤"}</span>
-              {character.role}
-            </div>
-            
-            <div className="mt-2 text-gray-600">{character.appearance}</div>
-            
-            <div className="mt-2 flex flex-wrap gap-1 justify-center md:justify-start">
-              {character.personality.map(trait => (
-                <span 
-                  key={trait} 
-                  className="text-xs bg-primary/20 text-primary px-2 py-1 rounded-full"
-                >
-                  {trait}
-                </span>
-              ))}
-            </div>
-          </div>
-          
-          {/* Remove button */}
-          <button
-            onClick={() => onRemoveCharacter(character.id)}
-            className="absolute top-2 right-2 text-muted-foreground hover:text-destructive h-6 w-6 flex items-center justify-center rounded-full hover:bg-destructive/10"
-            aria-label="Remove character"
+    <>
+      <div className="space-y-4">
+        {characters.map((character) => (
+          <div 
+            key={character.id} 
+            className="border-2 border-primary/20 p-4 rounded-xl bg-white shadow-md flex flex-col md:flex-row items-center gap-4 relative"
           >
-            ✕
-          </button>
-          
-          {/* Edit button - Show if onEditCharacter is provided */}
-          {onEditCharacter && (
+            {/* Character emoji icon */}
+            <div className={`w-24 h-24 rounded-full flex items-center justify-center bg-gradient-to-br ${getCharacterGradient(character.role)}`}>
+              <span className="text-4xl">{ROLE_EMOJIS[character.role] || "👤"}</span>
+            </div>
+            
+            <div className="flex-1 text-center md:text-left">
+              <div className="font-bold text-xl">{character.name}</div>
+              <div className="text-sm text-primary bg-primary/10 inline-block px-2 py-1 rounded-full">
+                <span className="mr-1 text-xl">{ROLE_EMOJIS[character.role] || "👤"}</span>
+                {character.role}
+              </div>
+              
+              <div className="mt-2 text-gray-600">{character.appearance}</div>
+              
+              <div className="mt-2 flex flex-wrap gap-1 justify-center md:justify-start">
+                {character.personality.map(trait => (
+                  <span 
+                    key={trait} 
+                    className="text-xs bg-primary/20 text-primary px-2 py-1 rounded-full"
+                  >
+                    {trait}
+                  </span>
+                ))}
+              </div>
+            </div>
+            
+            {/* Remove button */}
             <button
-              onClick={() => onEditCharacter(character)}
-              className="absolute bottom-3 right-3 bg-primary text-primary-foreground hover:bg-primary/80 shadow-lg rounded-full p-3 w-12 h-12 flex items-center justify-center transition-all duration-150"
-              aria-label="Edit character"
-              title="Edit"
+              onClick={() => handleDeleteClick(character)}
+              className="absolute top-2 right-2 text-muted-foreground hover:text-destructive h-6 w-6 flex items-center justify-center rounded-full hover:bg-destructive/10"
+              aria-label="Remove character"
             >
-              <Edit size={28} strokeWidth={2.5} />
+              ✕
             </button>
-          )}
-        </div>
-      ))}
-    </div>
+            
+            {/* Edit button - Simple like the X button */}
+            {onEditCharacter && (
+              <button
+                onClick={() => onEditCharacter(character)}
+                className="absolute top-2 right-10 text-muted-foreground hover:text-primary h-6 w-6 flex items-center justify-center rounded-full hover:bg-primary/10"
+                aria-label="Edit character"
+                title="Edit"
+              >
+                <Edit size={16} />
+              </button>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <ConfirmDeleteDialog
+        open={deleteDialogOpen}
+        onCancel={handleCancelDelete}
+        onConfirm={handleConfirmDelete}
+        title="Delete this character?"
+        description={`Are you sure you want to delete ${characterToDelete?.name}? This action cannot be undone.`}
+      />
+    </>
   );
 };
 

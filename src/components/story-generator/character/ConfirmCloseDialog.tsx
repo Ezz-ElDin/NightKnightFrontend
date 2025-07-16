@@ -1,7 +1,6 @@
 
 import {
   AlertDialog,
-  AlertDialogTrigger,
   AlertDialogContent,
   AlertDialogHeader,
   AlertDialogFooter,
@@ -11,34 +10,30 @@ import {
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 
-interface ConfirmDeleteDialogProps {
+interface ConfirmCloseDialogProps {
   open: boolean;
   onCancel: () => void;
   onConfirm: () => void;
-  title?: string;
-  description?: string;
 }
 
-const ConfirmDeleteDialog: React.FC<ConfirmDeleteDialogProps> = ({
+const ConfirmCloseDialog: React.FC<ConfirmCloseDialogProps> = ({
   open,
   onCancel,
   onConfirm,
-  title = "Delete this item?",
-  description = "Are you sure you want to delete this item? This action cannot be undone.",
 }) => {
   return (
     <AlertDialog open={open}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{title}</AlertDialogTitle>
+          <AlertDialogTitle>Close character creation?</AlertDialogTitle>
           <AlertDialogDescription>
-            {description}
+            Are you sure you want to close the character creation? Any unsaved changes will be lost.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel onClick={onCancel}>Cancel</AlertDialogCancel>
           <AlertDialogAction onClick={onConfirm} className="bg-red-600 hover:bg-red-700">
-            Delete
+            Close
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
@@ -46,4 +41,4 @@ const ConfirmDeleteDialog: React.FC<ConfirmDeleteDialogProps> = ({
   );
 };
 
-export default ConfirmDeleteDialog;
+export default ConfirmCloseDialog;

@@ -11,6 +11,7 @@ import { useCharacterSteps } from "@/hooks/useCharacterSteps";
 import { useIsMobile } from "@/hooks/use-mobile";
 import CharacterPreview from "./CharacterPreview";
 import CharacterStepNavigation from "./CharacterStepNavigation";
+import ConfirmCloseDialog from "./ConfirmCloseDialog";
 import NameStep from "./steps/NameStep";
 import RoleStep from "./steps/RoleStep";
 import AppearanceAgeStep from "./steps/AppearanceAgeStep";
@@ -197,6 +198,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
   const [personality, setPersonality] = useState<string[]>([]);
   const [appearanceFields, setAppearanceFields] = useState<AppearanceFields>(initialAppearanceFields);
   const [hasInitialized, setHasInitialized] = useState(false);
+  const [showCloseConfirmation, setShowCloseConfirmation] = useState(false);
 
   const {
     currentStep,
@@ -327,6 +329,35 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
     }
   };
 
+  const handleCloseRequest = () => {
+    // Check if there's any content to lose
+    const hasContent = name.trim() || 
+                      personality.length > 0 || 
+                      appearanceFields.appearanceType ||
+                      appearanceFields.appearanceColor ||
+                      appearanceFields.appearanceAge ||
+                      appearanceFields.appearanceEyes ||
+                      appearanceFields.appearanceHairStyle ||
+                      appearanceFields.appearanceHairColor ||
+                      appearanceFields.appearanceAccessories.length > 0;
+
+    if (hasContent && !initialCharacter) {
+      setShowCloseConfirmation(true);
+    } else {
+      handleConfirmClose();
+    }
+  };
+
+  const handleConfirmClose = () => {
+    resetCharacter();
+    onOpenChange(false);
+    setShowCloseConfirmation(false);
+  };
+
+  const handleCancelClose = () => {
+    setShowCloseConfirmation(false);
+  };
+
   const handleNext = () => {
     if (isLastStep) {
       handleAddCharacter();
@@ -453,51 +484,24 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
   };
 
   return (
-    <FullScreenDialog open={open} onOpenChange={(newOpenState) => {
-      if (!newOpenState) resetCharacter();
-      onOpenChange(newOpenState);
-    }}>
-      <FullScreenDialogContent className="bg-gradient-to-b from-white to-primary/5 flex flex-col overflow-hidden">
-        {/* Header */}
-        <FullScreenDialogHeader className={`flex-shrink-0 ${isMobile ? 'px-4 py-3' : 'px-8 py-6'} border-b border-primary/20`}>
-          <FullScreenDialogTitle className={`${isMobile ? 'text-lg' : 'text-3xl'} font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600 text-center`}>
-            {initialCharacter ? "Edit Magical Character" : "Create a Magical Character"}
-          </FullScreenDialogTitle>
-        </FullScreenDialogHeader>
+    <>
+      <FullScreenDialog open={open} onOpenChange={handleCloseRequest}>
+        <FullScreenDialogContent className="bg-gradient-to-b from-white to-primary/5 flex flex-col overflow-hidden">
+          {/* Header */}
+          <FullScreenDialogHeader className={`flex-shrink-0 ${isMobile ? 'px-4 py-3' : 'px-8 py-6'} border-b border-primary/20`}>
+            <FullScreenDialogTitle className={`${isMobile ? 'text-lg' : 'text-3xl'} font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600 text-center`}>
+              {initialCharacter ? "Edit Magical Character" : "Create a Magical Character"}
+            </FullScreenDialogTitle>
+          </FullScreenDialogHeader>
 
-        {/* Content - Mobile optimized layout */}
-        {isMobile ? (
-          <div className="flex-1 overflow-y-auto overflow-x-hidden">
-            <div className="px-4 py-4">
-              {renderCurrentStep()}
-              
-              {/* Navigation buttons right after content */}
-              <div className="mt-8 pb-32">
-                <CharacterStepNavigation
-                  isFirstStep={isFirstStep}
-                  isLastStep={isLastStep}
-                  onBack={goToPreviousStep}
-                  onNext={handleNext}
-                  onSkip={handleSkip}
-                  onClearCurrentStep={clearCurrentStepValue}
-                  canProceed={isCurrentStepValid()}
-                />
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="flex-1 flex overflow-hidden">
-            {/* Main Content - Desktop */}
-            <div className="flex-1 flex flex-col">
-              <ScrollArea className="flex-1 px-8 py-6">
-                <div className="max-w-4xl mx-auto">
-                  {renderCurrentStep()}
-                </div>
-              </ScrollArea>
-
-              {/* Navigation */}
-              <div className="flex-shrink-0 px-8 py-6 border-t border-primary/20 bg-white">
-                <div className="max-w-4xl mx-auto">
+          {/* Content - Mobile optimized layout */}
+          {isMobile ? (
+            <div className="flex-1 overflow-y-auto overflow-x-hidden">
+              <div className="px-4 py-4">
+                {renderCurrentStep()}
+                
+                {/* Navigation buttons right after content */}
+                <div className="mt-8 pb-32">
                   <CharacterStepNavigation
                     isFirstStep={isFirstStep}
                     isLastStep={isLastStep}
@@ -510,20 +514,52 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
                 </div>
               </div>
             </div>
+          ) : (
+            <div className="flex-1 flex overflow-hidden">
+              {/* Main Content - Desktop */}
+              <div className="flex-1 flex flex-col">
+                <ScrollArea className="flex-1 px-8 py-6">
+                  <div className="max-w-4xl mx-auto">
+                    {renderCurrentStep()}
+                  </div>
+                </ScrollArea>
 
-            {/* Preview Sidebar - Desktop only */}
-            <div className="w-80 border-l border-primary/20 bg-primary/5 p-6">
-              <CharacterPreview
-                name={name}
-                role={role}
-                generatedAppearance={generatedAppearance}
-                personality={personality}
-              />
+                {/* Navigation */}
+                <div className="flex-shrink-0 px-8 py-6 border-t border-primary/20 bg-white">
+                  <div className="max-w-4xl mx-auto">
+                    <CharacterStepNavigation
+                      isFirstStep={isFirstStep}
+                      isLastStep={isLastStep}
+                      onBack={goToPreviousStep}
+                      onNext={handleNext}
+                      onSkip={handleSkip}
+                      onClearCurrentStep={clearCurrentStepValue}
+                      canProceed={isCurrentStepValid()}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Preview Sidebar - Desktop only */}
+              <div className="w-80 border-l border-primary/20 bg-primary/5 p-6">
+                <CharacterPreview
+                  name={name}
+                  role={role}
+                  generatedAppearance={generatedAppearance}
+                  personality={personality}
+                />
+              </div>
             </div>
-          </div>
-        )}
-      </FullScreenDialogContent>
-    </FullScreenDialog>
+          )}
+        </FullScreenDialogContent>
+      </FullScreenDialog>
+
+      <ConfirmCloseDialog
+        open={showCloseConfirmation}
+        onCancel={handleCancelClose}
+        onConfirm={handleConfirmClose}
+      />
+    </>
   );
 };
 
