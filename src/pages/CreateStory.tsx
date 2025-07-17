@@ -7,6 +7,7 @@ import ThemeStep from "@/components/story-generator/ThemeStep";
 import ToneStep from "@/components/story-generator/ToneStep";
 import StyleStep from "@/components/story-generator/StyleStep";
 import CharacterStep from "@/components/story-generator/CharacterStep";
+import TitleStep from "@/components/story-generator/TitleStep";
 import { useStoryCreation } from "@/hooks/useStoryCreation";
 
 import StoryStartStepWrapper from "@/components/story-generator/steps/StoryStartStepWrapper";
@@ -75,6 +76,9 @@ const CreateStory = () => {
               <CharacterStep storyData={storyData} updateStoryData={updateStoryData} />
             )}
             {mode === "magic" && currentStep === 5 && (
+              <TitleStep storyData={storyData} updateStoryData={updateStoryData} />
+            )}
+            {mode === "magic" && currentStep === 6 && (
               <StorySummaryStep
                 storyData={storyData}
                 handleGenerateStory={handleGenerateStory}
@@ -102,6 +106,9 @@ const CreateStory = () => {
               <CharacterStep storyData={storyData} updateStoryData={updateStoryData} />
             )}
             {mode === "creative" && currentStep === 7 && (
+              <TitleStep storyData={storyData} updateStoryData={updateStoryData} />
+            )}
+            {mode === "creative" && currentStep === 8 && (
               <StorySummaryStep
                 storyData={storyData}
                 handleGenerateStory={handleGenerateStory}

@@ -1,4 +1,3 @@
-
 // --- ENUM MAPPINGS for backend fields ---
 export const LANGUAGE_MAP: Record<string, string> = {
   "English": "british_english",
@@ -65,15 +64,17 @@ export const CREATIVE_STEPS = [
   { id: 2, name: "Theme" },
   { id: 3, name: "Tone" },
   { id: 4, name: "Style" },
-  { id: 5, name: "Illustrations" },
+  { id: 5, name: "Illustration" },
   { id: 6, name: "Characters" },
-  { id: 7, name: "Summary" },
+  { id: 7, name: "Title" },
+  { id: 8, name: "Generate" },
 ];
 
 export const MAGIC_STEPS = [
   { id: 1, name: "Start" },
-  { id: 2, name: "Magic" },
-  { id: 3, name: "Illustrations" },
+  { id: 2, name: "Magic Cards" },
+  { id: 3, name: "Illustration" },
   { id: 4, name: "Characters" },
-  { id: 5, name: "Summary" },
+  { id: 5, name: "Title" },
+  { id: 6, name: "Generate" },
 ];

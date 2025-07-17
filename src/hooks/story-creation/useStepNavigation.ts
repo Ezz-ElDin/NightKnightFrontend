@@ -60,6 +60,7 @@ export const useStepNavigation = (
         });
         return false;
       }
+      // Title step (step 5) is optional, no validation needed
     } else {
       if (currentStep === 2 && !storyData.genre) {
         toast({
@@ -93,6 +94,7 @@ export const useStepNavigation = (
         });
         return false;
       }
+      // Title step (step 7) is optional, no validation needed
     }
 
     return true;
