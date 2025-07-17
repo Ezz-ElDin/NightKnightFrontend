@@ -35,7 +35,8 @@ const Index = () => {
     };
   }, []);
 
-  return <div className="overflow-auto">
+  return (
+    <div className="overflow-auto">
       <StoryBackground>
         <div className="container max-w-6xl mx-auto text-center z-10 px-4">
           <div className="mb-6 md:mb-8 flex justify-center">
@@ -78,10 +79,10 @@ const Index = () => {
             )}
           </div>
 
-          {/* Exciting free story banner with brand colors */}
+          {/* Exciting free story banner with sleek background */}
           {!isLoggedIn && (
-            <div className="relative bg-gradient-to-r from-story-lightPurple via-story-pink to-story-lightPurple border-3 border-story-purple rounded-3xl p-8 md:p-10 max-w-lg mx-auto mb-8 md:mb-12 shadow-xl">
-              <div className="absolute -top-2 -right-2 bg-story-purple text-white rounded-full w-12 h-12 flex items-center justify-center text-xs font-bold">
+            <div className="relative bg-gradient-to-r from-slate-800 via-story-purple to-slate-800 border-3 border-story-purple rounded-3xl p-8 md:p-10 max-w-lg mx-auto mb-8 md:mb-12 shadow-xl">
+              <div className="absolute -top-2 -right-2 bg-story-orange text-white rounded-full w-12 h-12 flex items-center justify-center text-xs font-bold">
                 FREE
               </div>
               <div className="flex items-center justify-center gap-2 mb-4">
@@ -91,10 +92,10 @@ const Index = () => {
                 </span>
                 <Star className="h-8 w-8 text-story-orange" fill="currentColor" />
               </div>
-              <p className="text-story-purple font-bold text-lg whitespace-nowrap">
+              <p className="text-white font-bold text-lg whitespace-nowrap">
                 Get your first magical story when you sign up!
               </p>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer"></div>
             </div>
           )}
         </div>
@@ -146,7 +147,8 @@ const Index = () => {
       <HowItWorks />
       <PricingSlider />
       <Footer />
-    </div>;
+    </div>
+  );
 };
 
 export default Index;
