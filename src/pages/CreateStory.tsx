@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import StoryCreationLayout from "@/components/story-generator/StoryCreationLayout";
 import StoryNavigationButtons from "@/components/story-generator/StoryNavigationButtons";
@@ -9,6 +9,7 @@ import StyleStep from "@/components/story-generator/StyleStep";
 import CharacterStep from "@/components/story-generator/CharacterStep";
 import TitleStep from "@/components/story-generator/TitleStep";
 import { useStoryCreation } from "@/hooks/useStoryCreation";
+import { useGeneratingStoryGuard } from "@/hooks/useGeneratingStoryGuard";
 
 import StoryStartStepWrapper from "@/components/story-generator/steps/StoryStartStepWrapper";
 import MagicModeCardsStep from "@/components/story-generator/steps/MagicModeCardsStep";
@@ -16,6 +17,8 @@ import IllustrationStepWrapper from "@/components/story-generator/steps/Illustra
 import StorySummaryStep from "@/components/story-generator/steps/StorySummaryStep";
 
 const CreateStory = () => {
+  const { redirectToLibraryIfGenerating, isGenerating } = useGeneratingStoryGuard();
+  
   const {
     currentStep,
     mode,
@@ -32,6 +35,19 @@ const CreateStory = () => {
     handleGenerateStory,
     steps,
   } = useStoryCreation();
+
+  // Check if user should be redirected on component mount
+  useEffect(() => {
+    redirectToLibraryIfGenerating();
+  }, [redirectToLibraryIfGenerating]);
+
+  // Create a wrapped generate story handler that checks for ongoing generation
+  const handleGenerateStoryWithCheck = () => {
+    if (redirectToLibraryIfGenerating()) {
+      return;
+    }
+    handleGenerateStory();
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-story-lightPurple/20 to-white">
@@ -81,8 +97,9 @@ const CreateStory = () => {
             {mode === "magic" && currentStep === 6 && (
               <StorySummaryStep
                 storyData={storyData}
-                handleGenerateStory={handleGenerateStory}
+                handleGenerateStory={handleGenerateStoryWithCheck}
                 mode="magic"
+                isGenerating={isGenerating}
               />
             )}
 
@@ -111,8 +128,9 @@ const CreateStory = () => {
             {mode === "creative" && currentStep === 8 && (
               <StorySummaryStep
                 storyData={storyData}
-                handleGenerateStory={handleGenerateStory}
+                handleGenerateStory={handleGenerateStoryWithCheck}
                 mode="creative"
+                isGenerating={isGenerating}
               />
             )}
           </div>
