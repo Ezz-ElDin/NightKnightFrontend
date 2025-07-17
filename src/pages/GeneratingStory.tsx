@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -137,21 +138,19 @@ const GeneratingStory = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-50 to-blue-100">
-      <div className="container mx-auto px-4 py-8 flex items-center justify-center min-h-screen">
-        <div className="max-w-md w-full text-center space-y-8">
+    <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-50 to-blue-100 flex items-center justify-center">
+      <div className="container mx-auto px-4 py-8 max-w-md w-full">
+        <div className="text-center space-y-6">
           {/* Animated Icons */}
-          <div className="relative">
-            <div className="flex justify-center space-x-4 mb-8">
-              <div className="animate-bounce" style={{ animationDelay: '0ms' }}>
-                <Sparkles className="w-8 h-8 text-purple-500" />
-              </div>
-              <div className="animate-bounce" style={{ animationDelay: '200ms' }}>
-                {currentStage.icon}
-              </div>
-              <div className="animate-bounce" style={{ animationDelay: '400ms' }}>
-                <BookOpen className="w-8 h-8 text-blue-500" />
-              </div>
+          <div className="flex justify-center space-x-4 mb-6">
+            <div className="animate-bounce" style={{ animationDelay: '0ms' }}>
+              <Sparkles className="w-8 h-8 text-purple-500" />
+            </div>
+            <div className="animate-bounce" style={{ animationDelay: '200ms' }}>
+              {currentStage.icon}
+            </div>
+            <div className="animate-bounce" style={{ animationDelay: '400ms' }}>
+              <BookOpen className="w-8 h-8 text-blue-500" />
             </div>
           </div>
 
@@ -167,9 +166,9 @@ const GeneratingStory = () => {
             </div>
           </div>
 
-          {/* Progress Indicator */}
-          <div className="space-y-4">
-            <Progress value={progress} className="h-3" />
+          {/* Compact Progress Indicator */}
+          <div className="space-y-2">
+            <Progress value={progress} className="h-2" />
             <p className="text-sm text-purple-600">
               {Math.round(progress)}% Complete
             </p>
