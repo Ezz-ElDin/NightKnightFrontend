@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Book, Star, Heart, Download, MessageCircle, Globe } from "lucide-react";
@@ -55,7 +56,7 @@ const Index = () => {
             Create personalised bedtime adventures that will spark your child's imagination and lead to sweet dreams!
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center mb-12 md:mb-16 px-4">
+          <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center mb-8 md:mb-12 px-4">
             {isLoggedIn ? (
               <Link to="/library">
                 <Button className="w-full sm:w-auto h-12 md:h-14 px-6 md:px-8 text-lg md:text-xl rounded-2xl bg-story-purple hover:bg-story-purple/90 text-white button-bounce">
@@ -77,6 +78,20 @@ const Index = () => {
               </>
             )}
           </div>
+
+          {/* Free story credit message for non-logged in users */}
+          {!isLoggedIn && (
+            <div className="bg-gradient-to-r from-story-yellow/30 to-story-peach/30 border-2 border-story-orange/50 rounded-2xl p-4 md:p-6 max-w-2xl mx-auto mb-8 md:mb-12 backdrop-blur-sm">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <Star className="h-5 w-5 md:h-6 md:w-6 text-story-orange" fill="currentColor" />
+                <span className="text-lg md:text-xl font-bold text-story-purple">Free Story Credit!</span>
+                <Star className="h-5 w-5 md:h-6 md:w-6 text-story-orange" fill="currentColor" />
+              </div>
+              <p className="text-sm md:text-base text-story-purple font-medium">
+                Sign up today and get <span className="font-bold">1 free story credit</span> to create your first magical bedtime story and experience the wonder of NightKnight!
+              </p>
+            </div>
+          )}
         </div>
       </StoryBackground>
       
