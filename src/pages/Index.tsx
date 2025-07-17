@@ -79,17 +79,23 @@ const Index = () => {
             )}
           </div>
 
-          {/* Simplified free story credit banner for non-logged in users */}
+          {/* Exciting free story banner with focus on "Free" */}
           {!isLoggedIn && (
-            <div className="bg-white/90 border-2 border-story-yellow rounded-2xl p-6 max-w-lg mx-auto mb-8 md:mb-12 shadow-lg">
-              <div className="flex items-center justify-center gap-2 mb-3">
-                <Star className="h-6 w-6 text-story-orange animate-wiggle" fill="currentColor" />
-                <span className="text-xl font-bold text-story-purple">Free Story!</span>
-                <Star className="h-6 w-6 text-story-orange animate-wiggle" fill="currentColor" />
+            <div className="relative bg-gradient-to-r from-story-yellow via-story-peach to-story-yellow border-3 border-story-orange rounded-3xl p-6 max-w-md mx-auto mb-8 md:mb-12 shadow-xl transform hover:scale-105 transition-transform">
+              <div className="absolute -top-2 -right-2 bg-story-orange text-white rounded-full w-12 h-12 flex items-center justify-center text-xs font-bold animate-bounce-slow">
+                NEW!
               </div>
-              <p className="text-story-purple font-medium">
-                Get your first story free when you sign up!
+              <div className="flex items-center justify-center gap-2 mb-3">
+                <Star className="h-8 w-8 text-story-orange animate-wiggle" fill="currentColor" />
+                <span className="text-3xl font-black text-story-purple animate-scale-pulse">
+                  <span className="text-story-orange drop-shadow-lg">FREE</span> Story!
+                </span>
+                <Star className="h-8 w-8 text-story-orange animate-wiggle" fill="currentColor" />
+              </div>
+              <p className="text-story-purple font-bold text-lg">
+                Get your first magical story when you sign up!
               </p>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
             </div>
           )}
         </div>

@@ -117,6 +117,11 @@
   .text-responsive-large {
     @apply text-base md:text-lg lg:text-xl;
   }
+
+  /* Custom border width for exciting banner */
+  .border-3 {
+    border-width: 3px;
+  }
 }
 
 @layer components {
@@ -207,6 +212,11 @@
   100% { opacity: 0; transform: translateY(-10px); }
 }
 
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
 .animate-bounce-slow {
   animation: bounce 2s infinite ease-in-out;
 }
@@ -225,6 +235,10 @@
 
 .animate-fade-out {
   animation: fade-out 0.3s ease-in forwards;
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
 }
 
 /* Responsive improvements for better mobile experience */
