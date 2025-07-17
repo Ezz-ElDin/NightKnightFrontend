@@ -366,14 +366,6 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
     }
   };
 
-  const handleSkip = () => {
-    if (isLastStep) {
-      handleAddCharacter();
-    } else {
-      goToNextStep();
-    }
-  };
-
   const handleAddCharacter = () => {
     if (!name.trim()) return;
     
@@ -507,7 +499,6 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
                     isLastStep={isLastStep}
                     onBack={goToPreviousStep}
                     onNext={handleNext}
-                    onSkip={handleSkip}
                     onClearCurrentStep={clearCurrentStepValue}
                     canProceed={isCurrentStepValid()}
                   />
@@ -532,7 +523,6 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
                       isLastStep={isLastStep}
                       onBack={goToPreviousStep}
                       onNext={handleNext}
-                      onSkip={handleSkip}
                       onClearCurrentStep={clearCurrentStepValue}
                       canProceed={isCurrentStepValid()}
                     />
