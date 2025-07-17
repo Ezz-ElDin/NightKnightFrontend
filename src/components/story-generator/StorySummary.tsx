@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,6 +20,7 @@ interface StorySummaryProps {
   storyData: any;
   onGenerateStory: () => void;
   mode?: StoryMode; // Optionally pass, default to 'creative'
+  isGenerating?: boolean; // Add the missing prop
 }
 
 // Creative mode: Story Title, Age, Language, Story Lesson, Theme, Tone, Style, Characters
@@ -98,6 +100,7 @@ const StorySummary: React.FC<StorySummaryProps> = ({
   storyData,
   onGenerateStory,
   mode = "creative",
+  isGenerating = false,
 }) => {
   // Pick fields by mode
   const fields = mode === "magic" ? magicFields : creativeFields;
@@ -109,7 +112,7 @@ const StorySummary: React.FC<StorySummaryProps> = ({
           ✨ Story Preview ✨
         </h2>
         <p className="text-center text-muted-foreground mb-2 text-lg">
-          Get ready for an adventure! Here’s what will go into your magical story:
+          Get ready for an adventure! Here's what will go into your magical story:
         </p>
         <ul className="flex flex-col gap-4">
           {fields.map(({ key, label, icon }) => {
@@ -178,10 +181,11 @@ const StorySummary: React.FC<StorySummaryProps> = ({
           <Button
             data-testid="generate-btn"
             onClick={onGenerateStory}
+            disabled={isGenerating}
             size="lg"
-            className="w-full sm:w-auto justify-center px-8 py-6 text-xl font-black rounded-full bg-gradient-to-br from-violet-500 via-purple-400 to-blue-400 shadow-lg hover:from-violet-600 hover:via-purple-500 hover:to-blue-500 transition-all duration-300 button-bounce tracking-wide"
+            className="w-full sm:w-auto justify-center px-8 py-6 text-xl font-black rounded-full bg-gradient-to-br from-violet-500 via-purple-400 to-blue-400 shadow-lg hover:from-violet-600 hover:via-purple-500 hover:to-blue-500 transition-all duration-300 button-bounce tracking-wide disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Create My Story
+            {isGenerating ? "Generating..." : "Create My Story"}
           </Button>
         </div>
       </div>
