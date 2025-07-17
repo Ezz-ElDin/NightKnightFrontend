@@ -9,7 +9,11 @@ const ROLE_EMOJIS = {
   "Mentor": "👩‍🏫", 
   "Friend": "👯‍♀️",
   "Sidekick": "👩‍🔬",
-  "Guide": "👩‍✈️"
+  "Guide": "👩‍✈️",
+  "Sister": "👭",
+  "Brother": "👫", 
+  "Mother": "👩‍👧",
+  "Father": "👨‍👧"
 };
 
 interface Character {
