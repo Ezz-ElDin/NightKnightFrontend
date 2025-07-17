@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, SkipForward, Trash2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface CharacterStepNavigationProps {
@@ -9,7 +9,6 @@ interface CharacterStepNavigationProps {
   isLastStep: boolean;
   onBack: () => void;
   onNext: () => void;
-  onSkip: () => void;
   onClearCurrentStep: () => void;
   canProceed: boolean;
 }
@@ -19,7 +18,6 @@ const CharacterStepNavigation: React.FC<CharacterStepNavigationProps> = ({
   isLastStep,
   onBack,
   onNext,
-  onSkip,
   onClearCurrentStep,
   canProceed,
 }) => {
@@ -51,19 +49,8 @@ const CharacterStepNavigation: React.FC<CharacterStepNavigationProps> = ({
         )}
       </div>
 
-      {/* Right side - Skip (desktop only) and Next buttons */}
+      {/* Right side - Next button only */}
       <div className={`flex ${isMobile ? '' : 'space-x-3'}`}>
-        {!isMobile && (
-          <Button
-            variant="outline"
-            onClick={onSkip}
-            className="border-purple-300 text-purple-600 hover:bg-purple-50"
-          >
-            <SkipForward className="w-4 h-4 mr-1" />
-            Skip
-          </Button>
-        )}
-        
         <Button
           onClick={onNext}
           disabled={!canProceed}
