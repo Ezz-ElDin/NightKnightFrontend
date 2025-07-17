@@ -1,4 +1,5 @@
 
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Book, Star, Heart, Download, MessageCircle, Globe } from "lucide-react";
@@ -58,9 +59,9 @@ const Index = () => {
           
           <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center mb-12 md:mb-16 px-4">
             {isLoggedIn ? (
-              <Link to="/library">
+              <Link to="/generate-story">
                 <Button className="w-full sm:w-auto h-12 md:h-14 px-6 md:px-8 text-lg md:text-xl rounded-2xl bg-story-purple hover:bg-story-purple/90 text-white button-bounce">
-                  Go to Library
+                  Create a new magical story
                 </Button>
               </Link>
             ) : (
@@ -131,3 +132,4 @@ const Index = () => {
 };
 
 export default Index;
+
