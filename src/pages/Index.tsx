@@ -79,16 +79,16 @@ const Index = () => {
             )}
           </div>
 
-          {/* Free story credit message for non-logged in users */}
+          {/* Simplified free story credit banner for non-logged in users */}
           {!isLoggedIn && (
-            <div className="bg-gradient-to-r from-story-yellow/30 to-story-peach/30 border-2 border-story-orange/50 rounded-2xl p-4 md:p-6 max-w-2xl mx-auto mb-8 md:mb-12 backdrop-blur-sm">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <Star className="h-5 w-5 md:h-6 md:w-6 text-story-orange" fill="currentColor" />
-                <span className="text-lg md:text-xl font-bold text-story-purple">Free Story Credit!</span>
-                <Star className="h-5 w-5 md:h-6 md:w-6 text-story-orange" fill="currentColor" />
+            <div className="bg-white/90 border-2 border-story-yellow rounded-2xl p-6 max-w-lg mx-auto mb-8 md:mb-12 shadow-lg">
+              <div className="flex items-center justify-center gap-2 mb-3">
+                <Star className="h-6 w-6 text-story-orange animate-wiggle" fill="currentColor" />
+                <span className="text-xl font-bold text-story-purple">Free Story!</span>
+                <Star className="h-6 w-6 text-story-orange animate-wiggle" fill="currentColor" />
               </div>
-              <p className="text-sm md:text-base text-story-purple font-medium">
-                Sign up today and get <span className="font-bold">1 free story credit</span> to create your first magical bedtime story and experience the wonder of NightKnight!
+              <p className="text-story-purple font-medium">
+                Get your first story free when you sign up!
               </p>
             </div>
           )}
