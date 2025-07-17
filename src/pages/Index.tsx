@@ -85,11 +85,11 @@ const Index = () => {
                 FREE
               </div>
               <div className="flex items-center justify-center gap-2 mb-4">
-                <Star className="h-8 w-8 text-story-purple" fill="currentColor" />
-                <span className="text-3xl font-black text-story-purple">
-                  <span className="text-story-blue drop-shadow-lg">FREE</span> Story!
+                <Star className="h-8 w-8 text-story-orange" fill="currentColor" />
+                <span className="text-3xl font-black text-story-orange">
+                  <span className="text-story-orange drop-shadow-lg">FREE</span> Story!
                 </span>
-                <Star className="h-8 w-8 text-story-purple" fill="currentColor" />
+                <Star className="h-8 w-8 text-story-orange" fill="currentColor" />
               </div>
               <p className="text-story-purple font-bold text-lg whitespace-nowrap">
                 Get your first magical story when you sign up!
