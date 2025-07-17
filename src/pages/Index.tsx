@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Book, Star, Heart, Download, MessageCircle, Globe } from "lucide-react";
@@ -81,16 +80,16 @@ const Index = () => {
 
           {/* Exciting free story banner with brand colors */}
           {!isLoggedIn && (
-            <div className="relative bg-gradient-to-r from-story-lightPurple via-story-pink to-story-lightPurple border-3 border-story-purple rounded-3xl p-6 max-w-md mx-auto mb-8 md:mb-12 shadow-xl transform hover:scale-105 transition-transform">
-              <div className="absolute -top-2 -right-2 bg-story-purple text-white rounded-full w-12 h-12 flex items-center justify-center text-xs font-bold animate-bounce-slow">
+            <div className="relative bg-gradient-to-r from-story-lightPurple via-story-pink to-story-lightPurple border-3 border-story-purple rounded-3xl p-6 max-w-md mx-auto mb-8 md:mb-12 shadow-xl">
+              <div className="absolute -top-2 -right-2 bg-story-purple text-white rounded-full w-12 h-12 flex items-center justify-center text-xs font-bold">
                 FREE
               </div>
               <div className="flex items-center justify-center gap-2 mb-3">
-                <Star className="h-8 w-8 text-story-purple animate-wiggle" fill="currentColor" />
+                <Star className="h-8 w-8 text-story-purple" fill="currentColor" />
                 <span className="text-3xl font-black text-story-purple">
                   <span className="text-story-blue drop-shadow-lg">FREE</span> Story!
                 </span>
-                <Star className="h-8 w-8 text-story-purple animate-wiggle" fill="currentColor" />
+                <Star className="h-8 w-8 text-story-purple" fill="currentColor" />
               </div>
               <p className="text-story-purple font-bold text-lg">
                 Get your first magical story when you sign up!
