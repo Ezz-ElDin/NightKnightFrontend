@@ -81,7 +81,7 @@ const Index = () => {
 
           {/* Exciting free story banner with sleek background */}
           {!isLoggedIn && (
-            <div className="relative bg-gradient-to-r from-slate-800 via-story-purple to-slate-800 border-3 border-story-purple rounded-3xl p-8 md:p-10 max-w-lg mx-auto mb-8 md:mb-12 shadow-xl">
+            <div className="relative bg-story-purple border-3 border-story-purple rounded-3xl p-8 md:p-10 max-w-lg mx-auto mb-8 md:mb-12 shadow-xl">
               <div className="absolute -top-2 -right-2 bg-story-orange text-white rounded-full w-12 h-12 flex items-center justify-center text-xs font-bold">
                 FREE
               </div>
