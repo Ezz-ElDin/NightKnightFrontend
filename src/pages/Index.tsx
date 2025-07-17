@@ -1,4 +1,5 @@
 
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Book, Star, Heart, Download, MessageCircle, Globe } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -10,6 +11,31 @@ import PricingSlider from "@/components/PricingSlider";
 import Footer from "@/components/Footer";
 
 const Index = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  
+  // Check authentication status based on token presence
+  useEffect(() => {
+    const checkAuthStatus = () => {
+      const token = localStorage.getItem('authToken');
+      setIsLoggedIn(!!token);
+    };
+    
+    checkAuthStatus();
+    
+    // Listen for auth changes
+    const handleStorageChange = () => {
+      checkAuthStatus();
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('user-info-updated', handleStorageChange);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('user-info-updated', handleStorageChange);
+    };
+  }, []);
+
   return <div className="overflow-auto">
       <StoryBackground>
         <div className="container max-w-6xl mx-auto text-center z-10 px-4">
@@ -31,16 +57,26 @@ const Index = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center mb-12 md:mb-16 px-4">
-            <Link to="/register">
-              <Button className="w-full sm:w-auto h-12 md:h-14 px-6 md:px-8 text-lg md:text-xl rounded-2xl bg-story-purple hover:bg-story-purple/90 text-white button-bounce">
-                Start Your Adventure
-              </Button>
-            </Link>
-            <Link to="/register">
-              <Button variant="outline" className="w-full sm:w-auto h-12 md:h-14 px-6 md:px-8 text-lg md:text-xl rounded-2xl border-2 border-story-blue text-story-blue bg-white hover:bg-story-blue/10 button-bounce">
-                Sign Up for Free
-              </Button>
-            </Link>
+            {isLoggedIn ? (
+              <Link to="/library">
+                <Button className="w-full sm:w-auto h-12 md:h-14 px-6 md:px-8 text-lg md:text-xl rounded-2xl bg-story-purple hover:bg-story-purple/90 text-white button-bounce">
+                  Go to Library
+                </Button>
+              </Link>
+            ) : (
+              <>
+                <Link to="/register">
+                  <Button className="w-full sm:w-auto h-12 md:h-14 px-6 md:px-8 text-lg md:text-xl rounded-2xl bg-story-purple hover:bg-story-purple/90 text-white button-bounce">
+                    Start Your Adventure
+                  </Button>
+                </Link>
+                <Link to="/register">
+                  <Button variant="outline" className="w-full sm:w-auto h-12 md:h-14 px-6 md:px-8 text-lg md:text-xl rounded-2xl border-2 border-story-blue text-story-blue bg-white hover:bg-story-blue/10 button-bounce">
+                    Sign Up for Free
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </StoryBackground>
