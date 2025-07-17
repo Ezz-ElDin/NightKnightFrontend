@@ -42,7 +42,10 @@ const Library = () => {
 
         <LibraryHeader />
 
-        <StoryCreditSection storyCredits={storyCredits} />
+        <StoryCreditSection 
+          storyCredits={storyCredits} 
+          isGenerating={!!generatingStoryId}
+        />
 
         <LibraryContent
           allFavouriteStories={allFavouriteStories}

@@ -1,4 +1,3 @@
-
 import { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Star } from "lucide-react";
@@ -41,13 +40,14 @@ const LibraryContent: React.FC<LibraryContentProps> = ({
 }) => {
   const recentStoriesRef = useRef<HTMLDivElement>(null);
   const STORIES_PER_PAGE = 6;
+  const isGenerating = !!generatingStoryId;
 
   return (
     <div className="mb-8 md:mb-12">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 md:mb-5 gap-3 sm:gap-0">
         <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-story-blue">My Stories</h2>
         <TooltipProvider delayDuration={0}>
-          {hasCredits ? (
+          {hasCredits && !isGenerating ? (
             <Link to="/create-story" className="w-full sm:w-auto">
               <Button className="w-full sm:w-auto rounded-xl px-4 md:px-6 py-2 md:py-3 text-sm md:text-md bg-story-purple hover:bg-story-purple/90 text-white flex items-center justify-center gap-2 button-bounce">
                 <Star className="h-4 w-4 md:h-5 md:w-5" />
@@ -68,7 +68,12 @@ const LibraryContent: React.FC<LibraryContentProps> = ({
                 </span>
               </TooltipTrigger>
               <TooltipContent side="bottom" className="bg-gray-800 text-white px-3 py-2 rounded-md text-sm">
-                <p>You need to buy credits to create a story</p>
+                <p>
+                  {isGenerating 
+                    ? "Please wait for your current story to finish generating" 
+                    : "You need to buy credits to create a story"
+                  }
+                </p>
               </TooltipContent>
             </Tooltip>
           )}
