@@ -11,10 +11,10 @@ const ROLE_OPTIONS = [
   { value: "Friend", label: "Friend", emoji: "👯‍♀️" },
   { value: "Sidekick", label: "Sidekick", emoji: "👩‍🔬" },
   { value: "Guide", label: "Guide", emoji: "👩‍✈️" },
-  { value: "Sister", label: "Sister", emoji: "👭" },
-  { value: "Brother", label: "Brother", emoji: "👫" },
-  { value: "Mother", label: "Mother", emoji: "👩‍👧" },
-  { value: "Father", label: "Father", emoji: "👨‍👧" },
+  { value: "Sister", label: "Sister", emoji: "👧" },
+  { value: "Brother", label: "Brother", emoji: "👦" },
+  { value: "Mother", label: "Mother", emoji: "👩" },
+  { value: "Father", label: "Father", emoji: "👨" },
 ];
 
 interface RoleSelectorProps {
