@@ -138,11 +138,11 @@ const GeneratingStory = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-50 to-blue-100 flex items-center justify-center">
-      <div className="container mx-auto px-4 py-8 max-w-md w-full">
-        <div className="text-center space-y-6">
-          {/* Animated Icons */}
-          <div className="flex justify-center space-x-4 mb-6">
+    <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-50 to-blue-100 flex items-center justify-center px-4">
+      <div className="max-w-md w-full text-center space-y-8">
+        {/* Animated Icons */}
+        <div className="relative">
+          <div className="flex justify-center space-x-4 mb-8">
             <div className="animate-bounce" style={{ animationDelay: '0ms' }}>
               <Sparkles className="w-8 h-8 text-purple-500" />
             </div>
@@ -153,42 +153,42 @@ const GeneratingStory = () => {
               <BookOpen className="w-8 h-8 text-blue-500" />
             </div>
           </div>
+        </div>
 
-          {/* Stage Title and Message */}
-          <div className="space-y-4">
-            <h1 className="text-3xl font-bold text-purple-800">
-              {currentStage.title}
-            </h1>
-            <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-purple-200">
-              <p className="text-lg text-purple-700 font-medium transition-all duration-500 ease-in-out">
-                {currentStage.messages[currentMessage]}
-              </p>
-            </div>
-          </div>
-
-          {/* Compact Progress Indicator */}
-          <div className="space-y-2">
-            <Progress value={progress} className="h-2" />
-            <p className="text-sm text-purple-600">
-              {Math.round(progress)}% Complete
+        {/* Stage Title and Message */}
+        <div className="space-y-4">
+          <h1 className="text-3xl font-bold text-purple-800">
+            {currentStage.title}
+          </h1>
+          <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-purple-200">
+            <p className="text-lg text-purple-700 font-medium transition-all duration-500 ease-in-out">
+              {currentStage.messages[currentMessage]}
             </p>
-            {failedAttempts > 0 && (
-              <p className="text-xs text-orange-600">
-                Retrying... (Attempt {failedAttempts + 1}/3)
-              </p>
-            )}
           </div>
+        </div>
 
-          {/* Fun decorative elements */}
-          <div className="absolute top-10 left-10 opacity-20">
-            <Sparkles className="w-6 h-6 text-purple-400 animate-pulse" />
-          </div>
-          <div className="absolute top-20 right-16 opacity-20">
-            <Sparkles className="w-4 h-4 text-pink-400 animate-pulse" style={{ animationDelay: '1s' }} />
-          </div>
-          <div className="absolute bottom-20 left-20 opacity-20">
-            <Sparkles className="w-5 h-5 text-blue-400 animate-pulse" style={{ animationDelay: '2s' }} />
-          </div>
+        {/* Progress Indicator */}
+        <div className="space-y-4">
+          <Progress value={progress} className="h-3" />
+          <p className="text-sm text-purple-600">
+            {Math.round(progress)}% Complete
+          </p>
+          {failedAttempts > 0 && (
+            <p className="text-xs text-orange-600">
+              Retrying... (Attempt {failedAttempts + 1}/3)
+            </p>
+          )}
+        </div>
+
+        {/* Fun decorative elements */}
+        <div className="absolute top-10 left-10 opacity-20">
+          <Sparkles className="w-6 h-6 text-purple-400 animate-pulse" />
+        </div>
+        <div className="absolute top-20 right-16 opacity-20">
+          <Sparkles className="w-4 h-4 text-pink-400 animate-pulse" style={{ animationDelay: '1s' }} />
+        </div>
+        <div className="absolute bottom-20 left-20 opacity-20">
+          <Sparkles className="w-5 h-5 text-blue-400 animate-pulse" style={{ animationDelay: '2s' }} />
         </div>
       </div>
     </div>
