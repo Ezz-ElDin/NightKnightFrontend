@@ -91,7 +91,7 @@ const Index = () => {
                 </span>
                 <Star className="h-8 w-8 text-story-purple" fill="currentColor" />
               </div>
-              <p className="text-story-purple font-bold text-lg">
+              <p className="text-story-purple font-bold text-lg whitespace-nowrap">
                 Get your first magical story when you sign up!
               </p>
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
