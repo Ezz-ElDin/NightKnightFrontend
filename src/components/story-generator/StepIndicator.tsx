@@ -34,8 +34,8 @@ const connectorGradients = [
 
 const StepIndicator: React.FC<StepIndicatorProps> = ({ steps, currentStep }) => {
   return (
-    <div className="flex justify-center mb-8">
-      <div className="flex items-center w-full max-w-3xl">
+    <div className="flex justify-center mb-4">
+      <div className="flex items-center w-full max-w-2xl">
         {steps.map((step, index) => {
           const isCompleted = step.id < currentStep;
           const isActive = step.id === currentStep;
@@ -49,26 +49,26 @@ const StepIndicator: React.FC<StepIndicatorProps> = ({ steps, currentStep }) => 
           return (
             <React.Fragment key={step.id}>
               {/* Step circle and label */}
-              <div className="relative flex flex-col items-center w-20">
+              <div className="relative flex flex-col items-center w-16">
                 {/* Step circle */}
                 <div
                   className={cn(
-                    "w-12 h-12 flex items-center justify-center rounded-full relative shadow-lg border-4 transition-all duration-300",
+                    "w-8 h-8 flex items-center justify-center rounded-full relative shadow-md border-2 transition-all duration-300",
                     color,
                     isActive
-                      ? "border-primary scale-110 animate-bounce-slow z-10"
+                      ? "border-primary scale-110 z-10"
                       : isCompleted
-                      ? "border-story-green grayscale-0"
+                      ? "border-story-green"
                       : "border-muted grayscale brightness-95 opacity-70"
                   )}
                   aria-current={isActive ? "step" : undefined}
                 >
                   {isActive && (
-                    <Sparkles className="absolute h-5 w-5 -top-2 -right-2 text-yellow-400 animate-wiggle" />
+                    <Sparkles className="absolute h-3 w-3 -top-1 -right-1 text-yellow-400" />
                   )}
                   <span
                     className={cn(
-                      "text-2xl font-bold drop-shadow",
+                      "text-sm font-bold",
                       isActive
                         ? "text-primary"
                         : isCompleted
@@ -80,15 +80,15 @@ const StepIndicator: React.FC<StepIndicatorProps> = ({ steps, currentStep }) => 
                   </span>
                 </div>
 
-                {/* Step name as pastel bubble label */}
+                {/* Step name as compact label */}
                 <span
                   className={cn(
-                    "mt-3 px-4 py-1 rounded-xl shadow bg-white/70 font-ghibli transition-all duration-300 text-xs md:text-sm whitespace-nowrap",
+                    "mt-1 px-2 py-0.5 rounded-lg shadow-sm bg-white/60 font-ghibli transition-all duration-300 text-xs whitespace-nowrap",
                     isActive
-                      ? "font-extrabold text-primary scale-105 bg-gradient-to-r from-story-seafoam/70 to-story-yellow/80"
+                      ? "font-bold text-primary bg-gradient-to-r from-story-seafoam/50 to-story-yellow/60"
                       : isCompleted
-                      ? "font-semibold text-story-green"
-                      : "font-medium text-muted-foreground"
+                      ? "font-medium text-story-green"
+                      : "font-normal text-muted-foreground"
                   )}
                 >
                   {step.name}
@@ -99,16 +99,16 @@ const StepIndicator: React.FC<StepIndicatorProps> = ({ steps, currentStep }) => 
               {index < steps.length - 1 && (
                 <div
                   className={cn(
-                    "h-2 flex-1 mx-1 md:mx-2 rounded-full border-none transition-all duration-300 drop-shadow-md",
-                    "bg-gradient-to-r", // Enables gradient!
+                    "h-1 flex-1 mx-1 rounded-full border-none transition-all duration-300",
+                    "bg-gradient-to-r",
                     steps[index + 1].id <= currentStep
-                      ? connectorGradient // Use the playful unique gradient!
+                      ? connectorGradient
                       : "from-muted to-muted"
                   )}
                   style={{
-                    minWidth: "32px",
-                    maxWidth: "100px",
-                    opacity: isCompleted ? 0.9 : 0.5,
+                    minWidth: "24px",
+                    maxWidth: "80px",
+                    opacity: isCompleted ? 0.8 : 0.4,
                   }}
                 />
               )}
@@ -121,4 +121,3 @@ const StepIndicator: React.FC<StepIndicatorProps> = ({ steps, currentStep }) => 
 };
 
 export default StepIndicator;
-
