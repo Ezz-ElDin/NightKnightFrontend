@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Book, Star, Heart, Download, MessageCircle, Globe } from "lucide-react";
@@ -95,7 +96,6 @@ const Index = () => {
               <p className="text-white font-bold text-lg whitespace-nowrap">
                 Get your first magical story when you sign up!
               </p>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer"></div>
             </div>
           )}
         </div>
