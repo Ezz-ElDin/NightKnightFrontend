@@ -194,7 +194,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
 }) => {
   const isMobile = useIsMobile();
   const [name, setName] = useState("");
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState("Hero");
   const [personality, setPersonality] = useState<string[]>([]);
   const [appearanceFields, setAppearanceFields] = useState<AppearanceFields>(initialAppearanceFields);
   const [hasInitialized, setHasInitialized] = useState(false);
@@ -214,7 +214,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
     if (open && !hasInitialized) {
       if (initialCharacter) {
         setName(initialCharacter.name || "");
-        setRole(initialCharacter.role || "");
+        setRole(initialCharacter.role || "Hero");
         setPersonality(initialCharacter.personality || []);
         
         // Restore appearance fields if they exist, otherwise use empty fields
@@ -225,7 +225,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
         }
       } else {
         setName("");
-        setRole("");
+        setRole("Hero");
         setPersonality([]);
         setAppearanceFields(initialAppearanceFields);
       }
@@ -258,7 +258,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
 
   const resetCharacter = () => {
     setName("");
-    setRole("");
+    setRole("Hero");
     setPersonality([]);
     setAppearanceFields(initialAppearanceFields);
     setHasInitialized(false);
@@ -270,7 +270,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
         setName("");
         break;
       case "role":
-        setRole("");
+        setRole("Hero");
         break;
       case "personality":
         setPersonality([]);
