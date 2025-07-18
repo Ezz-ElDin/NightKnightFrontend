@@ -47,7 +47,7 @@ const StepIndicator: React.FC<StepIndicatorProps> = ({ steps, currentStep }) => 
             connectorGradients[index % connectorGradients.length];
 
           return (
-            <React.Fragment key={step.id}>
+            <div key={step.id} className="contents">
               {/* Step circle and label */}
               <div className="relative flex flex-col items-center w-16">
                 {/* Step circle */}
@@ -112,7 +112,7 @@ const StepIndicator: React.FC<StepIndicatorProps> = ({ steps, currentStep }) => 
                   }}
                 />
               )}
-            </React.Fragment>
+            </div>
           );
         })}
       </div>
