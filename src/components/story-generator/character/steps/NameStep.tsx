@@ -18,7 +18,7 @@ const NameStep: React.FC<NameStepProps> = ({ name, onNameChange, onNext }) => {
   };
 
   return (
-    <div className="space-y-6" onKeyDown={handleKeyDown}>      
+    <div className="space-y-6">      
       <div className="space-y-4">
         <Label className="text-2xl font-semibold">What's your character's name?</Label>
         <p className="text-gray-600">Give your character a magical name that fits their personality!</p>
