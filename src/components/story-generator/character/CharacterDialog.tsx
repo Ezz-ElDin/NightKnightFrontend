@@ -478,7 +478,10 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
   return (
     <>
       <FullScreenDialog open={open} onOpenChange={handleCloseRequest}>
-        <FullScreenDialogContent className="bg-gradient-to-b from-white to-primary/5 flex flex-col overflow-hidden">
+        <FullScreenDialogContent
+          className="bg-gradient-to-b from-white to-primary/5 flex flex-col overflow-hidden"
+          onOpenAutoFocus={(e) => e.preventDefault()}
+        >
           {/* Header */}
           <FullScreenDialogHeader className={`flex-shrink-0 ${isMobile ? 'px-4 py-3' : 'px-8 py-6'} border-b border-primary/20`}>
             <FullScreenDialogTitle className={`${isMobile ? 'text-lg' : 'text-3xl'} font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600 text-center`}>
