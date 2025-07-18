@@ -57,22 +57,22 @@ const Index = () => {
             Create personalised bedtime adventures that will spark your child's imagination and lead to sweet dreams!
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center mb-8 md:mb-12 px-4">
+          <div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4 md:gap-6 justify-center mb-8 md:mb-12 px-4">
             {isLoggedIn ? (
-              <Link to="/library">
-                <Button className="w-full sm:w-auto h-12 md:h-14 px-6 md:px-8 text-lg md:text-xl rounded-2xl bg-story-purple hover:bg-story-purple/90 text-white button-bounce">
+              <Link to="/library" className="w-full sm:w-auto">
+                <Button className="w-full sm:w-auto h-12 md:h-14 px-6 md:px-8 text-base md:text-lg lg:text-xl rounded-2xl bg-story-purple hover:bg-story-purple/90 text-white button-bounce">
                   Explore Your Story Treasury
                 </Button>
               </Link>
             ) : (
               <>
-                <Link to="/register">
-                  <Button className="w-full sm:w-auto h-12 md:h-14 px-6 md:px-8 text-lg md:text-xl rounded-2xl bg-story-purple hover:bg-story-purple/90 text-white button-bounce">
+                <Link to="/register" className="w-full sm:w-auto">
+                  <Button className="w-full sm:w-auto h-12 md:h-14 px-6 md:px-8 text-base md:text-lg lg:text-xl rounded-2xl bg-story-purple hover:bg-story-purple/90 text-white button-bounce">
                     Start Your Adventure
                   </Button>
                 </Link>
-                <Link to="/register">
-                  <Button variant="outline" className="w-full sm:w-auto h-12 md:h-14 px-6 md:px-8 text-lg md:text-xl rounded-2xl border-2 border-story-blue text-story-blue bg-white hover:bg-story-blue/10 button-bounce">
+                <Link to="/register" className="w-full sm:w-auto">
+                  <Button variant="outline" className="w-full sm:w-auto h-12 md:h-14 px-6 md:px-8 text-base md:text-lg lg:text-xl rounded-2xl border-2 border-story-blue text-story-blue bg-white hover:bg-story-blue/10 button-bounce">
                     Sign Up for Free
                   </Button>
                 </Link>
@@ -80,20 +80,20 @@ const Index = () => {
             )}
           </div>
 
-          {/* Exciting free story banner with sleek background */}
+          {/* Exciting free story banner with sleek background - improved mobile responsiveness */}
           {!isLoggedIn && (
-            <div className="relative bg-story-purple border-3 border-story-purple rounded-3xl p-8 md:p-10 max-w-lg mx-auto mb-8 md:mb-12 shadow-xl">
-              <div className="absolute -top-2 -right-2 bg-story-orange text-white rounded-full w-12 h-12 flex items-center justify-center text-xs font-bold">
+            <div className="relative bg-story-purple border-3 border-story-purple rounded-3xl p-6 md:p-8 lg:p-10 max-w-xs sm:max-w-sm md:max-w-lg mx-auto mb-8 md:mb-12 shadow-xl">
+              <div className="absolute -top-2 -right-2 bg-story-orange text-white rounded-full w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center text-xs font-bold">
                 FREE
               </div>
-              <div className="flex items-center justify-center gap-2 mb-4">
-                <Star className="h-8 w-8 text-story-orange" fill="currentColor" />
-                <span className="text-3xl font-black text-story-orange">
+              <div className="flex items-center justify-center gap-2 mb-3 md:mb-4">
+                <Star className="h-6 w-6 sm:h-8 sm:w-8 text-story-orange" fill="currentColor" />
+                <span className="text-2xl sm:text-3xl font-black text-story-orange">
                   <span className="text-story-orange drop-shadow-lg">FREE</span> Story!
                 </span>
-                <Star className="h-8 w-8 text-story-orange" fill="currentColor" />
+                <Star className="h-6 w-6 sm:h-8 sm:w-8 text-story-orange" fill="currentColor" />
               </div>
-              <p className="text-white font-bold text-lg whitespace-nowrap">
+              <p className="text-white font-bold text-sm sm:text-base md:text-lg text-center leading-relaxed">
                 Get your first magical story when you sign up!
               </p>
             </div>
