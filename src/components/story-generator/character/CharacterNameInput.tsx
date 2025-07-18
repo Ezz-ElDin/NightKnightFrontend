@@ -15,10 +15,20 @@ const CharacterNameInput: React.FC<CharacterNameInputProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // Explicitly blur the input to prevent any autofocus behavior
-    if (inputRef.current) {
-      inputRef.current.blur();
-    }
+    // Prevent autofocus by blurring immediately and with a delay
+    const preventFocus = () => {
+      if (inputRef.current) {
+        inputRef.current.blur();
+      }
+    };
+
+    // Blur immediately
+    preventFocus();
+    
+    // Also blur after a short delay in case the dialog focuses it later
+    const timeoutId = setTimeout(preventFocus, 10);
+    
+    return () => clearTimeout(timeoutId);
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,7 +46,13 @@ const CharacterNameInput: React.FC<CharacterNameInputProps> = ({
         placeholder="What's this character called?"
         className="p-6 text-lg"
         autoFocus={false}
-        tabIndex={0}
+        tabIndex={-1}
+        onFocus={(e) => {
+          // If the input gets focus unexpectedly, blur it immediately
+          if (document.activeElement === e.target) {
+            e.target.blur();
+          }
+        }}
       />
     </div>
   );
