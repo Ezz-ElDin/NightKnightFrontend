@@ -42,6 +42,12 @@ const NameStep: React.FC<NameStepProps> = ({ name, onNameChange, onNext }) => {
             💡 Enter a name to continue to the next step
           </p>
         )}
+        
+        {name.trim().length > 0 && name.length > MAX_LENGTH && (
+          <p className="text-sm text-red-600">
+            ⚠️ Please shorten the name to continue to the next step
+          </p>
+        )}
       </div>
       
       <CharacterDisclaimer />
