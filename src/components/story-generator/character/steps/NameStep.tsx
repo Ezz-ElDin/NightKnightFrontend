@@ -36,12 +36,6 @@ const NameStep: React.FC<NameStepProps> = ({ name, onNameChange, onNext }) => {
           name={name}
           onNameChange={onNameChange}
         />
-
-        {!isValidName && name.trim().length === 0 && (
-          <p className="text-sm text-gray-500">
-            💡 Enter a name to continue to the next step
-          </p>
-        )}
         
         {name.trim().length > 0 && name.length > MAX_LENGTH && (
           <p className="text-sm text-red-600">
