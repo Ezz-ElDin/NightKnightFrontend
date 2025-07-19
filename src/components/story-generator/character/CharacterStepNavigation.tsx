@@ -54,7 +54,8 @@ const CharacterStepNavigation: React.FC<CharacterStepNavigationProps> = ({
         <Button
           onClick={onNext}
           disabled={!canProceed}
-          className={`${isMobile ? 'flex-1' : ''} bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg`}
+          className={`${isMobile ? 'flex-1' : ''} bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg disabled:opacity-50 disabled:cursor-not-allowed`}
+          title={!canProceed ? "Please enter a valid character name to continue" : ""}
         >
           {isLastStep ? "Create Character" : "Next"}
           {!isLastStep && <ChevronRight className="w-4 h-4 ml-1" />}
