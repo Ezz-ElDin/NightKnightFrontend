@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { 
   FullScreenDialog, 
   FullScreenDialogContent, 
@@ -303,11 +303,9 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
   };
 
   const isCurrentStepValid = () => {
-    const MAX_NAME_LENGTH = 30;
-    
     switch (currentStep) {
       case "name":
-        return name.trim().length > 0 && name.length <= MAX_NAME_LENGTH;
+        return name.trim().length > 0;
       case "role":
         return role.length > 0;
       case "personality":
@@ -402,7 +400,6 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
             selectedRole={role}
             onRoleChange={setRole}
             onNext={handleNext}
-            characterName={name.trim() || undefined}
           />
         );
       case "personality":
@@ -411,7 +408,6 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
             selectedTraits={personality}
             onTraitToggle={togglePersonalityTrait}
             onNext={handleNext}
-            characterName={name.trim() || undefined}
           />
         );
       case "appearance-type":
@@ -422,7 +418,6 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
             onTypeChange={(v: string) => handleAppearanceField("appearanceType", v)}
             onCustomTypeChange={(v: string) => handleAppearanceField("appearanceTypeCustom", v)}
             onNext={handleNext}
-            characterName={name.trim() || undefined}
           />
         );
       case "appearance-age":
@@ -431,7 +426,6 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
             selectedAge={appearanceFields.appearanceAge}
             onAgeChange={(v: string) => handleAppearanceField("appearanceAge", v)}
             onNext={handleNext}
-            characterName={name.trim() || undefined}
           />
         );
       case "appearance-color":
@@ -442,7 +436,6 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
             onColorChange={(v: string) => handleAppearanceField("appearanceColor", v)}
             onCustomColorChange={(v: string) => handleAppearanceField("appearanceColorCustom", v)}
             onNext={handleNext}
-            characterName={name.trim() || undefined}
           />
         );
       case "appearance-eyes":
@@ -453,7 +446,6 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
             onEyesChange={(v: string) => handleAppearanceField("appearanceEyes", v)}
             onCustomEyesChange={(v: string) => handleAppearanceField("appearanceEyesCustom", v)}
             onNext={handleNext}
-            characterName={name.trim() || undefined}
           />
         );
       case "appearance-hair":
@@ -468,7 +460,6 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
             onCustomHairStyleChange={(v: string) => handleAppearanceField("appearanceHairStyleCustom", v)}
             onCustomHairColorChange={(v: string) => handleAppearanceField("appearanceHairColorCustom", v)}
             onNext={handleNext}
-            characterName={name.trim() || undefined}
           />
         );
       case "appearance-accessories":
@@ -477,7 +468,6 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
             accessories={appearanceFields.appearanceAccessories}
             onAccessoriesChange={(v: string[]) => handleAppearanceField("appearanceAccessories", v)}
             onNext={handleNext}
-            characterName={name.trim() || undefined}
           />
         );
       default:

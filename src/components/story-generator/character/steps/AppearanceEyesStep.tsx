@@ -10,7 +10,6 @@ interface AppearanceEyesStepProps {
   onEyesChange: (eyes: string) => void;
   onCustomEyesChange: (eyes: string) => void;
   onNext: () => void;
-  characterName?: string;
 }
 
 const EYES_OPTIONS = [
@@ -33,8 +32,7 @@ const AppearanceEyesStep: React.FC<AppearanceEyesStepProps> = ({
   customEyes, 
   onEyesChange, 
   onCustomEyesChange, 
-  onNext,
-  characterName 
+  onNext 
 }) => {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && selectedEyes) {
@@ -42,19 +40,11 @@ const AppearanceEyesStep: React.FC<AppearanceEyesStepProps> = ({
     }
   };
 
-  const questionText = characterName 
-    ? `What eye colour does ${characterName} have?`
-    : "What eye colour does your character have?";
-
-  const descriptionText = characterName
-    ? `Choose the eye colour that fits ${characterName} best!`
-    : "Choose the eye colour that fits your character best!";
-
   return (
     <div className="space-y-6" onKeyDown={handleKeyDown}>
       <div className="space-y-4">
-        <Label className="text-2xl font-semibold">{questionText}</Label>
-        <p className="text-gray-600">{descriptionText}</p>
+        <Label className="text-2xl font-semibold">What eye colour does your character have?</Label>
+        <p className="text-gray-600">Choose the eye colour that fits your character best!</p>
         
         <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
           {EYES_OPTIONS.map(eyes => (
