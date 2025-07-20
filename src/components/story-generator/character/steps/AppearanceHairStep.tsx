@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,7 @@ interface AppearanceHairStepProps {
   onCustomHairStyleChange: (style: string) => void;
   onCustomHairColorChange: (color: string) => void;
   onNext: () => void;
+  characterName: string;
 }
 
 const HAIR_STYLE_OPTIONS = [
@@ -50,7 +52,8 @@ const AppearanceHairStep: React.FC<AppearanceHairStepProps> = ({
   onHairColorChange,
   onCustomHairStyleChange,
   onCustomHairColorChange,
-  onNext 
+  onNext,
+  characterName
 }) => {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
@@ -61,8 +64,8 @@ const AppearanceHairStep: React.FC<AppearanceHairStepProps> = ({
   return (
     <div className="space-y-6" onKeyDown={handleKeyDown}>
       <div className="space-y-4">
-        <Label className="text-2xl font-semibold">What does your character's hair look like?</Label>
-        <p className="text-gray-600">Choose the hair style and colour that fits your character!</p>
+        <Label className="text-2xl font-semibold">What does {characterName}'s hair look like?</Label>
+        <p className="text-gray-600">Choose the hair style and colour that fits {characterName}!</p>
         
         {/* Hair Style Selection */}
         <div className="space-y-3">

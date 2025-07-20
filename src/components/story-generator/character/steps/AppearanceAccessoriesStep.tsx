@@ -8,6 +8,7 @@ interface AppearanceAccessoriesStepProps {
   accessories: string[];
   onAccessoriesChange: (accessories: string[]) => void;
   onNext: () => void;
+  characterName: string;
 }
 
 const ACCESSORY_OPTIONS = [
@@ -32,7 +33,8 @@ const ACCESSORY_OPTIONS = [
 const AppearanceAccessoriesStep: React.FC<AppearanceAccessoriesStepProps> = ({ 
   accessories, 
   onAccessoriesChange, 
-  onNext 
+  onNext,
+  characterName
 }) => {
   const [customAccessory, setCustomAccessory] = React.useState("");
   const [showCustomInput, setShowCustomInput] = React.useState(false);
@@ -86,8 +88,8 @@ const AppearanceAccessoriesStep: React.FC<AppearanceAccessoriesStepProps> = ({
   return (
     <div className="space-y-6" onKeyDown={handleKeyDown}>
       <div className="space-y-4">
-        <Label className="text-2xl font-semibold">What accessories does your character have?</Label>
-        <p className="text-gray-600">Add special items, clothing, or features that make your character unique!</p>
+        <Label className="text-2xl font-semibold">What accessories does {characterName} have?</Label>
+        <p className="text-gray-600">Add special items, clothing, or features that make {characterName} unique!</p>
         
         <div className="space-y-4">
           <Label className="text-lg font-medium">Select Accessories (you can choose multiple)</Label>

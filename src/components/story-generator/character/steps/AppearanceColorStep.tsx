@@ -10,6 +10,7 @@ interface AppearanceColorStepProps {
   onColorChange: (color: string) => void;
   onCustomColorChange: (color: string) => void;
   onNext: () => void;
+  characterName: string;
 }
 
 const COLOR_OPTIONS = [
@@ -32,7 +33,8 @@ const AppearanceColorStep: React.FC<AppearanceColorStepProps> = ({
   customColor, 
   onColorChange, 
   onCustomColorChange, 
-  onNext 
+  onNext,
+  characterName
 }) => {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && selectedColor) {
@@ -43,8 +45,8 @@ const AppearanceColorStep: React.FC<AppearanceColorStepProps> = ({
   return (
     <div className="space-y-6" onKeyDown={handleKeyDown}>
       <div className="space-y-4">
-        <Label className="text-2xl font-semibold">What skin colour is your character?</Label>
-        <p className="text-gray-600">Choose the main skin colour that describes your character!</p>
+        <Label className="text-2xl font-semibold">What skin colour is {characterName}?</Label>
+        <p className="text-gray-600">Choose the main skin colour that describes {characterName}!</p>
         
         <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
           {COLOR_OPTIONS.map(color => (
