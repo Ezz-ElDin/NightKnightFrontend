@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { 
   FullScreenDialog, 
   FullScreenDialogContent, 
@@ -402,6 +402,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
             selectedRole={role}
             onRoleChange={setRole}
             onNext={handleNext}
+            characterName={name.trim() || undefined}
           />
         );
       case "personality":
@@ -410,6 +411,7 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
             selectedTraits={personality}
             onTraitToggle={togglePersonalityTrait}
             onNext={handleNext}
+            characterName={name.trim() || undefined}
           />
         );
       case "appearance-type":
