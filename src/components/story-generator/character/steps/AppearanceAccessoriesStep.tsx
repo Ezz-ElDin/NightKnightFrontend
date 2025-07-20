@@ -1,129 +1,96 @@
 
 import React from "react";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+
+const ACCESSORY_OPTIONS = [
+  { value: "crown", label: "Crown", emoji: "👑" },
+  { value: "hat", label: "Hat", emoji: "🎩" },
+  { value: "glasses", label: "Glasses", emoji: "👓" },
+  { value: "necklace", label: "Necklace", emoji: "📿" },
+  { value: "cape", label: "Cape", emoji: "🦸" },
+  { value: "wings", label: "Wings", emoji: "🪶" },
+  { value: "sword", label: "Sword", emoji: "⚔️" },
+  { value: "wand", label: "Wand", emoji: "🪄" },
+  { value: "shield", label: "Shield", emoji: "🛡️" },
+  { value: "bow", label: "Bow", emoji: "🏹" },
+  { value: "backpack", label: "Backpack", emoji: "🎒" },
+  { value: "boots", label: "Boots", emoji: "👢" },
+  { value: "scarf", label: "Scarf", emoji: "🧣" },
+  { value: "gloves", label: "Gloves", emoji: "🧤" },
+  { value: "belt", label: "Belt", emoji: "👓" },
+];
 
 interface AppearanceAccessoriesStepProps {
   accessories: string[];
   onAccessoriesChange: (accessories: string[]) => void;
   onNext: () => void;
+  characterName?: string;
 }
 
-const ACCESSORY_OPTIONS = [
-  { value: "crown", label: "Crown", emoji: "👑", verb: "wearing" },
-  { value: "hat", label: "Hat", emoji: "🎩", verb: "wearing" },
-  { value: "glasses", label: "Glasses", emoji: "👓", verb: "wearing" },
-  { value: "necklace", label: "Necklace", emoji: "📿", verb: "wearing" },
-  { value: "cape", label: "Cape", emoji: "🦸", verb: "wearing" },
-  { value: "wings", label: "Wings", emoji: "🪶", verb: "having" },
-  { value: "sword", label: "Sword", emoji: "⚔️", verb: "holding" },
-  { value: "wand", label: "Wand", emoji: "🪄", verb: "holding" },
-  { value: "shield", label: "Shield", emoji: "🛡️", verb: "holding" },
-  { value: "bow", label: "Bow", emoji: "🏹", verb: "holding" },
-  { value: "backpack", label: "Backpack", emoji: "🎒", verb: "wearing" },
-  { value: "boots", label: "Boots", emoji: "👢", verb: "wearing" },
-  { value: "scarf", label: "Scarf", emoji: "🧣", verb: "wearing" },
-  { value: "gloves", label: "Gloves", emoji: "🧤", verb: "wearing" },
-  { value: "headphones", label: "Headphones", emoji: "🎧", verb: "wearing" },
-  { value: "other", label: "Other", emoji: "✨", verb: "having" },
-];
-
-const AppearanceAccessoriesStep: React.FC<AppearanceAccessoriesStepProps> = ({ 
-  accessories, 
-  onAccessoriesChange, 
-  onNext 
+const AppearanceAccessoriesStep: React.FC<AppearanceAccessoriesStepProps> = ({
+  accessories,
+  onAccessoriesChange,
+  onNext,
+  characterName,
 }) => {
-  const [customAccessory, setCustomAccessory] = React.useState("");
-  const [showCustomInput, setShowCustomInput] = React.useState(false);
+  const displayName = characterName || "your character";
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      onNext();
-    }
-  };
-
-  const handleAccessoryToggle = (accessory: string) => {
-    if (accessory === "other") {
-      if (showCustomInput) {
-        // Deselecting "other" - hide input and remove custom accessory
-        setShowCustomInput(false);
-        setCustomAccessory("");
-        // Remove any custom accessories from the list
-        const predefinedAccessories = accessories.filter(acc => 
-          ACCESSORY_OPTIONS.some(opt => opt.value === acc)
-        );
-        onAccessoriesChange(predefinedAccessories);
-      } else {
-        // Selecting "other" - show input
-        setShowCustomInput(true);
-      }
-      return;
-    }
-    
-    if (accessories.includes(accessory)) {
-      onAccessoriesChange(accessories.filter(a => a !== accessory));
-    } else {
+  const handleAccessoryToggle = (accessory: string, checked: boolean) => {
+    if (checked) {
       onAccessoriesChange([...accessories, accessory]);
-    }
-  };
-
-  const handleCustomAccessoryChange = (value: string) => {
-    setCustomAccessory(value);
-    
-    // Remove any previous custom accessories and add the new one
-    const predefinedAccessories = accessories.filter(acc => 
-      ACCESSORY_OPTIONS.some(opt => opt.value === acc)
-    );
-    
-    if (value.trim()) {
-      onAccessoriesChange([...predefinedAccessories, value.trim()]);
     } else {
-      onAccessoriesChange(predefinedAccessories);
+      onAccessoriesChange(accessories.filter((a) => a !== accessory));
     }
   };
 
   return (
-    <div className="space-y-6" onKeyDown={handleKeyDown}>
-      <div className="space-y-4">
-        <Label className="text-2xl font-semibold">What accessories does your character have?</Label>
-        <p className="text-gray-600">Add special items, clothing, or features that make your character unique!</p>
-        
-        <div className="space-y-4">
-          <Label className="text-lg font-medium">Select Accessories (you can choose multiple)</Label>
-          <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
-            {ACCESSORY_OPTIONS.map(accessory => (
-              <Button
-                key={accessory.value}
-                variant={accessories.includes(accessory.value) || (accessory.value === "other" && showCustomInput) ? "default" : "outline"}
-                onClick={() => handleAccessoryToggle(accessory.value)}
-                className={`h-16 p-2 flex flex-col items-center justify-center space-y-1 text-sm font-medium transition-all duration-200 ${
-                  accessories.includes(accessory.value) || (accessory.value === "other" && showCustomInput)
-                    ? "ring-2 ring-purple-500 ring-offset-2 scale-105" 
-                    : "hover:scale-105 hover:shadow-md"
-                }`}
-              >
-                <span className="text-2xl">{accessory.emoji}</span>
-                <span className="text-xs">{accessory.label}</span>
-              </Button>
-            ))}
-          </div>
-          
-          {showCustomInput && (
-            <Input
-              value={customAccessory}
-              onChange={(e) => handleCustomAccessoryChange(e.target.value)}
-              placeholder="e.g., a magical crown, sparkly wings, a special necklace..."
-              className="p-4 text-lg"
-            />
-          )}
-        </div>
+    <div className="space-y-8">
+      <div className="text-center space-y-4">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
+          What accessories does {displayName} have?
+        </h2>
+        <p className="text-gray-600 max-w-2xl mx-auto">
+          Choose any accessories that {displayName} might wear or carry. You can select multiple items or none at all.
+        </p>
+      </div>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-          <p className="text-blue-800 text-sm">
-            💡 <strong>Tip:</strong> Click on emoji props to select them (you can choose multiple), or choose "Other" to describe something unique!
-          </p>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {ACCESSORY_OPTIONS.map((option) => (
+          <div key={option.value} className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-gray-50">
+            <Checkbox
+              id={`accessory-${option.value}`}
+              checked={accessories.includes(option.value)}
+              onCheckedChange={(checked) => 
+                handleAccessoryToggle(option.value, checked as boolean)
+              }
+            />
+            <Label
+              htmlFor={`accessory-${option.value}`}
+              className="flex items-center gap-2 cursor-pointer"
+            >
+              <span className="text-xl">{option.emoji}</span>
+              <span>{option.label}</span>
+            </Label>
+          </div>
+        ))}
+      </div>
+
+      {accessories.length > 0 && (
+        <div className="text-center text-sm text-gray-600">
+          Selected: {accessories.length} {accessories.length === 1 ? 'accessory' : 'accessories'}
         </div>
+      )}
+
+      <div className="flex justify-center pt-6">
+        <Button
+          onClick={onNext}
+          size="lg"
+          className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-3"
+        >
+          Continue
+        </Button>
       </div>
     </div>
   );
