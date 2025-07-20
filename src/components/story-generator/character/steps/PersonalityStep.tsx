@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Label } from "@/components/ui/label";
-import { PersonalitySelector } from "../PersonalitySelector";
+import PersonalitySelector from "../PersonalitySelector";
 
 interface PersonalityStepProps {
   selectedTraits: string[];
