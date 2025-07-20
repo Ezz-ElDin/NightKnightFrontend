@@ -8,6 +8,7 @@ interface AppearanceAgeStepProps {
   selectedAge: string;
   onAgeChange: (age: string) => void;
   onNext: () => void;
+  characterName?: string;
 }
 
 const AGE_OPTIONS = [
@@ -18,18 +19,31 @@ const AGE_OPTIONS = [
   { value: "elderly", label: "Elderly", emoji: "👴" },
 ];
 
-const AppearanceAgeStep: React.FC<AppearanceAgeStepProps> = ({ selectedAge, onAgeChange, onNext }) => {
+const AppearanceAgeStep: React.FC<AppearanceAgeStepProps> = ({ 
+  selectedAge, 
+  onAgeChange, 
+  onNext,
+  characterName 
+}) => {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && selectedAge) {
       onNext();
     }
   };
 
+  const questionText = characterName 
+    ? `How old is ${characterName}?`
+    : "How old is your character?";
+
+  const descriptionText = characterName
+    ? `Choose the age range that fits ${characterName} best!`
+    : "Choose the age range that fits your character best!";
+
   return (
     <div className="space-y-6" onKeyDown={handleKeyDown}>
       <div className="space-y-4">
-        <Label className="text-2xl font-semibold">How old is your character?</Label>
-        <p className="text-gray-600">Choose the age range that fits your character best!</p>
+        <Label className="text-2xl font-semibold">{questionText}</Label>
+        <p className="text-gray-600">{descriptionText}</p>
         
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {AGE_OPTIONS.map(age => (

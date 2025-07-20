@@ -10,6 +10,7 @@ interface AppearanceTypeStepProps {
   onTypeChange: (type: string) => void;
   onCustomTypeChange: (type: string) => void;
   onNext: () => void;
+  characterName?: string;
 }
 
 const TYPE_OPTIONS = [
@@ -36,7 +37,8 @@ const AppearanceTypeStep: React.FC<AppearanceTypeStepProps> = ({
   customType, 
   onTypeChange, 
   onCustomTypeChange, 
-  onNext 
+  onNext,
+  characterName 
 }) => {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && selectedType) {
@@ -44,11 +46,19 @@ const AppearanceTypeStep: React.FC<AppearanceTypeStepProps> = ({
     }
   };
 
+  const questionText = characterName 
+    ? `What type of character is ${characterName}?`
+    : "What type of character is this?";
+
+  const descriptionText = characterName
+    ? `Choose what kind of being ${characterName} is!`
+    : "Choose what kind of being your character is!";
+
   return (
     <div className="space-y-6" onKeyDown={handleKeyDown}>
       <div className="space-y-4">
-        <Label className="text-2xl font-semibold">What type of character is this?</Label>
-        <p className="text-gray-600">Choose what kind of being your character is!</p>
+        <Label className="text-2xl font-semibold">{questionText}</Label>
+        <p className="text-gray-600">{descriptionText}</p>
         
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {TYPE_OPTIONS.map(type => (
