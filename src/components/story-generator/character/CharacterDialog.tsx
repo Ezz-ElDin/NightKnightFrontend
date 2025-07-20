@@ -303,9 +303,11 @@ const CharacterDialog: React.FC<CharacterDialogProps> = ({
   };
 
   const isCurrentStepValid = () => {
+    const MAX_NAME_LENGTH = 30;
+    
     switch (currentStep) {
       case "name":
-        return name.trim().length > 0;
+        return name.trim().length > 0 && name.length <= MAX_NAME_LENGTH;
       case "role":
         return role.length > 0;
       case "personality":
