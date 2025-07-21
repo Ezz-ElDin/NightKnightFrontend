@@ -1,3 +1,4 @@
+
 // --- ENUM MAPPINGS for backend fields ---
 export const LANGUAGE_MAP: Record<string, string> = {
   "English": "british_english",
@@ -6,29 +7,29 @@ export const LANGUAGE_MAP: Record<string, string> = {
 };
 
 export const THEME_MAP: Record<string, string> = {
-  "fantasy": "fantasy",
-  "animals": "animal",
-  "space": "space",
-  "daily": "routine",
-  "exploration": "exploration",
-  "whimsical": "imagination",
+  "fantasy": "fantasy worlds",
+  "animals": "animal adventures",
+  "space": "space and science fiction",
+  "daily": "daily life and routine",
+  "exploration": "exploration and travel",
+  "whimsical": "whimsical imagination",
 };
 
 export const TONE_MAP: Record<string, string> = {
-  "playful": "playful",
-  "calm": "soothing",
-  "exciting": "adventurous",
-  "kind": "friendly",
-  "inspirational": "inspirational",
-  "educational": "educational",
+  "playful": "playful and funny",
+  "calm": "calm and soothing",
+  "exciting": "exciting and adventurous",
+  "kind": "kind and friendly",
+  "inspirational": "inspirational and uplifting",
+  "educational": "educational and thoughtful",
 };
 
 export const NARRATIVE_MAP: Record<string, string> = {
-  "classic": "classic",
-  "rhyming": "rhyming",
-  "dialogue": "dialogue",
-  "simple": "simple",
-  "dreamy": "dreamy",
+  "classic": "classic storybook",
+  "rhyming": "rhyming and repetitive",
+  "dialogue": "dialogue-driven",
+  "simple": "simple and easy",
+  "dreamy": "dreamy and poetic",
 };
 
 export const ILLUSTRATION_MAP: Record<string, string> = {
@@ -53,10 +54,10 @@ export const PERSONALITY_TRAITS_MAP: Record<string, string> = {
 };
 
 export const CARD_MAPPINGS: Record<string, { theme: string, tone: string, narrative: string }> = {
-  "magic-worlds":     { theme: "fantasy",  tone: "soothing",    narrative: "dreamy" },
-  "animal-adventures":{ theme: "animal",   tone: "playful",     narrative: "rhyming" },
-  "exploring-beyond": { theme: "exploration", tone: "adventurous", narrative: "dialogue" },
-  "real-life-moments":{ theme: "routine",  tone: "educational", narrative: "simple" },
+  "magic-worlds":     { theme: "fantasy worlds",  tone: "calm and soothing",    narrative: "dreamy and poetic" },
+  "animal-adventures":{ theme: "animal adventures",   tone: "playful and funny",     narrative: "rhyming and repetitive" },
+  "exploring-beyond": { theme: "exploration and travel", tone: "exciting and adventurous", narrative: "dialogue-driven" },
+  "real-life-moments":{ theme: "daily life and routine",  tone: "educational and thoughtful", narrative: "simple and easy" },
 };
 
 export const CREATIVE_STEPS = [
