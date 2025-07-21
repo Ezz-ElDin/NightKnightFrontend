@@ -1,4 +1,3 @@
-
 import React from "react";
 import { LANGUAGES } from "./constants";
 import {
@@ -14,12 +13,11 @@ interface LanguageSelectorProps {
   setLanguage: (lang: string) => void;
 }
 
-const ALLOWED_LANGUAGES = ["English", "French", "Arabic"];
+const ALLOWED_LANGUAGES = ["English", "Arabic"];
 
 // Language to flag mapping
 const LANGUAGE_FLAGS: Record<string, string> = {
   "English": "🇬🇧", // UK flag
-  "French": "🇫🇷",
   "Arabic": "🇪🇬", // Egyptian flag
 };
 

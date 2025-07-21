@@ -12,7 +12,7 @@ interface StoryModeStepProps {
   setAgeRange: (range: string) => void;
 }
 
-const ALLOWED_LANGUAGES = ["English", "French", "Arabic"];
+const ALLOWED_LANGUAGES = ["English", "Arabic"];
 
 const StoryModeStep: React.FC<StoryModeStepProps> = ({
   mode,
