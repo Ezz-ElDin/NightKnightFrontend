@@ -14,6 +14,10 @@ interface AppearanceTypeStepProps {
 }
 
 const TYPE_OPTIONS = [
+  { value: "boy", label: "Boy", emoji: "👦" },
+  { value: "girl", label: "Girl", emoji: "👧" },
+  { value: "man", label: "Man", emoji: "👨" },
+  { value: "woman", label: "Woman", emoji: "👩" },
   { value: "princess", label: "Princess", emoji: "👸" },
   { value: "knight", label: "Knight", emoji: "🛡️" },
   { value: "wizard", label: "Wizard", emoji: "🧙‍♂️" },
