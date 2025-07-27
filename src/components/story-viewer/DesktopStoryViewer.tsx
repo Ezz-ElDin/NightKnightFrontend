@@ -115,12 +115,12 @@ const DesktopStoryViewer: React.FC<DesktopStoryViewerProps> = ({
           <StoryNavigation
             onBack={goBack}
             onPrevPage={() => setPage(Math.max(0, page - 1))}
-            onNextPage={() => setPage(Math.min(numPages - 1, page + 1))}
+            onNextPage={() => setPage(Math.min(story.pages.length, page + 1))} // Allow navigation to end page
             onToggleFullscreen={handleToggleFullscreen}
             onExport={handleExport}
             isFullscreen={isFullscreen}
             canPrev={page > 0}
-            canNext={page < numPages - 1}
+            canNext={page < story.pages.length} // Can go next until we reach the end page
             canExport={canExport}
             isExporting={isExporting}
             page={page}

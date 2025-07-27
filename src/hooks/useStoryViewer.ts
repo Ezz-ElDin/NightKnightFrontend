@@ -69,8 +69,8 @@ export const useStoryViewer = () => {
       if (e.key === "ArrowLeft") {
         setPage(prev => Math.max(0, prev - 1));
       } else if (e.key === "ArrowRight") {
-        if (data && page < (data.pages.length - 1)) {
-          setPage(prev => Math.min(data.pages.length - 1, prev + 1));
+        if (data && page < data.pages.length) { // Allow navigation to end page
+          setPage(prev => Math.min(data.pages.length, prev + 1));
         }
       }
     };
@@ -83,9 +83,9 @@ export const useStoryViewer = () => {
 
   // Computed values
   const story = data;
-  const numPages = story ? story.pages.length + 1 : 0;
+  const numPages = story ? story.pages.length + 1 : 0; // Include end page in total
   const currentPage = story && page < story.pages.length ? story.pages[page] : null;
-  const isEndPage = story && page === story.pages.length;
+  const isEndPage = story && page === story.pages.length; // End page is at index pages.length
   const rtl = currentPage && story && (isArabic(story.title) || isArabic(currentPage.text));
   const canExport = false;
 
