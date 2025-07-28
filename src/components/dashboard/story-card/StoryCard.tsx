@@ -6,6 +6,34 @@ import { StoryCardProps } from "./types";
 import StoryCardImage from "./StoryCardImage";
 import StoryCardContent from "./StoryCardContent";
 
+// Helper function to beautify language values
+const beautifyLanguage = (language: string): string => {
+  switch (language) {
+    case "egyptian_arabic":
+      return "Arabic";
+    case "british_english":
+      return "English";
+    default:
+      return language;
+  }
+};
+
+// Helper function to beautify theme values
+const beautifyTheme = (theme: string): string => {
+  switch (theme) {
+    case "animal adventures":
+      return "Animal Adventures";
+    case "space and science fiction":
+      return "Space & Science Fiction";
+    case "daily life and routine":
+      return "Daily Life & Routine";
+    case "fantasy worlds":
+      return "Fantasy Worlds";
+    default:
+      return theme;
+  }
+};
+
 const StoryCard: React.FC<StoryCardProps> = ({ story, isFavourite, onClick, onFavourite, onDelete }) => {
   const handleHeartClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -36,13 +64,13 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, isFavourite, onClick, onFa
         {story.language && (
           <Badge variant="outline" className="bg-story-blue/10 text-story-blue border-story-blue/20 text-xs flex items-center gap-1">
             <Globe className="h-3 w-3" />
-            {story.language}
+            {beautifyLanguage(story.language)}
           </Badge>
         )}
         {story.theme && (
           <Badge variant="outline" className="bg-story-purple/10 text-story-purple border-story-purple/20 text-xs flex items-center gap-1">
             <BookOpen className="h-3 w-3" />
-            {story.theme}
+            {beautifyTheme(story.theme)}
           </Badge>
         )}
       </div>
