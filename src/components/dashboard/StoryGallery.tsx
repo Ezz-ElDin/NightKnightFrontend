@@ -7,6 +7,9 @@ interface Story {
   coverUrl: string;
   createdAt: string;
   is_favourite: boolean;
+  status: string;
+  language: string;
+  theme: string;
 }
 
 interface StoryGalleryProps {
