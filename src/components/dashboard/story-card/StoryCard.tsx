@@ -1,6 +1,7 @@
 
 import { useState } from "react";
-import { Heart } from "lucide-react";
+import { Heart, Globe, BookOpen } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { StoryCardProps } from "./types";
 import StoryCardImage from "./StoryCardImage";
 import StoryCardContent from "./StoryCardContent";
@@ -29,6 +30,22 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, isFavourite, onClick, onFa
         title={story.title}
         createdAt={story.createdAt}
       />
+
+      {/* Tags section */}
+      <div className="px-4 pb-4 flex flex-wrap gap-2">
+        {story.language && (
+          <Badge variant="outline" className="bg-story-blue/10 text-story-blue border-story-blue/20 text-xs flex items-center gap-1">
+            <Globe className="h-3 w-3" />
+            {story.language}
+          </Badge>
+        )}
+        {story.theme && (
+          <Badge variant="outline" className="bg-story-purple/10 text-story-purple border-story-purple/20 text-xs flex items-center gap-1">
+            <BookOpen className="h-3 w-3" />
+            {story.theme}
+          </Badge>
+        )}
+      </div>
 
       {/* Heart icon positioned at bottom right */}
       <button

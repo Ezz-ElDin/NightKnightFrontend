@@ -3,8 +3,12 @@ export interface StoryCardProps {
   story: {
     id: number;
     title: string;
-    coverUrl?: string;
+    coverUrl: string;
     createdAt: string;
+    is_favourite: boolean;
+    status: string;
+    language: string;
+    theme: string;
   };
   isFavourite: boolean;
   onClick?: () => void;
@@ -13,7 +17,7 @@ export interface StoryCardProps {
 }
 
 export interface StoryCardImageProps {
-  coverUrl?: string;
+  coverUrl: string;
   title: string;
 }
 

@@ -130,6 +130,8 @@ export interface Story {
   createdAt: string;
   is_favourite: boolean;
   status: string;
+  language: string;
+  theme: string;
 }
 
 // === STORIES API ===
@@ -178,6 +180,8 @@ const normalizeStory = (raw: any): Story => ({
   createdAt: raw.created_at,
   is_favourite: raw.is_favourite,
   status: raw.status,
+  language: raw.language,
+  theme: raw.theme,
 });
 
 // Map backend story GET /api/stories/:id/ to StoryDetails
