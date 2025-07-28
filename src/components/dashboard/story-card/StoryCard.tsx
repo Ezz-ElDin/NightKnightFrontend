@@ -54,25 +54,58 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, isFavourite, onClick, onFa
         title={story.title}
       />
       
-      <StoryCardContent
-        title={story.title}
-        createdAt={story.createdAt}
-      />
-
-      {/* Tags section */}
-      <div className="px-4 pb-4 flex flex-wrap gap-2">
-        {story.language && (
-          <Badge variant="outline" className="bg-story-blue/10 text-story-blue border-story-blue/20 text-xs flex items-center gap-1">
-            <Globe className="h-3 w-3" />
-            {beautifyLanguage(story.language)}
-          </Badge>
-        )}
-        {story.theme && (
-          <Badge variant="outline" className="bg-story-purple/10 text-story-purple border-story-purple/20 text-xs flex items-center gap-1">
-            <BookOpen className="h-3 w-3" />
-            {beautifyTheme(story.theme)}
-          </Badge>
-        )}
+      <div className="p-4 flex-1 flex flex-col">
+        <h3
+          className={
+            "font-bold text-lg line-clamp-2 mb-2 " +
+            (story.title && /[\u0600-\u06FF]/.test(story.title) ? "rtl text-right font-ghibli" : "")
+          }
+          dir={story.title && /[\u0600-\u06FF]/.test(story.title) ? "rtl" : "ltr"}
+        >
+          {story.title}
+        </h3>
+        
+        {/* Language and Theme tags */}
+        <div className="flex flex-wrap gap-2 mb-3">
+          {story.language && (
+            <Badge variant="outline" className="bg-story-blue/10 text-story-blue border-story-blue/20 text-xs flex items-center gap-1">
+              <Globe className="h-3 w-3" />
+              {beautifyLanguage(story.language)}
+            </Badge>
+          )}
+          {story.theme && (
+            <Badge variant="outline" className="bg-story-purple/10 text-story-purple border-story-purple/20 text-xs flex items-center gap-1">
+              <BookOpen className="h-3 w-3" />
+              {beautifyTheme(story.theme)}
+            </Badge>
+          )}
+        </div>
+        
+        {/* Timestamp - smaller and at bottom */}
+        <div className="flex items-center gap-2 mt-auto">
+          <span className="inline-block px-2 py-1 text-xs rounded-full bg-[#eeeaf7] text-story-purple/60 shadow-sm">
+            {(() => {
+              const date = new Date(story.createdAt);
+              const dateOptions: Intl.DateTimeFormatOptions = {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              };
+              const timeOptions: Intl.DateTimeFormatOptions = {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: true,
+              };
+              return (
+                <>
+                  <span className="font-medium">{date.toLocaleDateString(undefined, dateOptions)}</span>
+                  <span className="mx-1 text-gray-400">·</span>
+                  <span className="">{date.toLocaleTimeString(undefined, timeOptions)}</span>
+                </>
+              );
+            })()}
+          </span>
+        </div>
       </div>
 
       {/* Heart icon positioned at bottom right */}
