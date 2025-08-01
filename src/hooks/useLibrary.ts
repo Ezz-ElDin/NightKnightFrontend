@@ -187,6 +187,7 @@ export const useLibrary = () => {
     showSuccessBanner,
     showGeneratingBanner,
     generatingStoryId,
+    generatingStoryStatus,
     page,
     
     // Data
