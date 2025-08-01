@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { storiesApi, StoryDetails } from "@/lib/api";
@@ -8,6 +8,8 @@ import { X, Download, Loader2 } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useImagePreloader } from "@/hooks/useImagePreloader";
 import clsx from "clsx";
 
 const isArabic = (text: string) => /[\u0600-\u06FF]/.test(text);
@@ -17,7 +19,9 @@ const MobileStoryViewer = () => {
   const { storyId } = useParams<{ storyId?: string }>();
   const [showComingSoonDialog, setShowComingSoonDialog] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
+  const [loadedPages, setLoadedPages] = useState<Set<number>>(new Set());
   const { toast } = useToast();
+  const { preloadImages } = useImagePreloader();
 
   // Fetch story data via react-query
   const { data, isLoading, isError } = useQuery({
@@ -26,7 +30,20 @@ const MobileStoryViewer = () => {
     enabled: !!storyId
   });
 
-  const canExport = false; // Commented out export functionality for mobile view
+  // Preload all images when story data is available
+  useEffect(() => {
+    if (data?.pages) {
+      const imageUrls = data.pages
+        .map(page => page.image_url)
+        .filter(Boolean);
+      
+      if (imageUrls.length > 0) {
+        preloadImages(imageUrls);
+      }
+    }
+  }, [data, preloadImages]);
+
+  const canExport = false;
 
   // Export functionality
   const handleExport = async () => {
@@ -74,6 +91,10 @@ const MobileStoryViewer = () => {
     }
     
     return formattedSentences;
+  };
+
+  const handleImageLoad = (pageIndex: number) => {
+    setLoadedPages(prev => new Set(prev).add(pageIndex));
   };
 
   if (isLoading) {
@@ -129,80 +150,93 @@ const MobileStoryViewer = () => {
         {/* Scrollable Content Container */}
         <div className="h-full overflow-y-auto overscroll-contain">
           <div className="max-w-2xl mx-auto px-6 pt-16 pb-8">
-            {/* Story Pages - First page serves as cover */}
-            {story.pages?.map((page, index) => (
-              <div key={index}>
-                {/* Page Separator - Skip for first page */}
-                {index > 0 && (
-                  <div className="flex justify-center py-2">
-                    <Separator className="w-32 bg-gray-200" />
-                  </div>
-                )}
-                
-                <div className="py-2">
-                  {/* First page gets title treatment */}
-                  {index === 0 && (
-                    <div className="mb-4">
-                      <h1 className={clsx(
-                        "text-3xl md:text-4xl font-bold text-center leading-tight text-gray-900",
-                        isArabicStory && "font-cairo"
-                      )} dir={isArabicStory ? "rtl" : "ltr"}>
-                        {story.title}
-                      </h1>
-                    </div>
-                  )}
-
-                  {/* Text - Only for non-first pages */}
+            {/* Story Pages with synchronized loading */}
+            {story.pages?.map((page, index) => {
+              const isPageLoaded = loadedPages.has(index);
+              
+              return (
+                <div key={index}>
+                  {/* Page Separator - Skip for first page */}
                   {index > 0 && (
-                    <div className={clsx(
-                      "mb-4",
-                      isArabicStory && "text-right"
-                    )} dir={isArabicStory ? "rtl" : "ltr"}>
-                      <div className="space-y-3">
-                        {formatTextWithLineBreaks(page.text).map((sentence, sentenceIndex) => (
-                          <p 
-                            key={sentenceIndex} 
-                            className={clsx(
-                              "text-lg leading-relaxed font-medium text-gray-800",
-                              isArabicStory ? "text-right font-cairo" : "text-left"
-                            )}
-                            style={{ wordBreak: "break-word" }}
-                          >
-                            {sentence}
-                          </p>
-                        ))}
-                      </div>
+                    <div className="flex justify-center py-2">
+                      <Separator className="w-32 bg-gray-200" />
                     </div>
                   )}
                   
-                  {/* Image for all pages */}
-                  <div className="mb-4">
-                    <div className="relative w-full aspect-[4/3] bg-[#e8eafd] rounded-xl overflow-hidden shadow-lg">
-                      <img
-                        src={page.image_url}
-                        alt={index === 0 ? story.title : `Page ${index + 1} illustration`}
-                        className="w-full h-full object-cover"
-                      />
+                  <div className={clsx(
+                    "py-2 transition-opacity duration-300",
+                    isPageLoaded || index === 0 ? "opacity-100" : "opacity-50"
+                  )}>
+                    {/* First page gets title treatment */}
+                    {index === 0 && (
+                      <div className="mb-4">
+                        <h1 className={clsx(
+                          "text-3xl md:text-4xl font-bold text-center leading-tight text-gray-900",
+                          isArabicStory && "font-cairo"
+                        )} dir={isArabicStory ? "rtl" : "ltr"}>
+                          {story.title}
+                        </h1>
+                      </div>
+                    )}
+
+                    {/* Text - Only for non-first pages */}
+                    {index > 0 && (
+                      <div className={clsx(
+                        "mb-4",
+                        isArabicStory && "text-right"
+                      )} dir={isArabicStory ? "rtl" : "ltr"}>
+                        <div className="space-y-3">
+                          {formatTextWithLineBreaks(page.text).map((sentence, sentenceIndex) => (
+                            <p 
+                              key={sentenceIndex} 
+                              className={clsx(
+                                "text-lg leading-relaxed font-medium text-gray-800",
+                                isArabicStory ? "text-right font-cairo" : "text-left"
+                              )}
+                              style={{ wordBreak: "break-word" }}
+                            >
+                              {sentence}
+                            </p>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Image for all pages with loading state */}
+                    <div className="mb-4">
+                      <div className="relative w-full aspect-[4/3] bg-[#e8eafd] rounded-xl overflow-hidden shadow-lg">
+                        {!isPageLoaded && (
+                          <Skeleton className="absolute inset-0 w-full h-full" />
+                        )}
+                        <img
+                          src={page.image_url}
+                          alt={index === 0 ? story.title : `Page ${index + 1} illustration`}
+                          className={clsx(
+                            "w-full h-full object-cover transition-opacity duration-300",
+                            isPageLoaded ? "opacity-100" : "opacity-0"
+                          )}
+                          onLoad={() => handleImageLoad(index)}
+                          onError={() => handleImageLoad(index)} // Show content even if image fails
+                        />
+                      </div>
+                    </div>
+
+                    {/* Subtle Page Number */}
+                    <div className="flex justify-center py-1">
+                      <span className="text-sm text-gray-400">{index + 1}</span>
                     </div>
                   </div>
-
-                  {/* Subtle Page Number */}
-                  <div className="flex justify-center py-1">
-                    <span className="text-sm text-gray-400">{index + 1}</span>
-                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
 
             {/* The End Page */}
             <div>
-              {/* Page Separator */}
               <div className="flex justify-center py-2">
                 <Separator className="w-32 bg-gray-200" />
               </div>
               
               <div className="py-2">
-                {/* End Image */}
                 <div className="mb-4">
                   <div className="relative w-full aspect-[4/3] bg-[#e8eafd] rounded-xl overflow-hidden shadow-lg">
                     <img
@@ -213,7 +247,6 @@ const MobileStoryViewer = () => {
                   </div>
                 </div>
 
-                {/* Subtle Page Number */}
                 <div className="flex justify-center py-1">
                   <span className="text-sm text-gray-400">{story.pages.length + 1}</span>
                 </div>
