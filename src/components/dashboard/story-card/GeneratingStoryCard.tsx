@@ -2,12 +2,17 @@
 import React from "react";
 import { Loader2, Sparkles } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Progress } from "@/components/ui/progress";
 
 interface GeneratingStoryCardProps {
   title?: string;
+  percentComplete?: number;
 }
 
-const GeneratingStoryCard: React.FC<GeneratingStoryCardProps> = ({ title = "Generating Story..." }) => {
+const GeneratingStoryCard: React.FC<GeneratingStoryCardProps> = ({ 
+  title = "Generating Story...", 
+  percentComplete = 0 
+}) => {
   return (
     <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-story-seafoam/30 flex flex-col relative group min-h-[305px]">
       {/* Animated cover placeholder */}
@@ -20,6 +25,14 @@ const GeneratingStoryCard: React.FC<GeneratingStoryCardProps> = ({ title = "Gene
           <div className="space-y-2">
             <Skeleton className="h-4 w-24 mx-auto bg-purple-200/50" />
             <Skeleton className="h-3 w-16 mx-auto bg-purple-200/30" />
+          </div>
+          
+          {/* Progress percentage display */}
+          <div className="bg-white/80 backdrop-blur-sm rounded-lg px-3 py-2 mx-4">
+            <div className="text-sm font-semibold text-purple-700 mb-1">
+              {Math.round(percentComplete)}% Complete
+            </div>
+            <Progress value={percentComplete} className="h-2" />
           </div>
         </div>
         

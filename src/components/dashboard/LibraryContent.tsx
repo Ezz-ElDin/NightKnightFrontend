@@ -1,3 +1,4 @@
+
 import { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Star } from "lucide-react";
@@ -18,6 +19,7 @@ interface LibraryContentProps {
   totalPages: number;
   page: number;
   generatingStoryId: string | null;
+  generatingStoryProgress?: number;
   onStoryClick: (id: number) => void;
   onFavourite: (id: number, isFav: boolean) => void;
   onDelete: (id: number) => void;
@@ -33,6 +35,7 @@ const LibraryContent: React.FC<LibraryContentProps> = ({
   totalPages,
   page,
   generatingStoryId,
+  generatingStoryProgress = 0,
   onStoryClick,
   onFavourite,
   onDelete,
@@ -101,7 +104,7 @@ const LibraryContent: React.FC<LibraryContentProps> = ({
               Recent Stories
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 mb-6 md:mb-8 px-1">
-              <GeneratingStoryCard />
+              <GeneratingStoryCard percentComplete={generatingStoryProgress} />
               {pagedStories.slice(0, STORIES_PER_PAGE - 1).map(story => (
                 <StoryCard
                   key={story.id}

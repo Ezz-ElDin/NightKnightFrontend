@@ -187,6 +187,7 @@ export const useLibrary = () => {
     showSuccessBanner,
     showGeneratingBanner,
     generatingStoryId,
+    generatingStoryProgress: generatingStoryStatus?.percent_complete || 0,
     page,
     
     // Data

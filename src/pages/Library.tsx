@@ -15,6 +15,7 @@ const Library = () => {
     showSuccessBanner,
     showGeneratingBanner,
     generatingStoryId,
+    generatingStoryProgress,
     storyCredits,
     hasCredits,
     allFavouriteStories,
@@ -56,6 +57,7 @@ const Library = () => {
           totalPages={totalPages}
           page={page}
           generatingStoryId={generatingStoryId}
+          generatingStoryProgress={generatingStoryProgress}
           onStoryClick={handleStoryClick}
           onFavourite={toggleFavourite}
           onDelete={(id) => setDeleteDialog({ open: true, storyId: id })}
