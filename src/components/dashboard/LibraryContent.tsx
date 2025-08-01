@@ -7,7 +7,7 @@ import StoryGallery from "./StoryGallery";
 import StoryCard from "./StoryCard";
 import PaginationNav from "./PaginationNav";
 import GeneratingStoryCard from "./story-card/GeneratingStoryCard";
-import { Story, StoryStatus } from "@/lib/api";
+import { Story } from "@/lib/api";
 
 interface LibraryContentProps {
   allFavouriteStories: Story[];
@@ -18,7 +18,6 @@ interface LibraryContentProps {
   totalPages: number;
   page: number;
   generatingStoryId: string | null;
-  generatingStoryStatus?: StoryStatus | null;
   onStoryClick: (id: number) => void;
   onFavourite: (id: number, isFav: boolean) => void;
   onDelete: (id: number) => void;
@@ -34,7 +33,6 @@ const LibraryContent: React.FC<LibraryContentProps> = ({
   totalPages,
   page,
   generatingStoryId,
-  generatingStoryStatus,
   onStoryClick,
   onFavourite,
   onDelete,
@@ -103,9 +101,7 @@ const LibraryContent: React.FC<LibraryContentProps> = ({
               Recent Stories
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 mb-6 md:mb-8 px-1">
-              <GeneratingStoryCard 
-                percentComplete={generatingStoryStatus?.percent_complete || 10}
-              />
+              <GeneratingStoryCard />
               {pagedStories.slice(0, STORIES_PER_PAGE - 1).map(story => (
                 <StoryCard
                   key={story.id}
