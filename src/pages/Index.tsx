@@ -66,6 +66,7 @@ const Index = () => {
       storiesCount: 1,
       priceEurope: "£1.99",
       priceOutsideEurope: "$3.99",
+      iconColor: "bg-story-pink",
       features: [
         "1 Personalized story",
         "Multiple languages",
@@ -188,7 +189,7 @@ const Index = () => {
       
       {/* New Story Plans section for non-logged-in users */}
       {!isLoggedIn && (
-        <section className="py-16 px-4 bg-gradient-to-br from-story-peach/30 via-story-yellow/20 to-story-pink/30" id="story-plans">
+        <section className="py-16 px-4 bg-gray-50" id="story-plans">
           <div className="container mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 text-center text-story-purple">
               Story Plans
@@ -201,42 +202,48 @@ const Index = () => {
               {storyPlans.map((plan, index) => (
                 <div 
                   key={index} 
-                  className="group relative rounded-3xl bg-gradient-to-br from-white to-story-lightPurple/30 p-8 border-2 border-story-purple/20 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 backdrop-blur-sm"
+                  className="bg-white rounded-3xl p-8 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative"
                 >
-                  {/* Decorative elements */}
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-story-yellow rounded-full opacity-60 group-hover:opacity-100 transition-opacity"></div>
-                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-story-orange rounded-full group-hover:animate-bounce"></div>
-                  
-                  <div className="mb-8">
-                    <div className="flex items-center justify-center mb-4">
-                      <div className="bg-story-purple/10 p-3 rounded-2xl">
-                        <Star className="h-8 w-8 text-story-purple" fill="currentColor" />
-                      </div>
-                    </div>
-                    
-                    <h3 className="text-2xl font-bold mb-3 text-story-purple text-center">
-                      {plan.name}
-                    </h3>
-                    <p className="text-gray-700 mb-6 text-center leading-relaxed">
-                      {plan.description}
-                    </p>
-                    
-                    <div className="text-center mb-6">
-                      <div className="bg-story-purple/5 rounded-2xl p-4 mb-4">
-                        <div className="text-4xl font-bold text-story-purple mb-1">
-                          {isEurope ? plan.priceEurope : plan.priceOutsideEurope}
+                  {/* Icon section */}
+                  <div className="flex justify-center mb-6">
+                    <div className="relative">
+                      {/* Cute story characters icons */}
+                      <div className="flex space-x-2">
+                        <div className="w-12 h-12 bg-story-pink rounded-full flex items-center justify-center">
+                          <Book className="h-6 w-6 text-white" />
                         </div>
-                        <div className="text-sm text-story-blue font-medium">
-                          for {plan.storiesCount} story
+                        <div className="w-12 h-12 bg-story-purple rounded-full flex items-center justify-center">
+                          <Star className="h-6 w-6 text-white" fill="currentColor" />
                         </div>
                       </div>
                     </div>
                   </div>
                   
+                  {/* Plan name */}
+                  <h3 className="text-2xl font-bold text-center mb-2 text-gray-900">
+                    {plan.name}
+                  </h3>
+                  
+                  {/* Price */}
+                  <div className="text-center mb-6">
+                    <div className="text-4xl font-bold text-gray-900 mb-1">
+                      {isEurope ? plan.priceEurope : plan.priceOutsideEurope}
+                    </div>
+                    <div className="text-gray-500 text-sm">
+                      for {plan.storiesCount} story
+                    </div>
+                  </div>
+                  
+                  {/* Description */}
+                  <p className="text-gray-600 text-center mb-8 leading-relaxed">
+                    {plan.description}
+                  </p>
+                  
+                  {/* CTA Button */}
                   <div className="mt-auto">
                     <Link to="/register">
                       <Button 
-                        className="w-full h-12 rounded-2xl button-bounce bg-gradient-to-r from-story-purple to-story-blue hover:from-story-purple/90 hover:to-story-blue/90 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-lg"
+                        className="w-full h-12 rounded-full bg-story-purple hover:bg-story-purple/90 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-lg"
                       >
                         Get Started
                       </Button>
