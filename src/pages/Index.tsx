@@ -218,13 +218,16 @@ const Index = () => {
               {storyPlans.map((plan, index) => (
                 <div 
                   key={index} 
-                  className="bg-white rounded-3xl p-8 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative"
+                  className={`bg-white rounded-3xl p-8 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative ${plan.isPopular ? 'ring-2 ring-story-orange/20 shadow-xl' : ''}`}
                 >
-                  {/* Most Popular Badge */}
+                  {/* Most Popular Badge - Redesigned */}
                   {plan.isPopular && (
-                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                      <div className="bg-story-purple text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
-                        Most Popular
+                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
+                      <div className="relative">
+                        <div className="bg-gradient-to-r from-story-orange to-story-yellow text-white px-6 py-2 rounded-full text-sm font-bold shadow-lg transform -rotate-1">
+                          ⭐ Most Popular
+                        </div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-story-orange to-story-yellow rounded-full blur-sm opacity-30 transform rotate-1"></div>
                       </div>
                     </div>
                   )}
