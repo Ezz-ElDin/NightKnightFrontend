@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Book, Star, Heart, Download, MessageCircle, Globe, Check } from "lucide-react";
@@ -232,23 +231,6 @@ const Index = () => {
                         </div>
                       </div>
                     </div>
-                  </div>
-                  
-                  <div className="mb-8">
-                    <ul className="space-y-3">
-                      {plan.features.map((feature, i) => (
-                        <li key={i} className="flex items-start">
-                          <div className="mr-3 mt-1 flex-shrink-0">
-                            <div className="w-5 h-5 bg-story-green rounded-full flex items-center justify-center">
-                              <Check className="h-3 w-3 text-white" strokeWidth={3} />
-                            </div>
-                          </div>
-                          <span className="text-gray-700 text-sm leading-relaxed">
-                            {feature}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
                   </div>
                   
                   <div className="mt-auto">
