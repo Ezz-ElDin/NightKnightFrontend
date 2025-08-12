@@ -82,6 +82,7 @@ const Index = () => {
       priceEurope: "£6.49",
       priceOutsideEurope: "$7.99",
       iconColor: "bg-story-purple",
+      isPopular: true,
       features: [
         "4 Personalized stories",
         "Multiple languages",
@@ -219,6 +220,15 @@ const Index = () => {
                   key={index} 
                   className="bg-white rounded-3xl p-8 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative"
                 >
+                  {/* Most Popular Badge */}
+                  {plan.isPopular && (
+                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                      <div className="bg-story-purple text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
+                        Most Popular
+                      </div>
+                    </div>
+                  )}
+                  
                   {/* Icon section */}
                   <div className="flex justify-center mb-6">
                     <div className="relative">
@@ -235,7 +245,7 @@ const Index = () => {
                   </div>
                   
                   {/* Plan name */}
-                  <h3 className="text-2xl font-bold text-center mb-6 text-gray-900">
+                  <h3 className="text-2xl font-bold text-center mb-8 text-gray-900">
                     {plan.name}
                   </h3>
                   
