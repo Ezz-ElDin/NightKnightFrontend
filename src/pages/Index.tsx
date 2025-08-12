@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Book, Star, Heart, Download, MessageCircle, Globe, Check, Turtle } from "lucide-react";
+import { Book, Star, Heart, Download, MessageCircle, Globe, Check } from "lucide-react";
 import { Link } from "react-router-dom";
 import StoryBackground from "@/components/StoryBackground";
 import HowItWorks from "@/components/HowItWorks";
@@ -207,21 +207,13 @@ const Index = () => {
                   {/* Icon section */}
                   <div className="flex justify-center mb-6">
                     <div className="relative">
-                      {/* Custom dinosaur icon */}
+                      {/* Cute story characters icons */}
                       <div className="flex space-x-2">
                         <div className="w-12 h-12 bg-story-pink rounded-full flex items-center justify-center">
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                               stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="text-white">
-                            {/* shell */}
-                            <path d="M8 9.5c0-2.2 2-4 4-4s4 1.8 4 4"/>
-                            <path d="M4.5 13.5a6.5 4.5 0 0 1 15 0 3 3 0 0 1-3 3H7.5a3 3 0 0 1-3-3Z"/>
-                            {/* head */}
-                            <path d="M3 12.5c0-.9.8-1.7 1.7-1.7h.8"/>
-                            {/* legs */}
-                            <path d="M7 16.5v1.2M17 16.5v1.2M9.5 16.5c0 .9-.7 1.6-1.6 1.6M14.5 16.5c0 .9.7 1.6 1.6 1.6"/>
-                            {/* tail */}
-                            <path d="M19.8 13.3l1.2.7"/>
-                          </svg>
+                          <Book className="h-6 w-6 text-white" />
+                        </div>
+                        <div className="w-12 h-12 bg-story-purple rounded-full flex items-center justify-center">
+                          <Star className="h-6 w-6 text-white" fill="currentColor" />
                         </div>
                       </div>
                     </div>
