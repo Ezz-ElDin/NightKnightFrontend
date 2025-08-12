@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Book, Star, Heart, Download, MessageCircle, Globe, Check } from "lucide-react";
+import { Book, Star, Heart, Download, MessageCircle, Globe, Check, Turtle } from "lucide-react";
 import { Link } from "react-router-dom";
 import StoryBackground from "@/components/StoryBackground";
 import HowItWorks from "@/components/HowItWorks";
@@ -207,13 +207,10 @@ const Index = () => {
                   {/* Icon section */}
                   <div className="flex justify-center mb-6">
                     <div className="relative">
-                      {/* Cute story characters icons */}
+                      {/* Dinosaur icon */}
                       <div className="flex space-x-2">
                         <div className="w-12 h-12 bg-story-pink rounded-full flex items-center justify-center">
-                          <Book className="h-6 w-6 text-white" />
-                        </div>
-                        <div className="w-12 h-12 bg-story-purple rounded-full flex items-center justify-center">
-                          <Star className="h-6 w-6 text-white" fill="currentColor" />
+                          <Turtle className="h-6 w-6 text-white" />
                         </div>
                       </div>
                     </div>
