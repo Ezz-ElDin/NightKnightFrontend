@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Book, Star, Heart, Download, MessageCircle, Globe, Check } from "lucide-react";
@@ -67,6 +68,7 @@ const Index = () => {
       priceEurope: "£1.99",
       priceOutsideEurope: "$3.99",
       iconColor: "bg-story-pink",
+      isPopular: false,
       features: [
         "1 Personalized story",
         "Multiple languages",
@@ -82,6 +84,7 @@ const Index = () => {
       priceEurope: "£6.49",
       priceOutsideEurope: "$7.99",
       iconColor: "bg-story-purple",
+      isPopular: true,
       features: [
         "4 Personalized stories",
         "Multiple languages",
@@ -217,8 +220,23 @@ const Index = () => {
               {storyPlans.map((plan, index) => (
                 <div 
                   key={index} 
-                  className="bg-white rounded-3xl p-8 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative"
+                  className={`bg-white rounded-3xl p-8 shadow-lg border hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative ${
+                    plan.isPopular 
+                      ? 'border-story-purple ring-2 ring-story-purple/20 scale-105' 
+                      : 'border-gray-100'
+                  }`}
                 >
+                  {/* Most Popular Badge */}
+                  {plan.isPopular && (
+                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                      <div className="bg-gradient-to-r from-story-purple to-story-pink text-white px-6 py-2 rounded-full text-sm font-bold shadow-lg flex items-center gap-2">
+                        <Star className="h-4 w-4 fill-current" />
+                        Most Popular
+                        <Star className="h-4 w-4 fill-current" />
+                      </div>
+                    </div>
+                  )}
+                  
                   {/* Icon section */}
                   <div className="flex justify-center mb-6">
                     <div className="relative">
@@ -258,7 +276,11 @@ const Index = () => {
                   <div className="mt-auto">
                     <Link to="/register">
                       <Button 
-                        className="w-full h-12 rounded-full bg-story-purple hover:bg-story-purple/90 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-lg"
+                        className={`w-full h-12 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-lg ${
+                          plan.isPopular
+                            ? 'bg-gradient-to-r from-story-purple to-story-pink hover:from-story-purple/90 hover:to-story-pink/90 text-white'
+                            : 'bg-story-purple hover:bg-story-purple/90 text-white'
+                        }`}
                       >
                         Get Started
                       </Button>
