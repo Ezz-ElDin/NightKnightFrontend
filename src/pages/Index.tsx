@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Book, Star, Heart, Download, MessageCircle, Globe, Check } from "lucide-react";
@@ -228,11 +227,9 @@ const Index = () => {
                 >
                   {/* Most Popular Badge */}
                   {plan.isPopular && (
-                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                      <div className="bg-gradient-to-r from-story-purple to-story-pink text-white px-6 py-2 rounded-full text-sm font-bold shadow-lg flex items-center gap-2">
-                        <Star className="h-4 w-4 fill-current" />
+                    <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
+                      <div className="bg-gradient-to-r from-story-purple to-story-pink text-white px-4 py-1 rounded-full text-xs font-bold shadow-md">
                         Most Popular
-                        <Star className="h-4 w-4 fill-current" />
                       </div>
                     </div>
                   )}
