@@ -91,6 +91,22 @@ const Index = () => {
         "Beautiful illustrations",
         "Web reading experience"
       ]
+    },
+    {
+      name: "Starlight Stories",
+      description: "Brighten bedtime twice a week with eight enchanting stories each month – lovingly crafted just for your child's dreams.",
+      storiesCount: 8,
+      priceEurope: "£12.49",
+      priceOutsideEurope: "$15.99",
+      iconColor: "bg-story-yellow",
+      isPopular: false,
+      features: [
+        "8 Personalized stories",
+        "Multiple languages",
+        "Custom characters",
+        "Beautiful illustrations",
+        "Web reading experience"
+      ]
     }
   ];
 
@@ -215,7 +231,7 @@ const Index = () => {
               Choose the perfect plan for your magical bedtime story adventure
             </p>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {storyPlans.map((plan, index) => (
                 <div 
                   key={index} 
