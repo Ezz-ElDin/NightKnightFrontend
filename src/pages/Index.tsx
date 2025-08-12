@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Book, Star, Heart, Download, MessageCircle, Globe } from "lucide-react";
@@ -7,7 +6,6 @@ import StoryBackground from "@/components/StoryBackground";
 import HowItWorks from "@/components/HowItWorks";
 import StorySamples from "@/components/StorySamples";
 import DiscoverStories from "@/components/DiscoverStories";
-import PricingSlider from "@/components/PricingSlider";
 import Footer from "@/components/Footer";
 
 const Index = () => {
@@ -35,6 +33,16 @@ const Index = () => {
       window.removeEventListener('user-info-updated', handleStorageChange);
     };
   }, []);
+
+  const storyPlans = [
+    {
+      name: "Entry",
+      description: "Perfect for those who want to try our magical storytelling experience with a single personalized adventure.",
+      storiesCount: 1,
+      priceEurope: "£1.99",
+      priceOutsideEurope: "$3.99"
+    }
+  ];
 
   return (
     <div className="overflow-auto">
@@ -145,7 +153,72 @@ const Index = () => {
       </section>
       
       <HowItWorks />
-      <PricingSlider />
+      
+      {/* New Story Plans section for non-logged-in users */}
+      {!isLoggedIn && (
+        <section className="py-16 px-4 bg-gradient-to-b from-white to-story-peach/20" id="story-plans">
+          <div className="container mx-auto">
+            <h2 className="text-4xl font-bold mb-4 text-center text-story-purple">
+              Story Plans
+            </h2>
+            <p className="text-xl text-center mb-12 max-w-2xl mx-auto">
+              Choose the perfect plan for your magical bedtime story adventure
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+              {storyPlans.map((plan, index) => (
+                <div 
+                  key={index} 
+                  className="rounded-3xl bg-white p-6 border-2 border-story-lightPurple shadow-lg relative flex flex-col"
+                >
+                  <div className="mb-8">
+                    <h3 className="text-2xl font-bold mb-2 text-story-purple">
+                      {plan.name}
+                    </h3>
+                    <p className="text-gray-600 mb-4">
+                      {plan.description}
+                    </p>
+                    <div className="mb-2">
+                      <span className="text-sm font-medium text-story-blue">
+                        {plan.storiesCount} story
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <div className="flex items-end">
+                        <span className="text-3xl font-bold text-story-purple">
+                          {plan.priceEurope}
+                        </span>
+                        <span className="ml-2 mb-1 text-gray-600 text-sm">
+                          in Europe
+                        </span>
+                      </div>
+                      <div className="flex items-end">
+                        <span className="text-3xl font-bold text-story-purple">
+                          {plan.priceOutsideEurope}
+                        </span>
+                        <span className="ml-2 mb-1 text-gray-600 text-sm">
+                          outside Europe
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-auto">
+                    <Link to="/register">
+                      <Button 
+                        className="w-full h-12 rounded-xl button-bounce bg-story-purple hover:bg-story-purple/90 text-white"
+                      >
+                        Get Started
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+      
       <Footer />
     </div>
   );
