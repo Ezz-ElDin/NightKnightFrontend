@@ -74,6 +74,21 @@ const Index = () => {
         "Beautiful illustrations",
         "Web reading experience"
       ]
+    },
+    {
+      name: "Tiny Tales",
+      description: "Enjoy four personalised bedtime stories each month – the perfect treat for special nights with your little one.",
+      storiesCount: 4,
+      priceEurope: "£6.49",
+      priceOutsideEurope: "$7.99",
+      iconColor: "bg-story-purple",
+      features: [
+        "4 Personalized stories",
+        "Multiple languages",
+        "Custom characters",
+        "Beautiful illustrations",
+        "Web reading experience"
+      ]
     }
   ];
 
@@ -230,7 +245,7 @@ const Index = () => {
                       {isEurope ? plan.priceEurope : plan.priceOutsideEurope}
                     </div>
                     <div className="text-gray-500 text-sm">
-                      for {plan.storiesCount} story
+                      for {plan.storiesCount} {plan.storiesCount === 1 ? 'story' : 'stories'}
                     </div>
                   </div>
                   
