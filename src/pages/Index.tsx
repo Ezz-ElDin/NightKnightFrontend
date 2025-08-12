@@ -1,6 +1,7 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Book, Star, Heart, Download, MessageCircle, Globe } from "lucide-react";
+import { Book, Star, Heart, Download, MessageCircle, Globe, Check } from "lucide-react";
 import { Link } from "react-router-dom";
 import StoryBackground from "@/components/StoryBackground";
 import HowItWorks from "@/components/HowItWorks";
@@ -10,6 +11,7 @@ import Footer from "@/components/Footer";
 
 const Index = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isEurope, setIsEurope] = useState(false);
   
   // Check authentication status based on token presence
   useEffect(() => {
@@ -34,13 +36,44 @@ const Index = () => {
     };
   }, []);
 
+  // Detect user location for pricing
+  useEffect(() => {
+    const detectLocation = async () => {
+      try {
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const europeanTimezones = [
+          'Europe/London', 'Europe/Paris', 'Europe/Berlin', 'Europe/Madrid',
+          'Europe/Rome', 'Europe/Amsterdam', 'Europe/Vienna', 'Europe/Brussels',
+          'Europe/Copenhagen', 'Europe/Dublin', 'Europe/Helsinki', 'Europe/Lisbon',
+          'Europe/Luxembourg', 'Europe/Prague', 'Europe/Stockholm', 'Europe/Warsaw',
+          'Europe/Athens', 'Europe/Budapest', 'Europe/Bucharest', 'Europe/Sofia',
+          'Europe/Zagreb', 'Europe/Ljubljana', 'Europe/Bratislava', 'Europe/Tallinn',
+          'Europe/Riga', 'Europe/Vilnius', 'Europe/Malta', 'Europe/Nicosia'
+        ];
+        
+        setIsEurope(europeanTimezones.some(tz => timezone.includes(tz.split('/')[1])));
+      } catch (error) {
+        setIsEurope(false); // Default to non-Europe pricing
+      }
+    };
+
+    detectLocation();
+  }, []);
+
   const storyPlans = [
     {
       name: "Entry",
       description: "Perfect for those who want to try our magical storytelling experience with a single personalized adventure.",
       storiesCount: 1,
       priceEurope: "£1.99",
-      priceOutsideEurope: "$3.99"
+      priceOutsideEurope: "$3.99",
+      features: [
+        "1 Personalized story",
+        "Multiple languages",
+        "Custom characters",
+        "Beautiful illustrations",
+        "Web reading experience"
+      ]
     }
   ];
 
@@ -156,12 +189,12 @@ const Index = () => {
       
       {/* New Story Plans section for non-logged-in users */}
       {!isLoggedIn && (
-        <section className="py-16 px-4 bg-gradient-to-b from-white to-story-peach/20" id="story-plans">
+        <section className="py-16 px-4 bg-gradient-to-br from-story-peach/30 via-story-yellow/20 to-story-pink/30" id="story-plans">
           <div className="container mx-auto">
-            <h2 className="text-4xl font-bold mb-4 text-center text-story-purple">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-center text-story-purple">
               Story Plans
             </h2>
-            <p className="text-xl text-center mb-12 max-w-2xl mx-auto">
+            <p className="text-xl text-center mb-12 max-w-2xl mx-auto text-story-blue">
               Choose the perfect plan for your magical bedtime story adventure
             </p>
             
@@ -169,44 +202,59 @@ const Index = () => {
               {storyPlans.map((plan, index) => (
                 <div 
                   key={index} 
-                  className="rounded-3xl bg-white p-6 border-2 border-story-lightPurple shadow-lg relative flex flex-col"
+                  className="group relative rounded-3xl bg-gradient-to-br from-white to-story-lightPurple/30 p-8 border-2 border-story-purple/20 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 backdrop-blur-sm"
                 >
+                  {/* Decorative elements */}
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-story-yellow rounded-full opacity-60 group-hover:opacity-100 transition-opacity"></div>
+                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-story-orange rounded-full group-hover:animate-bounce"></div>
+                  
                   <div className="mb-8">
-                    <h3 className="text-2xl font-bold mb-2 text-story-purple">
+                    <div className="flex items-center justify-center mb-4">
+                      <div className="bg-story-purple/10 p-3 rounded-2xl">
+                        <Star className="h-8 w-8 text-story-purple" fill="currentColor" />
+                      </div>
+                    </div>
+                    
+                    <h3 className="text-2xl font-bold mb-3 text-story-purple text-center">
                       {plan.name}
                     </h3>
-                    <p className="text-gray-600 mb-4">
+                    <p className="text-gray-700 mb-6 text-center leading-relaxed">
                       {plan.description}
                     </p>
-                    <div className="mb-2">
-                      <span className="text-sm font-medium text-story-blue">
-                        {plan.storiesCount} story
-                      </span>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      <div className="flex items-end">
-                        <span className="text-3xl font-bold text-story-purple">
-                          {plan.priceEurope}
-                        </span>
-                        <span className="ml-2 mb-1 text-gray-600 text-sm">
-                          in Europe
-                        </span>
-                      </div>
-                      <div className="flex items-end">
-                        <span className="text-3xl font-bold text-story-purple">
-                          {plan.priceOutsideEurope}
-                        </span>
-                        <span className="ml-2 mb-1 text-gray-600 text-sm">
-                          outside Europe
-                        </span>
+                    
+                    <div className="text-center mb-6">
+                      <div className="bg-story-purple/5 rounded-2xl p-4 mb-4">
+                        <div className="text-4xl font-bold text-story-purple mb-1">
+                          {isEurope ? plan.priceEurope : plan.priceOutsideEurope}
+                        </div>
+                        <div className="text-sm text-story-blue font-medium">
+                          for {plan.storiesCount} story
+                        </div>
                       </div>
                     </div>
+                  </div>
+                  
+                  <div className="mb-8">
+                    <ul className="space-y-3">
+                      {plan.features.map((feature, i) => (
+                        <li key={i} className="flex items-start">
+                          <div className="mr-3 mt-1 flex-shrink-0">
+                            <div className="w-5 h-5 bg-story-green rounded-full flex items-center justify-center">
+                              <Check className="h-3 w-3 text-white" strokeWidth={3} />
+                            </div>
+                          </div>
+                          <span className="text-gray-700 text-sm leading-relaxed">
+                            {feature}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                   
                   <div className="mt-auto">
                     <Link to="/register">
                       <Button 
-                        className="w-full h-12 rounded-xl button-bounce bg-story-purple hover:bg-story-purple/90 text-white"
+                        className="w-full h-12 rounded-2xl button-bounce bg-gradient-to-r from-story-purple to-story-blue hover:from-story-purple/90 hover:to-story-blue/90 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-lg"
                       >
                         Get Started
                       </Button>
