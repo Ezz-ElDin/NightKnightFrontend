@@ -2,8 +2,20 @@
 import AuthForm from "@/components/AuthForm";
 import StoryBackground from "@/components/StoryBackground";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 const Login = () => {
+  // Handle redirect after login
+  useEffect(() => {
+    const redirectPath = localStorage.getItem('redirectAfterLogin');
+    const token = localStorage.getItem('authToken');
+    
+    if (token && redirectPath) {
+      localStorage.removeItem('redirectAfterLogin');
+      window.location.href = redirectPath;
+    }
+  }, []);
+
   return (
     <StoryBackground>
       <AuthForm initialMode="login" />

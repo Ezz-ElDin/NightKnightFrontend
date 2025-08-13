@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Book, Star, Heart, Download, MessageCircle, Globe, Check } from "lucide-react";
@@ -60,6 +59,46 @@ const Index = () => {
     detectLocation();
   }, []);
 
+  // Load Stripe pricing table script and handle authentication redirect
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://js.stripe.com/v3/pricing-table.js';
+    script.async = true;
+    document.head.appendChild(script);
+
+    // Add event listener to intercept Stripe pricing table clicks for non-logged-in users
+    const handleStripePricingTableClick = (event: Event) => {
+      if (!isLoggedIn) {
+        // Find if the click target is within a stripe pricing table
+        const target = event.target as HTMLElement;
+        const pricingTable = target.closest('stripe-pricing-table');
+        
+        if (pricingTable) {
+          event.preventDefault();
+          event.stopPropagation();
+          
+          // Store the current page in localStorage to redirect back after login
+          localStorage.setItem('redirectAfterLogin', window.location.pathname);
+          
+          // Redirect to login page
+          window.location.href = '/login';
+        }
+      }
+    };
+
+    // Use capture phase to intercept clicks before Stripe handles them
+    document.addEventListener('click', handleStripePricingTableClick, true);
+
+    return () => {
+      // Cleanup script if component unmounts
+      const existingScript = document.querySelector('script[src="https://js.stripe.com/v3/pricing-table.js"]');
+      if (existingScript) {
+        document.head.removeChild(existingScript);
+      }
+      document.removeEventListener('click', handleStripePricingTableClick, true);
+    };
+  }, [isLoggedIn]);
+
   // Commented out story plans data - now using Stripe pricing table
   /*
   const storyPlans = [
@@ -113,22 +152,6 @@ const Index = () => {
     }
   ];
   */
-
-  // Load Stripe pricing table script
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://js.stripe.com/v3/pricing-table.js';
-    script.async = true;
-    document.head.appendChild(script);
-
-    return () => {
-      // Cleanup script if component unmounts
-      const existingScript = document.querySelector('script[src="https://js.stripe.com/v3/pricing-table.js"]');
-      if (existingScript) {
-        document.head.removeChild(existingScript);
-      }
-    };
-  }, []);
 
   return (
     <div className="overflow-auto">
@@ -250,6 +273,13 @@ const Index = () => {
             <p className="text-xl text-center mb-12 max-w-2xl mx-auto text-story-blue">
               Choose the perfect plan for your magical bedtime story adventure
             </p>
+            
+            {/* Authentication Notice for Pricing Table */}
+            <div className="mb-8 p-4 bg-blue-50 border border-blue-200 rounded-lg max-w-4xl mx-auto">
+              <p className="text-center text-blue-800 font-medium">
+                Please <Link to="/login" className="text-story-purple hover:underline font-bold">log in</Link> or <Link to="/register" className="text-story-purple hover:underline font-bold">sign up</Link> to purchase a plan
+              </p>
+            </div>
             
             {/* Stripe Pricing Table - Optimized for desktop */}
             <div className="w-full max-w-6xl mx-auto">
