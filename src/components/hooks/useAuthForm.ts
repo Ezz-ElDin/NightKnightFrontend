@@ -1,15 +1,16 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authApi } from '@/lib/api';
 import { toast } from 'sonner';
 
+export type AuthMode = 'login' | 'register';
+
 interface UseAuthFormProps {
-  initialMode?: 'login' | 'register';
+  initialMode?: AuthMode;
 }
 
 export const useAuthForm = ({ initialMode = 'login' }: UseAuthFormProps) => {
-  const [mode, setMode] = useState<'login' | 'register'>(initialMode);
+  const [mode, setMode] = useState<AuthMode>(initialMode);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
