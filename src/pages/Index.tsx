@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Book, Star, Heart, Download, MessageCircle, Globe, Check } from "lucide-react";
@@ -59,6 +60,8 @@ const Index = () => {
     detectLocation();
   }, []);
 
+  // Commented out story plans data - now using Stripe pricing table
+  /*
   const storyPlans = [
     {
       name: "Entry",
@@ -109,6 +112,23 @@ const Index = () => {
       ]
     }
   ];
+  */
+
+  // Load Stripe pricing table script
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://js.stripe.com/v3/pricing-table.js';
+    script.async = true;
+    document.head.appendChild(script);
+
+    return () => {
+      // Cleanup script if component unmounts
+      const existingScript = document.querySelector('script[src="https://js.stripe.com/v3/pricing-table.js"]');
+      if (existingScript) {
+        document.head.removeChild(existingScript);
+      }
+    };
+  }, []);
 
   return (
     <div className="overflow-auto">
@@ -220,7 +240,7 @@ const Index = () => {
       
       <HowItWorks />
       
-      {/* New Story Plans section for non-logged-in users */}
+      {/* New Stripe Pricing Table section for non-logged-in users */}
       {!isLoggedIn && (
         <section className="py-16 px-4 bg-gray-50" id="story-plans">
           <div className="container mx-auto">
@@ -231,6 +251,16 @@ const Index = () => {
               Choose the perfect plan for your magical bedtime story adventure
             </p>
             
+            {/* Stripe Pricing Table */}
+            <div className="flex justify-center">
+              <stripe-pricing-table 
+                pricing-table-id="prctbl_1RvcFFLd6fD08lwA7V9k15DQ"
+                publishable-key="pk_test_51KaM3ALd6fD08lwA5AAHGRYc8kDoBVmqRfIm2EDm9CHy4RwbfoOF1dRP0D5VJMuCPzofGq4FVH0BDS9nsxfTwpNJ00dhmbUPzm"
+              ></stripe-pricing-table>
+            </div>
+
+            {/* Commented out custom story plans implementation */}
+            {/*
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {storyPlans.map((plan, index) => (
                 <div 
@@ -241,19 +271,16 @@ const Index = () => {
                       : 'border-gray-100'
                   }`}
                 >
-                  {/* Most Popular Badge */}
                   {plan.isPopular && (
-                    <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
-                      <div className="bg-gradient-to-r from-story-purple to-story-pink text-white px-4 py-1 rounded-full text-xs font-bold shadow-md">
+                    <div className="absolute -top-1 left-1/2 transform -translate-x-1/2">
+                      <div className="bg-gradient-to-r from-story-purple to-story-pink text-white px-3 py-1 rounded-full text-xs font-bold shadow-md">
                         Most Popular
                       </div>
                     </div>
                   )}
                   
-                  {/* Icon section */}
                   <div className="flex justify-center mb-6">
                     <div className="relative">
-                      {/* Cute story characters icons */}
                       <div className="flex space-x-2">
                         <div className="w-12 h-12 bg-story-pink rounded-full flex items-center justify-center">
                           <Book className="h-6 w-6 text-white" />
@@ -265,12 +292,10 @@ const Index = () => {
                     </div>
                   </div>
                   
-                  {/* Plan name */}
                   <h3 className="text-2xl font-bold text-center mb-6 text-gray-900">
                     {plan.name}
                   </h3>
                   
-                  {/* Price */}
                   <div className="text-center mb-6">
                     <div className="text-4xl font-bold text-gray-900 mb-1">
                       {isEurope ? plan.priceEurope : plan.priceOutsideEurope}
@@ -280,12 +305,10 @@ const Index = () => {
                     </div>
                   </div>
                   
-                  {/* Description */}
                   <p className="text-gray-600 text-center mb-8 leading-relaxed">
                     {plan.description}
                   </p>
                   
-                  {/* CTA Button */}
                   <div className="mt-auto">
                     <Link to="/register">
                       <Button 
@@ -302,6 +325,7 @@ const Index = () => {
                 </div>
               ))}
             </div>
+            */}
           </div>
         </section>
       )}
