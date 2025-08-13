@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Book, Star, Heart, Download, MessageCircle, Globe, Check } from "lucide-react";
@@ -59,109 +60,6 @@ const Index = () => {
     detectLocation();
   }, []);
 
-  // Load Stripe pricing table script and handle authentication redirect
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://js.stripe.com/v3/pricing-table.js';
-    script.async = true;
-    document.head.appendChild(script);
-
-    // Enhanced click interception for Stripe pricing table
-    const handleStripePricingTableClick = (event: Event) => {
-      console.log('Click detected on:', event.target);
-      
-      if (!isLoggedIn) {
-        const target = event.target as HTMLElement;
-        
-        // Check if the click is within a stripe-pricing-table or any of its children
-        const pricingTable = target.closest('stripe-pricing-table');
-        
-        // Also check for common Stripe pricing table button classes and elements
-        const isStripeButton = target.classList.contains('stripe-button') || 
-                              target.querySelector?.('.stripe-button') ||
-                              target.closest('[data-testid*="pricing"]') ||
-                              target.closest('[class*="pricing"]') ||
-                              target.closest('[class*="subscribe"]') ||
-                              target.tagName.toLowerCase().includes('button');
-        
-        if (pricingTable || (isStripeButton && target.closest('stripe-pricing-table'))) {
-          console.log('Intercepting Stripe pricing table click for non-logged-in user');
-          event.preventDefault();
-          event.stopPropagation();
-          event.stopImmediatePropagation();
-          
-          // Store the current page with pricing section anchor
-          localStorage.setItem('redirectAfterLogin', window.location.pathname + '#story-plans');
-          
-          // Redirect to login page
-          window.location.href = '/login';
-          return false;
-        }
-      }
-    };
-
-    // Use multiple event listeners with different phases and methods
-    const addEventListeners = () => {
-      // Capture phase - highest priority
-      document.addEventListener('click', handleStripePricingTableClick, true);
-      
-      // Bubble phase as backup
-      document.addEventListener('click', handleStripePricingTableClick, false);
-      
-      // Also listen on the window object
-      window.addEventListener('click', handleStripePricingTableClick, true);
-    };
-
-    // Add listeners immediately
-    addEventListeners();
-
-    // Also add them after a short delay to ensure Stripe table is loaded
-    const timeoutId = setTimeout(() => {
-      addEventListeners();
-      
-      // Monitor for dynamically added Stripe elements
-      const observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-          mutation.addedNodes.forEach((node) => {
-            if (node.nodeType === Node.ELEMENT_NODE) {
-              const element = node as Element;
-              if (element.tagName === 'STRIPE-PRICING-TABLE' || 
-                  element.querySelector('stripe-pricing-table')) {
-                console.log('Stripe pricing table detected, adding click interceptor');
-                
-                // Add click listener directly to the stripe element
-                const stripeTable = element.tagName === 'STRIPE-PRICING-TABLE' ? element : element.querySelector('stripe-pricing-table');
-                if (stripeTable) {
-                  stripeTable.addEventListener('click', handleStripePricingTableClick, true);
-                }
-              }
-            }
-          });
-        });
-      });
-
-      observer.observe(document.body, {
-        childList: true,
-        subtree: true
-      });
-
-      return () => observer.disconnect();
-    }, 1000);
-
-    return () => {
-      clearTimeout(timeoutId);
-      document.removeEventListener('click', handleStripePricingTableClick, true);
-      document.removeEventListener('click', handleStripePricingTableClick, false);
-      window.removeEventListener('click', handleStripePricingTableClick, true);
-      
-      // Cleanup script if component unmounts
-      const existingScript = document.querySelector('script[src="https://js.stripe.com/v3/pricing-table.js"]');
-      if (existingScript) {
-        document.head.removeChild(existingScript);
-      }
-    };
-  }, [isLoggedIn]);
-
   // Commented out story plans data - now using Stripe pricing table
   /*
   const storyPlans = [
@@ -215,6 +113,22 @@ const Index = () => {
     }
   ];
   */
+
+  // Load Stripe pricing table script
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://js.stripe.com/v3/pricing-table.js';
+    script.async = true;
+    document.head.appendChild(script);
+
+    return () => {
+      // Cleanup script if component unmounts
+      const existingScript = document.querySelector('script[src="https://js.stripe.com/v3/pricing-table.js"]');
+      if (existingScript) {
+        document.head.removeChild(existingScript);
+      }
+    };
+  }, []);
 
   return (
     <div className="overflow-auto">
@@ -337,36 +251,8 @@ const Index = () => {
               Choose the perfect plan for your magical bedtime story adventure
             </p>
             
-            {/* Enhanced Authentication Notice for Pricing Table */}
-            <div className="mb-8 p-6 bg-amber-50 border-2 border-amber-200 rounded-xl max-w-4xl mx-auto">
-              <div className="text-center">
-                <div className="text-2xl mb-2">🔐</div>
-                <p className="text-amber-800 font-semibold text-lg mb-2">
-                  Authentication Required
-                </p>
-                <p className="text-amber-700 mb-4">
-                  Please log in or create an account to subscribe to a plan. We'll redirect you back here after authentication.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                  <Link to="/login">
-                    <Button className="w-full sm:w-auto bg-story-purple hover:bg-story-purple/90 text-white px-6 py-2 rounded-lg font-medium">
-                      Log In
-                    </Button>
-                  </Link>
-                  <Link to="/register">
-                    <Button variant="outline" className="w-full sm:w-auto border-2 border-story-purple text-story-purple hover:bg-story-purple/10 px-6 py-2 rounded-lg font-medium">
-                      Sign Up
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            </div>
-            
-            {/* Stripe Pricing Table with overlay for non-logged users */}
-            <div className="relative w-full max-w-6xl mx-auto">
-              {/* Overlay to prevent interaction */}
-              <div className="absolute inset-0 bg-gray-100/50 z-10 rounded-lg"></div>
-              
+            {/* Stripe Pricing Table - Optimized for desktop */}
+            <div className="w-full max-w-6xl mx-auto">
               <stripe-pricing-table 
                 pricing-table-id="prctbl_1RvcFFLd6fD08lwA7V9k15DQ"
                 publishable-key="pk_test_51KaM3ALd6fD08lwA5AAHGRYc8kDoBVmqRfIm2EDm9CHy4RwbfoOF1dRP0D5VJMuCPzofGq4FVH0BDS9nsxfTwpNJ00dhmbUPzm"
