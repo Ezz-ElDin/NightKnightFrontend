@@ -243,7 +243,7 @@ const Index = () => {
       {/* New Stripe Pricing Table section for non-logged-in users */}
       {!isLoggedIn && (
         <section className="py-16 px-4 bg-gray-50" id="story-plans">
-          <div className="container mx-auto">
+          <div className="container mx-auto max-w-7xl">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 text-center text-story-purple">
               Story Plans
             </h2>
@@ -251,8 +251,8 @@ const Index = () => {
               Choose the perfect plan for your magical bedtime story adventure
             </p>
             
-            {/* Stripe Pricing Table */}
-            <div className="flex justify-center">
+            {/* Stripe Pricing Table - Optimized for desktop */}
+            <div className="w-full max-w-6xl mx-auto">
               <stripe-pricing-table 
                 pricing-table-id="prctbl_1RvcFFLd6fD08lwA7V9k15DQ"
                 publishable-key="pk_test_51KaM3ALd6fD08lwA5AAHGRYc8kDoBVmqRfIm2EDm9CHy4RwbfoOF1dRP0D5VJMuCPzofGq4FVH0BDS9nsxfTwpNJ00dhmbUPzm"
