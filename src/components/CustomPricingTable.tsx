@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
@@ -187,13 +186,12 @@ const CustomPricingTable = () => {
                   {plan.name}
                 </h3>
                 <div className="mb-4">
-                  <div className="text-4xl font-bold text-gray-900">
+                  <span className="text-4xl font-bold text-gray-900">
                     {isAnnual ? plan.annualPrice : plan.monthlyPrice}
-                  </div>
-                  <div className="text-gray-600 text-lg">
-                    per<br />
-                    {isAnnual ? 'year' : 'month'}
-                  </div>
+                  </span>
+                  <span className="text-gray-600 text-lg ml-2">
+                    per {isAnnual ? 'year' : 'month'}
+                  </span>
                 </div>
                 <p className="text-gray-600 text-sm">
                   {plan.description}
@@ -231,13 +229,12 @@ const CustomPricingTable = () => {
                 </div>
               </div>
               <div className="mb-4">
-                <div className="text-5xl font-bold text-gray-900">
+                <span className="text-5xl font-bold text-gray-900">
                   {oneTimePlan.monthlyPrice}
-                </div>
-                <div className="text-gray-600 text-lg">
-                  per<br />
-                  story
-                </div>
+                </span>
+                <span className="text-gray-600 text-lg ml-2">
+                  per story
+                </span>
               </div>
               <p className="text-gray-600 text-lg mb-6">
                 {oneTimePlan.description}
