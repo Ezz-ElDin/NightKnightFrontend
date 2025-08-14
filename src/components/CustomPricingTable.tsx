@@ -181,6 +181,13 @@ const CustomPricingTable = () => {
                 </div>
               )}
               
+              {/* Icon Placeholder - Top Center */}
+              <div className="flex justify-center mb-6">
+                <div className="w-[150px] h-[150px] bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
+                  <span className="text-gray-400 text-sm">Icon Placeholder</span>
+                </div>
+              </div>
+              
               <div className="text-center mb-8">
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
                   {plan.name}
@@ -189,7 +196,7 @@ const CustomPricingTable = () => {
                   <div className="text-4xl font-bold text-gray-900">
                     {isAnnual ? plan.annualPrice : plan.monthlyPrice}{' '}
                     <span className="text-lg text-gray-500 font-normal">
-                      per {isAnnual ? 'year' : 'month'}
+                      {isAnnual ? '/year' : '/month'}
                     </span>
                   </div>
                 </div>
@@ -218,27 +225,36 @@ const CustomPricingTable = () => {
         <h3 className="text-2xl font-bold text-center mb-6 text-story-orange">One-Time Purchase</h3>
         <div className="bg-white rounded-2xl border-2 border-story-orange p-8 shadow-lg transition-all duration-300 hover:shadow-xl">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
-            {/* Left side - Plan info */}
-            <div className="flex-1 text-center lg:text-left">
-              <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
-                <h3 className="text-3xl font-bold text-gray-900">
-                  {oneTimePlan.name}
-                </h3>
-                <div className="bg-story-orange text-white px-3 py-1 rounded-full text-sm font-bold">
-                  One-Time
+            {/* Left side - Plan info with icon placeholder */}
+            <div className="flex-1 flex items-center gap-6">
+              {/* Icon Placeholder - Left Middle */}
+              <div className="flex-shrink-0">
+                <div className="w-[150px] h-[150px] bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
+                  <span className="text-gray-400 text-sm">Icon Placeholder</span>
                 </div>
               </div>
-              <div className="mb-4">
-                <div className="text-5xl font-bold text-gray-900">
-                  {oneTimePlan.monthlyPrice}{' '}
-                  <span className="text-lg text-gray-500 font-normal">
-                    per story
-                  </span>
+              
+              <div className="text-center lg:text-left">
+                <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
+                  <h3 className="text-3xl font-bold text-gray-900">
+                    {oneTimePlan.name}
+                  </h3>
+                  <div className="bg-story-orange text-white px-3 py-1 rounded-full text-sm font-bold">
+                    One-Time
+                  </div>
                 </div>
+                <div className="mb-4">
+                  <div className="text-5xl font-bold text-gray-900">
+                    {oneTimePlan.monthlyPrice}{' '}
+                    <span className="text-lg text-gray-500 font-normal">
+                      per story
+                    </span>
+                  </div>
+                </div>
+                <p className="text-gray-600 text-lg mb-6">
+                  {oneTimePlan.description}
+                </p>
               </div>
-              <p className="text-gray-600 text-lg mb-6">
-                {oneTimePlan.description}
-              </p>
             </div>
 
             {/* Right side - CTA */}
