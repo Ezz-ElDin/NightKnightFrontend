@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
@@ -183,9 +182,6 @@ const CustomPricingTable = () => {
               )}
               
               <div className="text-center mb-8">
-                {/* Icon placeholder - 30px by 30px at top center */}
-                <div className="w-[30px] h-[30px] mx-auto mb-4 bg-gray-100 rounded border-2 border-dashed border-gray-300"></div>
-                
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
                   {plan.name}
                 </h3>
@@ -225,9 +221,6 @@ const CustomPricingTable = () => {
             {/* Left side - Plan info */}
             <div className="flex-1 text-center lg:text-left">
               <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
-                {/* Icon placeholder - 30px by 30px at left middle */}
-                <div className="w-[30px] h-[30px] bg-gray-100 rounded border-2 border-dashed border-gray-300 flex-shrink-0"></div>
-                
                 <h3 className="text-3xl font-bold text-gray-900">
                   {oneTimePlan.name}
                 </h3>
