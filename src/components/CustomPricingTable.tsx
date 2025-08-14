@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
 import { Check } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
 interface PricingPlan {
   id: string;
   name: string;
-  price: string;
+  monthlyPrice: string;
+  annualPrice: string;
   period?: string;
   description: string;
   features: string[];
@@ -17,6 +19,7 @@ interface PricingPlan {
 
 const CustomPricingTable = () => {
   const [currency, setCurrency] = useState('$');
+  const [isAnnual, setIsAnnual] = useState(false);
   const navigate = useNavigate();
   const isLoggedIn = !!localStorage.getItem('authToken');
 
@@ -52,11 +55,12 @@ const CustomPricingTable = () => {
     {
       id: 'starter',
       name: 'Starter',
-      price: currency === '£' ? '£1.99' : '$2.99',
-      period: '/month',
+      monthlyPrice: currency === '£' ? '£1.99' : '$2.99',
+      annualPrice: currency === '£' ? '£19.99' : '$29.99',
+      period: isAnnual ? '/year' : '/month',
       description: 'Perfect for trying out our magical storytelling',
       features: [
-        '1 personalized story',
+        isAnnual ? '12 personalized stories per year' : '1 personalized story per month',
         'Multiple languages',
         'Custom characters',
         'Beautiful illustrations',
@@ -67,11 +71,12 @@ const CustomPricingTable = () => {
     {
       id: 'popular',
       name: 'Popular Pack',
-      price: currency === '£' ? '£6.49' : '$7.99',
-      period: '/month',
+      monthlyPrice: currency === '£' ? '£6.49' : '$7.99',
+      annualPrice: currency === '£' ? '£64.99' : '$79.99',
+      period: isAnnual ? '/year' : '/month',
       description: 'Great value for families',
       features: [
-        '4 personalized stories',
+        isAnnual ? '48 personalized stories per year' : '4 personalized stories per month',
         'Multiple languages',
         'Custom characters',
         'Beautiful illustrations',
@@ -84,11 +89,12 @@ const CustomPricingTable = () => {
     {
       id: 'premium',
       name: 'Premium',
-      price: currency === '£' ? '£12.49' : '$15.99',
-      period: '/month',
+      monthlyPrice: currency === '£' ? '£12.49' : '$15.99',
+      annualPrice: currency === '£' ? '£124.99' : '$159.99',
+      period: isAnnual ? '/year' : '/month',
       description: 'Unlimited storytelling adventures',
       features: [
-        '8 personalized stories',
+        isAnnual ? '96 personalized stories per year' : '8 personalized stories per month',
         'Multiple languages',
         'Custom characters',
         'Beautiful illustrations',
@@ -135,7 +141,30 @@ const CustomPricingTable = () => {
     <div className="w-full max-w-6xl mx-auto space-y-8">
       {/* Monthly Subscription Plans */}
       <div>
-        <h3 className="text-2xl font-bold text-center mb-6 text-story-purple">Monthly Subscriptions</h3>
+        <div className="text-center mb-8">
+          <h3 className="text-2xl font-bold mb-6 text-story-purple">Monthly Subscriptions</h3>
+          
+          {/* Billing Toggle */}
+          <div className="flex items-center justify-center gap-4 mb-8">
+            <span className={`text-lg font-medium transition-colors ${!isAnnual ? 'text-story-purple' : 'text-gray-500'}`}>
+              Monthly
+            </span>
+            <Switch
+              checked={isAnnual}
+              onCheckedChange={setIsAnnual}
+              className="data-[state=checked]:bg-story-purple"
+            />
+            <span className={`text-lg font-medium transition-colors ${isAnnual ? 'text-story-purple' : 'text-gray-500'}`}>
+              Annual
+            </span>
+            {isAnnual && (
+              <div className="bg-story-purple text-white px-3 py-1 rounded-full text-sm font-bold ml-2">
+                Save up to 17%
+              </div>
+            )}
+          </div>
+        </div>
+        
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {monthlyPlans.map((plan) => (
             <div
@@ -160,7 +189,7 @@ const CustomPricingTable = () => {
                 </h3>
                 <div className="mb-4">
                   <span className="text-4xl font-bold text-gray-900">
-                    {plan.price}
+                    {isAnnual ? plan.annualPrice : plan.monthlyPrice}
                   </span>
                   {plan.period && (
                     <span className="text-gray-600 text-lg">{plan.period}</span>
