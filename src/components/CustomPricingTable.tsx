@@ -143,8 +143,6 @@ const CustomPricingTable = () => {
       {/* Monthly Subscription Plans */}
       <div>
         <div className="text-center mb-8">
-          <h3 className="text-2xl font-bold mb-6 text-story-purple">Monthly Subscriptions</h3>
-          
           {/* Billing Toggle */}
           <div className="flex items-center justify-center gap-4 mb-8">
             <span className={`text-lg font-medium transition-colors ${!isAnnual ? 'text-story-purple' : 'text-gray-500'}`}>
