@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
@@ -36,7 +37,7 @@ const CustomPricingTable = () => {
         'Beautiful illustrations',
         'Web reading experience'
       ],
-      buttonText: 'Get Started'
+      buttonText: 'Subscribe'
     },
     {
       id: 'popular',
@@ -54,7 +55,7 @@ const CustomPricingTable = () => {
         'Priority support'
       ],
       isPopular: true,
-      buttonText: 'Most Popular'
+      buttonText: 'Subscribe'
     },
     {
       id: 'premium',
@@ -72,7 +73,7 @@ const CustomPricingTable = () => {
         'Priority support',
         'Advanced customization'
       ],
-      buttonText: 'Go Premium'
+      buttonText: 'Subscribe'
     }
   ];
 
