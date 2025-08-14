@@ -141,24 +141,22 @@ const CustomPricingTable = () => {
     <div className="w-full max-w-6xl mx-auto space-y-8">
       {/* Monthly Subscription Plans */}
       <div>
-        <div className="text-center mb-16">
-          {/* Enhanced Billing Toggle */}
-          <div className="inline-flex items-center gap-6 bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-100 mb-12">
-            <span className={`text-xl font-bold transition-all duration-300 ${!isAnnual ? 'text-story-purple scale-110' : 'text-gray-400'}`}>
+        <div className="text-center mb-8">
+          {/* Billing Toggle */}
+          <div className="flex items-center justify-center gap-4 mb-8">
+            <span className={`text-lg font-medium transition-colors ${!isAnnual ? 'text-story-purple' : 'text-gray-500'}`}>
               Monthly
             </span>
-            <div className="relative">
-              <Switch
-                checked={isAnnual}
-                onCheckedChange={setIsAnnual}
-                className="data-[state=checked]:bg-story-purple scale-150 h-8 w-14"
-              />
-            </div>
-            <span className={`text-xl font-bold transition-all duration-300 ${isAnnual ? 'text-story-purple scale-110' : 'text-gray-400'}`}>
+            <Switch
+              checked={isAnnual}
+              onCheckedChange={setIsAnnual}
+              className="data-[state=checked]:bg-story-purple"
+            />
+            <span className={`text-lg font-medium transition-colors ${isAnnual ? 'text-story-purple' : 'text-gray-500'}`}>
               Annual
             </span>
             {isAnnual && (
-              <div className="bg-gradient-to-r from-story-purple to-story-blue text-white px-4 py-2 rounded-full text-base font-bold ml-2 animate-pulse shadow-lg">
+              <div className="bg-story-purple text-white px-3 py-1 rounded-full text-sm font-bold ml-2">
                 Save up to 17%
               </div>
             )}
