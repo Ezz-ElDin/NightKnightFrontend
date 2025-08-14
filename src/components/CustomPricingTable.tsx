@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
@@ -25,11 +24,11 @@ const CustomPricingTable = () => {
   const monthlyPlans: PricingPlan[] = [
     {
       id: 'starter',
-      name: 'Starter',
-      monthlyPrice: '£1.99',
+      name: 'Dream Drifter',
+      monthlyPrice: '£8.49',
       annualPrice: '£19.99',
       period: isAnnual ? '/year' : '/month',
-      description: 'Perfect for trying out our magical storytelling',
+      description: 'Drift through the week with 6 enchanting stories, a perfect blend of spontaneity and routine for magical nights together.',
       features: [
         isAnnual ? '12 personalized stories per year' : '1 personalized story per month',
         'Multiple languages',
