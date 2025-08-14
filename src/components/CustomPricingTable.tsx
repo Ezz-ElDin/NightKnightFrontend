@@ -171,7 +171,7 @@ const CustomPricingTable = () => {
                     </span>
                   </div>
                 </div>
-                <p className="text-gray-600 text-sm">
+                <p className="text-gray-600 text-sm text-left">
                   {plan.description}
                 </p>
               </div>
