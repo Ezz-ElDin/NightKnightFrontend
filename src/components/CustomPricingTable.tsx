@@ -40,11 +40,11 @@ const CustomPricingTable = () => {
     },
     {
       id: 'popular',
-      name: 'Popular Pack',
+      name: 'Story Sprout',
       monthlyPrice: '£6.49',
       annualPrice: '£64.99',
       period: isAnnual ? '/year' : '/month',
-      description: 'Great value for families',
+      description: 'A gentle introduction to magical bedtime moments, receive 4 personalised stories each month to spark your child\'s imagination.',
       features: [
         isAnnual ? '48 personalized stories per year' : '4 personalized stories per month',
         'Multiple languages',
