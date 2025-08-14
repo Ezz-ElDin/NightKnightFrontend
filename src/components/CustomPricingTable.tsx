@@ -13,7 +13,6 @@ interface PricingPlan {
   features: string[];
   isPopular?: boolean;
   buttonText: string;
-  isOneTime?: boolean;
 }
 
 const CustomPricingTable = () => {
@@ -51,9 +50,9 @@ const CustomPricingTable = () => {
 
   const plans: PricingPlan[] = [
     {
-      id: 'one-time',
-      name: 'Single Story',
-      price: currency === '£' ? '£0.99' : '$1.49',
+      id: 'starter',
+      name: 'Starter',
+      price: currency === '£' ? '£1.99' : '$2.99',
       description: 'Perfect for trying out our magical storytelling',
       features: [
         '1 personalized story',
@@ -62,32 +61,15 @@ const CustomPricingTable = () => {
         'Beautiful illustrations',
         'Web reading experience'
       ],
-      buttonText: 'Buy Once',
-      isOneTime: true
-    },
-    {
-      id: 'starter',
-      name: 'Starter',
-      price: currency === '£' ? '£1.99' : '$2.99',
-      period: '/month',
-      description: 'Great for regular bedtime stories',
-      features: [
-        '1 story per month',
-        'Multiple languages',
-        'Custom characters',
-        'Beautiful illustrations',
-        'Web reading experience'
-      ],
-      buttonText: 'Start Monthly'
+      buttonText: 'Get Started'
     },
     {
       id: 'popular',
       name: 'Popular Pack',
       price: currency === '£' ? '£6.49' : '$7.99',
-      period: '/month',
       description: 'Great value for families',
       features: [
-        '4 stories per month',
+        '4 personalized stories',
         'Multiple languages',
         'Custom characters',
         'Beautiful illustrations',
@@ -101,10 +83,9 @@ const CustomPricingTable = () => {
       id: 'premium',
       name: 'Premium',
       price: currency === '£' ? '£12.49' : '$15.99',
-      period: '/month',
       description: 'Unlimited storytelling adventures',
       features: [
-        '8 stories per month',
+        '8 personalized stories',
         'Multiple languages',
         'Custom characters',
         'Beautiful illustrations',
@@ -132,7 +113,7 @@ const CustomPricingTable = () => {
 
   return (
     <div className="w-full max-w-6xl mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {plans.map((plan) => (
           <div
             key={plan.id}
@@ -149,14 +130,6 @@ const CustomPricingTable = () => {
                 </div>
               </div>
             )}
-
-            {plan.isOneTime && (
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <div className="bg-story-orange text-white px-4 py-1 rounded-full text-sm font-bold">
-                  One-Time
-                </div>
-              </div>
-            )}
             
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold text-gray-900 mb-4">
@@ -166,9 +139,6 @@ const CustomPricingTable = () => {
                 <span className="text-4xl font-bold text-gray-900">
                   {plan.price}
                 </span>
-                {plan.period && (
-                  <span className="text-gray-600 text-lg">{plan.period}</span>
-                )}
               </div>
               <p className="text-gray-600 text-sm">
                 {plan.description}
@@ -191,8 +161,6 @@ const CustomPricingTable = () => {
               className={`w-full h-12 rounded-xl font-semibold transition-all duration-300 ${
                 plan.isPopular
                   ? 'bg-story-purple hover:bg-story-purple/90 text-white'
-                  : plan.isOneTime
-                  ? 'bg-story-orange hover:bg-story-orange/90 text-white'
                   : 'bg-story-purple hover:bg-story-purple/90 text-white'
               }`}
             >
