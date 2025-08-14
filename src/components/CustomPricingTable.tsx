@@ -109,7 +109,8 @@ const CustomPricingTable = () => {
   const oneTimePlan: PricingPlan = {
     id: 'single-story',
     name: 'Single Story',
-    price: currency === '£' ? '£0.99' : '$1.49',
+    monthlyPrice: currency === '£' ? '£0.99' : '$1.49',
+    annualPrice: currency === '£' ? '£0.99' : '$1.49',
     description: 'Perfect for trying out our service with no commitment',
     features: [
       '1 personalized story',
@@ -243,7 +244,7 @@ const CustomPricingTable = () => {
               </div>
               <div className="mb-4">
                 <span className="text-5xl font-bold text-gray-900">
-                  {oneTimePlan.price}
+                  {oneTimePlan.monthlyPrice}
                 </span>
                 <span className="text-gray-600 text-lg ml-2">once</span>
               </div>
