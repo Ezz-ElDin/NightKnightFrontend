@@ -93,7 +93,7 @@ const CustomPricingTable = () => {
       'Web reading experience',
       'No recurring charges'
     ],
-    buttonText: 'Buy Now',
+    buttonText: 'Sign up Now',
     isOneTime: true
   };
 
