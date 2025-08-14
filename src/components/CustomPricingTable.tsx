@@ -108,9 +108,9 @@ const CustomPricingTable = () => {
   const oneTimePlan: PricingPlan = {
     id: 'single-story',
     name: 'Single Story',
-    monthlyPrice: currency === '£' ? '£0.99' : '$1.49',
-    annualPrice: currency === '£' ? '£0.99' : '$1.49',
-    description: 'Perfect for trying out our service with no commitment',
+    monthlyPrice: currency === '£' ? '£1.99' : '$1.99',
+    annualPrice: currency === '£' ? '£1.99' : '$1.99',
+    description: 'Enjoy a beautifully personalised, one-off bedtime story, ideal for special moments or to explore the magic before subscribing.',
     features: [
       '1 personalized story',
       'Multiple languages',
