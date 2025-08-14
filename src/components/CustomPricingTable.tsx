@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
@@ -98,6 +99,16 @@ const CustomPricingTable = () => {
   };
 
   const handlePlanClick = async (planId: string) => {
+    // Always redirect to signup first if user is not logged in
+    if (!isLoggedIn) {
+      // Store the plan selection for after login
+      localStorage.setItem('selectedPlan', planId);
+      localStorage.setItem('redirectAfterAuth', window.location.pathname);
+      navigate('/register');
+      return;
+    }
+
+    // If user is logged in, proceed with checkout
     if (planId === 'single-story') {
       try {
         const response = await stripeApi.createCheckout({
@@ -125,18 +136,10 @@ const CustomPricingTable = () => {
       }
       return;
     }
-
-    if (!isLoggedIn) {
-      // Store the plan selection for after login
-      localStorage.setItem('selectedPlan', planId);
-      localStorage.setItem('redirectAfterAuth', window.location.pathname);
-      navigate('/register');
-      return;
-    }
     
-    // If logged in, proceed with payment (this would integrate with your payment system)
+    // For subscription plans, proceed with payment (this would integrate with your payment system)
     console.log('Processing payment for plan:', planId);
-    // TODO: Integrate with actual payment processing
+    // TODO: Integrate with actual payment processing for subscription plans
   };
 
   return (
