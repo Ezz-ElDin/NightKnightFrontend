@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
@@ -103,9 +102,10 @@ const CustomPricingTable = () => {
     if (!isLoggedIn) {
       // Store the plan selection for after login
       localStorage.setItem('selectedPlan', planId);
-      // For single story, store that we need to trigger Stripe checkout after auth
+      // For single story, store the API path and payload for Stripe checkout
       if (planId === 'single-story') {
-        localStorage.setItem('redirectAfterAuth', 'stripe-checkout-single');
+        localStorage.setItem('redirectAfterAuth', '/api/stripe/checkout/');
+        localStorage.setItem('stripePayload', JSON.stringify({ quantity: 1 }));
       } else {
         localStorage.setItem('redirectAfterAuth', window.location.pathname);
       }
