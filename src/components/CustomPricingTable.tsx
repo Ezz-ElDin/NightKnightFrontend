@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
@@ -219,7 +218,7 @@ const CustomPricingTable = () => {
                   <div className="text-5xl font-bold text-gray-900">
                     {oneTimePlan.monthlyPrice}{' '}
                     <span className="text-lg text-gray-500 font-normal">
-                      per story
+                      /story
                     </span>
                   </div>
                 </div>
