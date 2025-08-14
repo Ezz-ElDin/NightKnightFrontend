@@ -39,7 +39,7 @@ const CustomPricingTable = () => {
         'Beautiful illustrations',
         'Web reading experience'
       ],
-      buttonText: 'Subscribe'
+      buttonText: 'Sign up Now'
     },
     {
       id: 'popular',
@@ -57,7 +57,7 @@ const CustomPricingTable = () => {
         'Priority support'
       ],
       isPopular: true,
-      buttonText: 'Subscribe'
+      buttonText: 'Sign up Now'
     },
     {
       id: 'premium',
@@ -75,7 +75,7 @@ const CustomPricingTable = () => {
         'Priority support',
         'Advanced customization'
       ],
-      buttonText: 'Subscribe'
+      buttonText: 'Sign up Now'
     }
   ];
 
