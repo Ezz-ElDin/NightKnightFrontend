@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
@@ -58,11 +59,11 @@ const CustomPricingTable = () => {
     },
     {
       id: 'premium',
-      name: 'Premium',
-      monthlyPrice: '£12.49',
+      name: 'Starlight Stories',
+      monthlyPrice: '£11.49',
       annualPrice: '£124.99',
       period: isAnnual ? '/year' : '/month',
-      description: 'Unlimited storytelling adventures',
+      description: 'Light up bedtime twice a week with 8 charming, personalised tales, designed to inspire wonder and sweet dreams.',
       features: [
         isAnnual ? '96 personalized stories per year' : '8 personalized stories per month',
         'Multiple languages',
