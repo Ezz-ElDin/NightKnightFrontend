@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Book, Star, Heart, Download, MessageCircle, Globe, Check } from "lucide-react";
@@ -8,6 +7,7 @@ import HowItWorks from "@/components/HowItWorks";
 import StorySamples from "@/components/StorySamples";
 import DiscoverStories from "@/components/DiscoverStories";
 import Footer from "@/components/Footer";
+import CustomPricingTable from "@/components/CustomPricingTable";
 
 const Index = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -58,76 +58,6 @@ const Index = () => {
     };
 
     detectLocation();
-  }, []);
-
-  // Commented out story plans data - now using Stripe pricing table
-  /*
-  const storyPlans = [
-    {
-      name: "Entry",
-      description: "Perfect for those who want to try our magical storytelling experience with a single personalized adventure.",
-      storiesCount: 1,
-      priceEurope: "£1.99",
-      priceOutsideEurope: "$3.99",
-      iconColor: "bg-story-pink",
-      isPopular: false,
-      features: [
-        "1 Personalized story",
-        "Multiple languages",
-        "Custom characters",
-        "Beautiful illustrations",
-        "Web reading experience"
-      ]
-    },
-    {
-      name: "Tiny Tales",
-      description: "Enjoy four personalised bedtime stories each month – the perfect treat for special nights with your little one.",
-      storiesCount: 4,
-      priceEurope: "£6.49",
-      priceOutsideEurope: "$7.99",
-      iconColor: "bg-story-purple",
-      isPopular: true,
-      features: [
-        "4 Personalized stories",
-        "Multiple languages",
-        "Custom characters",
-        "Beautiful illustrations",
-        "Web reading experience"
-      ]
-    },
-    {
-      name: "Starlight Stories",
-      description: "Brighten bedtime twice a week with eight enchanting stories each month – lovingly crafted just for your child's dreams.",
-      storiesCount: 8,
-      priceEurope: "£12.49",
-      priceOutsideEurope: "$15.99",
-      iconColor: "bg-story-yellow",
-      isPopular: false,
-      features: [
-        "8 Personalized stories",
-        "Multiple languages",
-        "Custom characters",
-        "Beautiful illustrations",
-        "Web reading experience"
-      ]
-    }
-  ];
-  */
-
-  // Load Stripe pricing table script
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://js.stripe.com/v3/pricing-table.js';
-    script.async = true;
-    document.head.appendChild(script);
-
-    return () => {
-      // Cleanup script if component unmounts
-      const existingScript = document.querySelector('script[src="https://js.stripe.com/v3/pricing-table.js"]');
-      if (existingScript) {
-        document.head.removeChild(existingScript);
-      }
-    };
   }, []);
 
   return (
@@ -240,7 +170,7 @@ const Index = () => {
       
       <HowItWorks />
       
-      {/* New Stripe Pricing Table section for non-logged-in users */}
+      {/* Custom Pricing Table section for non-logged-in users */}
       {!isLoggedIn && (
         <section className="py-16 px-4 bg-gray-50" id="story-plans">
           <div className="container mx-auto max-w-7xl">
@@ -251,81 +181,7 @@ const Index = () => {
               Choose the perfect plan for your magical bedtime story adventure
             </p>
             
-            {/* Stripe Pricing Table - Optimized for desktop */}
-            <div className="w-full max-w-6xl mx-auto">
-              <stripe-pricing-table 
-                pricing-table-id="prctbl_1RvcFFLd6fD08lwA7V9k15DQ"
-                publishable-key="pk_test_51KaM3ALd6fD08lwA5AAHGRYc8kDoBVmqRfIm2EDm9CHy4RwbfoOF1dRP0D5VJMuCPzofGq4FVH0BDS9nsxfTwpNJ00dhmbUPzm"
-              ></stripe-pricing-table>
-            </div>
-
-            {/* Commented out custom story plans implementation */}
-            {/*
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              {storyPlans.map((plan, index) => (
-                <div 
-                  key={index} 
-                  className={`bg-white rounded-3xl p-8 shadow-lg border hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative ${
-                    plan.isPopular 
-                      ? 'border-story-purple ring-2 ring-story-purple/20 scale-105' 
-                      : 'border-gray-100'
-                  }`}
-                >
-                  {plan.isPopular && (
-                    <div className="absolute -top-1 left-1/2 transform -translate-x-1/2">
-                      <div className="bg-gradient-to-r from-story-purple to-story-pink text-white px-3 py-1 rounded-full text-xs font-bold shadow-md">
-                        Most Popular
-                      </div>
-                    </div>
-                  )}
-                  
-                  <div className="flex justify-center mb-6">
-                    <div className="relative">
-                      <div className="flex space-x-2">
-                        <div className="w-12 h-12 bg-story-pink rounded-full flex items-center justify-center">
-                          <Book className="h-6 w-6 text-white" />
-                        </div>
-                        <div className="w-12 h-12 bg-story-purple rounded-full flex items-center justify-center">
-                          <Star className="h-6 w-6 text-white" fill="currentColor" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <h3 className="text-2xl font-bold text-center mb-6 text-gray-900">
-                    {plan.name}
-                  </h3>
-                  
-                  <div className="text-center mb-6">
-                    <div className="text-4xl font-bold text-gray-900 mb-1">
-                      {isEurope ? plan.priceEurope : plan.priceOutsideEurope}
-                    </div>
-                    <div className="text-gray-500 text-sm">
-                      for {plan.storiesCount} {plan.storiesCount === 1 ? 'story' : 'stories'}
-                    </div>
-                  </div>
-                  
-                  <p className="text-gray-600 text-center mb-8 leading-relaxed">
-                    {plan.description}
-                  </p>
-                  
-                  <div className="mt-auto">
-                    <Link to="/register">
-                      <Button 
-                        className={`w-full h-12 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-lg ${
-                          plan.isPopular
-                            ? 'bg-gradient-to-r from-story-purple to-story-pink hover:from-story-purple/90 hover:to-story-pink/90 text-white'
-                            : 'bg-story-purple hover:bg-story-purple/90 text-white'
-                        }`}
-                      >
-                        Get Started
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-              ))}
-            </div>
-            */}
+            <CustomPricingTable />
           </div>
         </section>
       )}
