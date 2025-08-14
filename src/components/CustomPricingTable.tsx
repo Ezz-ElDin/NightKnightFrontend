@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
-import { Check } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
 interface PricingPlan {
@@ -199,17 +198,6 @@ const CustomPricingTable = () => {
                 </p>
               </div>
 
-              <div className="mb-8">
-                <ul className="space-y-3">
-                  {plan.features.map((feature, index) => (
-                    <li key={index} className="flex items-start">
-                      <Check className="h-5 w-5 text-story-purple mr-3 mt-0.5 flex-shrink-0" />
-                      <span className="text-gray-700 text-sm">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
               <Button
                 onClick={() => handlePlanClick(plan.id)}
                 className={`w-full h-12 rounded-xl font-semibold transition-all duration-300 ${
@@ -249,18 +237,6 @@ const CustomPricingTable = () => {
               <p className="text-gray-600 text-lg mb-6">
                 {oneTimePlan.description}
               </p>
-            </div>
-
-            {/* Middle - Features */}
-            <div className="flex-1">
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {oneTimePlan.features.map((feature, index) => (
-                  <li key={index} className="flex items-start">
-                    <Check className="h-5 w-5 text-story-orange mr-3 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-700 text-sm">{feature}</span>
-                  </li>
-                ))}
-              </ul>
             </div>
 
             {/* Right side - CTA */}
