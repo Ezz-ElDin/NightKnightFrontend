@@ -98,45 +98,12 @@ const CustomPricingTable = () => {
   };
 
   const handlePlanClick = async (planId: string) => {
-    if (planId === 'single-story') {
-      try {
-        const response = await stripeApi.createCheckout({
-          quantity: 1,
-          price: 'single_story' // You may need to adjust this price ID
-        });
-        
-        if (response.success && response.data.location) {
-          // Open Stripe checkout in a new tab
-          window.open(response.data.location, '_blank');
-        } else {
-          toast({
-            title: 'Error',
-            description: 'Failed to create checkout session',
-            variant: 'destructive',
-          });
-        }
-      } catch (error) {
-        console.error('Stripe checkout error:', error);
-        toast({
-          title: 'Error',
-          description: 'Something went wrong. Please try again.',
-          variant: 'destructive',
-        });
-      }
-      return;
-    }
-
-    if (!isLoggedIn) {
-      // Store the plan selection for after login
-      localStorage.setItem('selectedPlan', planId);
-      localStorage.setItem('redirectAfterAuth', window.location.pathname);
-      navigate('/register');
-      return;
-    }
+    // Store the selected plan for after signup/login
+    localStorage.setItem('selectedPlan', planId);
+    localStorage.setItem('redirectAfterAuth', window.location.pathname);
     
-    // If logged in, proceed with payment (this would integrate with your payment system)
-    console.log('Processing payment for plan:', planId);
-    // TODO: Integrate with actual payment processing
+    // Always redirect to signup regardless of authentication status
+    navigate('/register');
   };
 
   return (
