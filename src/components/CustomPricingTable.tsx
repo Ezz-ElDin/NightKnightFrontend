@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Link, useNavigate } from 'react-router-dom';
+import { stripeApi } from '@/lib/api';
+import { useToast } from '@/hooks/use-toast';
 
 interface PricingPlan {
   id: string;
@@ -19,6 +21,7 @@ interface PricingPlan {
 const CustomPricingTable = () => {
   const [isAnnual, setIsAnnual] = useState(false);
   const navigate = useNavigate();
+  const { toast } = useToast();
   const isLoggedIn = !!localStorage.getItem('authToken');
 
   const monthlyPlans: PricingPlan[] = [
@@ -94,7 +97,35 @@ const CustomPricingTable = () => {
     isOneTime: true
   };
 
-  const handlePlanClick = (planId: string) => {
+  const handlePlanClick = async (planId: string) => {
+    if (planId === 'single-story') {
+      try {
+        const response = await stripeApi.createCheckout({
+          quantity: 1,
+          price: 'single_story' // You may need to adjust this price ID
+        });
+        
+        if (response.success && response.data.location) {
+          // Open Stripe checkout in a new tab
+          window.open(response.data.location, '_blank');
+        } else {
+          toast({
+            title: 'Error',
+            description: 'Failed to create checkout session',
+            variant: 'destructive',
+          });
+        }
+      } catch (error) {
+        console.error('Stripe checkout error:', error);
+        toast({
+          title: 'Error',
+          description: 'Something went wrong. Please try again.',
+          variant: 'destructive',
+        });
+      }
+      return;
+    }
+
     if (!isLoggedIn) {
       // Store the plan selection for after login
       localStorage.setItem('selectedPlan', planId);
