@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
@@ -241,22 +240,6 @@ const CustomPricingTable = () => {
           </div>
         </div>
       </div>
-      
-      {!isLoggedIn && (
-        <div className="mt-8 text-center">
-          <p className="text-gray-600 text-sm">
-            Please{' '}
-            <Link to="/register" className="text-story-purple hover:underline font-semibold">
-              sign up
-            </Link>{' '}
-            or{' '}
-            <Link to="/login" className="text-story-purple hover:underline font-semibold">
-              log in
-            </Link>{' '}
-            to purchase a plan
-          </p>
-        </div>
-      )}
     </div>
   );
 };
