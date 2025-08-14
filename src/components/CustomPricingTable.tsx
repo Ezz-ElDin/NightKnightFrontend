@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Link, useNavigate } from 'react-router-dom';
@@ -17,45 +18,16 @@ interface PricingPlan {
 }
 
 const CustomPricingTable = () => {
-  const [currency, setCurrency] = useState('$');
   const [isAnnual, setIsAnnual] = useState(false);
   const navigate = useNavigate();
   const isLoggedIn = !!localStorage.getItem('authToken');
-
-  // Detect user location for currency
-  useEffect(() => {
-    const detectLocation = async () => {
-      try {
-        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const europeanTimezones = [
-          'Europe/London', 'Europe/Paris', 'Europe/Berlin', 'Europe/Madrid',
-          'Europe/Rome', 'Europe/Amsterdam', 'Europe/Vienna', 'Europe/Brussels',
-          'Europe/Copenhagen', 'Europe/Dublin', 'Europe/Helsinki', 'Europe/Lisbon',
-          'Europe/Luxembourg', 'Europe/Prague', 'Europe/Stockholm', 'Europe/Warsaw',
-          'Europe/Athens', 'Europe/Budapest', 'Europe/Bucharest', 'Europe/Sofia',
-          'Europe/Zagreb', 'Europe/Ljubljana', 'Europe/Bratislava', 'Europe/Tallinn',
-          'Europe/Riga', 'Europe/Vilnius', 'Europe/Malta', 'Europe/Nicosia'
-        ];
-        
-        if (europeanTimezones.some(tz => timezone.includes(tz.split('/')[1]))) {
-          setCurrency('£');
-        } else {
-          setCurrency('$');
-        }
-      } catch (error) {
-        setCurrency('$');
-      }
-    };
-
-    detectLocation();
-  }, []);
 
   const monthlyPlans: PricingPlan[] = [
     {
       id: 'starter',
       name: 'Starter',
-      monthlyPrice: currency === '£' ? '£1.99' : '$2.99',
-      annualPrice: currency === '£' ? '£19.99' : '$29.99',
+      monthlyPrice: '£1.99',
+      annualPrice: '£19.99',
       period: isAnnual ? '/year' : '/month',
       description: 'Perfect for trying out our magical storytelling',
       features: [
@@ -70,8 +42,8 @@ const CustomPricingTable = () => {
     {
       id: 'popular',
       name: 'Popular Pack',
-      monthlyPrice: currency === '£' ? '£6.49' : '$7.99',
-      annualPrice: currency === '£' ? '£64.99' : '$79.99',
+      monthlyPrice: '£6.49',
+      annualPrice: '£64.99',
       period: isAnnual ? '/year' : '/month',
       description: 'Great value for families',
       features: [
@@ -88,8 +60,8 @@ const CustomPricingTable = () => {
     {
       id: 'premium',
       name: 'Premium',
-      monthlyPrice: currency === '£' ? '£12.49' : '$15.99',
-      annualPrice: currency === '£' ? '£124.99' : '$159.99',
+      monthlyPrice: '£12.49',
+      annualPrice: '£124.99',
       period: isAnnual ? '/year' : '/month',
       description: 'Unlimited storytelling adventures',
       features: [
@@ -108,8 +80,8 @@ const CustomPricingTable = () => {
   const oneTimePlan: PricingPlan = {
     id: 'single-story',
     name: 'Single Story',
-    monthlyPrice: currency === '£' ? '£1.99' : '$1.99',
-    annualPrice: currency === '£' ? '£1.99' : '$1.99',
+    monthlyPrice: '£1.99',
+    annualPrice: '£1.99',
     description: 'Enjoy a beautifully personalised, one-off bedtime story, ideal for special moments or to explore the magic before subscribing.',
     features: [
       '1 personalized story',
