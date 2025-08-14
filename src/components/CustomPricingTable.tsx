@@ -103,7 +103,12 @@ const CustomPricingTable = () => {
     if (!isLoggedIn) {
       // Store the plan selection for after login
       localStorage.setItem('selectedPlan', planId);
-      localStorage.setItem('redirectAfterAuth', window.location.pathname);
+      // For single story, store that we need to trigger Stripe checkout after auth
+      if (planId === 'single-story') {
+        localStorage.setItem('redirectAfterAuth', 'stripe-checkout-single');
+      } else {
+        localStorage.setItem('redirectAfterAuth', window.location.pathname);
+      }
       navigate('/register');
       return;
     }
