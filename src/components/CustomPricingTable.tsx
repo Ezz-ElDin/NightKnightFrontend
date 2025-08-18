@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
@@ -16,6 +17,7 @@ interface PricingPlan {
   isPopular?: boolean;
   buttonText: string;
   isOneTime?: boolean;
+  imagePath: string;
 }
 
 const CustomPricingTable = () => {
@@ -39,7 +41,8 @@ const CustomPricingTable = () => {
         'Beautiful illustrations',
         'Web reading experience'
       ],
-      buttonText: 'Sign up Now'
+      buttonText: 'Sign up Now',
+      imagePath: '/images/dream-drifter.png'
     },
     {
       id: 'popular',
@@ -57,7 +60,8 @@ const CustomPricingTable = () => {
         'Priority support'
       ],
       isPopular: true,
-      buttonText: 'Sign up Now'
+      buttonText: 'Sign up Now',
+      imagePath: '/images/story-sprout.png'
     },
     {
       id: 'premium',
@@ -75,7 +79,8 @@ const CustomPricingTable = () => {
         'Priority support',
         'Advanced customization'
       ],
-      buttonText: 'Sign up Now'
+      buttonText: 'Sign up Now',
+      imagePath: '/images/starlight-stories.png'
     }
   ];
 
@@ -94,7 +99,8 @@ const CustomPricingTable = () => {
       'No recurring charges'
     ],
     buttonText: 'Sign up Now',
-    isOneTime: true
+    isOneTime: true,
+    imagePath: '/images/single-story.png'
   };
 
   const handlePlanClick = async (planId: string) => {
@@ -150,11 +156,13 @@ const CustomPricingTable = () => {
                 </div>
               )}
               
-              {/* Icon Placeholder - Top Center */}
+              {/* Plan Image - Top Center */}
               <div className="flex justify-center mb-6">
-                <div className="w-[150px] h-[150px] bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
-                  <span className="text-gray-400 text-sm">Icon Placeholder</span>
-                </div>
+                <img 
+                  src={plan.imagePath} 
+                  alt={`${plan.name} plan illustration`}
+                  className="w-[150px] h-[150px] object-cover rounded-lg"
+                />
               </div>
               
               <div className="text-center mb-8">
@@ -194,13 +202,15 @@ const CustomPricingTable = () => {
         <h3 className="text-2xl font-bold text-center mb-6 text-story-orange">One-Time Purchase</h3>
         <div className="bg-white rounded-2xl border-2 border-story-orange p-8 shadow-lg transition-all duration-300 hover:shadow-xl">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
-            {/* Left side - Plan info with icon placeholder */}
+            {/* Left side - Plan info with image */}
             <div className="flex-1 flex items-center gap-6">
-              {/* Icon Placeholder - Left Middle */}
+              {/* Plan Image - Left Middle */}
               <div className="flex-shrink-0">
-                <div className="w-[150px] h-[150px] bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
-                  <span className="text-gray-400 text-sm">Icon Placeholder</span>
-                </div>
+                <img 
+                  src={oneTimePlan.imagePath} 
+                  alt={`${oneTimePlan.name} plan illustration`}
+                  className="w-[150px] h-[150px] object-cover rounded-lg"
+                />
               </div>
               
               <div className="text-center lg:text-left">
