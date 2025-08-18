@@ -7,17 +7,17 @@ import { User, CreditCard } from "lucide-react";
 import StoryBackground from "@/components/StoryBackground";
 import { Link, useSearchParams } from "react-router-dom";
 import ProfileSettings from "@/components/account/ProfileSettings";
-import BuyCredits from "@/components/account/BuyCredits";
+import PlansAndBilling from "@/components/account/PlansAndBilling";
 
 const AccountSettings = () => {
   const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState("profile");
 
-  // Check if we should show the credits tab based on URL parameter
+  // Check if we should show the billing tab based on URL parameter
   useEffect(() => {
     const tab = searchParams.get('tab');
-    if (tab === 'credits') {
-      setActiveTab('credits');
+    if (tab === 'billing' || tab === 'credits') {
+      setActiveTab('billing');
     }
   }, [searchParams]);
 
@@ -38,9 +38,9 @@ const AccountSettings = () => {
                 <User className="h-4 w-4" />
                 <span>Profile</span>
               </TabsTrigger>
-              <TabsTrigger value="credits" className="flex items-center gap-2">
+              <TabsTrigger value="billing" className="flex items-center gap-2">
                 <CreditCard className="h-4 w-4" />
-                <span>Story Credits</span>
+                <span>Plans and Billing</span>
               </TabsTrigger>
             </TabsList>
 
@@ -48,8 +48,8 @@ const AccountSettings = () => {
               <ProfileSettings />
             </TabsContent>
 
-            <TabsContent value="credits" className="space-y-4">
-              <BuyCredits />
+            <TabsContent value="billing" className="space-y-4">
+              <PlansAndBilling />
             </TabsContent>
           </Tabs>
         </Card>
