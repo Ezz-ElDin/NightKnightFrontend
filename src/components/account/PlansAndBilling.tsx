@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
-import { CreditCard, Star, Check } from "lucide-react";
+import { CreditCard, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { creditApi } from "@/lib/api";
 
@@ -223,7 +222,6 @@ const PlansAndBilling = () => {
               {plan.id === currentPlan && (
                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                   <Badge className="bg-story-purple text-white">
-                    <Star className="h-3 w-3 mr-1" />
                     Current Plan
                   </Badge>
                 </div>
