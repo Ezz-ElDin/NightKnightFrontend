@@ -254,14 +254,7 @@ const PlansAndBilling = () => {
                 <p className="text-sm text-gray-600">{plan.description}</p>
               </div>
 
-              <ul className="space-y-2 mb-6">
-                {plan.features.slice(0, 3).map((feature, i) => (
-                  <li key={i} className="flex items-start text-sm">
-                    <Check className="h-4 w-4 text-story-purple mt-0.5 mr-2 flex-shrink-0" />
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
+              
 
               <Button
                 onClick={() => handlePlanAction(plan.id)}
