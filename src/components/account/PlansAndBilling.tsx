@@ -44,6 +44,15 @@ const PlansAndBilling = () => {
     },
   });
 
+  // Fetch user's current subscription plan
+  const { data: subscriptionData, isLoading: isLoadingSubscription } = useQuery({
+    queryKey: ['userSubscription'],
+    queryFn: async () => {
+      const response = await api.get('/api/user/subscription/');
+      return response.data;
+    },
+  });
+
   // Fetch single story checkout URL on component load
   const { data: checkoutData, isLoading: isLoadingCheckout } = useQuery({
     queryKey: ['singleStoryCheckout'],
@@ -62,11 +71,25 @@ const PlansAndBilling = () => {
     }
   }, [portalData]);
 
-  // Mock current subscription - in real implementation, this would come from Stripe/Supabase
+  // Map plan names to plan IDs and set current plan
+  const mapPlanNameToPlanId = (planName: string): string | null => {
+    const planMapping: { [key: string]: string } = {
+      'story-sprout-monthly': 'popular',
+      'dream-drifter-monthly': 'starter', 
+      'starlight-stories-monthly': 'premium'
+    };
+    return planMapping[planName] || null;
+  };
+
+  // Set current plan based on subscription data
   useEffect(() => {
-    // TODO: Replace with actual subscription check
-    setCurrentPlan('popular'); // Mock: user has Story Sprout plan
-  }, []);
+    if (subscriptionData?.plan && subscriptionData?.status === 'active') {
+      const mappedPlanId = mapPlanNameToPlanId(subscriptionData.plan);
+      setCurrentPlan(mappedPlanId);
+    } else {
+      setCurrentPlan(null);
+    }
+  }, [subscriptionData]);
 
   const subscriptionPlans: PricingPlan[] = [
     {
