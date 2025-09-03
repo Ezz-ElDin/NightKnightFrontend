@@ -53,6 +53,37 @@ const PlansAndBilling = () => {
     },
   });
 
+  // Fetch checkout URLs for all plans on component load
+  const { data: storySproutCheckout, isLoading: isLoadingStorySprout } = useQuery({
+    queryKey: ['storySproutCheckout'],
+    queryFn: async () => {
+      const response = await api.post('/api/stripe/checkout/', {
+        plan: "story-sprout-monthly"
+      });
+      return response.data;
+    },
+  });
+
+  const { data: dreamDrifterCheckout, isLoading: isLoadingDreamDrifter } = useQuery({
+    queryKey: ['dreamDrifterCheckout'],
+    queryFn: async () => {
+      const response = await api.post('/api/stripe/checkout/', {
+        plan: "dream-drifter-monthly"
+      });
+      return response.data;
+    },
+  });
+
+  const { data: starlightCheckout, isLoading: isLoadingStarlight } = useQuery({
+    queryKey: ['starlightCheckout'],
+    queryFn: async () => {
+      const response = await api.post('/api/stripe/checkout/', {
+        plan: "starlight-stories-monthly"
+      });
+      return response.data;
+    },
+  });
+
   // Fetch single story checkout URL on component load
   const { data: checkoutData, isLoading: isLoadingCheckout } = useQuery({
     queryKey: ['singleStoryCheckout'],
@@ -176,35 +207,37 @@ const PlansAndBilling = () => {
     return 'Switch Plan';
   };
 
-  const handlePlanAction = async (planId: string) => {
+  const handlePlanAction = (planId: string) => {
     if (planId === currentPlan) return;
     
-    try {
-      // Map plan IDs to API plan names
-      const planMapping: { [key: string]: string } = {
-        'popular': 'story-sprout-monthly',
-        'starter': 'dream-drifter-monthly',
-        'premium': 'starlight-stories-monthly'
-      };
-      
-      const apiPlanName = planMapping[planId];
-      if (!apiPlanName) {
-        throw new Error('Invalid plan selected');
-      }
-
-      const response = await api.post('/api/stripe/checkout/', {
-        plan: apiPlanName
-      });
-
-      if (response.data?.data?.location) {
-        window.open(response.data.data.location, '_blank');
-      } else {
-        throw new Error('No checkout URL received');
-      }
-    } catch (error) {
+    let checkoutUrl = null;
+    
+    // Get the appropriate checkout URL based on plan ID
+    switch (planId) {
+      case 'popular': // Story Sprout
+        checkoutUrl = storySproutCheckout?.data?.location;
+        break;
+      case 'starter': // Dream Drifter
+        checkoutUrl = dreamDrifterCheckout?.data?.location;
+        break;
+      case 'premium': // Starlight Stories
+        checkoutUrl = starlightCheckout?.data?.location;
+        break;
+      default:
+        toast({
+          title: "Error",
+          description: "Invalid plan selected.",
+          variant: "destructive"
+        });
+        return;
+    }
+    
+    if (checkoutUrl) {
+      window.open(checkoutUrl, '_blank');
+    } else {
       toast({
         title: "Error",
-        description: "Failed to start checkout process. Please try again.",
+        description: "Checkout URL not available. Please try again.",
         variant: "destructive"
       });
     }
@@ -354,7 +387,7 @@ const PlansAndBilling = () => {
 
               <Button
                 onClick={() => handlePlanAction(plan.id)}
-                disabled={plan.id === currentPlan}
+                disabled={plan.id === currentPlan || isLoadingStorySprout || isLoadingDreamDrifter || isLoadingStarlight}
                 className={`w-full ${
                   plan.id === currentPlan
                     ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
