@@ -152,7 +152,11 @@ const PlansAndBilling = () => {
         return;
       }
 
-      const response = await fetch('/api/stripe/portal/', {
+      // Use the same API_URL logic as the existing API
+      const API_URL = import.meta.env.VITE_API_URL || 'https://api.nightknight.app';
+      const portalUrl = `${API_URL}/api/stripe/portal/`;
+
+      const response = await fetch(portalUrl, {
         method: 'POST',
         headers: {
           'Authorization': `Token ${token}`,
@@ -161,14 +165,19 @@ const PlansAndBilling = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to create portal session');
+        const errorData = await response.text();
+        console.error('Portal API error:', response.status, errorData);
+        throw new Error(`Failed to create portal session: ${response.status}`);
       }
 
       const data = await response.json();
+      console.log('Portal response:', data);
+      
       if (data.url) {
+        // Open portal in new tab
         window.open(data.url, '_blank');
       } else {
-        throw new Error('No portal URL received');
+        throw new Error('No portal URL received from server');
       }
     } catch (error) {
       console.error('Error creating portal session:', error);
