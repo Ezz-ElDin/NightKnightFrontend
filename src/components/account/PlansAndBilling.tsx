@@ -6,7 +6,7 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { CreditCard, Check, Sparkles, ShoppingCart } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { creditApi } from "@/lib/api";
+import { creditApi, api } from "@/lib/api";
 
 interface PricingPlan {
   id: string;
@@ -142,48 +142,28 @@ const PlansAndBilling = () => {
 
   const handleManagePlan = async () => {
     try {
-      const token = localStorage.getItem('authToken');
-      if (!token) {
-        toast({
-          title: "Authentication Error",
-          description: "Please log in to manage your plan.",
-          variant: "destructive"
-        });
-        return;
-      }
-
-      // Use the same API_URL logic as the existing API
-      const API_URL = import.meta.env.VITE_API_URL || 'https://api.nightknight.app';
-      const portalUrl = `${API_URL}/api/stripe/portal/`;
-
-      const response = await fetch(portalUrl, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Token ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (!response.ok) {
-        const errorData = await response.text();
-        console.error('Portal API error:', response.status, errorData);
-        throw new Error(`Failed to create portal session: ${response.status}`);
-      }
-
-      const data = await response.json();
-      console.log('Portal response:', data);
+      console.log('Starting portal session creation...');
       
-      if (data.url) {
+      // Use the existing API instance which already handles auth tokens
+      const response = await api.post('/api/stripe/portal/');
+      
+      console.log('Portal API response:', response.data);
+      
+      if (response.data && response.data.url) {
         // Open portal in new tab
-        window.open(data.url, '_blank');
+        window.open(response.data.url, '_blank');
       } else {
         throw new Error('No portal URL received from server');
       }
     } catch (error) {
       console.error('Error creating portal session:', error);
+      
+      // Check if it's an axios error with response data
+      const errorMessage = error.response?.data?.message || error.message || 'Unknown error occurred';
+      
       toast({
         title: "Error",
-        description: "Failed to open subscription management portal. Please try again.",
+        description: `Failed to open subscription management portal: ${errorMessage}`,
         variant: "destructive"
       });
     }
