@@ -176,14 +176,38 @@ const PlansAndBilling = () => {
     return 'Switch Plan';
   };
 
-  const handlePlanAction = (planId: string) => {
+  const handlePlanAction = async (planId: string) => {
     if (planId === currentPlan) return;
     
-    // TODO: Implement actual plan change logic
-    toast({
-      title: "Plan Change",
-      description: `Switching to ${subscriptionPlans.find(p => p.id === planId)?.name || 'new plan'}...`,
-    });
+    try {
+      // Map plan IDs to API plan names
+      const planMapping: { [key: string]: string } = {
+        'popular': 'story-sprout-monthly',
+        'starter': 'dream-drifter-monthly',
+        'premium': 'starlight-stories-monthly'
+      };
+      
+      const apiPlanName = planMapping[planId];
+      if (!apiPlanName) {
+        throw new Error('Invalid plan selected');
+      }
+
+      const response = await api.post('/api/stripe/checkout/', {
+        plan: apiPlanName
+      });
+
+      if (response.data?.data?.location) {
+        window.open(response.data.data.location, '_blank');
+      } else {
+        throw new Error('No checkout URL received');
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to start checkout process. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   const handleSingleStoryPurchase = () => {
