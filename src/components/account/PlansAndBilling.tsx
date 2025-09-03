@@ -44,6 +44,17 @@ const PlansAndBilling = () => {
     },
   });
 
+  // Fetch single story checkout URL on component load
+  const { data: checkoutData, isLoading: isLoadingCheckout } = useQuery({
+    queryKey: ['singleStoryCheckout'],
+    queryFn: async () => {
+      const response = await api.post('/api/stripe/checkout/', {
+        plan: "one-time-story"
+      });
+      return response.data;
+    },
+  });
+
   // Set the portal URL when data is loaded
   useEffect(() => {
     if (portalData?.url) {
@@ -150,11 +161,9 @@ const PlansAndBilling = () => {
   };
 
   const handleSingleStoryPurchase = () => {
-    // TODO: Implement single story purchase logic
-    toast({
-      title: "Purchase",
-      description: "Purchasing single story...",
-    });
+    if (checkoutData?.Location) {
+      window.open(checkoutData.Location, '_blank');
+    }
   };
 
   if (isLoadingCredits) {
@@ -334,9 +343,10 @@ const PlansAndBilling = () => {
             
             <Button
               onClick={handleSingleStoryPurchase}
-              className="bg-story-orange hover:bg-story-orange/90 text-white px-8"
+              disabled={!checkoutData?.Location || isLoadingCheckout}
+              className="bg-story-orange hover:bg-story-orange/90 text-white px-8 disabled:opacity-50"
             >
-              Purchase
+              {isLoadingCheckout ? 'Loading...' : 'Purchase'}
             </Button>
           </div>
         </Card>
