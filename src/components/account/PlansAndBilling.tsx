@@ -161,8 +161,8 @@ const PlansAndBilling = () => {
   };
 
   const handleSingleStoryPurchase = () => {
-    if (checkoutData?.Location) {
-      window.open(checkoutData.Location, '_blank');
+    if (checkoutData?.data?.location) {
+      window.open(checkoutData.data.location, '_blank');
     }
   };
 
@@ -343,7 +343,7 @@ const PlansAndBilling = () => {
             
             <Button
               onClick={handleSingleStoryPurchase}
-              disabled={!checkoutData?.Location || isLoadingCheckout}
+              disabled={!checkoutData?.data?.location || isLoadingCheckout}
               className="bg-story-orange hover:bg-story-orange/90 text-white px-8 disabled:opacity-50"
             >
               {isLoadingCheckout ? 'Loading...' : 'Purchase'}
