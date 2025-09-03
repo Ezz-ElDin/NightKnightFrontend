@@ -48,7 +48,7 @@ const PlansAndBilling = () => {
       annualPrice: '£19.99',
       description: 'Drift through the week with 6 enchanting stories, a perfect blend of spontaneity and routine for magical nights together.',
       features: [
-        isAnnual ? '12 personalized stories per year' : '1 personalized story per month',
+        '1 personalized story per month',
         'Multiple languages',
         'Custom characters',
         'Beautiful illustrations',
@@ -63,7 +63,7 @@ const PlansAndBilling = () => {
       annualPrice: '£64.99',
       description: 'A gentle introduction to magical bedtime moments, receive 4 personalised stories each month to spark your child\'s imagination.',
       features: [
-        isAnnual ? '48 personalized stories per year' : '4 personalized stories per month',
+        '4 personalized stories per month',
         'Multiple languages',
         'Custom characters',
         'Beautiful illustrations',
@@ -80,7 +80,7 @@ const PlansAndBilling = () => {
       annualPrice: '£124.99',
       description: 'Light up bedtime twice a week with 8 charming, personalised tales, designed to inspire wonder and sweet dreams.',
       features: [
-        isAnnual ? '96 personalized stories per year' : '8 personalized stories per month',
+        '8 personalized stories per month',
         'Multiple languages',
         'Custom characters',
         'Beautiful illustrations',
@@ -173,36 +173,25 @@ const PlansAndBilling = () => {
             </p>
             <p className="text-sm text-muted-foreground">Credits remaining</p>
           </div>
-          <div className="text-right">
-            <p className="text-sm text-muted-foreground">
-              Created: {creditData?.created_stories || 0}
-            </p>
-            <p className="text-sm text-muted-foreground">
-              Purchased: {creditData?.purchased_stories || 0}
-            </p>
+          <div className="flex items-center gap-4">
+            <div className="text-right">
+              <p className="text-sm text-muted-foreground">
+                Created: {creditData?.created_stories || 0}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Purchased: {creditData?.purchased_stories || 0}
+              </p>
+            </div>
+            <Button
+              onClick={() => toast({ title: "Manage Plan", description: "Redirecting to plan management..." })}
+              className="bg-primary hover:bg-primary/90 text-white"
+            >
+              Manage Plan
+            </Button>
           </div>
         </div>
       </Card>
 
-      {/* Billing Toggle */}
-      <div className="flex items-center justify-center gap-4 mb-8">
-        <span className={`text-lg font-medium transition-colors ${!isAnnual ? 'text-story-purple' : 'text-gray-500'}`}>
-          Monthly
-        </span>
-        <Switch
-          checked={isAnnual}
-          onCheckedChange={setIsAnnual}
-          className="data-[state=checked]:bg-story-purple"
-        />
-        <span className={`text-lg font-medium transition-colors ${isAnnual ? 'text-story-purple' : 'text-gray-500'}`}>
-          Annual
-        </span>
-        {isAnnual && (
-          <div className="bg-story-purple text-white px-3 py-1 rounded-full text-sm font-bold ml-2">
-            Save up to 17%
-          </div>
-        )}
-      </div>
 
       {/* Subscription Plans */}
       <div>
@@ -246,9 +235,9 @@ const PlansAndBilling = () => {
               <div className="text-center mb-6">
                 <h4 className="text-xl font-bold mb-2">{plan.name}</h4>
                 <div className="text-3xl font-bold text-story-purple mb-2">
-                  {isAnnual ? plan.annualPrice : plan.monthlyPrice}
+                  {plan.monthlyPrice}
                   <span className="text-sm text-gray-500 font-normal">
-                    {isAnnual ? '/year' : '/month'}
+                    /month
                   </span>
                 </div>
                 <p className="text-sm text-gray-600">{plan.description}</p>
