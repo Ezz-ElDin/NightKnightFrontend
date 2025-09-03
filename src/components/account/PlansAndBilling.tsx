@@ -258,20 +258,6 @@ const PlansAndBilling = () => {
             </div>
           </div>
           
-          {/* Manage Plan Button */}
-          <div className="flex justify-end mt-6">
-            <Button
-              onClick={() => {
-                if (stripePortalUrl) {
-                  window.open(stripePortalUrl, '_blank');
-                }
-              }}
-              disabled={!stripePortalUrl || isLoadingPortal}
-              className="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg font-medium disabled:opacity-50"
-            >
-              {isLoadingPortal ? 'Loading...' : 'Manage Plan'}
-            </Button>
-          </div>
         </div>
       </Card>
 
@@ -328,19 +314,24 @@ const PlansAndBilling = () => {
 
               
 
-              <Button
-                onClick={() => handlePlanAction(plan.id)}
-                disabled={plan.id === currentPlan}
-                className={`w-full ${
-                  plan.id === currentPlan
-                    ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                    : 'bg-story-purple hover:bg-story-purple/90 text-white'
-                }`}
-              >
-                {getButtonText(plan.id)}
-              </Button>
             </Card>
           ))}
+        </div>
+        
+        {/* Manage All Plans Button */}
+        <div className="flex justify-center mt-8">
+          <Button
+            onClick={() => {
+              if (stripePortalUrl) {
+                window.open(stripePortalUrl, '_blank');
+              }
+            }}
+            disabled={!stripePortalUrl || isLoadingPortal}
+            className="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-lg font-medium disabled:opacity-50"
+            size="lg"
+          >
+            {isLoadingPortal ? 'Loading...' : 'Manage Subscription'}
+          </Button>
         </div>
       </div>
 
