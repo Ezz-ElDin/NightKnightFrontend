@@ -6,7 +6,7 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { CreditCard, Check, Sparkles, ShoppingCart } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { creditApi, api } from "@/lib/api";
+import { creditApi } from "@/lib/api";
 
 interface PricingPlan {
   id: string;
@@ -138,35 +138,6 @@ const PlansAndBilling = () => {
       title: "Purchase",
       description: "Purchasing single story...",
     });
-  };
-
-  const handleManagePlan = async () => {
-    try {
-      console.log('Starting portal session creation...');
-      
-      // Use the existing API instance which already handles auth tokens
-      const response = await api.post('/api/stripe/portal/');
-      
-      console.log('Portal API response:', response.data);
-      
-      if (response.data && response.data.url) {
-        // Open portal in new tab
-        window.open(response.data.url, '_blank');
-      } else {
-        throw new Error('No portal URL received from server');
-      }
-    } catch (error) {
-      console.error('Error creating portal session:', error);
-      
-      // Check if it's an axios error with response data
-      const errorMessage = error.response?.data?.message || error.message || 'Unknown error occurred';
-      
-      toast({
-        title: "Error",
-        description: `Failed to open subscription management portal: ${errorMessage}`,
-        variant: "destructive"
-      });
-    }
   };
 
   if (isLoadingCredits) {
