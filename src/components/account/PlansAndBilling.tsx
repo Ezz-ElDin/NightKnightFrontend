@@ -140,6 +140,46 @@ const PlansAndBilling = () => {
     });
   };
 
+  const handleManagePlan = async () => {
+    try {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        toast({
+          title: "Authentication Error",
+          description: "Please log in to manage your plan.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      const response = await fetch('/api/stripe/portal/', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Token ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create portal session');
+      }
+
+      const data = await response.json();
+      if (data.url) {
+        window.open(data.url, '_blank');
+      } else {
+        throw new Error('No portal URL received');
+      }
+    } catch (error) {
+      console.error('Error creating portal session:', error);
+      toast({
+        title: "Error",
+        description: "Failed to open subscription management portal. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
+
   if (isLoadingCredits) {
     return (
       <div className="space-y-8">
