@@ -165,8 +165,11 @@ const PlansAndBilling = () => {
     if (planId === currentPlan) return 'Current Plan';
     if (!currentPlan || currentPlan === 'single-story') return 'Upgrade';
     
-    const currentPlanIndex = subscriptionPlans.findIndex(p => p.id === currentPlan);
-    const targetPlanIndex = subscriptionPlans.findIndex(p => p.id === planId);
+    // Price hierarchy: Story Sprout (cheapest) -> Dream Drifter -> Starlight Stories (most expensive)
+    const priceHierarchy = ['popular', 'starter', 'premium']; // popular=Story Sprout, starter=Dream Drifter, premium=Starlight Stories
+    
+    const currentPlanIndex = priceHierarchy.indexOf(currentPlan);
+    const targetPlanIndex = priceHierarchy.indexOf(planId);
     
     if (targetPlanIndex > currentPlanIndex) return 'Upgrade';
     if (targetPlanIndex < currentPlanIndex) return 'Downgrade';
