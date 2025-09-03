@@ -6,7 +6,7 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { CreditCard, Check, Sparkles, ShoppingCart } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { creditApi } from "@/lib/api";
+import { creditApi, api } from "@/lib/api";
 
 interface PricingPlan {
   id: string;
@@ -23,6 +23,7 @@ interface PricingPlan {
 const PlansAndBilling = () => {
   const [isAnnual, setIsAnnual] = useState(false);
   const [currentPlan, setCurrentPlan] = useState<string | null>(null);
+  const [stripePortalUrl, setStripePortalUrl] = useState<string | null>(null);
   const { toast } = useToast();
 
   // Fetch user credit information
@@ -33,6 +34,22 @@ const PlansAndBilling = () => {
       return response.data;
     },
   });
+
+  // Fetch Stripe portal URL on component load
+  const { data: portalData, isLoading: isLoadingPortal } = useQuery({
+    queryKey: ['stripePortal'],
+    queryFn: async () => {
+      const response = await api.post('/api/stripe/portal/');
+      return response.data;
+    },
+  });
+
+  // Set the portal URL when data is loaded
+  useEffect(() => {
+    if (portalData?.url) {
+      setStripePortalUrl(portalData.url);
+    }
+  }, [portalData]);
 
   // Mock current subscription - in real implementation, this would come from Stripe/Supabase
   useEffect(() => {
@@ -209,10 +226,15 @@ const PlansAndBilling = () => {
           {/* Manage Plan Button */}
           <div className="flex justify-end mt-6">
             <Button
-              onClick={() => toast({ title: "Manage Plan", description: "Redirecting to plan management..." })}
-              className="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg font-medium"
+              onClick={() => {
+                if (stripePortalUrl) {
+                  window.open(stripePortalUrl, '_blank');
+                }
+              }}
+              disabled={!stripePortalUrl || isLoadingPortal}
+              className="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg font-medium disabled:opacity-50"
             >
-              Manage Plan
+              {isLoadingPortal ? 'Loading...' : 'Manage Plan'}
             </Button>
           </div>
         </div>
