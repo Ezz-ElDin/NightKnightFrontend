@@ -165,54 +165,44 @@ const PlansAndBilling = () => {
 
       {/* Current Credits */}
       <Card className="relative overflow-hidden border-0 bg-gradient-to-br from-primary/5 to-primary/10">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full -translate-y-16 translate-x-16"></div>
-        <div className="relative p-8">
-          <h3 className="text-xl font-bold text-primary mb-6">Story Credits</h3>
+        <div className="absolute top-0 right-0 w-20 h-20 bg-primary/10 rounded-full -translate-y-10 translate-x-10"></div>
+        <div className="relative p-6">
+          <h3 className="text-lg font-semibold text-primary mb-4">Story Credits</h3>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="flex items-center justify-between gap-6">
             {/* Credits Remaining */}
-            <div className="text-center md:text-left">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-2xl mb-4">
-                <CreditCard className="h-8 w-8 text-white" />
+            <div className="flex items-center gap-3">
+              <div className="flex items-center justify-center w-10 h-10 bg-primary rounded-lg">
+                <CreditCard className="h-5 w-5 text-white" />
               </div>
-              <p className="text-4xl font-bold text-primary mb-2">
-                {creditData?.remaining_credit || 0}
-              </p>
-              <p className="text-muted-foreground font-medium">Credits remaining</p>
+              <div>
+                <p className="text-2xl font-bold text-primary">
+                  {creditData?.remaining_credit || 0}
+                </p>
+                <p className="text-sm text-muted-foreground">Credits remaining</p>
+              </div>
             </div>
 
-            {/* Created Stories */}
-            <div className="text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-secondary rounded-2xl mb-4">
-                <span className="text-2xl font-bold text-secondary-foreground">
-                  {creditData?.created_stories || 0}
-                </span>
+            {/* Stats and Button */}
+            <div className="flex items-center gap-6">
+              <div className="flex gap-4 text-sm">
+                <div className="text-center">
+                  <p className="font-semibold text-foreground">{creditData?.created_stories || 0}</p>
+                  <p className="text-muted-foreground">Created</p>
+                </div>
+                <div className="text-center">
+                  <p className="font-semibold text-foreground">{creditData?.purchased_stories || 0}</p>
+                  <p className="text-muted-foreground">Purchased</p>
+                </div>
               </div>
-              <p className="text-lg font-semibold text-secondary-foreground mb-1">Created</p>
-              <p className="text-sm text-muted-foreground">Stories generated</p>
+              
+              <Button
+                onClick={() => toast({ title: "Manage Plan", description: "Redirecting to plan management..." })}
+                className="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg font-medium"
+              >
+                Manage Plan
+              </Button>
             </div>
-
-            {/* Purchased Stories */}
-            <div className="text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-accent rounded-2xl mb-4">
-                <span className="text-2xl font-bold text-accent-foreground">
-                  {creditData?.purchased_stories || 0}
-                </span>
-              </div>
-              <p className="text-lg font-semibold text-accent-foreground mb-1">Purchased</p>
-              <p className="text-sm text-muted-foreground">Stories bought</p>
-            </div>
-          </div>
-
-          {/* Manage Plan Button */}
-          <div className="flex justify-center md:justify-end">
-            <Button
-              onClick={() => toast({ title: "Manage Plan", description: "Redirecting to plan management..." })}
-              className="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
-              size="lg"
-            >
-              Manage Plan
-            </Button>
           </div>
         </div>
       </Card>
