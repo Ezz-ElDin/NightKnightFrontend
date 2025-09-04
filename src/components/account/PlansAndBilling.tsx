@@ -23,8 +23,10 @@ interface PricingPlan {
 const PlansAndBilling = () => {
   const [isAnnual, setIsAnnual] = useState(false);
   const [currentPlan, setCurrentPlan] = useState<string | null>(null);
-  const [stripePortalUrl, setStripePortalUrl] = useState<string | null>(null);
   const { toast } = useToast();
+  
+  // Hardcoded Stripe billing portal URL
+  const stripeBillingUrl = "https://billing.stripe.com/p/login/aFafZidkVfqcedH2Q5enS00";
 
   // Fetch user credit information
   const { data: creditData, isLoading: isLoadingCredits, error: creditError } = useQuery({
@@ -35,14 +37,6 @@ const PlansAndBilling = () => {
     },
   });
 
-  // Fetch Stripe portal URL on component load
-  const { data: portalData, isLoading: isLoadingPortal } = useQuery({
-    queryKey: ['stripePortal'],
-    queryFn: async () => {
-      const response = await api.post('/api/stripe/portal/');
-      return response.data;
-    },
-  });
 
   // Fetch user's current subscription plan
   const { data: subscriptionData, isLoading: isLoadingSubscription } = useQuery({
@@ -95,12 +89,6 @@ const PlansAndBilling = () => {
     },
   });
 
-  // Set the portal URL when data is loaded
-  useEffect(() => {
-    if (portalData?.url) {
-      setStripePortalUrl(portalData.url);
-    }
-  }, [portalData]);
 
   // Map plan names to plan IDs and set current plan
   const mapPlanNameToPlanId = (planName: string): string | null => {
@@ -210,17 +198,9 @@ const PlansAndBilling = () => {
   const handlePlanAction = (planId: string) => {
     if (planId === currentPlan) return;
     
-    // If user has a current plan, route to customer portal for plan management
+    // If user has a current plan, route to billing portal for plan management
     if (currentPlan && currentPlan !== 'single-story') {
-      if (stripePortalUrl) {
-        window.open(stripePortalUrl, '_blank');
-      } else {
-        toast({
-          title: "Error",
-          description: "Customer portal not available. Please try again.",
-          variant: "destructive"
-        });
-      }
+      window.open(stripeBillingUrl, '_blank');
       return;
     }
     
@@ -323,20 +303,17 @@ const PlansAndBilling = () => {
             </div>
           </div>
           
-          {/* Manage Plan Button */}
-          <div className="flex justify-end mt-6">
-            <Button
-              onClick={() => {
-                if (stripePortalUrl) {
-                  window.open(stripePortalUrl, '_blank');
-                }
-              }}
-              disabled={!stripePortalUrl || isLoadingPortal}
-              className="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg font-medium disabled:opacity-50"
-            >
-              {isLoadingPortal ? 'Loading...' : 'Manage Plan'}
-            </Button>
-          </div>
+          {/* Manage Plan Button - Only show if user has a subscription */}
+          {currentPlan && currentPlan !== 'single-story' && (
+            <div className="flex justify-end mt-6">
+              <Button
+                onClick={() => window.open(stripeBillingUrl, '_blank')}
+                className="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg font-medium"
+              >
+                Manage Plan
+              </Button>
+            </div>
+          )}
         </div>
       </Card>
 
