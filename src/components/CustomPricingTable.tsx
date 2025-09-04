@@ -1,7 +1,5 @@
 
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
 import { Link, useNavigate } from 'react-router-dom';
 import { stripeApi } from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
@@ -21,7 +19,6 @@ interface PricingPlan {
 }
 
 const CustomPricingTable = () => {
-  const [isAnnual, setIsAnnual] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
   const isLoggedIn = !!localStorage.getItem('authToken');
@@ -32,10 +29,10 @@ const CustomPricingTable = () => {
       name: 'Dream Drifter',
       monthlyPrice: '£8.49',
       annualPrice: '£19.99',
-      period: isAnnual ? '/year' : '/month',
+      period: '/month',
       description: 'Drift through the week with 6 enchanting stories, a perfect blend of spontaneity and routine for magical nights together.',
       features: [
-        isAnnual ? '12 personalized stories per year' : '1 personalized story per month',
+        '1 personalized story per month',
         'Multiple languages',
         'Custom characters',
         'Beautiful illustrations',
@@ -49,10 +46,10 @@ const CustomPricingTable = () => {
       name: 'Story Sprout',
       monthlyPrice: '£6.49',
       annualPrice: '£64.99',
-      period: isAnnual ? '/year' : '/month',
+      period: '/month',
       description: 'A gentle introduction to magical bedtime moments, receive 4 personalised stories each month to spark your child\'s imagination.',
       features: [
-        isAnnual ? '48 personalized stories per year' : '4 personalized stories per month',
+        '4 personalized stories per month',
         'Multiple languages',
         'Custom characters',
         'Beautiful illustrations',
@@ -68,10 +65,10 @@ const CustomPricingTable = () => {
       name: 'Starlight Stories',
       monthlyPrice: '£11.49',
       annualPrice: '£124.99',
-      period: isAnnual ? '/year' : '/month',
+      period: '/month',
       description: 'Light up bedtime twice a week with 8 charming, personalised tales, designed to inspire wonder and sweet dreams.',
       features: [
-        isAnnual ? '96 personalized stories per year' : '8 personalized stories per month',
+        '8 personalized stories per month',
         'Multiple languages',
         'Custom characters',
         'Beautiful illustrations',
@@ -116,27 +113,6 @@ const CustomPricingTable = () => {
     <div className="w-full max-w-6xl mx-auto space-y-8">
       {/* Monthly Subscription Plans */}
       <div>
-        <div className="text-center mb-8">
-          {/* Billing Toggle */}
-          <div className="flex items-center justify-center gap-4 mb-8">
-            <span className={`text-lg font-medium transition-colors ${!isAnnual ? 'text-story-purple' : 'text-gray-500'}`}>
-              Monthly
-            </span>
-            <Switch
-              checked={isAnnual}
-              onCheckedChange={setIsAnnual}
-              className="data-[state=checked]:bg-story-purple"
-            />
-            <span className={`text-lg font-medium transition-colors ${isAnnual ? 'text-story-purple' : 'text-gray-500'}`}>
-              Annual
-            </span>
-            {isAnnual && (
-              <div className="bg-story-purple text-white px-3 py-1 rounded-full text-sm font-bold ml-2">
-                Save up to 17%
-              </div>
-            )}
-          </div>
-        </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {monthlyPlans.map((plan) => (
@@ -171,9 +147,9 @@ const CustomPricingTable = () => {
                 </h3>
                 <div className="mb-4">
                   <div className="text-4xl font-bold text-gray-900">
-                    {isAnnual ? plan.annualPrice : plan.monthlyPrice}{' '}
+                    {plan.monthlyPrice}{' '}
                     <span className="text-lg text-gray-500 font-normal">
-                      {isAnnual ? '/year' : '/month'}
+                      /month
                     </span>
                   </div>
                 </div>
