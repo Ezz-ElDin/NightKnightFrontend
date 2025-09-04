@@ -53,6 +53,37 @@ const PlansAndBilling = () => {
     },
   });
 
+  // Fetch checkout URLs for subscription plans
+  const { data: dreamDrifterCheckout } = useQuery({
+    queryKey: ['checkout', 'dream-drifter-monthly'],
+    queryFn: async () => {
+      const response = await api.post('/api/stripe/checkout/', {
+        plan: 'dream-drifter-monthly'
+      });
+      return response.data;
+    },
+  });
+
+  const { data: storySproutCheckout } = useQuery({
+    queryKey: ['checkout', 'story-sprout-monthly'],
+    queryFn: async () => {
+      const response = await api.post('/api/stripe/checkout/', {
+        plan: 'story-sprout-monthly'
+      });
+      return response.data;
+    },
+  });
+
+  const { data: starlightCheckout } = useQuery({
+    queryKey: ['checkout', 'starlight-stories-monthly'],
+    queryFn: async () => {
+      const response = await api.post('/api/stripe/checkout/', {
+        plan: 'starlight-stories-monthly'
+      });
+      return response.data;
+    },
+  });
+
   // Fetch single story checkout URL on component load
   const { data: checkoutData, isLoading: isLoadingCheckout } = useQuery({
     queryKey: ['singleStoryCheckout'],
@@ -176,14 +207,34 @@ const PlansAndBilling = () => {
     return 'Switch Plan';
   };
 
+  const getCheckoutData = (planId: string) => {
+    switch (planId) {
+      case 'starter':
+        return dreamDrifterCheckout;
+      case 'popular':
+        return storySproutCheckout;
+      case 'premium':
+        return starlightCheckout;
+      default:
+        return null;
+    }
+  };
+
   const handlePlanAction = (planId: string) => {
     if (planId === currentPlan) return;
     
-    // TODO: Implement actual plan change logic
-    toast({
-      title: "Plan Change",
-      description: `Switching to ${subscriptionPlans.find(p => p.id === planId)?.name || 'new plan'}...`,
-    });
+    // Get the checkout URL for the selected plan
+    const checkoutData = getCheckoutData(planId);
+    if (checkoutData?.data?.location) {
+      // Open Stripe checkout in a new tab
+      window.open(checkoutData.data.location, '_blank');
+    } else {
+      toast({
+        title: "Error",
+        description: "Unable to load checkout. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   const handleSingleStoryPurchase = () => {
@@ -312,7 +363,17 @@ const PlansAndBilling = () => {
                 <p className="text-sm text-gray-600">{plan.description}</p>
               </div>
 
-              
+              <Button
+                onClick={() => handlePlanAction(plan.id)}
+                disabled={plan.id === currentPlan || !getCheckoutData(plan.id)?.data?.location}
+                className={`w-full ${
+                  plan.id === currentPlan
+                    ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
+                    : 'bg-story-purple hover:bg-story-purple/90 text-white'
+                }`}
+              >
+                {getButtonText(plan.id)}
+              </Button>
 
             </Card>
           ))}
