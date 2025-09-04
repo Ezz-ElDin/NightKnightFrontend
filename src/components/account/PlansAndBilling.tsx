@@ -53,6 +53,37 @@ const PlansAndBilling = () => {
     },
   });
 
+  // Fetch checkout URLs for subscription plans
+  const { data: storySproutCheckout, isLoading: isLoadingStorySprout } = useQuery({
+    queryKey: ['storySproutCheckout'],
+    queryFn: async () => {
+      const response = await api.post('/api/stripe/checkout/', {
+        plan: "story-sprout-monthly"
+      });
+      return response.data;
+    },
+  });
+
+  const { data: dreamDrifterCheckout, isLoading: isLoadingDreamDrifter } = useQuery({
+    queryKey: ['dreamDrifterCheckout'],
+    queryFn: async () => {
+      const response = await api.post('/api/stripe/checkout/', {
+        plan: "dream-drifter-monthly"
+      });
+      return response.data;
+    },
+  });
+
+  const { data: starlightStoriesCheckout, isLoading: isLoadingStarlightStories } = useQuery({
+    queryKey: ['starlightStoriesCheckout'],
+    queryFn: async () => {
+      const response = await api.post('/api/stripe/checkout/', {
+        plan: "starlight-stories-monthly"
+      });
+      return response.data;
+    },
+  });
+
   // Fetch single story checkout URL on component load
   const { data: checkoutData, isLoading: isLoadingCheckout } = useQuery({
     queryKey: ['singleStoryCheckout'],
@@ -179,11 +210,30 @@ const PlansAndBilling = () => {
   const handlePlanAction = (planId: string) => {
     if (planId === currentPlan) return;
     
-    // TODO: Implement actual plan change logic
-    toast({
-      title: "Plan Change",
-      description: `Switching to ${subscriptionPlans.find(p => p.id === planId)?.name || 'new plan'}...`,
-    });
+    let checkoutUrl: string | null = null;
+    
+    // Get the checkout URL based on plan ID
+    switch (planId) {
+      case 'popular': // Story Sprout
+        checkoutUrl = storySproutCheckout?.data?.location;
+        break;
+      case 'starter': // Dream Drifter
+        checkoutUrl = dreamDrifterCheckout?.data?.location;
+        break;
+      case 'premium': // Starlight Stories
+        checkoutUrl = starlightStoriesCheckout?.data?.location;
+        break;
+    }
+    
+    if (checkoutUrl) {
+      window.open(checkoutUrl, '_blank');
+    } else {
+      toast({
+        title: "Error",
+        description: "Checkout URL not available. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   const handleSingleStoryPurchase = () => {
@@ -330,14 +380,20 @@ const PlansAndBilling = () => {
 
               <Button
                 onClick={() => handlePlanAction(plan.id)}
-                disabled={plan.id === currentPlan}
+                disabled={plan.id === currentPlan || 
+                  (plan.id === 'popular' && isLoadingStorySprout) ||
+                  (plan.id === 'starter' && isLoadingDreamDrifter) ||
+                  (plan.id === 'premium' && isLoadingStarlightStories)}
                 className={`w-full ${
                   plan.id === currentPlan
                     ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
                     : 'bg-story-purple hover:bg-story-purple/90 text-white'
                 }`}
               >
-                {getButtonText(plan.id)}
+                {((plan.id === 'popular' && isLoadingStorySprout) ||
+                  (plan.id === 'starter' && isLoadingDreamDrifter) ||
+                  (plan.id === 'premium' && isLoadingStarlightStories)) 
+                  ? 'Loading...' : getButtonText(plan.id)}
               </Button>
             </Card>
           ))}
