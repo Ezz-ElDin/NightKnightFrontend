@@ -53,37 +53,6 @@ const PlansAndBilling = () => {
     },
   });
 
-  // Fetch checkout URLs for subscription plans
-  const { data: dreamDrifterCheckout } = useQuery({
-    queryKey: ['checkout', 'dream-drifter-monthly'],
-    queryFn: async () => {
-      const response = await api.post('/api/stripe/checkout/', {
-        plan: 'dream-drifter-monthly'
-      });
-      return response.data;
-    },
-  });
-
-  const { data: storySproutCheckout } = useQuery({
-    queryKey: ['checkout', 'story-sprout-monthly'],
-    queryFn: async () => {
-      const response = await api.post('/api/stripe/checkout/', {
-        plan: 'story-sprout-monthly'
-      });
-      return response.data;
-    },
-  });
-
-  const { data: starlightCheckout } = useQuery({
-    queryKey: ['checkout', 'starlight-stories-monthly'],
-    queryFn: async () => {
-      const response = await api.post('/api/stripe/checkout/', {
-        plan: 'starlight-stories-monthly'
-      });
-      return response.data;
-    },
-  });
-
   // Fetch single story checkout URL on component load
   const { data: checkoutData, isLoading: isLoadingCheckout } = useQuery({
     queryKey: ['singleStoryCheckout'],
@@ -207,31 +176,35 @@ const PlansAndBilling = () => {
     return 'Switch Plan';
   };
 
-  const getCheckoutData = (planId: string) => {
-    switch (planId) {
-      case 'starter':
-        return dreamDrifterCheckout;
-      case 'popular':
-        return storySproutCheckout;
-      case 'premium':
-        return starlightCheckout;
-      default:
-        return null;
-    }
-  };
-
-  const handlePlanAction = (planId: string) => {
+  const handlePlanAction = async (planId: string) => {
     if (planId === currentPlan) return;
     
-    // Get the checkout URL for the selected plan
-    const checkoutData = getCheckoutData(planId);
-    if (checkoutData?.data?.location) {
-      // Open Stripe checkout in a new tab
-      window.open(checkoutData.data.location, '_blank');
-    } else {
+    try {
+      // Map plan IDs to API plan names
+      const planMapping: { [key: string]: string } = {
+        'popular': 'story-sprout-monthly',
+        'starter': 'dream-drifter-monthly',
+        'premium': 'starlight-stories-monthly'
+      };
+      
+      const apiPlanName = planMapping[planId];
+      if (!apiPlanName) {
+        throw new Error('Invalid plan selected');
+      }
+
+      const response = await api.post('/api/stripe/checkout/', {
+        plan: apiPlanName
+      });
+
+      if (response.data?.data?.location) {
+        window.open(response.data.data.location, '_blank');
+      } else {
+        throw new Error('No checkout URL received');
+      }
+    } catch (error) {
       toast({
         title: "Error",
-        description: "Unable to load checkout. Please try again.",
+        description: "Failed to start checkout process. Please try again.",
         variant: "destructive"
       });
     }
@@ -309,6 +282,20 @@ const PlansAndBilling = () => {
             </div>
           </div>
           
+          {/* Manage Plan Button */}
+          <div className="flex justify-end mt-6">
+            <Button
+              onClick={() => {
+                if (stripePortalUrl) {
+                  window.open(stripePortalUrl, '_blank');
+                }
+              }}
+              disabled={!stripePortalUrl || isLoadingPortal}
+              className="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg font-medium disabled:opacity-50"
+            >
+              {isLoadingPortal ? 'Loading...' : 'Manage Plan'}
+            </Button>
+          </div>
         </div>
       </Card>
 
@@ -363,36 +350,21 @@ const PlansAndBilling = () => {
                 <p className="text-sm text-gray-600">{plan.description}</p>
               </div>
 
+              
+
               <Button
                 onClick={() => handlePlanAction(plan.id)}
-                disabled={plan.id === currentPlan || !getCheckoutData(plan.id)?.data?.location}
+                disabled={plan.id === currentPlan}
                 className={`w-full ${
                   plan.id === currentPlan
-                    ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
+                    ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
                     : 'bg-story-purple hover:bg-story-purple/90 text-white'
                 }`}
               >
                 {getButtonText(plan.id)}
               </Button>
-
             </Card>
           ))}
-        </div>
-        
-        {/* Manage All Plans Button */}
-        <div className="flex justify-center mt-8">
-          <Button
-            onClick={() => {
-              if (stripePortalUrl) {
-                window.open(stripePortalUrl, '_blank');
-              }
-            }}
-            disabled={!stripePortalUrl || isLoadingPortal}
-            className="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-lg font-medium disabled:opacity-50"
-            size="lg"
-          >
-            {isLoadingPortal ? 'Loading...' : 'Manage Subscription'}
-          </Button>
         </div>
       </div>
 

@@ -1,9 +1,10 @@
 
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
 import { Link, useNavigate } from 'react-router-dom';
-import { stripeApi, api } from '@/lib/api';
+import { stripeApi } from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
-import { useQuery } from '@tanstack/react-query';
 
 interface PricingPlan {
   id: string;
@@ -20,50 +21,10 @@ interface PricingPlan {
 }
 
 const CustomPricingTable = () => {
+  const [isAnnual, setIsAnnual] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
   const isLoggedIn = !!localStorage.getItem('authToken');
-
-  // Map plan IDs to their corresponding API plan names
-  const planMapping = {
-    'starter': 'dream-drifter-monthly',
-    'popular': 'story-sprout-monthly', 
-    'premium': 'starlight-stories-monthly'
-  };
-
-  // Fetch checkout URLs for all plans
-  const { data: dreamDrifterCheckout } = useQuery({
-    queryKey: ['checkout', 'dream-drifter-monthly'],
-    queryFn: async () => {
-      const response = await api.post('/api/stripe/checkout/', {
-        plan: 'dream-drifter-monthly'
-      });
-      return response.data;
-    },
-    enabled: isLoggedIn
-  });
-
-  const { data: storySproutCheckout } = useQuery({
-    queryKey: ['checkout', 'story-sprout-monthly'],
-    queryFn: async () => {
-      const response = await api.post('/api/stripe/checkout/', {
-        plan: 'story-sprout-monthly'
-      });
-      return response.data;
-    },
-    enabled: isLoggedIn
-  });
-
-  const { data: starlightCheckout } = useQuery({
-    queryKey: ['checkout', 'starlight-stories-monthly'],
-    queryFn: async () => {
-      const response = await api.post('/api/stripe/checkout/', {
-        plan: 'starlight-stories-monthly'
-      });
-      return response.data;
-    },
-    enabled: isLoggedIn
-  });
 
   const monthlyPlans: PricingPlan[] = [
     {
@@ -71,10 +32,10 @@ const CustomPricingTable = () => {
       name: 'Dream Drifter',
       monthlyPrice: '£8.49',
       annualPrice: '£19.99',
-      period: '/month',
+      period: isAnnual ? '/year' : '/month',
       description: 'Drift through the week with 6 enchanting stories, a perfect blend of spontaneity and routine for magical nights together.',
       features: [
-        '1 personalized story per month',
+        isAnnual ? '12 personalized stories per year' : '1 personalized story per month',
         'Multiple languages',
         'Custom characters',
         'Beautiful illustrations',
@@ -88,10 +49,10 @@ const CustomPricingTable = () => {
       name: 'Story Sprout',
       monthlyPrice: '£6.49',
       annualPrice: '£64.99',
-      period: '/month',
+      period: isAnnual ? '/year' : '/month',
       description: 'A gentle introduction to magical bedtime moments, receive 4 personalised stories each month to spark your child\'s imagination.',
       features: [
-        '4 personalized stories per month',
+        isAnnual ? '48 personalized stories per year' : '4 personalized stories per month',
         'Multiple languages',
         'Custom characters',
         'Beautiful illustrations',
@@ -107,10 +68,10 @@ const CustomPricingTable = () => {
       name: 'Starlight Stories',
       monthlyPrice: '£11.49',
       annualPrice: '£124.99',
-      period: '/month',
+      period: isAnnual ? '/year' : '/month',
       description: 'Light up bedtime twice a week with 8 charming, personalised tales, designed to inspire wonder and sweet dreams.',
       features: [
-        '8 personalized stories per month',
+        isAnnual ? '96 personalized stories per year' : '8 personalized stories per month',
         'Multiple languages',
         'Custom characters',
         'Beautiful illustrations',
@@ -142,46 +103,40 @@ const CustomPricingTable = () => {
     imagePath: '/images/single-story.png'
   };
 
-  const getCheckoutData = (planId: string) => {
-    switch (planId) {
-      case 'starter':
-        return dreamDrifterCheckout;
-      case 'popular':
-        return storySproutCheckout;
-      case 'premium':
-        return starlightCheckout;
-      default:
-        return null;
-    }
-  };
-
   const handlePlanClick = async (planId: string) => {
-    if (!isLoggedIn) {
-      // Store the selected plan for after signup/login
-      localStorage.setItem('selectedPlan', planId);
-      localStorage.setItem('redirectAfterAuth', window.location.pathname);
-      navigate('/register');
-      return;
-    }
-
-    // If logged in, use the fetched checkout URL
-    const checkoutData = getCheckoutData(planId);
-    if (checkoutData?.data?.location) {
-      // Open Stripe checkout in a new tab
-      window.open(checkoutData.data.location, '_blank');
-    } else {
-      toast({
-        title: "Error",
-        description: "Unable to load checkout. Please try again.",
-        variant: "destructive"
-      });
-    }
+    // Store the selected plan for after signup/login
+    localStorage.setItem('selectedPlan', planId);
+    localStorage.setItem('redirectAfterAuth', window.location.pathname);
+    
+    // Always redirect to signup regardless of authentication status
+    navigate('/register');
   };
 
   return (
     <div className="w-full max-w-6xl mx-auto space-y-8">
       {/* Monthly Subscription Plans */}
       <div>
+        <div className="text-center mb-8">
+          {/* Billing Toggle */}
+          <div className="flex items-center justify-center gap-4 mb-8">
+            <span className={`text-lg font-medium transition-colors ${!isAnnual ? 'text-story-purple' : 'text-gray-500'}`}>
+              Monthly
+            </span>
+            <Switch
+              checked={isAnnual}
+              onCheckedChange={setIsAnnual}
+              className="data-[state=checked]:bg-story-purple"
+            />
+            <span className={`text-lg font-medium transition-colors ${isAnnual ? 'text-story-purple' : 'text-gray-500'}`}>
+              Annual
+            </span>
+            {isAnnual && (
+              <div className="bg-story-purple text-white px-3 py-1 rounded-full text-sm font-bold ml-2">
+                Save up to 17%
+              </div>
+            )}
+          </div>
+        </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {monthlyPlans.map((plan) => (
@@ -216,9 +171,9 @@ const CustomPricingTable = () => {
                 </h3>
                 <div className="mb-4">
                   <div className="text-4xl font-bold text-gray-900">
-                    {plan.monthlyPrice}{' '}
+                    {isAnnual ? plan.annualPrice : plan.monthlyPrice}{' '}
                     <span className="text-lg text-gray-500 font-normal">
-                      /month
+                      {isAnnual ? '/year' : '/month'}
                     </span>
                   </div>
                 </div>
