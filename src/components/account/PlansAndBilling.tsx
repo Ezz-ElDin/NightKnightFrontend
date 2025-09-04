@@ -210,6 +210,21 @@ const PlansAndBilling = () => {
   const handlePlanAction = (planId: string) => {
     if (planId === currentPlan) return;
     
+    // If user has a current plan, route to customer portal for plan management
+    if (currentPlan && currentPlan !== 'single-story') {
+      if (stripePortalUrl) {
+        window.open(stripePortalUrl, '_blank');
+      } else {
+        toast({
+          title: "Error",
+          description: "Customer portal not available. Please try again.",
+          variant: "destructive"
+        });
+      }
+      return;
+    }
+    
+    // If no current plan or only single story, proceed with checkout
     let checkoutUrl: string | null = null;
     
     // Get the checkout URL based on plan ID
