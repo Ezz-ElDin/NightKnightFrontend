@@ -1,8 +1,9 @@
 
 import { Button } from '@/components/ui/button';
 import { Link, useNavigate } from 'react-router-dom';
-import { stripeApi } from '@/lib/api';
+import { stripeApi, api } from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
+import { useQuery } from '@tanstack/react-query';
 
 interface PricingPlan {
   id: string;
@@ -22,6 +23,47 @@ const CustomPricingTable = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const isLoggedIn = !!localStorage.getItem('authToken');
+
+  // Map plan IDs to their corresponding API plan names
+  const planMapping = {
+    'starter': 'dream-drifter-monthly',
+    'popular': 'story-sprout-monthly', 
+    'premium': 'starlight-stories-monthly'
+  };
+
+  // Fetch checkout URLs for all plans
+  const { data: dreamDrifterCheckout } = useQuery({
+    queryKey: ['checkout', 'dream-drifter-monthly'],
+    queryFn: async () => {
+      const response = await api.post('/api/stripe/checkout/', {
+        plan: 'dream-drifter-monthly'
+      });
+      return response.data;
+    },
+    enabled: isLoggedIn
+  });
+
+  const { data: storySproutCheckout } = useQuery({
+    queryKey: ['checkout', 'story-sprout-monthly'],
+    queryFn: async () => {
+      const response = await api.post('/api/stripe/checkout/', {
+        plan: 'story-sprout-monthly'
+      });
+      return response.data;
+    },
+    enabled: isLoggedIn
+  });
+
+  const { data: starlightCheckout } = useQuery({
+    queryKey: ['checkout', 'starlight-stories-monthly'],
+    queryFn: async () => {
+      const response = await api.post('/api/stripe/checkout/', {
+        plan: 'starlight-stories-monthly'
+      });
+      return response.data;
+    },
+    enabled: isLoggedIn
+  });
 
   const monthlyPlans: PricingPlan[] = [
     {
@@ -100,13 +142,40 @@ const CustomPricingTable = () => {
     imagePath: '/images/single-story.png'
   };
 
+  const getCheckoutData = (planId: string) => {
+    switch (planId) {
+      case 'starter':
+        return dreamDrifterCheckout;
+      case 'popular':
+        return storySproutCheckout;
+      case 'premium':
+        return starlightCheckout;
+      default:
+        return null;
+    }
+  };
+
   const handlePlanClick = async (planId: string) => {
-    // Store the selected plan for after signup/login
-    localStorage.setItem('selectedPlan', planId);
-    localStorage.setItem('redirectAfterAuth', window.location.pathname);
-    
-    // Always redirect to signup regardless of authentication status
-    navigate('/register');
+    if (!isLoggedIn) {
+      // Store the selected plan for after signup/login
+      localStorage.setItem('selectedPlan', planId);
+      localStorage.setItem('redirectAfterAuth', window.location.pathname);
+      navigate('/register');
+      return;
+    }
+
+    // If logged in, use the fetched checkout URL
+    const checkoutData = getCheckoutData(planId);
+    if (checkoutData?.data?.location) {
+      // Open Stripe checkout in a new tab
+      window.open(checkoutData.data.location, '_blank');
+    } else {
+      toast({
+        title: "Error",
+        description: "Unable to load checkout. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   return (
