@@ -21,7 +21,6 @@ interface PricingPlan {
 }
 
 const PlansAndBilling = () => {
-  const [isAnnual, setIsAnnual] = useState(false);
   const [currentPlan, setCurrentPlan] = useState<string | null>(null);
   const [stripePortalUrl, setStripePortalUrl] = useState<string | null>(null);
   const { toast } = useToast();
