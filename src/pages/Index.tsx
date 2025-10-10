@@ -12,6 +12,7 @@ import DesktopDiscoverStoryViewer from "@/components/story-viewer/DesktopDiscove
 import MobileDiscoverStoryViewer from "@/components/story-viewer/MobileDiscoverStoryViewer";
 import { useDiscoverStoryViewer } from "@/hooks/useDiscoverStoryViewer";
 import { jsonStoriesData } from "@/data/discoverStoriesData";
+import { transformStoryData } from "@/lib/storyDataTransformer";
 
 const Index = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -24,9 +25,11 @@ const Index = () => {
     const storyIdParam = searchParams.get('story');
     if (storyIdParam) {
       const storyId = parseInt(storyIdParam);
-      const story = jsonStoriesData.find(s => s.id === storyId);
-      if (story) {
-        setSelectedStory(story);
+      const rawStory = jsonStoriesData.find(s => s.id === storyId);
+      if (rawStory) {
+        // Transform the story data to the expected format
+        const transformedStories = transformStoryData([rawStory]);
+        setSelectedStory(transformedStories[0]);
       }
     }
   }, [searchParams]);
