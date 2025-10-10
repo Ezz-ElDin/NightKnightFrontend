@@ -19,6 +19,7 @@ import WaitingList from "./pages/WaitingList";
 import RequireAuth from "./components/RequireAuth";
 import Library from "./pages/Library";
 import Email from "./pages/Email";
+import FollowUpEmail from "./pages/FollowUpEmail";
 
 // Create a new QueryClient instance
 const queryClient = new QueryClient();
@@ -40,6 +41,7 @@ const App = () => (
           <Route path="/reset-password" element={null} />
           <Route path="/forgot-password" element={null} />
           <Route path="/email" element={null} />
+          <Route path="/follow-up-email" element={null} />
           <Route path="*" element={<Navbar />} />
         </Routes>
         
@@ -54,8 +56,9 @@ const App = () => (
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               
-              {/* Email template route */}
+              {/* Email template routes */}
               <Route path="/email" element={<Email />} />
+              <Route path="/follow-up-email" element={<FollowUpEmail />} />
               
               {/* Protected routes without /a/ prefix */}
               <Route path="/library" element={
@@ -99,8 +102,9 @@ const App = () => (
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               
-              {/* Email template route */}
+              {/* Email template routes */}
               <Route path="/email" element={<Email />} />
+              <Route path="/follow-up-email" element={<FollowUpEmail />} />
               
               {/* Protected routes without /a/ prefix */}
               <Route path="/library" element={
