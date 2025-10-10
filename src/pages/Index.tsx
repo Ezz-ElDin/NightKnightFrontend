@@ -1,17 +1,35 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Book, Star, Heart, Download, MessageCircle, Globe, Check } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import StoryBackground from "@/components/StoryBackground";
 import HowItWorks from "@/components/HowItWorks";
 import StorySamples from "@/components/StorySamples";
 import DiscoverStories from "@/components/DiscoverStories";
 import Footer from "@/components/Footer";
 import CustomPricingTable from "@/components/CustomPricingTable";
+import DesktopDiscoverStoryViewer from "@/components/story-viewer/DesktopDiscoverStoryViewer";
+import MobileDiscoverStoryViewer from "@/components/story-viewer/MobileDiscoverStoryViewer";
+import { useDiscoverStoryViewer } from "@/hooks/useDiscoverStoryViewer";
+import { jsonStoriesData } from "@/data/discoverStoriesData";
 
 const Index = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isEurope, setIsEurope] = useState(false);
+  const [selectedStory, setSelectedStory] = useState<any>(null);
+  
+  // Check for story query parameter
+  useEffect(() => {
+    const storyIdParam = searchParams.get('story');
+    if (storyIdParam) {
+      const storyId = parseInt(storyIdParam);
+      const story = jsonStoriesData.find(s => s.id === storyId);
+      if (story) {
+        setSelectedStory(story);
+      }
+    }
+  }, [searchParams]);
   
   // Check authentication status based on token presence
   useEffect(() => {
@@ -60,7 +78,41 @@ const Index = () => {
     detectLocation();
   }, []);
 
+  // Handle closing story viewer
+  const handleCloseStory = () => {
+    setSelectedStory(null);
+    // Remove story parameter from URL
+    searchParams.delete('story');
+    setSearchParams(searchParams);
+  };
+
+  // Story viewer hook
+  const storyViewerProps = useDiscoverStoryViewer(selectedStory);
+
   return (
+    <>
+      {/* Story Viewer Dialog */}
+      {selectedStory && (
+        storyViewerProps.isMobile ? (
+          <MobileDiscoverStoryViewer 
+            story={selectedStory}
+            onClose={handleCloseStory}
+          />
+        ) : (
+          <DesktopDiscoverStoryViewer
+            story={selectedStory}
+            page={storyViewerProps.page}
+            setPage={storyViewerProps.setPage}
+            numPages={storyViewerProps.numPages}
+            currentPage={storyViewerProps.currentPage}
+            canPrev={storyViewerProps.canPrev}
+            canNext={storyViewerProps.canNext}
+            onClose={handleCloseStory}
+          />
+        )
+      )}
+
+      {/* Main Page Content */}
     <div className="overflow-auto">
       <StoryBackground>
         <div className="container max-w-6xl mx-auto text-center z-10 px-4">
@@ -188,6 +240,7 @@ const Index = () => {
       
       <Footer />
     </div>
+    </>
   );
 };
 
