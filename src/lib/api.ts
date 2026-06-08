@@ -200,8 +200,83 @@ const normalizeStoryDetails = (raw: any): StoryDetails => ({
     : [],
 });
 
+const isDemoUser = () => localStorage.getItem('loginMethod') === 'demo';
+
+const DEMO_STORIES: Story[] = [
+  {
+    id: 9001,
+    title: "Luna and the Moonlit Forest",
+    coverUrl: "https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=600&q=80",
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2).toISOString(),
+    is_favourite: true,
+    status: "completed",
+    language: "English",
+    theme: "Adventure",
+  },
+  {
+    id: 9002,
+    title: "The Brave Little Dragon",
+    coverUrl: "https://images.unsplash.com/photo-1500916434205-0c77489c6cf7?w=600&q=80",
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5).toISOString(),
+    is_favourite: false,
+    status: "completed",
+    language: "English",
+    theme: "Fantasy",
+  },
+  {
+    id: 9003,
+    title: "Captain Stardust's Space Journey",
+    coverUrl: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=600&q=80",
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 10).toISOString(),
+    is_favourite: false,
+    status: "completed",
+    language: "English",
+    theme: "Space",
+  },
+];
+
+const DEMO_STORY_DETAILS: Record<number, StoryDetails> = {
+  9001: {
+    id: 9001,
+    title: "Luna and the Moonlit Forest",
+    story_title: "Luna and the Moonlit Forest",
+    createdAt: DEMO_STORIES[0].createdAt,
+    language: "English",
+    pages: [
+      { page: "1", text: "Luna tiptoed into the silver forest, where every leaf shimmered under the moon.", image_url: "https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=800&q=80" },
+      { page: "2", text: "A little fox with glowing eyes invited her to follow a winding path of fireflies.", image_url: "https://images.unsplash.com/photo-1518562180175-34a163b1a9a6?w=800&q=80" },
+      { page: "3", text: "Together they found a tree that whispered lullabies to the sleepy stars above.", image_url: "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=800&q=80" },
+    ],
+  },
+  9002: {
+    id: 9002,
+    title: "The Brave Little Dragon",
+    story_title: "The Brave Little Dragon",
+    createdAt: DEMO_STORIES[1].createdAt,
+    language: "English",
+    pages: [
+      { page: "1", text: "Ember was the smallest dragon in the valley, but his heart was the biggest.", image_url: "https://images.unsplash.com/photo-1500916434205-0c77489c6cf7?w=800&q=80" },
+      { page: "2", text: "When a storm scared the other dragons, Ember flew straight into the clouds.", image_url: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=800&q=80" },
+      { page: "3", text: "He puffed a tiny flame that lit the way home for all his friends.", image_url: "https://images.unsplash.com/photo-1519810755548-39cd217da494?w=800&q=80" },
+    ],
+  },
+  9003: {
+    id: 9003,
+    title: "Captain Stardust's Space Journey",
+    story_title: "Captain Stardust's Space Journey",
+    createdAt: DEMO_STORIES[2].createdAt,
+    language: "English",
+    pages: [
+      { page: "1", text: "Captain Stardust buckled into her rocket and waved goodbye to the moon.", image_url: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=800&q=80" },
+      { page: "2", text: "She zipped past comets and danced with rings of glittering ice.", image_url: "https://images.unsplash.com/photo-1454789548928-9efd52dc4031?w=800&q=80" },
+      { page: "3", text: "On a tiny purple planet, she made friends with three giggling space bunnies.", image_url: "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=800&q=80" },
+    ],
+  },
+};
+
 export const storiesApi = {
   list: async (): Promise<Story[]> => {
+    if (isDemoUser()) return DEMO_STORIES;
     const res = await api.get('/api/stories/');
     if (Array.isArray(res.data.results)) {
       return res.data.results.map(normalizeStory);
@@ -213,6 +288,10 @@ export const storiesApi = {
     }
   },
   get: async (id: string | number): Promise<StoryDetails> => {
+    if (isDemoUser()) {
+      const numId = typeof id === 'string' ? parseInt(id, 10) : id;
+      if (DEMO_STORY_DETAILS[numId]) return DEMO_STORY_DETAILS[numId];
+    }
     const res = await api.get(`/api/stories/${id}/`);
     return normalizeStoryDetails(res.data);
   },
@@ -221,18 +300,28 @@ export const storiesApi = {
     return res.data;
   },
   favourite: async (id: number): Promise<void> => {
+    if (isDemoUser()) return;
     await api.post(`/api/stories/${id}/favourite/`);
   },
   unfavourite: async (id: number): Promise<void> => {
+    if (isDemoUser()) return;
     await api.delete(`/api/stories/${id}/favourite/`);
   },
   delete: async (id: number): Promise<void> => {
+    if (isDemoUser()) return;
     await api.delete(`/api/stories/${id}/`);
   },
 };
 
 export const creditApi = {
   get: async (): Promise<CreditResponse> => {
+    if (isDemoUser()) {
+      return {
+        success: true,
+        data: { purchased_stories: 5, created_stories: 2, remaining_credit: 3 },
+        message: 'demo',
+      };
+    }
     const res = await api.get('/api/user/credit/');
     return res.data;
   },
