@@ -124,6 +124,19 @@ export const useAuthForm = ({ initialMode = 'login' }: UseAuthFormProps = {}) =>
     }
   };
 
+  const handleDemoLogin = () => {
+    localStorage.setItem('authToken', 'demo-token');
+    localStorage.setItem('loginMethod', 'demo');
+    localStorage.setItem('userName', 'Demo User');
+    localStorage.setItem('userEmail', 'demo@example.com');
+
+    toast({
+      title: 'Demo mode activated',
+      description: 'You are now logged in as a demo user.',
+    });
+    navigate('/library');
+  };
+
   const loading = isLoginPending || isRegisterPending;
 
   return {
@@ -138,6 +151,7 @@ export const useAuthForm = ({ initialMode = 'login' }: UseAuthFormProps = {}) =>
     name,
     setName,
     handleSubmit,
+    handleDemoLogin,
     loading,
   };
 };
