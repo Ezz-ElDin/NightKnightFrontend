@@ -21,6 +21,7 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
     name,
     setName,
     handleSubmit,
+    handleDemoLogin,
     loading,
   } = useAuthForm({ initialMode });
 
