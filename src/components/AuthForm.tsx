@@ -91,6 +91,21 @@ const AuthForm = ({ initialMode = 'login' }: AuthFormProps) => {
         */}
 
         <AuthFormGoogleSection loading={loading} />
+
+        <div className="relative flex py-3 items-center">
+          <div className="flex-grow border-t border-gray-200"></div>
+          <span className="flex-shrink mx-4 text-gray-400">or</span>
+          <div className="flex-grow border-t border-gray-200"></div>
+        </div>
+
+        <button
+          type="button"
+          onClick={handleDemoLogin}
+          disabled={loading}
+          className="w-full py-3 px-4 rounded-lg font-semibold text-sm bg-amber-100 text-amber-800 hover:bg-amber-200 disabled:opacity-50 transition-colors"
+        >
+          Continue as Demo User
+        </button>
         
         <div className="mt-6 text-center">
           <p className="text-muted-foreground">
